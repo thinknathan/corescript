@@ -173,8 +173,6 @@ TilingSprite.prototype._refresh = function() {
 };
 
 
-TilingSprite.prototype._speedUpCustomBlendModes = Sprite.prototype._speedUpCustomBlendModes;
-
 /**
  * @method _render
  * @param {Object} renderer
@@ -185,8 +183,6 @@ TilingSprite.prototype._render = function(renderer) {
         this._bitmap.touch();
         this._bitmap.checkDirty();
     }
-
-    this._speedUpCustomBlendModes(renderer);
 
     this._render_PIXI(renderer);
 };

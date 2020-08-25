@@ -415,31 +415,6 @@ Sprite.prototype._renderCanvas = function(renderer) {
 };
 
 /**
- * checks if we need to speed up custom blendmodes
- * @param renderer
- * @private
- */
-Sprite.prototype._speedUpCustomBlendModes = function(renderer) {
-    var picture = renderer.plugins.picture;
-    var blend = this.blendMode;
-    if (renderer.renderingToScreen && renderer._activeRenderTarget.root) {
-        if (picture.drawModes[blend]) {
-            var stage = renderer._lastObjectRendered;
-            var f = stage._filters;
-            if (!f || !f[0]) {
-                setTimeout(function () {
-                    var f = stage._filters;
-                    if (!f || !f[0]) {
-                        stage.filters = [Sprite.voidFilter];
-                        stage.filterArea = new PIXI.Rectangle(0, 0, Graphics.width, Graphics.height);
-                    }
-                }, 0);
-            }
-        }
-    }
-};
-
-/**
  * @method _render
  * @param {Object} renderer
  * @private
@@ -462,7 +437,6 @@ Sprite.prototype._render = function(renderer) {
         if (this.pluginName === 'sprite' && this._isPicture) {
             // use heavy renderer, which reduces artifacts and applies corrent blendMode,
             // but does not use multitexture optimization
-            this._speedUpCustomBlendModes(renderer);
             renderer.setObjectRenderer(renderer.plugins.picture);
             renderer.plugins.picture.render(this);
         } else {
