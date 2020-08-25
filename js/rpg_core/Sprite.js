@@ -437,11 +437,13 @@ Sprite.prototype._render = function(renderer) {
         if (this.pluginName === 'sprite' && this._isPicture) {
             // use heavy renderer, which reduces artifacts and applies corrent blendMode,
             // but does not use multitexture optimization
-            renderer.setObjectRenderer(renderer.plugins.picture);
+            // Edited by DoubleX on GMT 0800 5-Jul-2020 to use batch renderer instead
+            renderer.batch.setObjectRenderer(renderer.plugins.picture);
             renderer.plugins.picture.render(this);
         } else {
             // use pixi super-speed renderer
-            renderer.setObjectRenderer(renderer.plugins[this.pluginName]);
+            // Edited by DoubleX on GMT 0800 5-Jul-2020 to use batch renderer instead
+            renderer.batch.setObjectRenderer(renderer.plugins[this.pluginName]);
 			renderer.plugins[this.pluginName].render(this);
         }
     }
