@@ -1,6 +1,16 @@
 
 # RPG Maker MV CoreScript
 
+## This Fork
+
+This fork introduces opinionated changes that may break functionality.
+
+- Updated to use Pixi v5
+- Picture blend modes no longer work
+- Windows can overlap with each other
+- FPS meter removed
+- HTML5Audio removed
+
 ## Introduction
 
 "RPG Maker MV CoreScript" is a game engine for 2D games that runs on the browser. "RPG Maker MV CoreScript" is designed as a game engine dedicated to "RPG Maker MV", the latest work of "RPG Maker" series of 2DRPG world number one software with more than 20 years history, and more than 1000 games are running. (February 2017)
