@@ -10,13 +10,13 @@ function TilingSprite() {
     this.initialize.apply(this, arguments);
 }
 
-TilingSprite.prototype = Object.create(PIXI.extras.PictureTilingSprite.prototype);
+TilingSprite.prototype = Object.create(PIXI.TilingSprite.prototype);
 TilingSprite.prototype.constructor = TilingSprite;
 
 TilingSprite.prototype.initialize = function(bitmap) {
     var texture = new PIXI.Texture(new PIXI.BaseTexture());
 
-    PIXI.extras.PictureTilingSprite.call(this, texture);
+    PIXI.TilingSprite.call(this, texture);
 
     this._bitmap = null;
     this._width = 0;
@@ -34,8 +34,8 @@ TilingSprite.prototype.initialize = function(bitmap) {
     this.bitmap = bitmap;
 };
 
-TilingSprite.prototype._renderCanvas_PIXI = PIXI.extras.PictureTilingSprite.prototype._renderCanvas;
-TilingSprite.prototype._renderWebGL_PIXI = PIXI.extras.PictureTilingSprite.prototype._renderWebGL;
+TilingSprite.prototype._renderCanvas_PIXI = PIXI.TilingSprite.prototype._renderCanvas;
+TilingSprite.prototype._renderWebGL_PIXI = PIXI.TilingSprite.prototype._renderWebGL;
 
 /**
  * @method _renderCanvas
