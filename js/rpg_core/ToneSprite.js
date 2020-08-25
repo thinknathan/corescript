@@ -95,10 +95,10 @@ ToneSprite.prototype._renderCanvas = function(renderer) {
 };
 
 /**
- * @method _renderWebGL
+ * @method _render
  * @param {Object} renderSession
  * @private
  */
-ToneSprite.prototype._renderWebGL = function(renderer) {
+ToneSprite.prototype._render = function(renderer) {
     // Not supported
 };

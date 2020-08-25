@@ -35,7 +35,7 @@ TilingSprite.prototype.initialize = function(bitmap) {
 };
 
 TilingSprite.prototype._renderCanvas_PIXI = PIXI.TilingSprite.prototype._renderCanvas;
-TilingSprite.prototype._renderWebGL_PIXI = PIXI.TilingSprite.prototype._renderWebGL;
+TilingSprite.prototype._render_PIXI = PIXI.TilingSprite.prototype._render;
 
 /**
  * @method _renderCanvas
@@ -176,11 +176,11 @@ TilingSprite.prototype._refresh = function() {
 TilingSprite.prototype._speedUpCustomBlendModes = Sprite.prototype._speedUpCustomBlendModes;
 
 /**
- * @method _renderWebGL
+ * @method _render
  * @param {Object} renderer
  * @private
  */
-TilingSprite.prototype._renderWebGL = function(renderer) {
+TilingSprite.prototype._render = function(renderer) {
     if (this._bitmap) {
         this._bitmap.touch();
         this._bitmap.checkDirty();
@@ -188,7 +188,7 @@ TilingSprite.prototype._renderWebGL = function(renderer) {
 
     this._speedUpCustomBlendModes(renderer);
 
-    this._renderWebGL_PIXI(renderer);
+    this._render_PIXI(renderer);
 };
 
 // The important members from Pixi.js

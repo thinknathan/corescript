@@ -169,11 +169,11 @@ WindowLayer.prototype._canvasClearWindowRect = function(renderSession, window) {
 };
 
 /**
- * @method _renderWebGL
+ * @method _render
  * @param {Object} renderSession
  * @private
  */
-WindowLayer.prototype.renderWebGL = function(renderer) {
+WindowLayer.prototype.render = function(renderer) {
     if (!this.visible || !this.renderable) {
         return;
     }
@@ -201,7 +201,7 @@ WindowLayer.prototype.renderWebGL = function(renderer) {
             renderer.clear();
             renderer.maskManager.popScissorMask();
             renderer.currentRenderer.start();
-            child.renderWebGL(renderer);
+            child.render(renderer);
             renderer.currentRenderer.flush();
         }
     }
@@ -212,7 +212,7 @@ WindowLayer.prototype.renderWebGL = function(renderer) {
 
     for (var j = 0; j < this.children.length; j++) {
         if (!this.children[j]._isWindow) {
-            this.children[j].renderWebGL(renderer);
+            this.children[j].render(renderer);
         }
     }
 };

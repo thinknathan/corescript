@@ -47,12 +47,12 @@ ShaderTilemap.prototype.renderCanvas = function(renderer) {
 /**
  * PIXI render method
  *
- * @method renderWebGL
+ * @method render
  * @param {Object} pixi renderer
  */
-ShaderTilemap.prototype.renderWebGL = function(renderer) {
+ShaderTilemap.prototype.render = function(renderer) {
     this._hackRenderer(renderer);
-    PIXI.Container.prototype.renderWebGL.call(this, renderer);
+    PIXI.Container.prototype.render.call(this, renderer);
 };
 
 /**

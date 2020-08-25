@@ -394,7 +394,7 @@ Sprite.prototype._executeTint = function(x, y, w, h) {
 };
 
 Sprite.prototype._renderCanvas_PIXI = PIXI.Sprite.prototype._renderCanvas;
-Sprite.prototype._renderWebGL_PIXI = PIXI.Sprite.prototype._renderWebGL;
+Sprite.prototype._render_PIXI = PIXI.Sprite.prototype._render;
 
 /**
  * @method _renderCanvas
@@ -440,11 +440,11 @@ Sprite.prototype._speedUpCustomBlendModes = function(renderer) {
 };
 
 /**
- * @method _renderWebGL
+ * @method _render
  * @param {Object} renderer
  * @private
  */
-Sprite.prototype._renderWebGL = function(renderer) {
+Sprite.prototype._render = function(renderer) {
     if (this.bitmap) {
         this.bitmap.touch();
     }
