@@ -37,7 +37,7 @@ WindowLayer.prototype.onRemoveAsAChild = function() {
     this.removeChildren();
 }
 
-WindowLayer.voidFilter = new PIXI.filters.VoidFilter();
+WindowLayer.voidFilter = new PIXI.filters.AlphaFilter();
 
 /**
  * The width of the window layer in pixels.
