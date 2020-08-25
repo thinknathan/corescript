@@ -146,7 +146,7 @@ TilingSprite.prototype.updateTransform = function() {
     this.updateTransformTS();
 };
 
-TilingSprite.prototype.updateTransformTS = PIXI.extras.TilingSprite.prototype.updateTransform;
+TilingSprite.prototype.updateTransformTS = PIXI.TilingSprite.prototype.updateTransform;
 
 /**
  * @method _onBitmapLoad
