@@ -29,7 +29,6 @@ const $priorityScripts = [
     {"path":"js/rpg_core/","name":"ToneSprite"},
     {"path":"js/rpg_core/","name":"Stage"},
     {"path":"js/rpg_core/","name":"WebAudio"},
-    {"path":"js/rpg_core/","name":"Html5Audio"},
     {"path":"js/rpg_core/","name":"JsonEx"},
     {"path":"js/rpg_core/","name":"Decrypter"},
     {"path":"js/rpg_core/","name":"ResourceHandler"},

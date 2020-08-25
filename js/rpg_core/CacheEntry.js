@@ -6,7 +6,7 @@
  * @constructor
  * @param {ResourceManager} resource manager
  * @param {string} key, url of the resource
- * @param {string} item - Bitmap, HTML5Audio, WebAudio - whatever you want to store in the cache
+ * @param {string} item - Bitmap, WebAudio - whatever you want to store in the cache
  */
 function CacheEntry(cache, key, item) {
     this.cache = cache;
