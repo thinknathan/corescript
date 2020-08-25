@@ -40,14 +40,14 @@ Graphics.initialize = function(width, height, type) {
     this._videoLoading = false;
     this._upperCanvas = null;
     this._renderer = null;
-    this._fpsMeter = null;
+    //this._fpsMeter = null;
     this._modeBox = null;
     this._skipCount = 0;
     this._maxSkip = 3;
     this._rendered = false;
     this._loadingImage = null;
     this._loadingCount = 0;
-    this._fpsMeterToggled = false;
+    //this._fpsMeterToggled = false;
     this._stretchEnabled = this._defaultStretchMode();
 
     this._canUseDifferenceBlend = false;
@@ -136,9 +136,9 @@ Graphics.BLEND_SCREEN   = 3;
  * @method tickStart
  */
 Graphics.tickStart = function() {
-    if (this._fpsMeter) {
-        this._fpsMeter.tickStart();
-    }
+    //if (this._fpsMeter) {
+    //    this._fpsMeter.tickStart();
+    //}
 };
 
 /**
@@ -148,9 +148,9 @@ Graphics.tickStart = function() {
  * @method tickEnd
  */
 Graphics.tickEnd = function() {
-    if (this._fpsMeter && this._rendered) {
-        this._fpsMeter.tick();
-    }
+    //if (this._fpsMeter && this._rendered) {
+    //    this._fpsMeter.tick();
+    //}
 };
 
 /**
@@ -305,7 +305,9 @@ Graphics._showProgress = function(){
 };
 
 Graphics._hideProgress = function(){
-    this._progressElement.style.visibility = 'hidden';
+    if (this._progressElement) {
+        this._progressElement.style.visibility = 'hidden';
+    }
     clearTimeout(this._progressTimeout);
 };
 
@@ -471,10 +473,10 @@ Graphics.setShowErrorDetail = function(showErrorDetail) {
  * @method showFps
  */
 Graphics.showFps = function() {
-    if (this._fpsMeter) {
-        this._fpsMeter.show();
-        this._modeBox.style.opacity = 1;
-    }
+    //if (this._fpsMeter) {
+    //    this._fpsMeter.show();
+    //    this._modeBox.style.opacity = 1;
+    //}
 };
 
 /**
@@ -484,10 +486,10 @@ Graphics.showFps = function() {
  * @method hideFps
  */
 Graphics.hideFps = function() {
-    if (this._fpsMeter) {
-        this._fpsMeter.hide();
-        this._modeBox.style.opacity = 0;
-    }
+    //if (this._fpsMeter) {
+    //    this._fpsMeter.hide();
+    //    this._modeBox.style.opacity = 0;
+    //}
 };
 
 /**
@@ -1146,9 +1148,9 @@ Graphics._updateRenderer = function() {
  * @private
  */
 Graphics._createFPSMeter = function() {
-    var options = { graph: 1, decimals: 0, theme: 'transparent', toggleOn: null };
-    this._fpsMeter = new FPSMeter(options);
-    this._fpsMeter.hide();
+    //var options = { graph: 1, decimals: 0, theme: 'transparent', toggleOn: null };
+    //this._fpsMeter = new FPSMeter(options);
+    //this._fpsMeter.hide();
 };
 
 /**
@@ -1360,7 +1362,7 @@ Graphics._onKeyDown = function(event) {
         switch (event.keyCode) {
         case 113:   // F2
             event.preventDefault();
-            this._switchFPSMeter();
+            //this._switchFPSMeter();
             break;
         case 114:   // F3
             event.preventDefault();
@@ -1396,16 +1398,16 @@ Graphics._onTouchEnd = function(event) {
  * @private
  */
 Graphics._switchFPSMeter = function() {
-    if (this._fpsMeter.isPaused) {
-        this.showFps();
-        this._fpsMeter.showFps();
-        this._fpsMeterToggled = false;
-    } else if (!this._fpsMeterToggled) {
-        this._fpsMeter.showDuration();
-        this._fpsMeterToggled = true;
-    } else {
-        this.hideFps();
-    }
+    //if (this._fpsMeter.isPaused) {
+    //    this.showFps();
+    //    this._fpsMeter.showFps();
+    //    this._fpsMeterToggled = false;
+    //} else if (!this._fpsMeterToggled) {
+    //    this._fpsMeter.showDuration();
+    //    this._fpsMeterToggled = true;
+    //} else {
+    //    this.hideFps();
+    //}
 };
 
 /**
