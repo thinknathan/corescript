@@ -43,7 +43,6 @@ const $priorityScripts = [
     {"path":"js/rpg_managers/","name":"TextManager"},
     {"path":"js/rpg_managers/","name":"SceneManager"},
     {"path":"js/rpg_managers/","name":"BattleManager"},
-    {"path":"js/rpg_managers/","name":"PluginManager"},
 
     {"path":"js/rpg_objects/","name":"Game_Temp"},
     {"path":"js/rpg_objects/","name":"Game_System"},
