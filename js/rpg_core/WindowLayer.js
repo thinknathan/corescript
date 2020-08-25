@@ -16,18 +16,6 @@ WindowLayer.prototype.initialize = function() {
     PIXI.Container.call(this);
     this._width = 0;
     this._height = 0;
-    this._tempCanvas = null;
-    this._translationMatrix = [1, 0, 0, 0, 1, 0, 0, 0, 1];
-
-    this._windowMask = new PIXI.Graphics();
-    this._windowMask.beginFill(0xffffff, 1);
-    this._windowMask.drawRect(0, 0, 0, 0);
-    this._windowMask.endFill();
-    this._windowRect = this._windowMask.graphicsData[0].shape;
-
-    this._renderSprite = null;
-    this.filterArea = new PIXI.Rectangle();
-    this.filters = [WindowLayer.voidFilter];
 
     //temporary fix for memory leak bug
     this.on('removed', this.onRemoveAsAChild);
@@ -100,137 +88,8 @@ WindowLayer.prototype.update = function() {
     });
 };
 
-/**
- * @method _renderCanvas
- * @param {Object} renderSession
- * @private
- */
-WindowLayer.prototype.renderCanvas = function(renderer) {
-    if (!this.visible || !this.renderable) {
-        return;
-    }
-
-    if (!this._tempCanvas) {
-        this._tempCanvas = document.createElement('canvas');
-    }
-
-    this._tempCanvas.width = Graphics.width;
-    this._tempCanvas.height = Graphics.height;
-
-    var realCanvasContext = renderer.context;
-    var context = this._tempCanvas.getContext('2d');
-
-    context.save();
-    context.clearRect(0, 0, Graphics.width, Graphics.height);
-    context.beginPath();
-    context.rect(this.x, this.y, this.width, this.height);
-    context.closePath();
-    context.clip();
-
-    renderer.context = context;
-
-    for (var i = 0; i < this.children.length; i++) {
-        var child = this.children[i];
-        if (child._isWindow && child.visible && child.openness > 0) {
-            this._canvasClearWindowRect(renderer, child);
-            context.save();
-            child.renderCanvas(renderer);
-            context.restore();
-        }
-    }
-
-    context.restore();
-
-    renderer.context = realCanvasContext;
-    renderer.context.setTransform(1, 0, 0, 1, 0, 0);
-    renderer.context.globalCompositeOperation = 'source-over';
-    renderer.context.globalAlpha = 1;
-    renderer.context.drawImage(this._tempCanvas, 0, 0);
-
-    for (var j = 0; j < this.children.length; j++) {
-        if (!this.children[j]._isWindow) {
-            this.children[j].renderCanvas(renderer);
-        }
-    }
-};
-
-/**
- * @method _canvasClearWindowRect
- * @param {Object} renderSession
- * @param {Window} window
- * @private
- */
-WindowLayer.prototype._canvasClearWindowRect = function(renderSession, window) {
-    var rx = this.x + window.x;
-    var ry = this.y + window.y + window.height / 2 * (1 - window._openness / 255);
-    var rw = window.width;
-    var rh = window.height * window._openness / 255;
-    renderSession.context.clearRect(rx, ry, rw, rh);
-};
-
-/**
- * @method _render
- * @param {Object} renderSession
- * @private
- */
-WindowLayer.prototype.render = function(renderer) {
-    if (!this.visible || !this.renderable) {
-        return;
-    }
-
-    if (this.children.length==0) {
-        return;
-    }
-
-    renderer.flush();
-    this.filterArea.copy(this);
-    renderer.filterManager.pushFilter(this, this.filters);
-    renderer.currentRenderer.start();
-
-    var shift = new PIXI.Point();
-    var rt = renderer._activeRenderTarget;
-    var projectionMatrix = rt.projectionMatrix;
-    shift.x = Math.round((projectionMatrix.tx + 1) / 2 * rt.sourceFrame.width);
-    shift.y = Math.round((projectionMatrix.ty + 1) / 2 * rt.sourceFrame.height);
-
-    for (var i = 0; i < this.children.length; i++) {
-        var child = this.children[i];
-        if (child._isWindow && child.visible && child.openness > 0) {
-            this._maskWindow(child, shift);
-            renderer.maskManager.pushScissorMask(this, this._windowMask);
-            renderer.clear();
-            renderer.maskManager.popScissorMask();
-            renderer.currentRenderer.start();
-            child.render(renderer);
-            renderer.currentRenderer.flush();
-        }
-    }
-
-    renderer.flush();
-    renderer.filterManager.popFilter();
-    renderer.maskManager.popScissorMask();
-
-    for (var j = 0; j < this.children.length; j++) {
-        if (!this.children[j]._isWindow) {
-            this.children[j].render(renderer);
-        }
-    }
-};
-
-/**
- * @method _maskWindow
- * @param {Window} window
- * @private
- */
-WindowLayer.prototype._maskWindow = function(window, shift) {
-    this._windowMask._currentBounds = null;
-    this._windowMask.boundsDirty = true;
-    var rect = this._windowRect;
-    rect.x = this.x + shift.x + window.x;
-    rect.y = this.y + shift.y + window.y + window.height / 2 * (1 - window._openness / 255);
-    rect.width = window.width;
-    rect.height = window.height * window._openness / 255;
-};
+WindowLayer.prototype.render = PIXI.Container.prototype.render;
+WindowLayer.prototype.renderCanvas = PIXI.Container.prototype.renderCanvas;
 
 // The important members from Pixi.js
 
