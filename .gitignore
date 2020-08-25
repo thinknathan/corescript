@@ -4,6 +4,17 @@ logs
 *.log
 npm-debug.log*
 
+# RPG Maker Project
+Game.rpgproject
+index.html
+audio/*
+data/*
+fonts/*
+icon/*
+img/*
+movies/*
+save/*
+
 # Runtime data
 pids
 *.pid
