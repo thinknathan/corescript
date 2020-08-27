@@ -1,6 +1,7 @@
 const $priorityScripts = [
     {"name":"pixi","path":"js/libs/"},
     {"name":"pixi-tilemap","path":"js/libs/"},
+    {"name":"pixi-fps","path":"js/libs/"},
     {"name":"lz-string","path":"js/libs/"},
     {"name":"iphone-inline-video.browser","path":"js/libs/"},
     

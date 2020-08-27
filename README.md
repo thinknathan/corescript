@@ -5,11 +5,11 @@
 
 This fork introduces opinionated changes that may break functionality.
 
-- Updated to use Pixi v5
+- Updated to use PIXI v5
 - Picture blend modes no longer work
 - Windows can overlap with each other
-- FPS meter removed
 - HTML5Audio removed
+- Smooth picture scaling is disabled
 
 ## Introduction
 
