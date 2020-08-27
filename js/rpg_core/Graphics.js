@@ -1094,7 +1094,6 @@ Graphics._paintUpperCanvas = function() {
  * @private
  */
 Graphics._createRenderer = function() {
-    PIXI.dontSayHello = true;
     var options = {
         view: this._canvas,
         width: this._width,
