@@ -13,7 +13,6 @@ function ShaderTilemap() {
 ShaderTilemap.prototype = Object.create(Tilemap.prototype);
 ShaderTilemap.prototype.constructor = ShaderTilemap;
 
-PIXI.settings.GC_MODE = PIXI.GC_MODES.AUTO;
 PIXI.tilemap.Constant.SCALE_MODE = PIXI.SCALE_MODES.NEAREST;
 PIXI.tilemap.Constant.DO_CLEAR = true;
 PIXI.tilemap.Constant.boundCountPerBuffer = 4;

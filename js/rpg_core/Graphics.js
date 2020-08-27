@@ -1112,9 +1112,6 @@ Graphics._createRenderer = function() {
             break;
         }
 
-        if(this._renderer && this._renderer.textureGC)
-            this._renderer.textureGC.maxIdle = 1;
-
     } catch (e) {
         this._renderer = null;
     }
