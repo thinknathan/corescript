@@ -74,11 +74,11 @@ Bitmap.prototype._createBaseTexture = function(source){
     this.__baseTexture.width = source.width;
     this.__baseTexture.height = source.height;
 
-    if (this._smooth) {
-        this._baseTexture.scaleMode = PIXI.SCALE_MODES.LINEAR;
-    } else {
+    //if (this._smooth) {
+    //    this._baseTexture.scaleMode = PIXI.SCALE_MODES.LINEAR;
+    //} else {
         this._baseTexture.scaleMode = PIXI.SCALE_MODES.NEAREST;
-    }
+    //}
 };
 
 Bitmap.prototype._clearImgInstance = function(){
@@ -386,11 +386,11 @@ Object.defineProperty(Bitmap.prototype, 'smooth', {
         if (this._smooth !== value) {
             this._smooth = value;
             if(this.__baseTexture){
-                if (this._smooth) {
-                    this._baseTexture.scaleMode = PIXI.SCALE_MODES.LINEAR;
-                } else {
+                //if (this._smooth) {
+                //    this._baseTexture.scaleMode = PIXI.SCALE_MODES.LINEAR;
+                //} else {
                     this._baseTexture.scaleMode = PIXI.SCALE_MODES.NEAREST;
-                }
+                //}
             }
         }
     },
