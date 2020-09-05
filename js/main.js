@@ -271,7 +271,6 @@ PluginManager.onLoad = function(e) {
         this.removeCounter();
         PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.NEAREST;
         PIXI.settings.ROUND_PIXELS = true;
-        PIXI.settings.CREATE_IMAGE_BITMAP = true;
         PIXI.settings.GC_MODE = PIXI.GC_MODES.AUTO;
         PIXI.settings.GC_MAX_IDLE = 120;
         SceneManager.run(Scene_Boot);
