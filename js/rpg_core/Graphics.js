@@ -41,6 +41,7 @@ Graphics.initialize = function(width, height, type) {
     this._upperCanvas = null;
     this._renderer = null;
     this._fpsMeter = null;
+    this._fpsApp = null;
     this._modeBox = null;
     this._skipCount = 0;
     this._maxSkip = 3;
@@ -466,7 +467,15 @@ Graphics.setShowErrorDetail = function(showErrorDetail) {
  */
 Graphics.showFps = function() {
     if (this._fpsMeter) {
-        SceneManager._scene.addChild(this._fpsMeter);
+        if (!this._fpsApp) {
+            this._fpsApp = new PIXI.Application({
+                width: 200,
+                height: 100,
+                sharedTicker: true
+            });
+            document.body.appendChild(this._fpsApp.view);
+        }
+        this._fpsApp.stage.addChild(this._fpsMeter);
     }
 };
 
@@ -478,7 +487,7 @@ Graphics.showFps = function() {
  */
 Graphics.hideFps = function() {
     if (this._fpsMeter) {
-        SceneManager._scene.removeChild(this._fpsMeter);
+        this._fpsApp.stage.removeChild(this._fpsMeter);
     }
 };
 
