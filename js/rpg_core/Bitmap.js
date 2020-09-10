@@ -534,12 +534,17 @@ Bitmap.prototype.clear = function() {
  * @param {String} color The color of the rectangle in CSS format
  */
 Bitmap.prototype.fillRect = function(x, y, width, height, color) {
-    var context = this._context;
-    context.save();
-    context.fillStyle = color;
-    context.fillRect(x, y, width, height);
-    context.restore();
-    this._setDirty();
+    const rectangle = new PIXI.Graphics();
+    color = PIXI.utils.string2hex(color);
+    rectangle.beginFill('0x'+color);
+    rectangle.drawRect(
+        x,
+        y,
+        width,
+        height,
+    );
+    rectangle.endFill();
+    return rectangle;
 };
 
 /**
@@ -549,7 +554,7 @@ Bitmap.prototype.fillRect = function(x, y, width, height, color) {
  * @param {String} color The color of the rectangle in CSS format
  */
 Bitmap.prototype.fillAll = function(color) {
-    this.fillRect(0, 0, this.width, this.height, color);
+    return this.fillRect(0, 0, this.width, this.height, color);
 };
 
 /**
@@ -566,20 +571,7 @@ Bitmap.prototype.fillAll = function(color) {
  */
 Bitmap.prototype.gradientFillRect = function(x, y, width, height, color1,
                                              color2, vertical) {
-    var context = this._context;
-    var grad;
-    if (vertical) {
-        grad = context.createLinearGradient(x, y, x, y + height);
-    } else {
-        grad = context.createLinearGradient(x, y, x + width, y);
-    }
-    grad.addColorStop(0, color1);
-    grad.addColorStop(1, color2);
-    context.save();
-    context.fillStyle = grad;
-    context.fillRect(x, y, width, height);
-    context.restore();
-    this._setDirty();
+    return this.fillRect(x, y, width, height, color1);
 };
 
 /**
@@ -592,14 +584,16 @@ Bitmap.prototype.gradientFillRect = function(x, y, width, height, color1,
  * @param {String} color The color of the circle in CSS format
  */
 Bitmap.prototype.drawCircle = function(x, y, radius, color) {
-    var context = this._context;
-    context.save();
-    context.fillStyle = color;
-    context.beginPath();
-    context.arc(x, y, radius, 0, Math.PI * 2, false);
-    context.fill();
-    context.restore();
-    this._setDirty();
+    const circle = new PIXI.Graphics();
+    color = PIXI.utils.string2hex(color);
+    circle.beginFill(color);
+    circle.drawCircle(
+        x,
+        y,
+        radius
+    );
+    circle.endFill();
+    return circle;
 };
 
 /**
@@ -646,7 +640,7 @@ Bitmap.prototype.drawText = function(text, x, y, maxWidth, lineHeight, align) {
 };
 
 /**
- * Draws the small text big once and resize it because modern broswers are poor at drawing small text.
+ * Draws the small text big once and resize it because modern browsers are poor at drawing small text.
  *
  * @method drawSmallText
  * @param {String} text The text that will be drawn
@@ -730,67 +724,7 @@ Bitmap.prototype.adjustTone = function(r, g, b) {
  * @param {Number} offset The hue offset in 360 degrees
  */
 Bitmap.prototype.rotateHue = function(offset) {
-    function rgbToHsl(r, g, b) {
-        var cmin = Math.min(r, g, b);
-        var cmax = Math.max(r, g, b);
-        var h = 0;
-        var s = 0;
-        var l = (cmin + cmax) / 2;
-        var delta = cmax - cmin;
-
-        if (delta > 0) {
-            if (r === cmax) {
-                h = 60 * (((g - b) / delta + 6) % 6);
-            } else if (g === cmax) {
-                h = 60 * ((b - r) / delta + 2);
-            } else {
-                h = 60 * ((r - g) / delta + 4);
-            }
-            s = delta / (255 - Math.abs(2 * l - 255));
-        }
-        return [h, s, l];
-    }
-
-    function hslToRgb(h, s, l) {
-        var c = (255 - Math.abs(2 * l - 255)) * s;
-        var x = c * (1 - Math.abs((h / 60) % 2 - 1));
-        var m = l - c / 2;
-        var cm = c + m;
-        var xm = x + m;
-
-        if (h < 60) {
-            return [cm, xm, m];
-        } else if (h < 120) {
-            return [xm, cm, m];
-        } else if (h < 180) {
-            return [m, cm, xm];
-        } else if (h < 240) {
-            return [m, xm, cm];
-        } else if (h < 300) {
-            return [xm, m, cm];
-        } else {
-            return [cm, m, xm];
-        }
-    }
-
-    if (offset && this.width > 0 && this.height > 0) {
-        offset = ((offset % 360) + 360) % 360;
-        var context = this._context;
-        var imageData = context.getImageData(0, 0, this.width, this.height);
-        var pixels = imageData.data;
-        for (var i = 0; i < pixels.length; i += 4) {
-            var hsl = rgbToHsl(pixels[i + 0], pixels[i + 1], pixels[i + 2]);
-            var h = (hsl[0] + offset) % 360;
-            var s = hsl[1];
-            var l = hsl[2];
-            var rgb = hslToRgb(h, s, l);
-            pixels[i + 0] = rgb[0];
-            pixels[i + 1] = rgb[1];
-            pixels[i + 2] = rgb[2];
-        }
-        context.putImageData(imageData, 0, 0);
-        this._setDirty();
-    }
+    // Too expensive to do with canvas
 };
 
 /**
@@ -799,33 +733,7 @@ Bitmap.prototype.rotateHue = function(offset) {
  * @method blur
  */
 Bitmap.prototype.blur = function() {
-    for (var i = 0; i < 2; i++) {
-        var w = this.width;
-        var h = this.height;
-        var canvas = this._canvas;
-        var context = this._context;
-        var tempCanvas = document.createElement('canvas');
-        var tempContext = tempCanvas.getContext('2d');
-        tempCanvas.width = w + 2;
-        tempCanvas.height = h + 2;
-        tempContext.drawImage(canvas, 0, 0, w, h, 1, 1, w, h);
-        tempContext.drawImage(canvas, 0, 0, w, 1, 1, 0, w, 1);
-        tempContext.drawImage(canvas, 0, 0, 1, h, 0, 1, 1, h);
-        tempContext.drawImage(canvas, 0, h - 1, w, 1, 1, h + 1, w, 1);
-        tempContext.drawImage(canvas, w - 1, 0, 1, h, w + 1, 1, 1, h);
-        context.save();
-        context.fillStyle = 'black';
-        context.fillRect(0, 0, w, h);
-        context.globalCompositeOperation = 'lighter';
-        context.globalAlpha = 1 / 9;
-        for (var y = 0; y < 3; y++) {
-            for (var x = 0; x < 3; x++) {
-                context.drawImage(tempCanvas, x, y, w, h, 0, 0, w, h);
-            }
-        }
-        context.restore();
-    }
-    this._setDirty();
+    // Too expensive to do with canvas
 };
 
 /**
@@ -1040,3 +948,53 @@ Bitmap.prototype.startRequest = function(){
 
 Bitmap.minFontSize = 21;
 Bitmap.drawSmallTextBitmap = new Bitmap(1632, Bitmap.minFontSize);
+
+
+
+
+/**
+ * Returns a sprite cropped to the specified dimensions
+ *
+ * @method blt
+ * @param {Bitmap} source The bitmap to draw
+ * @param {Number} x The x coordinate in the source
+ * @param {Number} y The y coordinate in the source
+ * @param {Number} w The width of the source image
+ * @param {Number} h The height of the source image
+ */
+Bitmap.prototype.createCroppedSprite = function(source, x, y, w, h) {
+    return new PIXI.Sprite(
+      new PIXI.Texture(
+        source,
+        new PIXI.Rectangle(x, y, w, h)
+      )
+    );
+};
+
+/**
+ * Proxy for createCroppedSprite
+ *
+ * @method blt
+ * @param {Bitmap} source The bitmap to draw
+ * @param {Number} sx The x coordinate in the source
+ * @param {Number} sy The y coordinate in the source
+ * @param {Number} sw The width of the source image
+ * @param {Number} sh The height of the source image
+ * @param {Number} dx The x coordinate in the destination
+ * @param {Number} dy The y coordinate in the destination
+ * @param {Number} [dw=sw] The width to draw the image in the destination
+ * @param {Number} [dh=sh] The height to draw the image in the destination
+ */
+Bitmap.prototype.blt = function(source, sx, sy, sw, sh, dx, dy, dw, dh) {
+    dw = dw || sw;
+    dh = dh || sh;
+    if (sx >= 0 && sy >= 0 && sw > 0 && sh > 0 && dw > 0 && dh > 0 &&
+            sx + sw <= source.width && sy + sh <= source.height) {
+        let sprite = this.createCroppedSprite(source.__baseTexture, sx, sy, sw, sh);
+        sprite.x = dx;
+        sprite.y = dy;
+        sprite.width = dw;
+        sprite.height = dh;
+        return sprite;
+    }
+};

@@ -91,7 +91,14 @@ Window_Base.prototype.updateTone = function() {
 };
 
 Window_Base.prototype.createContents = function() {
-    this.contents = new Bitmap(this.contentsWidth(), this.contentsHeight());
+    this.contents = new BitmapCompatLayer(this.contentsWidth(), this.contentsHeight());
+    
+    this.contents.x = this.padding;
+    this.contents.y = this.padding;
+    this.contents.width = this.width - this.padding;
+    this.contents.height = this.height - this.padding;
+    
+    this.addChild(this.contents);
     this.resetFontSettings();
 };
 

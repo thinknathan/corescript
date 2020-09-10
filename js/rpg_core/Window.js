@@ -362,7 +362,7 @@ Window.prototype.updateTransform = function() {
     this._updateCursor();
     this._updateArrows();
     this._updatePauseSign();
-    this._updateContents();
+    //this._updateContents();
     PIXI.Container.prototype.updateTransform.call(this);
 };
 
