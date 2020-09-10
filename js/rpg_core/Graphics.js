@@ -486,7 +486,7 @@ Graphics.showFps = function() {
  * @method hideFps
  */
 Graphics.hideFps = function() {
-    if (this._fpsMeter) {
+    if (this._fpsMeter && this._fpsApp) {
         this._fpsApp.stage.removeChild(this._fpsMeter);
     }
 };
