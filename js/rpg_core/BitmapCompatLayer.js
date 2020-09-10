@@ -14,12 +14,37 @@ BitmapCompatLayer.prototype.constructor = BitmapCompatLayer;
 
 BitmapCompatLayer.prototype.initialize = function (width, height) {
     PIXI.Container.call(this);
+    this.width = width;
+    this.height = height;
     this._bitmap = new Bitmap(width, height);
+};
+
+BitmapCompatLayer.prototype._renderCanvas_PIXI = PIXI.Container.prototype._renderCanvas;
+BitmapCompatLayer.prototype._render_PIXI = PIXI.Container.prototype._render;
+
+BitmapCompatLayer.prototype._renderCanvas = function (renderer) {
+    if (this._bitmap) {
+        this._bitmap.checkDirty();
+    }
+    this._renderCanvas_PIXI(renderer);
+};
+
+BitmapCompatLayer.prototype._render = function (renderer) {
+    if (this._bitmap) {
+        this._bitmap.checkDirty();
+    }
+    this._render_PIXI(renderer);
 };
 
 BitmapCompatLayer.prototype.load = function (url) {
     return this._bitmap.load(url);
 };
+
+/*
+BitmapCompatLayer.prototype.setFrame = function (x, y, w, h) {
+    return this._bitmap.setFrame(x, y, w, h);
+};
+*/
 
 BitmapCompatLayer.prototype.addLoadListener = function (listener) {
     return this._bitmap.addLoadListener(listener);
@@ -33,7 +58,6 @@ BitmapCompatLayer.prototype.clear = function () {
 };
 
 BitmapCompatLayer.prototype.drawText = function (text, x, y, maxWidth, lineHeight, align) {
-
     this._bitmap.drawText(text, x, y, maxWidth, lineHeight, align);
 
     /*
@@ -116,8 +140,7 @@ BitmapCompatLayer.prototype.fillRect = function (x, y, width, height, color) {
     if (rectangle) this.addChild(rectangle);
 };
 
-BitmapCompatLayer.prototype.gradientFillRect = function (x, y, width, height, color1,
-    color2, vertical) {
+BitmapCompatLayer.prototype.gradientFillRect = function (x, y, width, height, color1, color2, vertical) {
     const rectangle = this.fillRect(x, y, width, height, color1);
     if (rectangle) this.addChild(rectangle);
 };
