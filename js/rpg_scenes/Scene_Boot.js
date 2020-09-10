@@ -24,6 +24,9 @@ Scene_Boot.prototype.create = function() {
 
 Scene_Boot.prototype.loadSystemWindowImage = function() {
     ImageManager.reserveSystem('Window');
+    ImageManager.reserveSystem('Window_Back');
+    ImageManager.reserveSystem('Window_Cursor');
+    ImageManager.reserveSystem('Window_Frame');
 };
 
 Scene_Boot.loadSystemImages = function() {
