@@ -362,7 +362,7 @@ Window.prototype.updateTransform = function() {
     this._updateCursor();
     this._updateArrows();
     this._updatePauseSign();
-    //this._updateContents();
+    this._updateContents();
     PIXI.Container.prototype.updateTransform.call(this);
 };
 
@@ -533,7 +533,8 @@ Window.prototype._updateContents = function() {
     var w = this._width - this._padding * 2;
     var h = this._height - this._padding * 2;
     if (w > 0 && h > 0) {
-        this._windowContentsSprite.setFrame(this.origin.x, this.origin.y, w, h);
+        // Currently BUGGED
+        //this._windowContentsSprite.setFrame(this.origin.x, this.origin.y, w, h);
         this._windowContentsSprite.visible = this.isOpen();
     } else {
         this._windowContentsSprite.visible = false;
