@@ -17,6 +17,12 @@ BitmapCompatLayer.prototype.initialize = function (width, height) {
     this.width = width;
     this.height = height;
     this._bitmap = new Bitmap(width, height);
+    //this._textLayer = new PIXI.Container();
+    this.fontFace = 'GameFont';
+    this.fontSize = 28;
+    this.fontItalic = false;
+    this.textColor = '#ffffff';
+    //this.addChild(this._textLayer);
 };
 
 BitmapCompatLayer.prototype._renderCanvas_PIXI = PIXI.Container.prototype._renderCanvas;
@@ -58,29 +64,29 @@ BitmapCompatLayer.prototype.clear = function () {
 };
 
 BitmapCompatLayer.prototype.drawText = function (text, x, y, maxWidth, lineHeight, align) {
-    this._bitmap.drawText(text, x, y, maxWidth, lineHeight, align);
+    //this._bitmap.drawText(text, x, y, maxWidth, lineHeight, align);
 
-    /*
     var style = {
-        fontFamily: this._bitmap.fontFace,
-        fontSize: this._bitmap.fontSize,
-        fill: PIXI.utils.string2hex(this._bitmap.textColor),
-        align: align,
+        fontFamily: this.fontFace,
+        fontSize: this.fontSize,
+        fill: PIXI.utils.string2hex(this.textColor),
+        //align: align,
         lineHeight: lineHeight,
         wordWrap: false,
     };
 
     var pixiText = new PIXI.Text(text, style);
     pixiText.x = x;
-    pixiText.y = y + lineHeight - Math.round(this._bitmap.fontSize);
+    pixiText.y = y + lineHeight - Math.round(this.fontSize);
     if (align == 'center') {
         pixiText.anchor.set(0.5, 0);
+        pixiText.x = x + (pixiText.width / 2);
     } else if (align == 'right') {
         pixiText.anchor.set(1, 0);
+        pixiText.x = x + pixiText.width;
     }
 
     if (pixiText) this.addChild(pixiText);
-    */
 };
 
 BitmapCompatLayer.prototype.touch = function () {
@@ -92,6 +98,7 @@ BitmapCompatLayer.prototype.isReady = function () {
 };
 
 BitmapCompatLayer.prototype.clearRect = function () {
+    this.clear();
     return this._bitmap.clearRect();
 };
 
@@ -129,7 +136,7 @@ BitmapCompatLayer.prototype.blt = function (source, sx, sy, sw, sh, dx, dy, dw, 
 BitmapCompatLayer.prototype.fillRect = function (x, y, width, height, color) {
     const rectangle = new PIXI.Graphics();
     color = PIXI.utils.string2hex(color);
-    rectangle.beginFill('0x' + color);
+    rectangle.beginFill(color);
     rectangle.drawRect(
         x,
         y,
