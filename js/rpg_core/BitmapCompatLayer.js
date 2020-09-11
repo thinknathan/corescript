@@ -17,11 +17,11 @@ BitmapCompatLayer.prototype.initialize = function (width, height) {
     this.width = width;
     this.height = height;
     this._bitmap = new Bitmap(width, height);
+    //this.fontFace = 'GameFont';
+    //this.fontSize = 28;
+    //this.fontItalic = false;
+    //this.textColor = '#ffffff';
     //this._textLayer = new PIXI.Container();
-    this.fontFace = 'GameFont';
-    this.fontSize = 28;
-    this.fontItalic = false;
-    this.textColor = '#ffffff';
     //this.addChild(this._textLayer);
 };
 
@@ -46,11 +46,49 @@ BitmapCompatLayer.prototype.load = function (url) {
     return this._bitmap.load(url);
 };
 
-/*
+Object.defineProperty(BitmapCompatLayer.prototype, 'fontFace', {
+    get: function() {
+        return this._bitmap.fontFace;
+    },
+    set: function(value) {
+        this._bitmap.fontFace = value;
+    },
+    configurable: true
+});
+
+Object.defineProperty(BitmapCompatLayer.prototype, 'fontSize', {
+    get: function() {
+        return this._bitmap.fontSize;
+    },
+    set: function(value) {
+        this._bitmap.fontSize = value;
+    },
+    configurable: true
+});
+
+Object.defineProperty(BitmapCompatLayer.prototype, 'textColor', {
+    get: function() {
+        return this._bitmap.textColor;
+    },
+    set: function(value) {
+        this._bitmap.textColor = value;
+    },
+    configurable: true
+});
+
+Object.defineProperty(BitmapCompatLayer.prototype, 'paintOpacity', {
+    get: function() {
+        return this._bitmap.paintOpacity;
+    },
+    set: function(value) {
+        this._bitmap.paintOpacity = value;
+    },
+    configurable: true
+});
+
 BitmapCompatLayer.prototype.setFrame = function (x, y, w, h) {
     return this._bitmap.setFrame(x, y, w, h);
 };
-*/
 
 BitmapCompatLayer.prototype.addLoadListener = function (listener) {
     return this._bitmap.addLoadListener(listener);
@@ -64,8 +102,9 @@ BitmapCompatLayer.prototype.clear = function () {
 };
 
 BitmapCompatLayer.prototype.drawText = function (text, x, y, maxWidth, lineHeight, align) {
-    //this._bitmap.drawText(text, x, y, maxWidth, lineHeight, align);
+    this._bitmap.drawText(text, x, y, maxWidth, lineHeight, align);
 
+    /*
     var style = {
         fontFamily: this.fontFace,
         fontSize: this.fontSize,
@@ -87,10 +126,15 @@ BitmapCompatLayer.prototype.drawText = function (text, x, y, maxWidth, lineHeigh
     }
 
     if (pixiText) this.addChild(pixiText);
+    */
 };
 
 BitmapCompatLayer.prototype.touch = function () {
     return this._bitmap.touch();
+};
+
+BitmapCompatLayer.prototype.measureTextWidth = function (text) {
+    return this._bitmap.measureTextWidth(text);
 };
 
 BitmapCompatLayer.prototype.isReady = function () {
