@@ -426,26 +426,13 @@ Sprite.prototype._render = function(renderer) {
     if(this.bitmap && !this.bitmap.isReady()){
         return;
     }
+
     if (this.texture.frame.width > 0 && this.texture.frame.height > 0) {
         if (this._bitmap) {
             this._bitmap.checkDirty();
         }
 
-        //copy of pixi-v4 internal code
-        this.calculateVertices();
-
-        if (this.pluginName === 'sprite' && this._isPicture) {
-            // use heavy renderer, which reduces artifacts and applies corrent blendMode,
-            // but does not use multitexture optimization
-            // Edited by DoubleX on GMT 0800 5-Jul-2020 to use batch renderer instead
-            renderer.batch.setObjectRenderer(renderer.plugins.picture);
-            renderer.plugins.picture.render(this);
-        } else {
-            // use pixi super-speed renderer
-            // Edited by DoubleX on GMT 0800 5-Jul-2020 to use batch renderer instead
-            renderer.batch.setObjectRenderer(renderer.plugins[this.pluginName]);
-			renderer.plugins[this.pluginName].render(this);
-        }
+        this._render_PIXI(renderer);
     }
 };
 
