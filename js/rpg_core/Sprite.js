@@ -271,14 +271,13 @@ Sprite.prototype._refresh = function() {
                 this.texture.frame = new Rectangle(0, 0, realW, realH);
             }
         } else {
-            if (Graphics.isWebGL() && this._colorMatrixFilter) {
+            if (this._colorMatrixFilter) {
                 this._colorMatrixFilter.alpha = 0;
-            } else {
-                if (this._bitmap) {
-                this.texture.baseTexture = this._bitmap.baseTexture;
-                }
-                this.texture.frame = this._realFrame;
             }
+            if (this._bitmap) {
+                this.texture.baseTexture = this._bitmap.baseTexture;
+            }
+            this.texture.frame = this._realFrame;
         }
     } else if (this._bitmap) {
         this.texture.frame = Rectangle.emptyRectangle;
