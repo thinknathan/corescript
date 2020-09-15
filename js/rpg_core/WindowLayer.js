@@ -23,7 +23,7 @@ WindowLayer.prototype.initialize = function() {
 
 WindowLayer.prototype.onRemoveAsAChild = function() {
     this.removeChildren();
-}
+};
 
 WindowLayer.voidFilter = new PIXI.filters.AlphaFilter();
 
