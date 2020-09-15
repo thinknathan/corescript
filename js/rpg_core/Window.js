@@ -590,8 +590,10 @@ Window.prototype._updateContents = function () {
     if (w > 0 && h > 0) {
         this._windowContentsSprite.setFrame(this.origin.x, this.origin.y, w, h);
         this._windowContentsSprite.visible = this.isOpen();
+        this.contentLayer.visible = this.isOpen();
     } else {
         this._windowContentsSprite.visible = false;
+        this.contentLayer.visible = false;
     }
 };
 
