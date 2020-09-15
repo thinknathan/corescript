@@ -60,9 +60,6 @@ Window_Base.prototype.standardBackOpacity = function() {
 
 Window_Base.prototype.loadWindowskin = function() {
     this.windowskin = ImageManager.loadSystem('Window');
-    this.windowback = ImageManager.loadSystem('Window_Back');
-    this.windowcursor = ImageManager.loadSystem('Window_Cursor');
-    this.windowframe = ImageManager.loadSystem('Window_Frame');
 };
 
 Window_Base.prototype.updatePadding = function() {
