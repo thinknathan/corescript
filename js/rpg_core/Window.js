@@ -225,6 +225,7 @@ Object.defineProperty(Window.prototype, 'contentsOpacity', {
     },
     set: function (value) {
         this._windowContentsSprite.alpha = value.clamp(0, 255) / 255;
+        this.contentLayer.alpha = value.clamp(0, 255) / 255;
     },
     configurable: true
 });
@@ -335,6 +336,7 @@ Window.prototype.setCursorRect = function (x, y, width, height) {
  * @param {Number} b The blue value in the range (-255, 255)
  */
 Window.prototype.setTone = function (r, g, b) {
+    return;
     var tone = this._colorTone;
     if (r !== tone[0] || g !== tone[1] || b !== tone[2]) {
         this._colorTone = [r, g, b];
@@ -422,8 +424,6 @@ Window.prototype._refreshBack = function () {
     var h = this._height - m * 2;
     var bitmap = this._windowBackSprite;
 
-    bitmap.width = w;
-    bitmap.height = h;
     bitmap.x = m;
     bitmap.y = m;
     //this._windowBackSprite.setFrame(0, 0, w, h);
