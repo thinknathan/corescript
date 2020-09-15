@@ -261,16 +261,24 @@ Sprite.prototype._refresh = function() {
 
     if (realW > 0 && realH > 0) {
         if (this._needsTint()) {
-            this._createTinter(realW, realH);
-            this._executeTint(realX, realY, realW, realH);
-            this._tintTexture.update();
-            this.texture.baseTexture = this._tintTexture;
-            this.texture.frame = new Rectangle(0, 0, realW, realH);
-        } else {
-            if (this._bitmap) {
-                this.texture.baseTexture = this._bitmap.baseTexture;
+            if (Graphics.isWebGL()) {
+                this._executeTintWebGL();
+            } else {
+                this._createTinter(realW, realH);
+                this._executeTint(realX, realY, realW, realH);
+                this._tintTexture.update();
+                this.texture.baseTexture = this._tintTexture;
+                this.texture.frame = new Rectangle(0, 0, realW, realH);
             }
-            this.texture.frame = this._realFrame;
+        } else {
+            if (Graphics.isWebGL() && this._colorMatrixFilter) {
+                this._colorMatrixFilter.alpha = 0;
+            } else {
+                if (this._bitmap) {
+                this.texture.baseTexture = this._bitmap.baseTexture;
+                }
+                this.texture.frame = this._realFrame;
+            }
         }
     } else if (this._bitmap) {
         this.texture.frame = Rectangle.emptyRectangle;
@@ -342,7 +350,6 @@ Sprite.prototype._executeTint = function(x, y, w, h) {
     var context = this._context;
     var tone = this._colorTone;
     var color = this._blendColor;
-
     console.warn('Tinting on canvas is slow.');
     context.globalCompositeOperation = 'copy';
     context.drawImage(this._bitmap.canvas, x, y, w, h, 0, 0, w, h);
@@ -392,6 +399,24 @@ Sprite.prototype._executeTint = function(x, y, w, h) {
     context.globalCompositeOperation = 'destination-in';
     context.globalAlpha = 1;
     context.drawImage(this._bitmap.canvas, x, y, w, h, 0, 0, w, h);
+};
+
+Sprite.prototype._executeTintWebGL = function() {
+   var color = this._blendColor;
+   if (!this.filters) {
+       this.filters = [];
+   }
+   if (!this._colorMatrixFilter) {
+       this._colorMatrixFilter = new PIXI.filters.ColorMatrixFilter();
+       this.filters.push(this._colorMatrixFilter);
+   }
+   this._colorMatrixFilter.matrix = [
+        color[0] / 255,0,0,color[3] / 255,
+        0,color[1] / 255,0,color[3] / 255,
+        0,0,color[2] / 255,color[3] / 255,
+        0,0,0,1
+   ];
+   this._colorMatrixFilter.alpha = 1;
 };
 
 Sprite.prototype._renderCanvas_PIXI = PIXI.Sprite.prototype._renderCanvas;
