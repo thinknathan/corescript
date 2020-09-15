@@ -42,6 +42,19 @@ BitmapCompatLayer.prototype._render = function (renderer) {
     this._render_PIXI(renderer);
 };
 
+Object.defineProperty(BitmapCompatLayer.prototype, 'paintOpacity', {
+    get: function() {
+        return this._bitmap._paintOpacity;
+    },
+    set: function(value) {
+      if (this._paintOpacity !== value) {
+          this._paintOpacity = value;
+          this.alpha = this._paintOpacity / 255;
+      }
+    },
+    configurable: true
+});
+
 BitmapCompatLayer.prototype.load = function (url) {
     return this._bitmap.load(url);
 };
