@@ -375,6 +375,7 @@ Window.prototype.updateTransform = function () {
 Window.prototype._createAllParts = function () {
     this._windowSpriteContainer = new PIXI.Container();
     this._windowBackSprite = new BitmapCompatLayer(0, 0);
+    this._windowBackSprite2 = new BitmapCompatLayer(0, 0);
     this._windowCursorSprite = new BitmapCompatLayer(0, 0);
     this._windowFrameSprite = new BitmapCompatLayer(0, 0);
     this._windowContentsSprite = new Sprite();
@@ -385,6 +386,7 @@ Window.prototype._createAllParts = function () {
     this._windowBackSprite.alpha = 192 / 255;
     this.addChild(this._windowSpriteContainer);
     this._windowSpriteContainer.addChild(this._windowBackSprite);
+    this._windowSpriteContainer.addChild(this._windowBackSprite2);
     this._windowSpriteContainer.addChild(this._windowFrameSprite);
     this.addChild(this._windowCursorSprite);
     this.addChild(this._windowContentsSprite);
@@ -423,9 +425,16 @@ Window.prototype._refreshBack = function () {
     var w = this._width - m * 2;
     var h = this._height - m * 2;
     var bitmap = this._windowBackSprite;
+    var bitmap2 = this._windowBackSprite2;
 
+    bitmap.width = w;
+    bitmap.height = h;
     bitmap.x = m;
     bitmap.y = m;
+    bitmap2.width = w;
+    bitmap2.height = h;
+    bitmap2.x = m;
+    bitmap2.y = m;
     //this._windowBackSprite.setFrame(0, 0, w, h);
 
     if (w > 0 && h > 0 && this._windowskin && !bitmap._hasChildren) {
@@ -433,7 +442,7 @@ Window.prototype._refreshBack = function () {
         bitmap.blt(this._windowskin, 0, 0, p, p, 0, 0, w, h);
         for (var y = 0; y < h; y += p) {
             for (var x = 0; x < w; x += p) {
-                bitmap.blt(this._windowskin, 0, p, p, p, x, y, p, p);
+                bitmap2.blt(this._windowskin, 0, p, p, p, x, y, p, p);
             }
         }
         // No longer has support for adjusting tone
