@@ -343,6 +343,7 @@ Sprite.prototype._executeTint = function(x, y, w, h) {
     var tone = this._colorTone;
     var color = this._blendColor;
 
+    console.warn('Tinting on canvas is slow.');
     context.globalCompositeOperation = 'copy';
     context.drawImage(this._bitmap.canvas, x, y, w, h, 0, 0, w, h);
 

@@ -62,6 +62,7 @@ Bitmap.prototype._createCanvas = function(width, height){
         this.__canvas.height = h;
         this._createBaseTexture(this._canvas);
 
+        console.warn('Drawing non-PIXI texture to canvas.', this._image);
         this.__context.drawImage(this._image, 0, 0);
     }
 
@@ -806,6 +807,7 @@ Bitmap.prototype.blur = function() {
         var context = this._context;
         var tempCanvas = document.createElement('canvas');
         var tempContext = tempCanvas.getContext('2d');
+        console.warn('Blur on canvas is slow.');
         tempCanvas.width = w + 2;
         tempCanvas.height = h + 2;
         tempContext.drawImage(canvas, 0, 0, w, h, 1, 1, w, h);
