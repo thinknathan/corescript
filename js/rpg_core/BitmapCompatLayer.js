@@ -150,10 +150,6 @@ BitmapCompatLayer.prototype.measureTextWidth = function (text) {
     return this._bitmap.measureTextWidth(text);
 };
 
-BitmapCompatLayer.setFrame = function (x, y, width, height) {
-    return this._bitmap.setFrame(x, y, width, height);
-};
-
 BitmapCompatLayer.prototype.createCroppedSprite = function (source, x, y, w, h) {
     return new PIXI.Sprite(
         new PIXI.Texture(
