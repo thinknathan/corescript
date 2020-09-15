@@ -372,9 +372,9 @@ Window.prototype.updateTransform = function () {
  */
 Window.prototype._createAllParts = function () {
     this._windowSpriteContainer = new PIXI.Container();
-    this._windowBackSprite = new PIXI.Container();
-    this._windowCursorSprite = new PIXI.Container();
-    this._windowFrameSprite = new PIXI.Container();
+    this._windowBackSprite = new BitmapCompatLayer(0, 0);
+    this._windowCursorSprite = new BitmapCompatLayer(0, 0);
+    this._windowFrameSprite = new BitmapCompatLayer(0, 0);
     this._windowContentsSprite = new Sprite();
     this._downArrowSprite = new Sprite();
     this._upArrowSprite = new Sprite();
@@ -420,15 +420,15 @@ Window.prototype._refreshBack = function () {
     var m = this._margin;
     var w = this._width - m * 2;
     var h = this._height - m * 2;
-    var bitmap = new BitmapCompatLayer(w, h);
+    var bitmap = this._windowBackSprite;
 
-    this._windowBackSprite.width = w;
-    this._windowBackSprite.height = h;
-    this._windowBackSprite.x = m;
-    this._windowBackSprite.y = m;
+    bitmap.width = w;
+    bitmap.height = h;
+    bitmap.x = m;
+    bitmap.y = m;
     //this._windowBackSprite.setFrame(0, 0, w, h);
 
-    if (w > 0 && h > 0 && this._windowskin && !this._windowBackSprite._hasChildren) {
+    if (w > 0 && h > 0 && this._windowskin && !bitmap._hasChildren) {
         var p = 96;
         bitmap.blt(this._windowskin, 0, 0, p, p, 0, 0, w, h);
         for (var y = 0; y < h; y += p) {
@@ -439,8 +439,7 @@ Window.prototype._refreshBack = function () {
         // No longer has support for adjusting tone
         //var tone = this._colorTone;
         //bitmap.adjustTone(tone[0], tone[1], tone[2]);
-        this._windowBackSprite.addChild(bitmap);
-        this._windowBackSprite._hasChildren = true;
+        bitmap._hasChildren = true;
     }
 };
 
@@ -452,13 +451,13 @@ Window.prototype._refreshFrame = function () {
     var w = this._width;
     var h = this._height;
     var m = 24;
-    var bitmap = new BitmapCompatLayer(w, h);
+    var bitmap = this._windowFrameSprite;
 
-    this._windowFrameSprite.width = w;
-    this._windowFrameSprite.height = h;
+    bitmap.width = w;
+    bitmap.height = h;
     //this._windowFrameSprite.setFrame(0, 0, w, h);
 
-    if (w > 0 && h > 0 && this._windowskin && !this._windowFrameSprite._hasChildren) {
+    if (w > 0 && h > 0 && this._windowskin && !bitmap._hasChildren) {
         var skin = this._windowskin;
         var p = 96;
         var q = 96;
@@ -470,8 +469,7 @@ Window.prototype._refreshFrame = function () {
         bitmap.blt(skin, p + q - m, 0 + 0, m, m, w - m, 0, m, m);
         bitmap.blt(skin, p + 0, 0 + q - m, m, m, 0, h - m, m, m);
         bitmap.blt(skin, p + q - m, 0 + q - m, m, m, w - m, h - m, m, m);
-        this._windowFrameSprite.addChild(bitmap);
-        this._windowFrameSprite._hasChildren = true;
+        bitmap._hasChildren = true;
     }
 };
 
@@ -492,15 +490,15 @@ Window.prototype._refreshCursor = function () {
     var oy = y - y2;
     var w2 = Math.min(w, this._width - pad - x2);
     var h2 = Math.min(h, this._height - pad - y2);
-    var bitmap = new BitmapCompatLayer(w2, h2);
+    var bitmap = this._windowCursorSprite;
 
-    this._windowCursorSprite.x = x;
-    this._windowCursorSprite.y = y;
-    this._windowCursorSprite.width = w;
-    this._windowCursorSprite.height = h;
+    bitmap.x = x;
+    bitmap.y = y;
+    bitmap.width = w;
+    bitmap.height = h;
     //this._windowCursorSprite.setFrame(0, 0, w2, h2);
 
-    if (w > 0 && h > 0 && this._windowskin && !this._windowCursorSprite._hasChildren) {
+    if (w > 0 && h > 0 && this._windowskin && !bitmap._hasChildren) {
         var skin = this._windowskin;
         var p = 96;
         var q = 48;
@@ -513,8 +511,7 @@ Window.prototype._refreshCursor = function () {
         bitmap.blt(skin, p + q - m, p + 0, m, m, ox + w - m, oy + 0, m, m);
         bitmap.blt(skin, p + 0, p + q - m, m, m, ox + 0, oy + h - m, m, m);
         bitmap.blt(skin, p + q - m, p + q - m, m, m, ox + w - m, oy + h - m, m, m);
-        this._windowCursorSprite.addChild(bitmap);
-        this._windowCursorSprite._hasChildren = true;
+        bitmap._hasChildren = true;
     }
 };
 
