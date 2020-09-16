@@ -16,7 +16,7 @@ Window_Base.prototype.initialize = function (x, y, width, height) {
     this.move(x, y, width, height);
     this.updatePadding();
     this.updateBackOpacity();
-    this.updateTone();
+    //this.updateTone();
     this.createContents();
     this._opening = false;
     this._closing = false;
@@ -112,7 +112,7 @@ Window_Base.prototype.resetTextColor = function () {
 
 Window_Base.prototype.update = function () {
     Window.prototype.update.call(this);
-    this.updateTone();
+    //this.updateTone();
     this.updateOpen();
     this.updateClose();
     this.updateBackgroundDimmer();
