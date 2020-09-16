@@ -15,7 +15,7 @@ const $priorityScripts = [
     {"path":"js/rpg_core/","name":"Point"},
     {"path":"js/rpg_core/","name":"Rectangle"},
     {"path":"js/rpg_core/","name":"Bitmap"},
-    {"path":"js/rpg_core/","name":"BitmapCompatLayer"},
+    {"path":"js/rpg_core/","name":"BitmapPIXI"},
     {"path":"js/rpg_core/","name":"Graphics"},
     {"path":"js/rpg_core/","name":"Input"},
     {"path":"js/rpg_core/","name":"TouchInput"},

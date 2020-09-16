@@ -397,10 +397,10 @@ Window.prototype.updateTransform = function () {
  */
 Window.prototype._createAllParts = function () {
     this._windowSpriteContainer = new PIXI.Container();
-    this._windowBackSprite = new BitmapCompatLayer(0, 0);
-    this._windowBackSprite2 = new BitmapCompatLayer(0, 0);
-    this._windowCursorSprite = new BitmapCompatLayer(0, 0);
-    this._windowFrameSprite = new BitmapCompatLayer(0, 0);
+    this._windowBackSprite = new BitmapPIXI(0, 0);
+    this._windowBackSprite2 = new BitmapPIXI(0, 0);
+    this._windowCursorSprite = new BitmapPIXI(0, 0);
+    this._windowFrameSprite = new BitmapPIXI(0, 0);
     this._windowContentsSprite = new Sprite();
     this._downArrowSprite = new Sprite();
     this._upArrowSprite = new Sprite();
@@ -489,7 +489,7 @@ Window.prototype._refreshFrame = function () {
         if (cachedFrame) {
             texture = cachedFrame;
         } else {
-            let container = new BitmapCompatLayer(64, 64);
+            let container = new BitmapPIXI(64, 64);
             let skin = this._windowskin;
             let p = 96;
             let q = 96;

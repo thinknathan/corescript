@@ -89,7 +89,7 @@ Window_Base.prototype.updateTone = function () {
 
 Window_Base.prototype.createContents = function () {
     this.contents = new Bitmap(this.contentsWidth(), this.contentsHeight());
-    this.contentLayer = new BitmapCompatLayer(this.contentsWidth(), this.contentsHeight());
+    this.contentLayer = new BitmapPIXI(this.contentsWidth(), this.contentsHeight());
 
     this.contentLayer.x = this.padding;
     this.contentLayer.y = this.padding;
