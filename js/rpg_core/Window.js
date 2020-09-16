@@ -564,6 +564,7 @@ Window.prototype._refreshCursor = function () {
  */
 Window.prototype._refreshContents = function () {
     this._windowContentsSprite.move(this.padding, this.padding);
+    if (this._windowContentsSprite.children.length) this._windowContentsSprite.children[0].clear();
 };
 
 /**
