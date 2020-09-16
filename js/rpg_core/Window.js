@@ -128,10 +128,10 @@ Object.defineProperty(Window.prototype, 'windowskin', {
  */
 Object.defineProperty(Window.prototype, 'contents', {
     get: function () {
-        return this._windowContentsSprite.bitmap;
+        return this._windowContentsSprite.children[0];
     },
     set: function (value) {
-        this._windowContentsSprite.bitmap = value;
+        this._windowContentsSprite.addChild(value);
     },
     configurable: true
 });
