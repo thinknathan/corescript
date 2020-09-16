@@ -88,15 +88,14 @@ Window_Base.prototype.updateTone = function () {
 };
 
 Window_Base.prototype.createContents = function () {
-    this.contents = new Bitmap(this.contentsWidth(), this.contentsHeight());
-    this.contentLayer = new BitmapPIXI(this.contentsWidth(), this.contentsHeight());
+    this.contents = new BitmapPIXI(this.contentsWidth(), this.contentsHeight());
 
-    this.contentLayer.x = this.padding;
-    this.contentLayer.y = this.padding;
-    this.contentLayer.width = this.width - this.padding;
-    this.contentLayer.height = this.height - this.padding;
+    this.contents.x = this.padding;
+    this.contents.y = this.padding;
+    this.contents.width = this.width - this.padding;
+    this.contents.height = this.height - this.padding;
 
-    this.addChild(this.contentLayer);
+    this.addChild(this.contents);
     this.resetFontSettings();
 };
 
@@ -442,7 +441,7 @@ Window_Base.prototype.drawIcon = function (iconIndex, x, y) {
     var ph = Window_Base._iconHeight;
     var sx = iconIndex % 16 * pw;
     var sy = Math.floor(iconIndex / 16) * ph;
-    this.contentLayer.blt(bitmap, sx, sy, pw, ph, x, y);
+    this.contents.blt(bitmap, sx, sy, pw, ph, x, y);
 };
 
 Window_Base.prototype.drawFace = function (faceName, faceIndex, x, y, width, height) {
@@ -457,7 +456,7 @@ Window_Base.prototype.drawFace = function (faceName, faceIndex, x, y, width, hei
     var dy = Math.floor(y + Math.max(height - ph, 0) / 2);
     var sx = faceIndex % 4 * pw + (pw - sw) / 2;
     var sy = Math.floor(faceIndex / 4) * ph + (ph - sh) / 2;
-    this.contentLayer.blt(bitmap, sx, sy, sw, sh, dx, dy);
+    this.contents.blt(bitmap, sx, sy, sw, sh, dx, dy);
 };
 
 Window_Base.prototype.drawCharacter = function (characterName, characterIndex, x, y) {
@@ -468,14 +467,14 @@ Window_Base.prototype.drawCharacter = function (characterName, characterIndex, x
     var n = big ? 0 : characterIndex;
     var sx = (n % 4 * 3 + 1) * pw;
     var sy = (Math.floor(n / 4) * 4) * ph;
-    this.contentLayer.blt(bitmap, sx, sy, pw, ph, x - pw / 2, y - ph);
+    this.contents.blt(bitmap, sx, sy, pw, ph, x - pw / 2, y - ph);
 };
 
 Window_Base.prototype.drawGauge = function (x, y, width, rate, color1, color2) {
     var fillW = Math.floor(width * rate);
     var gaugeY = y + this.lineHeight() - 8;
-    this.contentLayer.fillRect(x, gaugeY, width, 6, this.gaugeBackColor());
-    this.contentLayer.gradientFillRect(x, gaugeY, fillW, 6, color1, color2);
+    this.contents.fillRect(x, gaugeY, width, 6, this.gaugeBackColor());
+    this.contents.gradientFillRect(x, gaugeY, fillW, 6, color1, color2);
 };
 
 Window_Base.prototype.hpColor = function (actor) {

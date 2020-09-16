@@ -248,7 +248,7 @@ Object.defineProperty(Window.prototype, 'contentsOpacity', {
     },
     set: function (value) {
         this._windowContentsSprite.alpha = value.clamp(0, 255) / 255;
-        this.contentLayer.alpha = value.clamp(0, 255) / 255;
+
     },
     configurable: true
 });
@@ -632,12 +632,12 @@ Window.prototype._updateContents = function () {
     var w = this._width - this._padding * 2;
     var h = this._height - this._padding * 2;
     if (w > 0 && h > 0) {
-        this._windowContentsSprite.setFrame(this.origin.x, this.origin.y, w, h);
+        //this._windowContentsSprite.setFrame(this.origin.x, this.origin.y, w, h);
         this._windowContentsSprite.visible = this.isOpen();
-        this.contentLayer.visible = this.isOpen();
+
     } else {
         this._windowContentsSprite.visible = false;
-        this.contentLayer.visible = false;
+
     }
 };
 
