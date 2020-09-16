@@ -17,12 +17,10 @@ BitmapPIXI.prototype.initialize = function (width, height) {
     this.width = width;
     this.height = height;
     this._bitmap = new Bitmap(width, height);
-    //this.fontFace = 'GameFont';
-    //this.fontSize = 28;
-    //this.fontItalic = false;
-    //this.textColor = '#ffffff';
-    //this._textLayer = new PIXI.Container();
-    //this.addChild(this._textLayer);
+    this.fontFace = 'GameFont';
+    this.fontSize = 28;
+    this.fontItalic = false;
+    this.textColor = '#ffffff';
 };
 
 BitmapPIXI.prototype._renderCanvas_PIXI = PIXI.Container.prototype._renderCanvas;
@@ -55,10 +53,6 @@ Object.defineProperty(BitmapPIXI.prototype, 'paintOpacity', {
     configurable: true
 });
 
-BitmapPIXI.prototype.load = function (url) {
-    return this._bitmap.load(url);
-};
-
 Object.defineProperty(BitmapPIXI.prototype, 'fontFace', {
     get: function() {
         return this._bitmap.fontFace;
@@ -89,31 +83,63 @@ Object.defineProperty(BitmapPIXI.prototype, 'textColor', {
     configurable: true
 });
 
-Object.defineProperty(BitmapPIXI.prototype, 'paintOpacity', {
-    get: function() {
-        return this._bitmap.paintOpacity;
-    },
-    set: function(value) {
-        this._bitmap.paintOpacity = value;
-    },
-    configurable: true
-});
+
+
+
 
 BitmapPIXI.prototype.setFrame = function (x, y, w, h) {
     return this._bitmap.setFrame(x, y, w, h);
+};
+
+BitmapPIXI.prototype.load = function (url) {
+    return this._bitmap.load(url);
 };
 
 BitmapPIXI.prototype.addLoadListener = function (listener) {
     return this._bitmap.addLoadListener(listener);
 };
 
+BitmapPIXI.prototype.touch = function () {
+    return this._bitmap.touch();
+};
+
+BitmapPIXI.prototype.isReady = function () {
+    return this._bitmap.isReady();
+};
+
+
+
+
+
 BitmapPIXI.prototype.clear = function () {
-    console.log('clear');
+    console.log('clear', this);
     var self = this;
     this.children.forEach(function (child) {
-        if (child) self.removeChild(child);
+        if (child) {
+            self.removeChild(child);
+            child.destroy();
+            console.log('removing b/c clear ', child);
+        }
     });
 };
+
+BitmapPIXI.prototype.clearRect = function (x, y, width, height) {
+    console.log('clearRect', this);
+    var self = this;
+    this.children.forEach(function (child) {
+        if (child && (child.x + child.width >= x && child.x + child.width < x + width) && (child.y + child.height >= y && child.y + child.height < y + height)) {
+            self.removeChild(child);
+            child.destroy();
+            console.log('removing b/c clearRect ', child);
+        }
+    });
+    return this._bitmap.clearRect(x, y, width, height);
+};
+
+
+
+
+
 
 BitmapPIXI.prototype.drawText = function (text, x, y, maxWidth, lineHeight, align) {
     //this._bitmap.drawText(text, x, y, maxWidth, lineHeight, align);
@@ -141,27 +167,30 @@ BitmapPIXI.prototype.drawText = function (text, x, y, maxWidth, lineHeight, alig
     if (pixiText) this.addChild(pixiText);
 };
 
-BitmapPIXI.prototype.touch = function () {
-    return this._bitmap.touch();
-};
-
 BitmapPIXI.prototype.measureTextWidth = function (text) {
     return this._bitmap.measureTextWidth(text);
 };
 
-BitmapPIXI.prototype.isReady = function () {
-    return this._bitmap.isReady();
-};
 
-BitmapPIXI.prototype.clearRect = function () {
-    console.log('clearRect');
-    this.clear();
-    return this._bitmap.clearRect();
-};
 
-BitmapPIXI.prototype.measureTextWidth = function (text) {
-    return this._bitmap.measureTextWidth(text);
-};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 BitmapPIXI.prototype.createCroppedSprite = function (source, x, y, w, h) {
     return new PIXI.Sprite(
