@@ -95,6 +95,8 @@ BitmapPIXI.prototype.isReady = function (listener) {
 
 BitmapPIXI.prototype.clear = function () {
     for (let i = this.children.length - 1; i >= 0; i--) {
+        let options = this.children[i]._texture && this.children[i]._texture.textureCacheIds.length ? true : { children: true };
+        this.children[i].destroy(options);
         this.removeChild(this.children[i]);
     };
 };
@@ -113,6 +115,8 @@ BitmapPIXI.prototype.clearRect = function (x, y, width, height) {
     });
 
     toRemove.forEach(function (child) {
+        let options = child._texture && child._texture.textureCacheIds.length ? true : { children: true };
+        child.destroy(options);
         self.removeChild(child);
     });
 };
