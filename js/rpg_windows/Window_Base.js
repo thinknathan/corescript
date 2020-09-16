@@ -88,11 +88,16 @@ Window_Base.prototype.updateTone = function () {
 };
 
 Window_Base.prototype.createContents = function () {
+    if (this.contents) {
+        // [Note] This seems inefficient
+        // May be better to remove calls to createContents
+        // in any methods that are fired every frame
+        this.removeChild(this.contents);
+        this.contents.destroy(true);
+    }
     this.contents = new BitmapPIXI(this.contentsWidth(), this.contentsHeight());
-
     this.contents.width = this.width - this.padding;
     this.contents.height = this.height - this.padding;
-
     this._windowContentsSprite.addChild(this.contents);
     this.resetFontSettings();
 };
