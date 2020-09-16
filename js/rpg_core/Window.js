@@ -1,3 +1,4 @@
+
 //-----------------------------------------------------------------------------
 /**
  * The window in the game.
@@ -382,8 +383,8 @@ Window.prototype._createAllParts = function () {
     this._downArrowSprite = new Sprite();
     this._upArrowSprite = new Sprite();
     this._windowPauseSignSprite = new Sprite();
-    this._windowBackSprite.bitmap = new Bitmap(1, 1);
-    this._windowBackSprite.alpha = 192 / 255;
+    //this._windowBackSprite.bitmap = new Bitmap(1, 1);
+    //this._windowBackSprite.alpha = 192 / 255;
     this.addChild(this._windowSpriteContainer);
     this._windowSpriteContainer.addChild(this._windowBackSprite);
     this._windowSpriteContainer.addChild(this._windowBackSprite2);
@@ -424,33 +425,32 @@ Window.prototype._refreshBack = function () {
     var m = this._margin;
     var w = this._width - m * 2;
     var h = this._height - m * 2;
-    var bitmap = this._windowBackSprite;
-    var bitmap2 = this._windowBackSprite2;
 
-    bitmap.width = w;
-    bitmap.height = h;
-    bitmap.x = m;
-    bitmap.y = m;
-    bitmap2.width = w;
-    bitmap2.height = h;
-    bitmap2.x = m;
-    bitmap2.y = m;
-    //this._windowBackSprite.setFrame(0, 0, w, h);
-
-    if (w > 0 && h > 0 && this._windowskin && !bitmap._hasChildren) {
+    if (w > 0 && h > 0 && this._windowskin && !this._windowBackSprite._setupComplete) {
         var p = 96;
-        bitmap.blt(this._windowskin, 0, 0, p, p, 0, 0, w, h);
+        this._windowBackSprite.blt(this._windowskin, 0, 0, p, p, 0, 0, w, h);
         for (var y = 0; y < h; y += p) {
             for (var x = 0; x < w; x += p) {
-                bitmap2.blt(this._windowskin, 0, p, p, p, x, y, p, p);
+                this._windowBackSprite2.blt(this._windowskin, 0, p, p, p, x, y, p, p);
             }
         }
         // No longer has support for adjusting tone
         //var tone = this._colorTone;
         //bitmap.adjustTone(tone[0], tone[1], tone[2]);
-        bitmap._hasChildren = true;
+        this._windowBackSprite._setupComplete = true;
     }
+
+    this._windowBackSprite.width = w;
+    this._windowBackSprite.height = h;
+    this._windowBackSprite.x = m;
+    this._windowBackSprite.y = m;
+    this._windowBackSprite2.width = w;
+    this._windowBackSprite2.height = h;
+    this._windowBackSprite2.x = m;
+    this._windowBackSprite2.y = m;
+    //this._windowBackSprite.setFrame(0, 0, w, h);
 };
+
 
 /**
  * @method _refreshFrame
@@ -460,26 +460,41 @@ Window.prototype._refreshFrame = function () {
     var w = this._width;
     var h = this._height;
     var m = 24;
-    var bitmap = this._windowFrameSprite;
 
-    bitmap.width = w;
-    bitmap.height = h;
-    //this._windowFrameSprite.setFrame(0, 0, w, h);
+    if (w > 0 && h > 0 && this._windowskin && !this._windowFrameSprite._setupComplete) {
+        //let cachedFrame = WindowSkinCache.getFrame(this._windowskin._url);
+        //if (cachedFrame) {
+        //    this._windowFramePlane = cachedFrame;
+        //    this._windowFrameSprite.addChild(this._windowFramePlane);
+        //} else {
+            let container = new BitmapCompatLayer(64, 64);
+            let skin = this._windowskin;
+            let p = 96;
+            let q = 96;
+            container.blt(skin, p + m, 0 + 0, p - m * 2, m, m, 0, w - m * 2, m);
+            container.blt(skin, p + m, 0 + q - m, p - m * 2, m, m, h - m, w - m * 2, m);
+            container.blt(skin, p + 0, 0 + m, m, p - m * 2, 0, m, m, h - m * 2);
+            container.blt(skin, p + q - m, 0 + m, m, p - m * 2, w - m, m, m, h - m * 2);
+            container.blt(skin, p + 0, 0 + 0, m, m, 0, 0, m, m);
+            container.blt(skin, p + q - m, 0 + 0, m, m, w - m, 0, m, m);
+            container.blt(skin, p + 0, 0 + q - m, m, m, 0, h - m, m, m);
+            container.blt(skin, p + q - m, 0 + q - m, m, m, w - m, h - m, m, m);
+            let texture = Graphics._renderer.generateTexture(container);
+            container.destroy();
+            let nineSlice = new PIXI.NineSlicePlane(texture);
+            //WindowSkinCache.addFrame(this._windowskin._url, nineSlice);
+            this._windowFramePlane = nineSlice;
+            this._windowFrameSprite.addChild(this._windowFramePlane);
+        //}
 
-    if (w > 0 && h > 0 && this._windowskin && !bitmap._hasChildren) {
-        var skin = this._windowskin;
-        var p = 96;
-        var q = 96;
-        bitmap.blt(skin, p + m, 0 + 0, p - m * 2, m, m, 0, w - m * 2, m);
-        bitmap.blt(skin, p + m, 0 + q - m, p - m * 2, m, m, h - m, w - m * 2, m);
-        bitmap.blt(skin, p + 0, 0 + m, m, p - m * 2, 0, m, m, h - m * 2);
-        bitmap.blt(skin, p + q - m, 0 + m, m, p - m * 2, w - m, m, m, h - m * 2);
-        bitmap.blt(skin, p + 0, 0 + 0, m, m, 0, 0, m, m);
-        bitmap.blt(skin, p + q - m, 0 + 0, m, m, w - m, 0, m, m);
-        bitmap.blt(skin, p + 0, 0 + q - m, m, m, 0, h - m, m, m);
-        bitmap.blt(skin, p + q - m, 0 + q - m, m, m, w - m, h - m, m, m);
-        bitmap._hasChildren = true;
+        this._windowFrameSprite._setupComplete = true;
     }
+
+    if (this._windowFrameSprite._setupComplete) {
+        this._windowFramePlane.width = w;
+        this._windowFramePlane.height = h;
+    }
+    //this._windowFrameSprite.setFrame(0, 0, w, h);
 };
 
 /**
@@ -499,29 +514,28 @@ Window.prototype._refreshCursor = function () {
     var oy = y - y2;
     var w2 = Math.min(w, this._width - pad - x2);
     var h2 = Math.min(h, this._height - pad - y2);
-    var bitmap = this._windowCursorSprite;
 
-    bitmap.x = x;
-    bitmap.y = y;
-    bitmap.width = w;
-    bitmap.height = h;
-    //this._windowCursorSprite.setFrame(0, 0, w2, h2);
-
-    if (w > 0 && h > 0 && this._windowskin && !bitmap._hasChildren) {
+    if (w > 0 && h > 0 && this._windowskin && !this._windowCursorSprite._setupComplete) {
         var skin = this._windowskin;
         var p = 96;
         var q = 48;
-        bitmap.blt(skin, p + m, p + m, q - m * 2, q - m * 2, ox + m, oy + m, w - m * 2, h - m * 2);
-        bitmap.blt(skin, p + m, p + 0, q - m * 2, m, ox + m, oy + 0, w - m * 2, m);
-        bitmap.blt(skin, p + m, p + q - m, q - m * 2, m, ox + m, oy + h - m, w - m * 2, m);
-        bitmap.blt(skin, p + 0, p + m, m, q - m * 2, ox + 0, oy + m, m, h - m * 2);
-        bitmap.blt(skin, p + q - m, p + m, m, q - m * 2, ox + w - m, oy + m, m, h - m * 2);
-        bitmap.blt(skin, p + 0, p + 0, m, m, ox + 0, oy + 0, m, m);
-        bitmap.blt(skin, p + q - m, p + 0, m, m, ox + w - m, oy + 0, m, m);
-        bitmap.blt(skin, p + 0, p + q - m, m, m, ox + 0, oy + h - m, m, m);
-        bitmap.blt(skin, p + q - m, p + q - m, m, m, ox + w - m, oy + h - m, m, m);
-        bitmap._hasChildren = true;
+        this._windowCursorSprite.blt(skin, p + m, p + m, q - m * 2, q - m * 2, ox + m, oy + m, w - m * 2, h - m * 2);
+        this._windowCursorSprite.blt(skin, p + m, p + 0, q - m * 2, m, ox + m, oy + 0, w - m * 2, m);
+        this._windowCursorSprite.blt(skin, p + m, p + q - m, q - m * 2, m, ox + m, oy + h - m, w - m * 2, m);
+        this._windowCursorSprite.blt(skin, p + 0, p + m, m, q - m * 2, ox + 0, oy + m, m, h - m * 2);
+        this._windowCursorSprite.blt(skin, p + q - m, p + m, m, q - m * 2, ox + w - m, oy + m, m, h - m * 2);
+        this._windowCursorSprite.blt(skin, p + 0, p + 0, m, m, ox + 0, oy + 0, m, m);
+        this._windowCursorSprite.blt(skin, p + q - m, p + 0, m, m, ox + w - m, oy + 0, m, m);
+        this._windowCursorSprite.blt(skin, p + 0, p + q - m, m, m, ox + 0, oy + h - m, m, m);
+        this._windowCursorSprite.blt(skin, p + q - m, p + q - m, m, m, ox + w - m, oy + h - m, m, m);
+        this._windowCursorSprite._setupComplete = true;
     }
+
+    this._windowCursorSprite.x = x;
+    this._windowCursorSprite.y = y;
+    this._windowCursorSprite.width = w;
+    this._windowCursorSprite.height = h;
+    //this._windowCursorSprite.setFrame(0, 0, w2, h2);
 };
 
 /**
