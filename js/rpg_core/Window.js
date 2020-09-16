@@ -1,3 +1,25 @@
+//-----------------------------------------------------------------------------
+/**
+ * Cached window skin textures.
+ *
+ * @class WindowSkinCache
+ * @function
+ */
+
+WindowSkinCache = {};
+
+WindowSkinCache.addFrame = function (name, resource) {
+    if (!WindowSkinCache[name]) {
+        WindowSkinCache[name] = {};
+    }
+    WindowSkinCache[name]._frame = resource;
+};
+
+WindowSkinCache.getFrame = function (name) {
+    if (!WindowSkinCache[name]) return false;
+    if (!WindowSkinCache[name]._frame) return false;
+    return WindowSkinCache[name]._frame;
+};
 
 //-----------------------------------------------------------------------------
 /**
@@ -462,11 +484,11 @@ Window.prototype._refreshFrame = function () {
     var m = 24;
 
     if (w > 0 && h > 0 && this._windowskin && !this._windowFrameSprite._setupComplete) {
-        //let cachedFrame = WindowSkinCache.getFrame(this._windowskin._url);
-        //if (cachedFrame) {
-        //    this._windowFramePlane = cachedFrame;
-        //    this._windowFrameSprite.addChild(this._windowFramePlane);
-        //} else {
+        let texture;
+        let cachedFrame = WindowSkinCache.getFrame(this._windowskin._url);
+        if (cachedFrame) {
+            texture = cachedFrame;
+        } else {
             let container = new BitmapCompatLayer(64, 64);
             let skin = this._windowskin;
             let p = 96;
@@ -479,14 +501,13 @@ Window.prototype._refreshFrame = function () {
             container.blt(skin, p + q - m, 0 + 0, m, m, w - m, 0, m, m);
             container.blt(skin, p + 0, 0 + q - m, m, m, 0, h - m, m, m);
             container.blt(skin, p + q - m, 0 + q - m, m, m, w - m, h - m, m, m);
-            let texture = Graphics._renderer.generateTexture(container);
+            texture = Graphics._renderer.generateTexture(container);
             container.destroy();
-            let nineSlice = new PIXI.NineSlicePlane(texture);
-            //WindowSkinCache.addFrame(this._windowskin._url, nineSlice);
-            this._windowFramePlane = nineSlice;
-            this._windowFrameSprite.addChild(this._windowFramePlane);
-        //}
+            WindowSkinCache.addFrame(this._windowskin._url, texture);
+        }
 
+        this._windowFramePlane = new PIXI.NineSlicePlane(texture);
+        this._windowFrameSprite.addChild(this._windowFramePlane);
         this._windowFrameSprite._setupComplete = true;
     }
 
