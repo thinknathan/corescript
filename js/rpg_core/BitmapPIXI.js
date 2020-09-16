@@ -60,6 +60,7 @@ Object.defineProperty(BitmapPIXI.prototype, 'paintOpacity', {
         if (this._paintOpacity !== value) {
             this._paintOpacity = value;
             this.alpha = this._paintOpacity / 255;
+            if (this._bitmap) this._bitmap.paintOpacity = value;
         }
     },
     configurable: true
@@ -68,11 +69,6 @@ Object.defineProperty(BitmapPIXI.prototype, 'paintOpacity', {
 
 
 
-
-
-BitmapPIXI.prototype.setFrame = function (x, y, w, h) {
-    return this._bitmap.setFrame(x, y, w, h);
-};
 
 BitmapPIXI.prototype.load = function (url) {
     return this._bitmap.load(url);
@@ -86,8 +82,8 @@ BitmapPIXI.prototype.touch = function () {
     return this._bitmap.touch();
 };
 
-BitmapPIXI.prototype.isReady = function () {
-    return this._bitmap.isReady();
+BitmapPIXI.prototype.isReady = function (listener) {
+    return this._bitmap.isReady(listener);
 };
 
 
@@ -95,28 +91,27 @@ BitmapPIXI.prototype.isReady = function () {
 
 
 BitmapPIXI.prototype.clear = function () {
-    console.log('clear', this);
-    var self = this;
-    this.children.forEach(function (child) {
-        if (child) {
-            self.removeChild(child);
-            child.destroy();
-            console.log('removing b/c clear ', child);
-        }
-    });
+    for (let i = this.children.length - 1; i >= 0; i--) {
+        this.removeChild(this.children[i]);
+    };
 };
 
 BitmapPIXI.prototype.clearRect = function (x, y, width, height) {
-    console.log('clearRect', this);
-    var self = this;
+    let self = this;
+    let toRemove = [];
+
     this.children.forEach(function (child) {
-        if (child && (child.x + child.width >= x && child.x + child.width < x + width) && (child.y + child.height >= y && child.y + child.height < y + height)) {
-            self.removeChild(child);
-            child.destroy();
-            console.log('removing b/c clearRect ', child);
+        if (child && 
+            (child.x >= x && child.x < x + width) && 
+            (child.y >= y && child.y < y + height)
+           ) {
+            toRemove.push(child);
         }
     });
-    return this._bitmap.clearRect(x, y, width, height);
+
+    toRemove.forEach(function(child){
+        self.removeChild(child);
+    });
 };
 
 
@@ -126,16 +121,17 @@ BitmapPIXI.prototype.clearRect = function (x, y, width, height) {
 BitmapPIXI.prototype.drawText = function (text, x, y, maxWidth, lineHeight, align) {
     //this._bitmap.drawText(text, x, y, maxWidth, lineHeight, align);
 
-    var style = {
+    let style = {
         fontFamily: this.fontFace,
         fontSize: this.fontSize,
         fill: PIXI.utils.string2hex(this.textColor),
         //align: align,
         lineHeight: lineHeight,
         wordWrap: false,
+        padding: 2, // Adjust this if text is cut-off
     };
 
-    var pixiText = new PIXI.Text(text, style);
+    let pixiText = new PIXI.Text(text, style);
     pixiText.x = x;
     pixiText.y = y + lineHeight - Math.round(this.fontSize);
     if (align == 'center') {
@@ -143,14 +139,23 @@ BitmapPIXI.prototype.drawText = function (text, x, y, maxWidth, lineHeight, alig
         pixiText.x = x + (pixiText.width / 2);
     } else if (align == 'right') {
         pixiText.anchor.set(1, 0);
-        pixiText.x = x + pixiText.width;
+        pixiText.x = x + maxWidth;
     }
 
     if (pixiText) this.addChild(pixiText);
 };
 
 BitmapPIXI.prototype.measureTextWidth = function (text) {
-    return this._bitmap.measureTextWidth(text);
+    let style = {
+        fontFamily: this.fontFace,
+        fontSize: this.fontSize,
+        fill: PIXI.utils.string2hex(this.textColor),
+        wordWrap: false,
+    };
+    let pixiText = new PIXI.Text(text, style);
+    let width = pixiText.width;
+    pixiText.destroy(true);
+    return width;
 };
 
 
