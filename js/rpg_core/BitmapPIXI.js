@@ -16,11 +16,23 @@ BitmapPIXI.prototype.initialize = function (width, height) {
     PIXI.Container.call(this);
     this.width = width;
     this.height = height;
+
     this._bitmap = new Bitmap(width, height);
+    this._image = null;
+    this._url = '';
+    this._paintOpacity = 255;
+    this._smooth = false;
+    this._loadListeners = [];
+    this._loadingState = 'none';
+    this._decodeAfterRequest = false;
+    this.cacheEntry = null;
+
     this.fontFace = 'GameFont';
     this.fontSize = 28;
     this.fontItalic = false;
     this.textColor = '#ffffff';
+    this.outlineColor = 'rgba(0, 0, 0, 0.5)';
+    this.outlineWidth = 4;
 };
 
 BitmapPIXI.prototype._renderCanvas_PIXI = PIXI.Container.prototype._renderCanvas;
@@ -41,47 +53,18 @@ BitmapPIXI.prototype._render = function (renderer) {
 };
 
 Object.defineProperty(BitmapPIXI.prototype, 'paintOpacity', {
-    get: function() {
-        return this._bitmap._paintOpacity;
+    get: function () {
+        return this._paintOpacity;
     },
-    set: function(value) {
-      if (this._paintOpacity !== value) {
-          this._paintOpacity = value;
-          this.alpha = this._paintOpacity / 255;
-      }
-    },
-    configurable: true
-});
-
-Object.defineProperty(BitmapPIXI.prototype, 'fontFace', {
-    get: function() {
-        return this._bitmap.fontFace;
-    },
-    set: function(value) {
-        this._bitmap.fontFace = value;
+    set: function (value) {
+        if (this._paintOpacity !== value) {
+            this._paintOpacity = value;
+            this.alpha = this._paintOpacity / 255;
+        }
     },
     configurable: true
 });
 
-Object.defineProperty(BitmapPIXI.prototype, 'fontSize', {
-    get: function() {
-        return this._bitmap.fontSize;
-    },
-    set: function(value) {
-        this._bitmap.fontSize = value;
-    },
-    configurable: true
-});
-
-Object.defineProperty(BitmapPIXI.prototype, 'textColor', {
-    get: function() {
-        return this._bitmap.textColor;
-    },
-    set: function(value) {
-        this._bitmap.textColor = value;
-    },
-    configurable: true
-});
 
 
 
@@ -140,7 +123,6 @@ BitmapPIXI.prototype.clearRect = function (x, y, width, height) {
 
 
 
-
 BitmapPIXI.prototype.drawText = function (text, x, y, maxWidth, lineHeight, align) {
     //this._bitmap.drawText(text, x, y, maxWidth, lineHeight, align);
 
@@ -170,23 +152,6 @@ BitmapPIXI.prototype.drawText = function (text, x, y, maxWidth, lineHeight, alig
 BitmapPIXI.prototype.measureTextWidth = function (text) {
     return this._bitmap.measureTextWidth(text);
 };
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
