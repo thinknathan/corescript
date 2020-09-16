@@ -273,7 +273,7 @@ PluginManager.onLoad = function(e) {
         PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.NEAREST;
         PIXI.settings.ROUND_PIXELS = true;
         PIXI.settings.GC_MODE = PIXI.GC_MODES.AUTO;
-        PIXI.settings.GC_MAX_IDLE = 120;
+        PIXI.settings.GC_MAX_IDLE = 150;
         SceneManager.run(Scene_Boot);
     }
 };
