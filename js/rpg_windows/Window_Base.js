@@ -95,7 +95,7 @@ Window_Base.prototype.createContents = function () {
     this.contents.width = this.width - this.padding;
     this.contents.height = this.height - this.padding;
 
-    this.addChild(this.contents);
+    this._windowContentsSprite.addChild(this.contents);
     this.resetFontSettings();
 };
 
