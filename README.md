@@ -6,10 +6,14 @@
 This fork introduces opinionated changes that may break functionality.
 
 - Updated to use PIXI v5
-- Picture blend modes no longer work
+- Now using PIXI methods whenever possible instead of block transfer
 - Windows can overlap with each other
-- HTML5Audio removed
-- Smooth picture scaling is disabled
+- DEPRECATED: Picture blend modes no longer work
+- DEPRECATED: HTML5Audio removed
+- DEPRECATED: Smooth picture scaling is disabled
+- DEPRECATED: Gauges no longer support gradients
+- BUG: Windowskin backs are stretched instead of tiled
+- BUG: Windowskin backs now ignore window color setting
 
 ## Introduction
 
