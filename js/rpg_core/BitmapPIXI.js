@@ -138,9 +138,10 @@ BitmapPIXI.prototype.drawText = function (text, x, y, maxWidth, lineHeight, alig
     let pixiText = new PIXI.Text(text, style);
     pixiText.x = x;
     pixiText.y = y + lineHeight - Math.round(this.fontSize);
+    maxWidth = maxWidth || 0xffffffff;
     if (align == 'center') {
         pixiText.anchor.set(0.5, 0);
-        pixiText.x = x + (pixiText.width / 2);
+        pixiText.x = x + (maxWidth / 2);
     } else if (align == 'right') {
         pixiText.anchor.set(1, 0);
         pixiText.x = x + maxWidth;
@@ -149,7 +150,7 @@ BitmapPIXI.prototype.drawText = function (text, x, y, maxWidth, lineHeight, alig
     if (pixiText) this.addChild(pixiText);
 };
 
-BitmapPIXI.prototype.measureTextWidth = function (text) {
+BitmapPIXI.prototype.measureTextWidth = function (text) { 
     let style = {
         fontFamily: this.fontFace,
         fontSize: this.fontSize,
