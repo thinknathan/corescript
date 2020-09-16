@@ -436,6 +436,7 @@ Bitmap.prototype.resize = function(width, height) {
  * @param {Number} [dh=sh] The height to draw the image in the destination
  */
 Bitmap.prototype.blt = function(source, sx, sy, sw, sh, dx, dy, dw, dh) {
+    console.warn('Bitmap.blt is slow.', source);
     dw = dw || sw;
     dh = dh || sh;
     if (sx >= 0 && sy >= 0 && sw > 0 && sh > 0 && dw > 0 && dh > 0 &&
@@ -618,10 +619,12 @@ Bitmap.prototype.drawText = function(text, x, y, maxWidth, lineHeight, align) {
     // Note: Firefox has a bug with textBaseline: Bug 737852
     //       So we use 'alphabetic' here.
     if (text !== undefined) {
+        /*
         if (this.fontSize < Bitmap.minFontSize) {
             this.drawSmallText(text, x, y, maxWidth, lineHeight, align);
             return;
         }
+        */
         var tx = x;
         var ty = y + lineHeight - Math.round((lineHeight - this.fontSize * 0.7) / 2);
         var context = this._context;
@@ -789,6 +792,7 @@ Bitmap.prototype.rotateHue = function(offset) {
             pixels[i + 1] = rgb[1];
             pixels[i + 2] = rgb[2];
         }
+        console.warn('Rotate hue on canvas is slow.');
         context.putImageData(imageData, 0, 0);
         this._setDirty();
     }
