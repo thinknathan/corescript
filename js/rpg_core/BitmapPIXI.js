@@ -27,6 +27,9 @@ BitmapPIXI.prototype.initialize = function (width, height) {
     this._decodeAfterRequest = false;
     this.cacheEntry = null;
 
+    this.textPadding = 2; // Adjust this if text is cut-off
+    this.wordWrap = false;
+    this.wordWrapWidth = 0;
     this.fontFace = 'GameFont';
     this.fontSize = 28;
     this.fontItalic = false;
@@ -101,15 +104,15 @@ BitmapPIXI.prototype.clearRect = function (x, y, width, height) {
     let toRemove = [];
 
     this.children.forEach(function (child) {
-        if (child && 
-            (child.x >= x && child.x < x + width) && 
+        if (child &&
+            (child.x >= x && child.x < x + width) &&
             (child.y >= y && child.y < y + height)
-           ) {
+        ) {
             toRemove.push(child);
         }
     });
 
-    toRemove.forEach(function(child){
+    toRemove.forEach(function (child) {
         self.removeChild(child);
     });
 };
@@ -119,16 +122,17 @@ BitmapPIXI.prototype.clearRect = function (x, y, width, height) {
 
 
 BitmapPIXI.prototype.drawText = function (text, x, y, maxWidth, lineHeight, align) {
-    //this._bitmap.drawText(text, x, y, maxWidth, lineHeight, align);
-
     let style = {
         fontFamily: this.fontFace,
         fontSize: this.fontSize,
         fill: PIXI.utils.string2hex(this.textColor),
-        //align: align,
         lineHeight: lineHeight,
-        wordWrap: false,
-        padding: 2, // Adjust this if text is cut-off
+        wordWrap: this.wordWrap,
+        wordWrapWidth: this.wordWrapWidth,
+        padding: this.textPadding,
+        fontStyle: this.fontItalic ? 'italic' : 'normal',
+        stroke: this.outlineColor,
+        strokeThickness: this.outlineWidth,
     };
 
     let pixiText = new PIXI.Text(text, style);
@@ -149,8 +153,7 @@ BitmapPIXI.prototype.measureTextWidth = function (text) {
     let style = {
         fontFamily: this.fontFace,
         fontSize: this.fontSize,
-        fill: PIXI.utils.string2hex(this.textColor),
-        wordWrap: false,
+        padding: this.textPadding,
     };
     let pixiText = new PIXI.Text(text, style);
     let width = pixiText.width;
