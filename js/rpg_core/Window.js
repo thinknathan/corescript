@@ -248,7 +248,6 @@ Object.defineProperty(Window.prototype, 'contentsOpacity', {
     },
     set: function (value) {
         this._windowContentsSprite.alpha = value.clamp(0, 255) / 255;
-
     },
     configurable: true
 });
@@ -632,12 +631,11 @@ Window.prototype._updateContents = function () {
     var w = this._width - this._padding * 2;
     var h = this._height - this._padding * 2;
     if (w > 0 && h > 0) {
+        // [Note] Causes crash; should be fixed
         //this._windowContentsSprite.setFrame(this.origin.x, this.origin.y, w, h);
         this._windowContentsSprite.visible = this.isOpen();
-
     } else {
         this._windowContentsSprite.visible = false;
-
     }
 };
 
