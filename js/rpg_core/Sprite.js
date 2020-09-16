@@ -415,7 +415,7 @@ Sprite.prototype._executeTintWebGL = function() {
         0,0,color[2] / 255,color[3] / 255,
         0,0,0,1
    ];
-   this._colorMatrixFilter.alpha = 1;
+   this._colorMatrixFilter.alpha = color[3] / 255;
 };
 
 Sprite.prototype._renderCanvas_PIXI = PIXI.Sprite.prototype._renderCanvas;
