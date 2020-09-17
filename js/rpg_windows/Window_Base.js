@@ -97,7 +97,7 @@ Window_Base.prototype.createContents = function () {
             children: true
         });
     }
-    this.contents = new BitmapPIXI(this.contentsWidth(), this.contentsHeight());
+    this.contents = new BitmapPIXI(this.contentsWidth(), this.contentsHeight(), true);
     this.contents.width = this.width - this.padding;
     this.contents.height = this.height - this.padding;
     this._windowContentsSprite.addChild(this.contents);
