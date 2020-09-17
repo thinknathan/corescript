@@ -93,7 +93,9 @@ Window_Base.prototype.createContents = function () {
         // May be better to remove calls to createContents
         // in any methods that are fired every frame
         this.removeChild(this.contents);
-        this.contents.destroy();
+        this.contents.destroy({
+            children: true
+        });
     }
     this.contents = new BitmapPIXI(this.contentsWidth(), this.contentsHeight());
     this.contents.width = this.width - this.padding;
