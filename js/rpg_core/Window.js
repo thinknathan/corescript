@@ -501,7 +501,9 @@ Window.prototype._refreshFrame = function () {
             container.blt(skin, p + 0, 0 + q - m, m, m, 0, h - m, m, m);
             container.blt(skin, p + q - m, 0 + q - m, m, m, w - m, h - m, m, m);
             texture = Graphics._renderer.generateTexture(container);
-            container.destroy();
+            container.destroy({
+                children: true
+            });
             WindowSkinCache.addFrame(this._windowskin._url, texture);
         }
 
