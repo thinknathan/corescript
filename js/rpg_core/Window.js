@@ -21,19 +21,6 @@ WindowSkinCache.getFrame = function (name) {
     return WindowSkinCache[name]._frame;
 };
 
-WindowSkinCache.addCursor = function (name, resource) {
-    if (!WindowSkinCache[name]) {
-        WindowSkinCache[name] = {};
-    }
-    WindowSkinCache[name]._cursor = resource;
-};
-
-WindowSkinCache.getCursor = function (name) {
-    if (!WindowSkinCache[name]) return false;
-    if (!WindowSkinCache[name]._cursor) return false;
-    return WindowSkinCache[name]._cursor;
-};
-
 //-----------------------------------------------------------------------------
 /**
  * The window in the game.
@@ -409,8 +396,8 @@ Window.prototype.updateTransform = function () {
  */
 Window.prototype._createAllParts = function () {
     this._windowSpriteContainer = new PIXI.Container();
-    this._windowBackSprite = new BitmapPIXI(0, 0);
-    this._windowCursorSprite = new PIXI.Container();
+    this._windowBackSprite = new BitmapPIXI();
+    this._windowCursorSprite = new BitmapPIXI();
     this._windowFrameSprite = new PIXI.Container();
     this._windowContentsSprite = new Sprite();
     this._downArrowSprite = new Sprite();
@@ -545,33 +532,12 @@ Window.prototype._refreshCursor = function () {
     var h2 = Math.min(h, this._height - pad - y2);
 
     if (w > 0 && h > 0 && this._windowskin && !this._windowCursorSprite._setupComplete) {
-        let texture;
-        let cachedCursor = WindowSkinCache.getCursor(this._windowskin._url);
-        if (cachedCursor) {
-            texture = cachedCursor;
-        } else {
-            let container = new BitmapPIXI(64, 64);
-            let skin = this._windowskin;
-            var p = 96;
-            var q = 48;
-            container.blt(skin, p + m, p + m, q - m * 2, q - m * 2, ox + m, oy + m, w - m * 2, h - m * 2);
-            container.blt(skin, p + m, p + 0, q - m * 2, m, ox + m, oy + 0, w - m * 2, m);
-            container.blt(skin, p + m, p + q - m, q - m * 2, m, ox + m, oy + h - m, w - m * 2, m);
-            container.blt(skin, p + 0, p + m, m, q - m * 2, ox + 0, oy + m, m, h - m * 2);
-            container.blt(skin, p + q - m, p + m, m, q - m * 2, ox + w - m, oy + m, m, h - m * 2);
-            container.blt(skin, p + 0, p + 0, m, m, ox + 0, oy + 0, m, m);
-            container.blt(skin, p + q - m, p + 0, m, m, ox + w - m, oy + 0, m, m);
-            container.blt(skin, p + 0, p + q - m, m, m, ox + 0, oy + h - m, m, m);
-            container.blt(skin, p + q - m, p + q - m, m, m, ox + w - m, oy + h - m, m, m);
-            texture = Graphics._renderer.generateTexture(container);
-            container.destroy({
-                children: true,
-                texture: true,
-            });
-            WindowSkinCache.addCursor(this._windowskin._url, texture);
-        }
-        this._windowCursorPlane = new PIXI.NineSlicePlane(texture, 5, 5, 5, 5);
-        this._windowCursorSprite.addChild(this._windowCursorPlane);
+        let skin = this._windowskin;
+        var p = 96;
+        var q = 48;
+        this._windowCursorSprite.addChild(
+            this._windowCursorSprite.create9Slice(this._windowskin.baseTexture, p, p, q, q, 12, 12, 12, 12)
+        );
         this._windowCursorSprite._setupComplete = true;
     }
 
