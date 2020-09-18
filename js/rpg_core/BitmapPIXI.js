@@ -171,7 +171,8 @@ Object.defineProperty(BitmapPIXI.prototype, 'context', {
 BitmapPIXI.prototype.clear = function () {
     for (let i = this._spriteContainer.children.length - 1; i >= 0; i--) {
         this._spriteContainer.children[i].destroy({
-            children: true
+            children: true,
+            texture: true,
         });
         this._spriteContainer.removeChild(this.children[i]);
     }
@@ -194,7 +195,8 @@ BitmapPIXI.prototype.clearRect = function (x, y, width, height) {
 
     toRemove.forEach(function (child) {
         child.destroy({
-            children: true
+            children: true,
+            texture: true,
         });
         self._spriteContainer.removeChild(child);
     });
