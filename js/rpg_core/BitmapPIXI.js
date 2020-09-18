@@ -43,16 +43,18 @@ BitmapPIXI.prototype.initialize = function (width, height, createCanvas) {
     this._canvasContainer.height = height;
     this.addChild(this._canvasContainer);
 
-    //this.on('removed', this.onRemoveAsAChild);
+    this.on('removed', this.onRemoveAsAChild);
 };
 
 BitmapPIXI.prototype.onRemoveAsAChild = function () {
+    if (this.__baseTexture && this.__baseTexture.width === 1) {
+        this._canvasContainer.destroy(true);
+    }
+    /*
     this._spriteContainer.destroy({
-        children: true
+        children: true,
     });
-    this._canvasContainer.destroy({
-        children: true
-    });
+*/
 };
 
 BitmapPIXI.prototype._renderCanvas_PIXI = PIXI.Container.prototype._renderCanvas;
@@ -77,7 +79,9 @@ BitmapPIXI.prototype.checkDirty = function () {
             baseTexture.update();
             if (container._sprite) {
                 container.removeChild(container._sprite);
-                container._sprite.destroy({texture: true});
+                container._sprite.destroy({
+                    texture: true
+                });
             }
             container._sprite = new PIXI.Sprite(new PIXI.Texture(baseTexture));
             container.addChild(container._sprite);
@@ -293,6 +297,14 @@ BitmapPIXI.prototype._drawTextBody = function (text, tx, ty, maxWidth) {
 
 
 
+BitmapPIXI.prototype.create9Slice = function (source, x, y, w, h, tl, tr, br, bl) {
+    return new PIXI.NineSlicePlane(
+        new PIXI.Texture(
+            source,
+            new PIXI.Rectangle(x, y, w, h)
+        ), tl, tr, br, bl
+    );
+};
 
 BitmapPIXI.prototype.createTilingSprite = function (source, x, y, w, h, tileWidth, tileHeight) {
     return new PIXI.TilingSprite(
