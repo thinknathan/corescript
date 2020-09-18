@@ -94,7 +94,8 @@ Window_Base.prototype.createContents = function () {
         // in any methods that are fired every frame
         this.removeChild(this.contents);
         this.contents.destroy({
-            children: true
+            children: true,
+            texture: true,
         });
     }
     this.contents = new BitmapPIXI(this.contentsWidth(), this.contentsHeight(), true);
