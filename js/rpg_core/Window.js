@@ -21,6 +21,19 @@ WindowSkinCache.getFrame = function (name) {
     return WindowSkinCache[name]._frame;
 };
 
+WindowSkinCache.addCursor = function (name, resource) {
+    if (!WindowSkinCache[name]) {
+        WindowSkinCache[name] = {};
+    }
+    WindowSkinCache[name]._cursor = resource;
+};
+
+WindowSkinCache.getCursor = function (name) {
+    if (!WindowSkinCache[name]) return false;
+    if (!WindowSkinCache[name]._cursor) return false;
+    return WindowSkinCache[name]._cursor;
+};
+
 //-----------------------------------------------------------------------------
 /**
  * The window in the game.
@@ -397,9 +410,8 @@ Window.prototype.updateTransform = function () {
 Window.prototype._createAllParts = function () {
     this._windowSpriteContainer = new PIXI.Container();
     this._windowBackSprite = new BitmapPIXI(0, 0);
-    this._windowBackSprite2 = new BitmapPIXI(0, 0);
-    this._windowCursorSprite = new BitmapPIXI(0, 0);
-    this._windowFrameSprite = new BitmapPIXI(0, 0);
+    this._windowCursorSprite = new PIXI.Container();
+    this._windowFrameSprite = new PIXI.Container();
     this._windowContentsSprite = new Sprite();
     this._downArrowSprite = new Sprite();
     this._upArrowSprite = new Sprite();
@@ -408,7 +420,6 @@ Window.prototype._createAllParts = function () {
     //this._windowBackSprite.alpha = 192 / 255;
     this.addChild(this._windowSpriteContainer);
     this._windowSpriteContainer.addChild(this._windowBackSprite);
-    this._windowSpriteContainer.addChild(this._windowBackSprite2);
     this._windowSpriteContainer.addChild(this._windowFrameSprite);
     this.addChild(this._windowCursorSprite);
     this.addChild(this._windowContentsSprite);
@@ -448,14 +459,12 @@ Window.prototype._refreshBack = function () {
     var h = this._height - m * 2;
 
     if (w > 0 && h > 0 && this._windowskin && !this._windowBackSprite._setupComplete) {
-        var p = 96;
+        let p = 96;
         this._windowBackSprite.blt(this._windowskin, 0, 0, p, p, 0, 0, w, h);
-        for (var y = 0; y < h; y += p) {
-            for (var x = 0; x < w; x += p) {
-                this._windowBackSprite2.blt(this._windowskin, 0, p, p, p, x, y, p, p);
-            }
-        }
-        // No longer has support for adjusting tone
+        this._windowBackSprite.addChild(
+            this._windowBackSprite.createTilingSprite(this._windowskin.baseTexture, 0, p, p, p, w, h)
+        );
+        // [Note] No longer has support for adjusting tone
         //var tone = this._colorTone;
         //bitmap.adjustTone(tone[0], tone[1], tone[2]);
         this._windowBackSprite._setupComplete = true;
@@ -465,10 +474,7 @@ Window.prototype._refreshBack = function () {
     this._windowBackSprite.height = h;
     this._windowBackSprite.x = m;
     this._windowBackSprite.y = m;
-    this._windowBackSprite2.width = w;
-    this._windowBackSprite2.height = h;
-    this._windowBackSprite2.x = m;
-    this._windowBackSprite2.y = m;
+
     //this._windowBackSprite.setFrame(0, 0, w, h);
 };
 
@@ -502,7 +508,8 @@ Window.prototype._refreshFrame = function () {
             container.blt(skin, p + q - m, 0 + q - m, m, m, w - m, h - m, m, m);
             texture = Graphics._renderer.generateTexture(container);
             container.destroy({
-                children: true
+                children: true,
+                texture: true,
             });
             WindowSkinCache.addFrame(this._windowskin._url, texture);
         }
@@ -538,18 +545,33 @@ Window.prototype._refreshCursor = function () {
     var h2 = Math.min(h, this._height - pad - y2);
 
     if (w > 0 && h > 0 && this._windowskin && !this._windowCursorSprite._setupComplete) {
-        var skin = this._windowskin;
-        var p = 96;
-        var q = 48;
-        this._windowCursorSprite.blt(skin, p + m, p + m, q - m * 2, q - m * 2, ox + m, oy + m, w - m * 2, h - m * 2);
-        this._windowCursorSprite.blt(skin, p + m, p + 0, q - m * 2, m, ox + m, oy + 0, w - m * 2, m);
-        this._windowCursorSprite.blt(skin, p + m, p + q - m, q - m * 2, m, ox + m, oy + h - m, w - m * 2, m);
-        this._windowCursorSprite.blt(skin, p + 0, p + m, m, q - m * 2, ox + 0, oy + m, m, h - m * 2);
-        this._windowCursorSprite.blt(skin, p + q - m, p + m, m, q - m * 2, ox + w - m, oy + m, m, h - m * 2);
-        this._windowCursorSprite.blt(skin, p + 0, p + 0, m, m, ox + 0, oy + 0, m, m);
-        this._windowCursorSprite.blt(skin, p + q - m, p + 0, m, m, ox + w - m, oy + 0, m, m);
-        this._windowCursorSprite.blt(skin, p + 0, p + q - m, m, m, ox + 0, oy + h - m, m, m);
-        this._windowCursorSprite.blt(skin, p + q - m, p + q - m, m, m, ox + w - m, oy + h - m, m, m);
+        let texture;
+        let cachedCursor = WindowSkinCache.getCursor(this._windowskin._url);
+        if (cachedCursor) {
+            texture = cachedCursor;
+        } else {
+            let container = new BitmapPIXI(64, 64);
+            let skin = this._windowskin;
+            var p = 96;
+            var q = 48;
+            container.blt(skin, p + m, p + m, q - m * 2, q - m * 2, ox + m, oy + m, w - m * 2, h - m * 2);
+            container.blt(skin, p + m, p + 0, q - m * 2, m, ox + m, oy + 0, w - m * 2, m);
+            container.blt(skin, p + m, p + q - m, q - m * 2, m, ox + m, oy + h - m, w - m * 2, m);
+            container.blt(skin, p + 0, p + m, m, q - m * 2, ox + 0, oy + m, m, h - m * 2);
+            container.blt(skin, p + q - m, p + m, m, q - m * 2, ox + w - m, oy + m, m, h - m * 2);
+            container.blt(skin, p + 0, p + 0, m, m, ox + 0, oy + 0, m, m);
+            container.blt(skin, p + q - m, p + 0, m, m, ox + w - m, oy + 0, m, m);
+            container.blt(skin, p + 0, p + q - m, m, m, ox + 0, oy + h - m, m, m);
+            container.blt(skin, p + q - m, p + q - m, m, m, ox + w - m, oy + h - m, m, m);
+            texture = Graphics._renderer.generateTexture(container);
+            container.destroy({
+                children: true,
+                texture: true,
+            });
+            WindowSkinCache.addCursor(this._windowskin._url, texture);
+        }
+        this._windowCursorPlane = new PIXI.NineSlicePlane(texture, 5, 5, 5, 5);
+        this._windowCursorSprite.addChild(this._windowCursorPlane);
         this._windowCursorSprite._setupComplete = true;
     }
 
