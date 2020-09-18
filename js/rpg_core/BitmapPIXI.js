@@ -18,8 +18,8 @@ BitmapPIXI.prototype.initialize = function (width, height, createCanvas) {
         this._createCanvas(width, height);
     }
 
-    this.width = width;
-    this.height = height;
+    if (width) this.width = width;
+    if (height) this.height = height;
     this._paintOpacity = 255;
 
     this.textPadding = 2; // Adjust this if text is cut-off
@@ -292,6 +292,16 @@ BitmapPIXI.prototype._drawTextBody = function (text, tx, ty, maxWidth) {
 
 
 
+
+
+BitmapPIXI.prototype.createTilingSprite = function (source, x, y, w, h, tileWidth, tileHeight) {
+    return new PIXI.TilingSprite(
+        new PIXI.Texture(
+            source,
+            new PIXI.Rectangle(x, y, w, h)
+        ), tileWidth, tileHeight,
+    );
+};
 
 BitmapPIXI.prototype.createCroppedSprite = function (source, x, y, w, h) {
     return new PIXI.Sprite(
