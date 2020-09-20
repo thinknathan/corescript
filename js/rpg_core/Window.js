@@ -494,6 +494,8 @@ Window.prototype._refreshFrame = function () {
             container.blt(skin, p + 0, 0 + q - m, m, m, 0, h - m, m, m);
             container.blt(skin, p + q - m, 0 + q - m, m, m, w - m, h - m, m, m);
             texture = Graphics._renderer.generateTexture(container);
+            texture.CREATED_BY = this;
+            texture.CREATED_AT = Date.now();
             container.destroy({
                 children: true,
                 texture: true,
@@ -535,16 +537,20 @@ Window.prototype._refreshCursor = function () {
         let skin = this._windowskin;
         var p = 96;
         var q = 48;
+        this._windowCursorPlane = this._windowCursorSprite.create9Slice(this._windowskin.baseTexture, p, p, q, q, 12, 12, 12, 12);
         this._windowCursorSprite.addChild(
-            this._windowCursorSprite.create9Slice(this._windowskin.baseTexture, p, p, q, q, 12, 12, 12, 12)
+            this._windowCursorPlane
         );
         this._windowCursorSprite._setupComplete = true;
     }
 
-    this._windowCursorSprite.x = x;
-    this._windowCursorSprite.y = y;
-    this._windowCursorSprite.width = w;
-    this._windowCursorSprite.height = h;
+    if (this._windowCursorPlane) {
+        this._windowCursorPlane.x = x;
+        this._windowCursorPlane.y = y;
+        this._windowCursorPlane.width = w;
+        this._windowCursorPlane.height = h;
+    }
+
     //this._windowCursorSprite.setFrame(0, 0, w2, h2);
 };
 
