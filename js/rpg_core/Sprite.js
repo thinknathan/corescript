@@ -17,6 +17,8 @@ Sprite.voidFilter = new PIXI.filters.AlphaFilter();
 
 Sprite.prototype.initialize = function(bitmap) {
     var texture = new PIXI.Texture(new PIXI.BaseTexture());
+    texture.CREATED_BY = this;
+    texture.CREATED_AT = Date.now();
 
     PIXI.Sprite.call(this, texture);
 
@@ -28,13 +30,6 @@ Sprite.prototype.initialize = function(bitmap) {
     this._canvas = null;
     this._context = null;
     this._tintTexture = null;
-
-    /**
-     * use heavy renderer that will reduce border artifacts and apply advanced blendModes
-     * @type {boolean}
-     * @private
-     */
-    this._isPicture = false;
 
     this.spriteId = Sprite._counter++;
     this.opaque = false;
