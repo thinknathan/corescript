@@ -42,19 +42,6 @@ BitmapPIXI.prototype.initialize = function (width, height, createCanvas) {
     this._canvasContainer.width = width;
     this._canvasContainer.height = height;
     this.addChild(this._canvasContainer);
-
-    this.on('removed', this.onRemoveAsAChild);
-};
-
-BitmapPIXI.prototype.onRemoveAsAChild = function () {
-    if (this.__baseTexture && this.__baseTexture.width === 1) {
-        this._canvasContainer.destroy(true);
-    }
-    /*
-    this._spriteContainer.destroy({
-        children: true,
-    });
-*/
 };
 
 BitmapPIXI.prototype._renderCanvas_PIXI = PIXI.Container.prototype._renderCanvas;
@@ -77,14 +64,17 @@ BitmapPIXI.prototype.checkDirty = function () {
         let baseTexture = this._baseTexture;
         setTimeout(function () {
             baseTexture.update();
+            let texture = new PIXI.Texture(baseTexture);
+            texture.CREATED_BY = this;
+            texture.CREATED_AT = Date.now();
             if (container._sprite) {
-                container.removeChild(container._sprite);
-                container._sprite.destroy({
-                    texture: true
-                });
+                container._sprite.texture.destroy();
+                container._sprite.texture = texture;
+            } else {
+                container._sprite = new PIXI.Sprite(texture);
+                container.addChild(container._sprite);
             }
-            container._sprite = new PIXI.Sprite(new PIXI.Texture(baseTexture));
-            container.addChild(container._sprite);
+
         }, 0);
         this._dirty = false;
     }
@@ -100,8 +90,8 @@ BitmapPIXI.prototype._createCanvas = function (width, height) {
 
 BitmapPIXI.prototype._createBaseTexture = function (source) {
     Bitmap.prototype._createBaseTexture.call(this, source);
-    //this.__baseTexture.CREATED_BY = this;
-    //this.__baseTexture.CREATED_AT = Date.now();
+    this.__baseTexture.CREATED_BY = this;
+    this.__baseTexture.CREATED_AT = Date.now();
 };
 
 BitmapPIXI.prototype.resize = function (width, height) {
@@ -214,10 +204,10 @@ BitmapPIXI.prototype.clearRect = function (x, y, width, height) {
 
 BitmapPIXI.prototype.drawText = function (text, x, y, maxWidth, lineHeight, align) {
     if (text === undefined) return;
-    var tx = x;
-    var ty = y + lineHeight - Math.round((lineHeight - this.fontSize * 0.7) / 2);
-    var context = this._context;
-    var alpha = context.globalAlpha;
+    let tx = x;
+    let ty = y + lineHeight - Math.round((lineHeight - this.fontSize * 0.7) / 2);
+    let context = this._context;
+    let alpha = context.globalAlpha;
     maxWidth = maxWidth || 0xffffffff;
     if (align === 'center') {
         tx += maxWidth / 2;
