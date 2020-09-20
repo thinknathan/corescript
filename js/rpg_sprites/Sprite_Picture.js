@@ -14,7 +14,6 @@ Sprite_Picture.prototype.initialize = function(pictureId) {
     Sprite.prototype.initialize.call(this);
     this._pictureId = pictureId;
     this._pictureName = '';
-    this._isPicture = true;
     this.update();
 };
 
