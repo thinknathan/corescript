@@ -92,15 +92,13 @@ Window_Base.prototype.createContents = function () {
         // [Note] This seems inefficient
         // May be better to remove calls to createContents
         // in any methods that are fired every frame
-        this.removeChild(this.contents);
         this.contents.destroy({
             children: true,
             texture: true,
         });
+        this._windowContentsSprite.removeChild(this.contents);
     }
     this.contents = new BitmapPIXI(this.contentsWidth(), this.contentsHeight(), true);
-    this.contents.width = this.width - this.padding;
-    this.contents.height = this.height - this.padding;
     this._windowContentsSprite.addChild(this.contents);
     this.resetFontSettings();
 };
