@@ -92,6 +92,8 @@ Window_Base.prototype.createContents = function () {
         this.contents = new BitmapPIXI(this.contentsWidth(), this.contentsHeight(), true);
         this._windowContentsSprite.addChild(this.contents);
     }
+    this.contents._canvas.width = this.contentsWidth();
+    this.contents._canvas.height = this.contentsHeight();
     this.resetFontSettings();
 };
 
