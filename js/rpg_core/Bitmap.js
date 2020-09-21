@@ -663,6 +663,7 @@ Bitmap.prototype.drawText = function(text, x, y, maxWidth, lineHeight, align) {
  * @param {String} align The alignment of the text
  */
 Bitmap.prototype.drawSmallText = function(text, x, y, maxWidth, lineHeight, align) {
+    /*
     var minFontSize = Bitmap.minFontSize;
     var bitmap = Bitmap.drawSmallTextBitmap;
     bitmap.fontFace = this.fontFace;
@@ -688,6 +689,7 @@ Bitmap.prototype.drawSmallText = function(text, x, y, maxWidth, lineHeight, alig
     this.blt(bitmap, 0, 0, scaledMaxWidthWithOutline, scaledHeightWithOutline,
         x - this.outlineWidth, y - this.outlineWidth + (lineHeight - this.fontSize) / 2, maxWidth + this.outlineWidth * 2, height + this.outlineWidth * 2);
     bitmap.clear();
+    */
 };
 
 /**
@@ -1046,5 +1048,5 @@ Bitmap.prototype.startRequest = function(){
     }
 };
 
-Bitmap.minFontSize = 21;
-Bitmap.drawSmallTextBitmap = new Bitmap(1632, Bitmap.minFontSize);
+//Bitmap.minFontSize = 21;
+//Bitmap.drawSmallTextBitmap = new Bitmap(1632, Bitmap.minFontSize);
