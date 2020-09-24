@@ -131,6 +131,10 @@ Object.defineProperty(Window.prototype, 'contents', {
         return this._windowContentsSprite.children[0];
     },
     set: function (value) {
+        let oldContents = this._windowContentsSprite.children[0];
+        if (oldContents) {
+            this._windowContentsSprite.removeChild(oldContents);
+        }
         this._windowContentsSprite.addChild(value);
     },
     configurable: true
