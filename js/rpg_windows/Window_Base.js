@@ -88,12 +88,16 @@ Window_Base.prototype.updateTone = function () {
 };
 
 Window_Base.prototype.createContents = function () {
+    console.log('Window_Base.createContents');
     if (!this.contents) {
-        this.contents = new BitmapPIXI(this.contentsWidth(), this.contentsHeight(), true);
+        this.contents = new BitmapPIXI(this.contentsWidth(), this.contentsHeight(), this.x, this.y, true);
+        this.contents.CREATED_BY = this;
         this._windowContentsSprite.addChild(this.contents);
     }
-    this.contents._canvas.width = this.contentsWidth();
-    this.contents._canvas.height = this.contentsHeight();
+    this.contents.move(this.x, this.y);
+    this.contents.width = this.contentsWidth();
+    this.contents.height = this.contentsHeight();
+    this.contents.clear();
     this.resetFontSettings();
 };
 

@@ -481,7 +481,7 @@ Window.prototype._refreshFrame = function () {
         if (cachedFrame) {
             texture = cachedFrame;
         } else {
-            let container = new BitmapPIXI(64, 64);
+            let container = new BitmapPIXI();
             let skin = this._windowskin;
             let p = 96;
             let q = 96;
@@ -560,7 +560,8 @@ Window.prototype._refreshCursor = function () {
  */
 Window.prototype._refreshContents = function () {
     this._windowContentsSprite.move(this.padding, this.padding);
-    if (this._windowContentsSprite.children.length) this._windowContentsSprite.children[0].clear();
+    //console.log('Window._refreshContents');
+    //if (this._windowContentsSprite.children.length) this._windowContentsSprite.children[0].clear();
 };
 
 /**
@@ -630,6 +631,10 @@ Window.prototype._updateContents = function () {
     if (w > 0 && h > 0) {
         this._windowContentsSprite.setFrame(this.origin.x, this.origin.y, w, h);
         this._windowContentsSprite.visible = this.isOpen();
+        let contents = this._windowContentsSprite.children[0];
+        if (contents) {
+            //contents.resize(w, h);
+        }
     } else {
         this._windowContentsSprite.visible = false;
     }

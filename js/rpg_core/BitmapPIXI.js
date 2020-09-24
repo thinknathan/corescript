@@ -12,14 +12,21 @@ function BitmapPIXI() {
 BitmapPIXI.prototype = Object.create(PIXI.Container.prototype);
 BitmapPIXI.prototype.constructor = BitmapPIXI;
 
-BitmapPIXI.prototype.initialize = function (width, height, createCanvas) {
+BitmapPIXI.prototype.initialize = function (width, height, x, y, createCanvas) {
     PIXI.Container.call(this);
     if (createCanvas) {
         this._createCanvas(width, height);
     }
 
+    this.width = 0;
+    this.height = 0;
+    this._x = 0;
+    this._y = 0;
     if (width) this.width = width;
     if (height) this.height = height;
+    if (x) this._x = x;
+    if (y) this._y = y;
+
     this._paintOpacity = 255;
 
     this.textPadding = 2; // Adjust this if text is cut-off
@@ -60,11 +67,12 @@ BitmapPIXI.prototype._render = function (renderer) {
 BitmapPIXI.prototype.checkDirty = function () {
     if (this._dirty) {
         this._baseTexture.update();
+        let self = this;
         let container = this._canvasContainer;
         let baseTexture = this._baseTexture;
         setTimeout(function () {
             baseTexture.update();
-            let texture = new PIXI.Texture(baseTexture);
+            let texture = new PIXI.Texture(baseTexture, new PIXI.Rectangle(self._x, self._y, self.width, self.height));
             texture.CREATED_BY = this;
             texture.CREATED_AT = Date.now();
             if (container._sprite) {
@@ -85,7 +93,12 @@ BitmapPIXI.prototype._setDirty = function () {
 };
 
 BitmapPIXI.prototype._createCanvas = function (width, height) {
-    Bitmap.prototype._createCanvas.call(this, width, height);
+    Graphics._bitmapCanvas = Graphics._bitmapCanvas || document.createElement('canvas');
+    this.__canvas = Graphics._bitmapCanvas;
+    this.__context = Graphics._bitmapCanvas.getContext('2d');
+    this.__canvas.width = Math.max(Graphics.boxWidth || 0, 1);
+    this.__canvas.height = Math.max(Graphics.boxHeight || 0, 1);
+    this._setDirty();
 };
 
 BitmapPIXI.prototype._createBaseTexture = function (source) {
@@ -95,11 +108,14 @@ BitmapPIXI.prototype._createBaseTexture = function (source) {
 };
 
 BitmapPIXI.prototype.resize = function (width, height) {
-    Bitmap.prototype.resize.call(this, width, height);
-    this._canvasContainer.width = width;
-    this._canvasContainer.height = height;
-    this._spriteContainer.width = width;
-    this._spriteContainer.height = height;
+    //Bitmap.prototype.resize.call(this, width, height);
+    this.width = width;
+    this.height = height;
+};
+
+BitmapPIXI.prototype.move = function (x, y) {
+    this._x = x;
+    this._y = y;
 };
 
 Object.defineProperty(BitmapPIXI.prototype, 'paintOpacity', {
@@ -163,6 +179,9 @@ Object.defineProperty(BitmapPIXI.prototype, 'context', {
 
 
 BitmapPIXI.prototype.clear = function () {
+    console.log('clear');
+    this.clearRect(this._x, this._y, this.width, this.height);
+    /*
     for (let i = this._spriteContainer.children.length - 1; i >= 0; i--) {
         this._spriteContainer.children[i].destroy({
             children: true,
@@ -172,11 +191,18 @@ BitmapPIXI.prototype.clear = function () {
     }
 
     Bitmap.prototype.clear.call(this);
+    */
 };
 
 BitmapPIXI.prototype.clearRect = function (x, y, width, height) {
+    console.log('clearRect', x, y, width, height);
+    if (!width && !height) return;
+    x += this._x;
+    y += this._y;
     let self = this;
     let toRemove = [];
+    //x += this._x;
+    //y += this._y;
 
     this._spriteContainer.children.forEach(function (child) {
         if (child &&
@@ -204,6 +230,11 @@ BitmapPIXI.prototype.clearRect = function (x, y, width, height) {
 
 BitmapPIXI.prototype.drawText = function (text, x, y, maxWidth, lineHeight, align) {
     if (text === undefined) return;
+    //console.log(text, x, y);
+    console.log(text, this._x, this._y, this.width, this.height, '|', x, y);
+    x += this._x;
+    y += this._y;
+    //if (this.width === 0 || this.height === 0) return;
     let tx = x;
     let ty = y + lineHeight - Math.round((lineHeight - this.fontSize * 0.7) / 2);
     let context = this._context;
