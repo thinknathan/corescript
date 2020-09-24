@@ -146,6 +146,7 @@ Window_Command.prototype.callOkHandler = function() {
 };
 
 Window_Command.prototype.refresh = function() {
+    console.log('Window_Command.refresh');
     this.clearCommandList();
     this.makeCommandList();
     this.createContents();

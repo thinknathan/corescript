@@ -569,6 +569,7 @@ Window_Selectable.prototype.redrawCurrentItem = function() {
 
 Window_Selectable.prototype.refresh = function() {
     if (this.contents) {
+        console.log('Window_Selectable.refresh');
         this.contents.clear();
         this.drawAllItems();
     }
