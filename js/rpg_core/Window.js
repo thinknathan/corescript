@@ -362,7 +362,6 @@ Window.prototype.setCursorRect = function (x, y, width, height) {
  * @param {Number} b The blue value in the range (-255, 255)
  */
 Window.prototype.setTone = function (r, g, b) {
-    return;
     var tone = this._colorTone;
     if (r !== tone[0] || g !== tone[1] || b !== tone[2]) {
         this._colorTone = [r, g, b];
