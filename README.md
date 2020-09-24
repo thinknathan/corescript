@@ -7,6 +7,7 @@ This fork introduces opinionated changes that may break functionality.
 
 - Updated to use PIXI v5
 - Now using PIXI methods whenever possible instead of block transfer
+- Now using PIXI.BitmapText for fast, memory-efficient text
 - Windows can overlap with each other
 - DEPRECATED: Picture blend modes no longer work
 - DEPRECATED: HTML5Audio removed
@@ -14,6 +15,7 @@ This fork introduces opinionated changes that may break functionality.
 - DEPRECATED: Gauges no longer support gradients
 - BUG: Windowskin backs are stretched instead of tiled
 - BUG: Windowskin backs now ignore window color setting
+- BUG: Increasing text size with \} fails
 
 ## Introduction
 
