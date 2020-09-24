@@ -91,6 +91,8 @@ Window_Base.prototype.createContents = function () {
     if (!this.contents) {
         this.contents = new BitmapPIXI(this.contentsWidth(), this.contentsHeight());
         this._windowContentsSprite.addChild(this.contents);
+    } else {
+        this.contents.clear();
     }
     this.resetFontSettings();
 };
