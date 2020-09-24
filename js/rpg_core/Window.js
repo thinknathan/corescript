@@ -403,8 +403,7 @@ Window.prototype._createAllParts = function () {
     this._downArrowSprite = new Sprite();
     this._upArrowSprite = new Sprite();
     this._windowPauseSignSprite = new Sprite();
-    //this._windowBackSprite.bitmap = new Bitmap(1, 1);
-    //this._windowBackSprite.alpha = 192 / 255;
+    this._windowBackSprite.alpha = 192 / 255;
     this.addChild(this._windowSpriteContainer);
     this._windowSpriteContainer.addChild(this._windowBackSprite);
     this._windowSpriteContainer.addChild(this._windowFrameSprite);
