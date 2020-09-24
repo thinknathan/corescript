@@ -481,7 +481,7 @@ Window.prototype._refreshFrame = function () {
         if (cachedFrame) {
             texture = cachedFrame;
         } else {
-            let container = new BitmapPIXI(64, 64);
+            let container = new BitmapPIXI();
             let skin = this._windowskin;
             let p = 96;
             let q = 96;
