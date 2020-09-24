@@ -86,7 +86,7 @@ BitmapPIXI.prototype.drawText = function (text, x, y, maxWidth, lineHeight, alig
     let style = {
         fontFamily: this.fontFace,
         fontSize: this.fontSize,
-        fill: PIXI.utils.string2hex(this.textColor),
+        fill: 0xffffff,
         lineHeight: lineHeight,
         wordWrap: this.wordWrap,
         wordWrapWidth: this.wordWrapWidth,
@@ -96,7 +96,26 @@ BitmapPIXI.prototype.drawText = function (text, x, y, maxWidth, lineHeight, alig
         strokeThickness: this.outlineWidth,
     };
 
-    let pixiText = new PIXI.Text(text, style);
+    if (!PIXI.BitmapFont.available[style.fontFamily] ||
+        PIXI.BitmapFont.available[style.fontFamily].size !== style.fontSize
+    ) {
+        console.log('Generating font family', style.fontFamily);
+        let bitmapOptions = {
+            chars: [
+                [" ", "~"],
+                '\u2192',
+            ]
+        }
+        PIXI.BitmapFont.from(style.fontFamily, style, bitmapOptions);
+    }
+
+    // [note] Non-String values crash BitmapText updates in PIXI 5.3.3
+    // since they use {text}.replace
+    text = String(text);
+    let pixiText = new PIXI.BitmapText(text, {
+        font: style.fontFamily
+    });
+    pixiText.tint = PIXI.utils.string2hex(this.textColor);
     pixiText.x = x;
     pixiText.y = y + lineHeight - Math.round(this.fontSize);
     maxWidth = maxWidth || 0xffffffff;
