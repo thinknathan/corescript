@@ -96,9 +96,7 @@ BitmapPIXI.prototype.drawText = function (text, x, y, maxWidth, lineHeight, alig
         strokeThickness: this.outlineWidth,
     };
 
-    if (!PIXI.BitmapFont.available[style.fontFamily] ||
-        PIXI.BitmapFont.available[style.fontFamily].size !== style.fontSize
-    ) {
+    if (!PIXI.BitmapFont.available[style.fontFamily]) {
         console.log('Generating font family', style.fontFamily);
         let bitmapOptions = {
             chars: [
@@ -115,6 +113,14 @@ BitmapPIXI.prototype.drawText = function (text, x, y, maxWidth, lineHeight, alig
     let pixiText = new PIXI.BitmapText(text, {
         font: style.fontFamily
     });
+
+    if (PIXI.BitmapFont.available[style.fontFamily].size !== style.fontSize) {
+        let scaling = style.fontSize / PIXI.BitmapFont.available[style.fontFamily].size;
+        scaling = Math.ceil(scaling * 10) / 10;
+        console.log('Scaling needed', style.fontSize, PIXI.BitmapFont.available[style.fontFamily].size, scaling);
+        pixiText.scale.x = scaling;
+        pixiText.scale.y = scaling;
+    }
     pixiText.tint = PIXI.utils.string2hex(this.textColor);
     pixiText.x = x;
     pixiText.y = y + lineHeight - Math.round(this.fontSize * 1.25);
