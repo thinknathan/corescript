@@ -89,11 +89,9 @@ Window_Base.prototype.updateTone = function () {
 
 Window_Base.prototype.createContents = function () {
     if (!this.contents) {
-        this.contents = new BitmapPIXI(this.contentsWidth(), this.contentsHeight(), true);
+        this.contents = new BitmapPIXI(this.contentsWidth(), this.contentsHeight());
         this._windowContentsSprite.addChild(this.contents);
     }
-    this.contents._canvas.width = this.contentsWidth();
-    this.contents._canvas.height = this.contentsHeight();
     this.resetFontSettings();
 };
 
