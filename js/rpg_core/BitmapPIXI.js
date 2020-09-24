@@ -117,7 +117,7 @@ BitmapPIXI.prototype.drawText = function (text, x, y, maxWidth, lineHeight, alig
     });
     pixiText.tint = PIXI.utils.string2hex(this.textColor);
     pixiText.x = x;
-    pixiText.y = y + lineHeight - Math.round(this.fontSize);
+    pixiText.y = y + lineHeight - Math.round(this.fontSize * 1.25);
     maxWidth = maxWidth || 0xffffffff;
     if (align == 'center') {
         pixiText.anchor.set(0.5, 0);
