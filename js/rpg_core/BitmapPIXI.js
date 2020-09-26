@@ -134,7 +134,7 @@ BitmapPIXI.prototype.drawText = function (text, x, y, maxWidth, lineHeight, alig
     // since they use {text}.replace
     text = String(text);
     let pixiText = new PIXI.BitmapText(text, {
-        font: style.fontFamily
+        fontName: style.fontFamily
     });
 
     if (PIXI.BitmapFont.available[style.fontFamily].size !== style.fontSize) {
