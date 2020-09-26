@@ -13,7 +13,6 @@ This fork introduces opinionated changes that may break functionality.
 - REMOVED: Picture smooth scaling
 - REMOVED: HTML5Audio
 - REMOVED: Gradients in gauges
-- BUG: Formation window has some issues with the selection rectangle not being removed
 
 ## Introduction
 

@@ -227,12 +227,14 @@ BitmapPIXI.prototype.fillRect = function (x, y, width, height, color) {
     color = PIXI.utils.string2hex(color);
     rectangle.beginFill(color);
     rectangle.drawRect(
-        x,
-        y,
+        0,
+        0,
         width,
         height,
     );
     rectangle.endFill();
+    rectangle.x = x;
+    rectangle.y = y;
     rectangle.alpha = this._paintOpacity / 255;
     if (rectangle) this.addChild(rectangle);
 };
@@ -246,11 +248,13 @@ BitmapPIXI.prototype.drawCircle = function (x, y, radius, color) {
     color = PIXI.utils.string2hex(color);
     circle.beginFill(color);
     circle.drawCircle(
-        x,
-        y,
+        0,
+        0,
         radius,
     );
     circle.endFill();
+    circle.x = x;
+    circle.y = y;
     circle.alpha = this._paintOpacity / 255;
     if (circle) this.addChild(circle);
 };
