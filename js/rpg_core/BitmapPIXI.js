@@ -44,14 +44,14 @@ Object.defineProperty(BitmapPIXI.prototype, 'paintOpacity', {
 });
 
 Object.defineProperty(BitmapPIXI.prototype, 'width', {
-    get: function() {
+    get: function () {
         return this._width;
     },
     configurable: true
 });
 
 Object.defineProperty(BitmapPIXI.prototype, 'height', {
-    get: function() {
+    get: function () {
         return this._height;
     },
     configurable: true
@@ -125,6 +125,7 @@ BitmapPIXI.prototype.drawText = function (text, x, y, maxWidth, lineHeight, alig
             chars: [
                 [" ", "~"],
                 '\u2192',
+                '’',
             ]
         }
         PIXI.BitmapFont.from(style.fontFamily, style, bitmapOptions);
