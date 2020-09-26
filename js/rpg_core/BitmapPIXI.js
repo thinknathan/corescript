@@ -134,20 +134,14 @@ BitmapPIXI.prototype.drawText = function (text, x, y, maxWidth, lineHeight, alig
     // since they use {text}.replace
     text = String(text);
     let pixiText = new PIXI.BitmapText(text, {
-        fontName: style.fontFamily
+        fontName: style.fontFamily,
+        fontSize: style.fontSize,
+        tint: PIXI.utils.string2hex(this.textColor),
     });
-
-    if (PIXI.BitmapFont.available[style.fontFamily].size !== style.fontSize) {
-        let scaling = style.fontSize / PIXI.BitmapFont.available[style.fontFamily].size;
-        scaling = Math.ceil(scaling * 10) / 10;
-        pixiText.scale.x = scaling;
-        pixiText.scale.y = scaling;
-    }
     if (!style.wordWrap && pixiText.width > maxWidth) {
         let scaling = maxWidth / pixiText.width;
         pixiText.scale.x = scaling;
     }
-    pixiText.tint = PIXI.utils.string2hex(this.textColor);
     pixiText.x = x;
     pixiText.y = y + lineHeight - Math.round(this.fontSize * 1.25);
     maxWidth = maxWidth || 0xffffffff;
