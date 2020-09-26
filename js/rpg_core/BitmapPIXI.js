@@ -145,6 +145,12 @@ BitmapPIXI.prototype.drawText = function (text, x, y, maxWidth, lineHeight, alig
         pixiText.scale.x = scaling;
         pixiText.scale.y = scaling;
     }
+    if (!style.wordWrap && pixiText.width > maxWidth) {
+        let scaling = maxWidth / pixiText.width;
+        console.log('Text is too wide; must squish', scaling);
+        pixiText.scale.x = scaling;
+        console.log(pixiText);
+    }
     pixiText.tint = PIXI.utils.string2hex(this.textColor);
     pixiText.x = x;
     pixiText.y = y + lineHeight - Math.round(this.fontSize * 1.25);
@@ -156,7 +162,6 @@ BitmapPIXI.prototype.drawText = function (text, x, y, maxWidth, lineHeight, alig
         pixiText.anchor.set(1, 0);
         pixiText.x = x + maxWidth;
     }
-
     pixiText.alpha = this._paintOpacity / 255;
     if (pixiText) this.addChild(pixiText);
 };
