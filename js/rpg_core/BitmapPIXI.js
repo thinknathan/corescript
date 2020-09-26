@@ -14,8 +14,10 @@ BitmapPIXI.prototype.constructor = BitmapPIXI;
 
 BitmapPIXI.prototype.initialize = function (width, height) {
     PIXI.Container.call(this);
-    if (width) this.width = width;
-    if (height) this.height = height;
+    width = Math.max(width || 0, 1);
+    height = Math.max(height || 0, 1);
+    this.width = width;
+    this.height = height;
     this._paintOpacity = 255;
 
     this.textPadding = 2; // Adjust this if text is cut-off
