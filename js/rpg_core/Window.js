@@ -463,6 +463,12 @@ Window.prototype._refreshBack = function () {
     this._windowBackSprite.height = h;
     this._windowBackSprite.x = m;
     this._windowBackSprite.y = m;
+    this._windowBackSprite.children.forEach(function (child) {
+        if (child) {
+            child.width = w;
+            child.height = h;
+        }
+    });
 
     //this._windowBackSprite.setFrame(0, 0, w, h);
 };
