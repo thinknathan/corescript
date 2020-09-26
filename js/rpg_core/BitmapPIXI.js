@@ -117,7 +117,7 @@ BitmapPIXI.prototype.drawText = function (text, x, y, maxWidth, lineHeight, alig
         fontStyle: this.fontItalic ? 'italic' : 'normal',
         stroke: this.outlineColor,
         strokeThickness: this.outlineWidth,
-    };
+    }
 
     if (!PIXI.BitmapFont.available[style.fontFamily]) {
         let bitmapOptions = {
@@ -157,15 +157,14 @@ BitmapPIXI.prototype.drawText = function (text, x, y, maxWidth, lineHeight, alig
 };
 
 BitmapPIXI.prototype.measureTextWidth = function (text) {
-    let style = {
+    text = String(text);
+    let style = new PIXI.TextStyle({
         fontFamily: this.fontFace,
         fontSize: this.fontSize,
         padding: this.textPadding,
-    };
-    let pixiText = new PIXI.Text(text, style);
-    let width = pixiText.width;
-    pixiText.destroy(true);
-    return width;
+    });
+    let textMetrics = PIXI.TextMetrics.measureText(text, style);
+    return textMetrics.width;
 };
 
 
