@@ -13,6 +13,7 @@ This fork introduces opinionated changes that may break functionality.
 - REMOVED: Picture smooth scaling
 - REMOVED: HTML5Audio
 - REMOVED: Gradients in gauges
+- NOTE: "Window Color" in the System menu of the editor is now applied differently than the default scripts. The default value of (0, 0, 0) is black. Using pure white (255, 255, 255) will disable it.
 
 ## Introduction
 
