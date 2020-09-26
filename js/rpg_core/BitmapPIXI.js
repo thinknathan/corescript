@@ -120,7 +120,6 @@ BitmapPIXI.prototype.drawText = function (text, x, y, maxWidth, lineHeight, alig
     };
 
     if (!PIXI.BitmapFont.available[style.fontFamily]) {
-        console.log('Generating font family', style.fontFamily);
         let bitmapOptions = {
             chars: [
                 [" ", "~"],
@@ -141,15 +140,12 @@ BitmapPIXI.prototype.drawText = function (text, x, y, maxWidth, lineHeight, alig
     if (PIXI.BitmapFont.available[style.fontFamily].size !== style.fontSize) {
         let scaling = style.fontSize / PIXI.BitmapFont.available[style.fontFamily].size;
         scaling = Math.ceil(scaling * 10) / 10;
-        console.log('Scaling needed', style.fontSize, PIXI.BitmapFont.available[style.fontFamily].size, scaling);
         pixiText.scale.x = scaling;
         pixiText.scale.y = scaling;
     }
     if (!style.wordWrap && pixiText.width > maxWidth) {
         let scaling = maxWidth / pixiText.width;
-        console.log('Text is too wide; must squish', scaling);
         pixiText.scale.x = scaling;
-        console.log(pixiText);
     }
     pixiText.tint = PIXI.utils.string2hex(this.textColor);
     pixiText.x = x;
