@@ -8,12 +8,11 @@ This fork introduces opinionated changes that may break functionality.
 - Updated to use PIXI v5
 - Uses PIXI equivalents whenever possible instead of the Bitmap object
 - Uses PIXI.BitmapText for fast, memory-efficient text
-- Allows windows to overlap with each other
+- Allows windows to overlap each other
 - REMOVED: Picture blend modes
 - REMOVED: Picture smooth scaling
 - REMOVED: HTML5Audio
 - REMOVED: Gradients in gauges
-- REMOVED: "Window Color" influencing window skins
 - BUG: Formation window has some issues with the selection rectangle not being removed
 
 ## Introduction
