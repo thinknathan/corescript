@@ -14,3 +14,6 @@
 - white-mns
 - rev2nym
 - seea17
+- ayamada
+- LTN Games & DoubleX for their guide "Upgrade MV to PIXI v5"
+- thinknathan
