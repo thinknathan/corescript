@@ -45,6 +45,13 @@ Object.defineProperty(BitmapPIXI.prototype, 'paintOpacity', {
 
 
 
+BitmapPIXI.prototype.resize = function (width, height) {
+    width = Math.max(width || 0, 1);
+    height = Math.max(height || 0, 1);
+    this.width = width;
+    this.height = height;
+};
+
 BitmapPIXI.prototype.clear = function () {
     for (let i = this.children.length - 1; i >= 0; i--) {
         this.children[i].destroy({
