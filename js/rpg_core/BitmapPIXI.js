@@ -16,8 +16,8 @@ BitmapPIXI.prototype.initialize = function (width, height) {
     PIXI.Container.call(this);
     width = Math.max(width || 0, 1);
     height = Math.max(height || 0, 1);
-    this.width = width;
-    this.height = height;
+    this._width = width;
+    this._height = height;
     this._paintOpacity = 255;
 
     this.textPadding = 2; // Adjust this if text is cut-off
@@ -43,6 +43,20 @@ Object.defineProperty(BitmapPIXI.prototype, 'paintOpacity', {
     configurable: true
 });
 
+Object.defineProperty(BitmapPIXI.prototype, 'width', {
+    get: function() {
+        return this._width;
+    },
+    configurable: true
+});
+
+Object.defineProperty(BitmapPIXI.prototype, 'height', {
+    get: function() {
+        return this._height;
+    },
+    configurable: true
+});
+
 
 
 
@@ -50,8 +64,8 @@ Object.defineProperty(BitmapPIXI.prototype, 'paintOpacity', {
 BitmapPIXI.prototype.resize = function (width, height) {
     width = Math.max(width || 0, 1);
     height = Math.max(height || 0, 1);
-    this.width = width;
-    this.height = height;
+    this._width = width;
+    this._height = height;
 };
 
 BitmapPIXI.prototype.clear = function () {
