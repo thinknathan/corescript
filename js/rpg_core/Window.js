@@ -363,6 +363,12 @@ Window.prototype.setCursorRect = function (x, y, width, height) {
  */
 Window.prototype.setTone = function (r, g, b) {
     var tone = this._colorTone;
+    r = r / 255;
+    g = g / 255;
+    b = b / 255;
+    if (r < 0) r = 0;
+    if (g < 0) g = 0;
+    if (b < 0) b = 0;
     if (r !== tone[0] || g !== tone[1] || b !== tone[2]) {
         this._colorTone = [r, g, b];
         this._refreshBack();
@@ -443,9 +449,10 @@ Window.prototype._refreshAllParts = function () {
  * @private
  */
 Window.prototype._refreshBack = function () {
-    var m = this._margin;
-    var w = this._width - m * 2;
-    var h = this._height - m * 2;
+    let m = this._margin;
+    let w = this._width - m * 2;
+    let h = this._height - m * 2;
+    let tone = PIXI.utils.rgb2hex(this._colorTone);
 
     if (w > 0 && h > 0 && this._windowskin && !this._windowBackSprite._setupComplete) {
         let p = 96;
@@ -453,9 +460,7 @@ Window.prototype._refreshBack = function () {
         this._windowBackSprite.addChild(
             this._windowBackSprite.createTilingSprite(this._windowskin.baseTexture, 0, p, p, p, w, h)
         );
-        // [Note] No longer has support for adjusting tone
-        //var tone = this._colorTone;
-        //bitmap.adjustTone(tone[0], tone[1], tone[2]);
+
         this._windowBackSprite._setupComplete = true;
     }
 
@@ -467,9 +472,9 @@ Window.prototype._refreshBack = function () {
         if (child) {
             child.width = w;
             child.height = h;
+            child.tint = tone;
         }
     });
-
     //this._windowBackSprite.setFrame(0, 0, w, h);
 };
 
