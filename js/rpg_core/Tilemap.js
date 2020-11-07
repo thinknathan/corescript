@@ -744,14 +744,14 @@ Tilemap.prototype._sortChildren = function() {
  * @param {Object} b
  * @private
  */
-Tilemap.prototype._compareChildOrder = function(a, b) {
-    if (a.z !== b.z) {
-        return a.z - b.z;
-    } else if (a.y !== b.y) {
+Tilemap.prototype._compareChildOrder = function (a, b) {
+    if (a.z === b.z) {
+        if (a.y === b.y) {
+            return a.spriteId - b.spriteId;
+        }
         return a.y - b.y;
-    } else {
-        return a.spriteId - b.spriteId;
     }
+    return a.z - b.z;
 };
 
 // Tile type checkers
