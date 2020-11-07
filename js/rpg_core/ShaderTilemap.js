@@ -124,12 +124,9 @@ ShaderTilemap.prototype._createLayers = function() {
         this.addChild(this.lowerZLayer = new PIXI.tilemap.ZLayer(this, 0));
         this.addChild(this.upperZLayer = new PIXI.tilemap.ZLayer(this, 4));
 
-        var parameters = PluginManager.parameters('ShaderTilemap');
-        var useSquareShader = Number(parameters.hasOwnProperty('squareShader') ? parameters['squareShader'] : 0);
-
-        this.lowerZLayer.addChild(this.lowerLayer = new PIXI.tilemap.CompositeRectTileLayer(0, [], useSquareShader));
+        this.lowerZLayer.addChild(this.lowerLayer = new PIXI.tilemap.CompositeRectTileLayer(0, []));
         this.lowerLayer.shadowColor = new Float32Array([0.0, 0.0, 0.0, 0.5]);
-        this.upperZLayer.addChild(this.upperLayer = new PIXI.tilemap.CompositeRectTileLayer(4, [], useSquareShader));
+        this.upperZLayer.addChild(this.upperLayer = new PIXI.tilemap.CompositeRectTileLayer(4, []));
     }
 };
 
