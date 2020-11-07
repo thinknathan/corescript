@@ -69,9 +69,19 @@ Utils.isNwjs = function() {
  * @method isMobileDevice
  * @return {Boolean} True if the platform is a mobile device
  */
-Utils.isMobileDevice = function() {
+Utils.isMobileDevice = function () {
     var r = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i;
-    return !!navigator.userAgent.match(r);
+    if (!!navigator.userAgent.match(r)) {
+        Utils.isMobileDevice = function () {
+            return true;
+        };
+        return true;
+    }
+
+    Utils.isMobileDevice = function () {
+        return false;
+    };
+    return false;
 };
 
 /**
@@ -81,10 +91,19 @@ Utils.isMobileDevice = function() {
  * @method isMobileSafari
  * @return {Boolean} True if the browser is Mobile Safari
  */
-Utils.isMobileSafari = function() {
+Utils.isMobileSafari = function () {
     var agent = navigator.userAgent;
-    return !!(agent.match(/iPhone|iPad|iPod/) && agent.match(/AppleWebKit/) &&
-              !agent.match('CriOS'));
+    if (!!(agent.match(/iPhone|iPad|iPod/) && agent.match(/AppleWebKit/) &&
+            !agent.match('CriOS'))) {
+        Utils.isMobileSafari = function () {
+            return true;
+        };
+        return true;
+    }
+    Utils.isMobileSafari = function () {
+        return false;
+    };
+    return false;
 };
 
 /**
