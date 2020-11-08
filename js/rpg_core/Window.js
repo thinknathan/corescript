@@ -516,7 +516,7 @@ Window.prototype._refreshFrame = function () {
             WindowSkinCache.addFrame(this._windowskin._url, texture);
         }
 
-        this._windowFramePlane = new PIXI.NineSlicePlane(texture);
+        this._windowFramePlane = new PIXI.NineSlicePlane(texture, 12, 12, 12, 12);
         this._windowFrameSprite.addChild(this._windowFramePlane);
         this._windowFrameSprite._setupComplete = true;
     }
