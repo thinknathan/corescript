@@ -16,8 +16,8 @@ Window_DebugRange.lastIndex  = 0;
 Window_DebugRange.prototype.initialize = function(x, y) {
     this._maxSwitches = Math.ceil(($dataSystem.switches.length - 1) / 10);
     this._maxVariables = Math.ceil(($dataSystem.variables.length - 1) / 10);
-    var width = this.windowWidth();
-    var height = this.windowHeight();
+    let width = this.windowWidth();
+    let height = this.windowHeight();
     Window_Selectable.prototype.initialize.call(this, x, y, width, height);
     this.refresh();
     this.setTopRow(Window_DebugRange.lastTopRow);
@@ -50,7 +50,7 @@ Window_DebugRange.prototype.mode = function() {
 };
 
 Window_DebugRange.prototype.topId = function() {
-    var index = this.index();
+    let index = this.index();
     if (index < this._maxSwitches) {
         return index * 10 + 1;
     } else {
@@ -64,9 +64,9 @@ Window_DebugRange.prototype.refresh = function() {
 };
 
 Window_DebugRange.prototype.drawItem = function(index) {
-    var rect = this.itemRectForText(index);
-    var start;
-    var text;
+    let rect = this.itemRectForText(index);
+    let start;
+    let text;
     if (index < this._maxSwitches) {
         start = index * 10 + 1;
         text = 'S';
@@ -74,7 +74,7 @@ Window_DebugRange.prototype.drawItem = function(index) {
         start = (index - this._maxSwitches) * 10 + 1;
         text = 'V';
     }
-    var end = start + 9;
+    let end = start + 9;
     text += ' [' + start.padZero(4) + '-' + end.padZero(4) + ']';
     this.drawText(text, rect.x, rect.y, rect.width);
 };

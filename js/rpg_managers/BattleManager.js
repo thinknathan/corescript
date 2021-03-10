@@ -207,9 +207,9 @@ BattleManager.clearActor = function() {
 };
 
 BattleManager.changeActor = function(newActorIndex, lastActorActionState) {
-    var lastActor = this.actor();
+    let lastActor = this.actor();
     this._actorIndex = newActorIndex;
-    var newActor = this.actor();
+    let newActor = this.actor();
     if (lastActor) {
         lastActor.setActionState(lastActorActionState);
     }
@@ -248,13 +248,13 @@ BattleManager.startInput = function() {
 };
 
 BattleManager.inputtingAction = function() {
-    var actor = this.actor();
+    let actor = this.actor();
     return actor ? actor.inputtingAction() : null;
 };
 
 BattleManager.selectNextCommand = function() {
     do {
-        var actor = this.actor();
+        let actor = this.actor();
         if (!actor || !actor.selectNextCommand()) {
             this.changeActor(this._actorIndex + 1, 'waiting');
             if (this._actorIndex >= $gameParty.size()) {
@@ -267,7 +267,7 @@ BattleManager.selectNextCommand = function() {
 
 BattleManager.selectPreviousCommand = function() {
     do {
-        var actor =this.actor();
+        let actor =this.actor();
         if (!actor || !actor.selectPreviousCommand()) {
             this.changeActor(this._actorIndex - 1, 'undecided');
             if (this._actorIndex < 0) {
@@ -303,8 +303,8 @@ BattleManager.updateTurn = function() {
 };
 
 BattleManager.processTurn = function() {
-    var subject = this._subject;
-    var action = subject.currentAction();
+    let subject = this._subject;
+    let action = subject.currentAction();
     if (action) {
         action.prepare();
         if (action.isValid()) {
@@ -346,7 +346,7 @@ BattleManager.updateTurnEnd = function() {
 
 BattleManager.getNextSubject = function() {
     for (;;) {
-        var battler = this._actionBattlers.shift();
+        let battler = this._actionBattlers.shift();
         if (!battler) {
             return null;
         }
@@ -361,7 +361,7 @@ BattleManager.allBattleMembers = function() {
 };
 
 BattleManager.makeActionOrders = function() {
-    var battlers = [];
+    let battlers = [];
     if (!this._surprise) {
         battlers = battlers.concat($gameParty.members());
     }
@@ -378,9 +378,9 @@ BattleManager.makeActionOrders = function() {
 };
 
 BattleManager.startAction = function() {
-    var subject = this._subject;
-    var action = subject.currentAction();
-    var targets = action.makeTargets();
+    let subject = this._subject;
+    let action = subject.currentAction();
+    let targets = action.makeTargets();
     this._phase = 'action';
     this._action = action;
     this._targets = targets;
@@ -391,7 +391,7 @@ BattleManager.startAction = function() {
 };
 
 BattleManager.updateAction = function() {
-    var target = this._targets.shift();
+    let target = this._targets.shift();
     if (target) {
         this.invokeAction(this._subject, target);
     } else {
@@ -419,13 +419,13 @@ BattleManager.invokeAction = function(subject, target) {
 };
 
 BattleManager.invokeNormalAction = function(subject, target) {
-    var realTarget = this.applySubstitute(target);
+    let realTarget = this.applySubstitute(target);
     this._action.apply(realTarget);
     this._logWindow.displayActionResults(subject, realTarget);
 };
 
 BattleManager.invokeCounterAttack = function(subject, target) {
-    var action = new Game_Action(target);
+    let action = new Game_Action(target);
     action.setAttack();
     action.apply(subject);
     this._logWindow.displayCounter(target);
@@ -441,7 +441,7 @@ BattleManager.invokeMagicReflection = function(subject, target) {
 
 BattleManager.applySubstitute = function(target) {
     if (this.checkSubstitute(target)) {
-        var substitute = target.friendsUnit().substituteBattler();
+        let substitute = target.friendsUnit().substituteBattler();
         if (substitute && target !== substitute) {
             this._logWindow.displaySubstitute(substitute, target);
             return substitute;
@@ -460,7 +460,7 @@ BattleManager.isActionForced = function() {
 
 BattleManager.forceAction = function(battler) {
     this._actionForcedBattler = battler;
-    var index = this._actionBattlers.indexOf(battler);
+    let index = this._actionBattlers.indexOf(battler);
     if (index >= 0) {
         this._actionBattlers.splice(index, 1);
     }
@@ -519,7 +519,7 @@ BattleManager.processVictory = function() {
 BattleManager.processEscape = function() {
     $gameParty.performEscape();
     SoundManager.playEscape();
-    var success = this._preemptive ? true : (Math.random() < this._escapeRatio);
+    let success = this._preemptive ? true : (Math.random() < this._escapeRatio);
     if (success) {
         this.displayEscapeSuccessMessage();
         this._escaped = true;
@@ -610,22 +610,22 @@ BattleManager.displayRewards = function() {
 };
 
 BattleManager.displayExp = function() {
-    var exp = this._rewards.exp;
+    let exp = this._rewards.exp;
     if (exp > 0) {
-        var text = TextManager.obtainExp.format(exp, TextManager.exp);
+        let text = TextManager.obtainExp.format(exp, TextManager.exp);
         $gameMessage.add('\\.' + text);
     }
 };
 
 BattleManager.displayGold = function() {
-    var gold = this._rewards.gold;
+    let gold = this._rewards.gold;
     if (gold > 0) {
         $gameMessage.add('\\.' + TextManager.obtainGold.format(gold));
     }
 };
 
 BattleManager.displayDropItems = function() {
-    var items = this._rewards.items;
+    let items = this._rewards.items;
     if (items.length > 0) {
         $gameMessage.newPage();
         items.forEach(function(item) {
@@ -641,7 +641,7 @@ BattleManager.gainRewards = function() {
 };
 
 BattleManager.gainExp = function() {
-    var exp = this._rewards.exp;
+    let exp = this._rewards.exp;
     $gameParty.allMembers().forEach(function(actor) {
         actor.gainExp(exp);
     });
@@ -652,7 +652,7 @@ BattleManager.gainGold = function() {
 };
 
 BattleManager.gainDropItems = function() {
-    var items = this._rewards.items;
+    let items = this._rewards.items;
     items.forEach(function(item) {
         $gameParty.gainItem(item, 1);
     });

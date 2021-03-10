@@ -104,9 +104,9 @@ Scene_Menu.prototype.onPersonalCancel = function() {
 };
 
 Scene_Menu.prototype.onFormationOk = function() {
-    var index = this._statusWindow.index();
-    var actor = $gameParty.members()[index];
-    var pendingIndex = this._statusWindow.pendingIndex();
+    let index = this._statusWindow.index();
+    let actor = $gameParty.members()[index];
+    let pendingIndex = this._statusWindow.pendingIndex();
     if (pendingIndex >= 0) {
         $gameParty.swapOrder(index, pendingIndex);
         this._statusWindow.setPendingIndex(-1);

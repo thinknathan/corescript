@@ -178,7 +178,7 @@ Game_Enemy.prototype.performCollapse = function() {
 };
 
 Game_Enemy.prototype.transform = function(enemyId) {
-    var name = this.originalName();
+    let name = this.originalName();
     this._enemyId = enemyId;
     if (this.originalName() !== name) {
         this._letter = '';
@@ -191,8 +191,8 @@ Game_Enemy.prototype.transform = function(enemyId) {
 };
 
 Game_Enemy.prototype.meetsCondition = function(action) {
-    var param1 = action.conditionParam1;
-    var param2 = action.conditionParam2;
+    let param1 = action.conditionParam1;
+    let param2 = action.conditionParam2;
     switch (action.conditionType) {
     case 1:
         return this.meetsTurnCondition(param1, param2);
@@ -212,7 +212,7 @@ Game_Enemy.prototype.meetsCondition = function(action) {
 };
 
 Game_Enemy.prototype.meetsTurnCondition = function(param1, param2) {
-    var n = $gameTroop.turnCount();
+    let n = $gameTroop.turnCount();
     if (param2 === 0) {
         return n === param1;
     } else {
@@ -245,13 +245,13 @@ Game_Enemy.prototype.isActionValid = function(action) {
 };
 
 Game_Enemy.prototype.selectAction = function(actionList, ratingZero) {
-    var sum = actionList.reduce(function(r, a) {
+    let sum = actionList.reduce(function(r, a) {
         return r + a.rating - ratingZero;
     }, 0);
     if (sum > 0) {
-        var value = Math.randomInt(sum);
-        for (var i = 0; i < actionList.length; i++) {
-            var action = actionList[i];
+        let value = Math.randomInt(sum);
+        for (let i = 0; i < actionList.length; i++) {
+            let action = actionList[i];
             value -= action.rating - ratingZero;
             if (value < 0) {
                 return action;
@@ -263,14 +263,14 @@ Game_Enemy.prototype.selectAction = function(actionList, ratingZero) {
 };
 
 Game_Enemy.prototype.selectAllActions = function(actionList) {
-    var ratingMax = Math.max.apply(null, actionList.map(function(a) {
+    let ratingMax = Math.max.apply(null, actionList.map(function(a) {
         return a.rating;
     }));
-    var ratingZero = ratingMax - 3;
+    let ratingZero = ratingMax - 3;
     actionList = actionList.filter(function(a) {
         return a.rating > ratingZero;
     });
-    for (var i = 0; i < this.numActions(); i++) {
+    for (let i = 0; i < this.numActions(); i++) {
         this.action(i).setEnemyAction(this.selectAction(actionList, ratingZero));
     }
 };
@@ -278,7 +278,7 @@ Game_Enemy.prototype.selectAllActions = function(actionList) {
 Game_Enemy.prototype.makeActions = function() {
     Game_Battler.prototype.makeActions.call(this);
     if (this.numActions() > 0) {
-        var actionList = this.enemy().actions.filter(function(a) {
+        let actionList = this.enemy().actions.filter(function(a) {
             return this.isActionValid(a);
         }, this);
         if (actionList.length > 0) {

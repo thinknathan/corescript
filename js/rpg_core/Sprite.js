@@ -16,7 +16,7 @@ Sprite.prototype.constructor = Sprite;
 Sprite.voidFilter = new PIXI.filters.AlphaFilter();
 
 Sprite.prototype.initialize = function(bitmap) {
-    var texture = new PIXI.Texture(new PIXI.BaseTexture());
+    let texture = new PIXI.Texture(new PIXI.BaseTexture());
     texture.CREATED_BY = this;
     texture.CREATED_AT = Date.now();
 
@@ -152,7 +152,7 @@ Sprite.prototype.move = function(x, y) {
  */
 Sprite.prototype.setFrame = function(x, y, width, height) {
     this._refreshFrame = false;
-    var frame = this._frame;
+    let frame = this._frame;
     if (x !== frame.x || y !== frame.y ||
             width !== frame.width || height !== frame.height) {
         frame.x = x;
@@ -236,16 +236,16 @@ Sprite.prototype._onBitmapLoad = function(bitmapLoaded) {
  * @private
  */
 Sprite.prototype._refresh = function() {
-    var frameX = Math.floor(this._frame.x);
-    var frameY = Math.floor(this._frame.y);
-    var frameW = Math.floor(this._frame.width);
-    var frameH = Math.floor(this._frame.height);
-    var bitmapW = this._bitmap ? this._bitmap.width : 0;
-    var bitmapH = this._bitmap ? this._bitmap.height : 0;
-    var realX = frameX.clamp(0, bitmapW);
-    var realY = frameY.clamp(0, bitmapH);
-    var realW = (frameW - realX + frameX).clamp(0, bitmapW - realX);
-    var realH = (frameH - realY + frameY).clamp(0, bitmapH - realY);
+    let frameX = Math.floor(this._frame.x);
+    let frameY = Math.floor(this._frame.y);
+    let frameW = Math.floor(this._frame.width);
+    let frameH = Math.floor(this._frame.height);
+    let bitmapW = this._bitmap ? this._bitmap.width : 0;
+    let bitmapH = this._bitmap ? this._bitmap.height : 0;
+    let realX = frameX.clamp(0, bitmapW);
+    let realY = frameY.clamp(0, bitmapH);
+    let realW = (frameW - realX + frameX).clamp(0, bitmapW - realX);
+    let realH = (frameH - realY + frameY).clamp(0, bitmapH - realY);
 
     this._realFrame.x = realX;
     this._realFrame.y = realY;
@@ -304,7 +304,7 @@ Sprite.prototype._isInBitmapRect = function(x, y, w, h) {
  * @private
  */
 Sprite.prototype._needsTint = function() {
-    var tone = this._colorTone;
+    let tone = this._colorTone;
     return tone[0] || tone[1] || tone[2] || tone[3] || this._blendColor[3] > 0;
 };
 
@@ -341,24 +341,24 @@ Sprite.prototype._createTinter = function(w, h) {
  * @private
  */
 Sprite.prototype._executeTint = function(x, y, w, h) {
-    var context = this._context;
-    var tone = this._colorTone;
-    var color = this._blendColor;
+    let context = this._context;
+    let tone = this._colorTone;
+    let color = this._blendColor;
     console.warn('Tinting on canvas is slow.');
     context.globalCompositeOperation = 'copy';
     context.drawImage(this._bitmap.canvas, x, y, w, h, 0, 0, w, h);
 
     if (tone[0] || tone[1] || tone[2] || tone[3]) {
         if (Graphics.canUseSaturationBlend()) {
-            var gray = Math.max(0, tone[3]);
+            let gray = Math.max(0, tone[3]);
             context.globalCompositeOperation = 'saturation';
             context.fillStyle = 'rgba(255,255,255,' + gray / 255 + ')';
             context.fillRect(0, 0, w, h);
         }
 
-        var r1 = Math.max(0, tone[0]);
-        var g1 = Math.max(0, tone[1]);
-        var b1 = Math.max(0, tone[2]);
+        let r1 = Math.max(0, tone[0]);
+        let g1 = Math.max(0, tone[1]);
+        let b1 = Math.max(0, tone[2]);
         context.globalCompositeOperation = 'lighter';
         context.fillStyle = Utils.rgbToCssColor(r1, g1, b1);
         context.fillRect(0, 0, w, h);
@@ -368,9 +368,9 @@ Sprite.prototype._executeTint = function(x, y, w, h) {
             context.fillStyle = 'white';
             context.fillRect(0, 0, w, h);
 
-            var r2 = Math.max(0, -tone[0]);
-            var g2 = Math.max(0, -tone[1]);
-            var b2 = Math.max(0, -tone[2]);
+            let r2 = Math.max(0, -tone[0]);
+            let g2 = Math.max(0, -tone[1]);
+            let b2 = Math.max(0, -tone[2]);
             context.globalCompositeOperation = 'lighter';
             context.fillStyle = Utils.rgbToCssColor(r2, g2, b2);
             context.fillRect(0, 0, w, h);
@@ -381,10 +381,10 @@ Sprite.prototype._executeTint = function(x, y, w, h) {
         }
     }
 
-    var r3 = Math.max(0, color[0]);
-    var g3 = Math.max(0, color[1]);
-    var b3 = Math.max(0, color[2]);
-    var a3 = Math.max(0, color[3]);
+    let r3 = Math.max(0, color[0]);
+    let g3 = Math.max(0, color[1]);
+    let b3 = Math.max(0, color[2]);
+    let a3 = Math.max(0, color[3]);
     context.globalCompositeOperation = 'source-atop';
     context.fillStyle = Utils.rgbToCssColor(r3, g3, b3);
     context.globalAlpha = a3 / 255;
@@ -396,7 +396,7 @@ Sprite.prototype._executeTint = function(x, y, w, h) {
 };
 
 Sprite.prototype._executeTintWebGL = function() {
-   var color = this._blendColor;
+   let color = this._blendColor;
    if (!this.filters) {
        this.filters = [];
    }

@@ -30,9 +30,9 @@ Scene_Equip.prototype.createStatusWindow = function() {
 };
 
 Scene_Equip.prototype.createCommandWindow = function() {
-    var wx = this._statusWindow.width;
-    var wy = this._helpWindow.height;
-    var ww = Graphics.boxWidth - this._statusWindow.width;
+    let wx = this._statusWindow.width;
+    let wy = this._helpWindow.height;
+    let ww = Graphics.boxWidth - this._statusWindow.width;
     this._commandWindow = new Window_EquipCommand(wx, wy, ww);
     this._commandWindow.setHelpWindow(this._helpWindow);
     this._commandWindow.setHandler('equip',    this.commandEquip.bind(this));
@@ -45,10 +45,10 @@ Scene_Equip.prototype.createCommandWindow = function() {
 };
 
 Scene_Equip.prototype.createSlotWindow = function() {
-    var wx = this._statusWindow.width;
-    var wy = this._commandWindow.y + this._commandWindow.height;
-    var ww = Graphics.boxWidth - this._statusWindow.width;
-    var wh = this._statusWindow.height - this._commandWindow.height;
+    let wx = this._statusWindow.width;
+    let wy = this._commandWindow.y + this._commandWindow.height;
+    let ww = Graphics.boxWidth - this._statusWindow.width;
+    let wh = this._statusWindow.height - this._commandWindow.height;
     this._slotWindow = new Window_EquipSlot(wx, wy, ww, wh);
     this._slotWindow.setHelpWindow(this._helpWindow);
     this._slotWindow.setStatusWindow(this._statusWindow);
@@ -58,10 +58,10 @@ Scene_Equip.prototype.createSlotWindow = function() {
 };
 
 Scene_Equip.prototype.createItemWindow = function() {
-    var wx = 0;
-    var wy = this._statusWindow.y + this._statusWindow.height;
-    var ww = Graphics.boxWidth;
-    var wh = Graphics.boxHeight - wy;
+    let wx = 0;
+    let wy = this._statusWindow.y + this._statusWindow.height;
+    let ww = Graphics.boxWidth;
+    let wh = Graphics.boxHeight - wy;
     this._itemWindow = new Window_EquipItem(wx, wy, ww, wh);
     this._itemWindow.setHelpWindow(this._helpWindow);
     this._itemWindow.setStatusWindow(this._statusWindow);
@@ -72,7 +72,7 @@ Scene_Equip.prototype.createItemWindow = function() {
 };
 
 Scene_Equip.prototype.refreshActor = function() {
-    var actor = this.actor();
+    let actor = this.actor();
     this._statusWindow.setActor(actor);
     this._slotWindow.setActor(actor);
     this._itemWindow.setActor(actor);

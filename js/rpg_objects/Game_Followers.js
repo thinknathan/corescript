@@ -11,7 +11,7 @@ Game_Followers.prototype.initialize = function() {
     this._visible = $dataSystem.optFollowers;
     this._gathering = false;
     this._data = [];
-    for (var i = 1; i < $gameParty.maxBattleMembers(); i++) {
+    for (let i = 1; i < $gameParty.maxBattleMembers(); i++) {
         this._data.push(new Game_Follower(i));
     }
 };
@@ -63,18 +63,18 @@ Game_Followers.prototype.update = function() {
 };
 
 Game_Followers.prototype.updateMove = function() {
-    for (var i = this._data.length - 1; i >= 0; i--) {
-        var precedingCharacter = (i > 0 ? this._data[i - 1] : $gamePlayer);
+    for (let i = this._data.length - 1; i >= 0; i--) {
+        let precedingCharacter = (i > 0 ? this._data[i - 1] : $gamePlayer);
         this._data[i].chaseCharacter(precedingCharacter);
     }
 };
 
 Game_Followers.prototype.jumpAll = function() {
     if ($gamePlayer.isJumping()) {
-        for (var i = 0; i < this._data.length; i++) {
-            var follower = this._data[i];
-            var sx = $gamePlayer.deltaXFrom(follower.x);
-            var sy = $gamePlayer.deltaYFrom(follower.y);
+        for (let i = 0; i < this._data.length; i++) {
+            let follower = this._data[i];
+            let sx = $gamePlayer.deltaXFrom(follower.x);
+            let sy = $gamePlayer.deltaYFrom(follower.y);
             follower.jump(sx, sy);
         }
     }

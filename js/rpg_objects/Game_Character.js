@@ -121,7 +121,7 @@ Game_Character.prototype.updateRoutineMove = function() {
         this._waitCount--;
     } else {
         this.setMovementSuccess(true);
-        var command = this._moveRoute.list[this._moveRouteIndex];
+        let command = this._moveRoute.list[this._moveRouteIndex];
         if (command) {
             this.processMoveCommand(command);
             this.advanceMoveRouteIndex();
@@ -130,8 +130,8 @@ Game_Character.prototype.updateRoutineMove = function() {
 };
 
 Game_Character.prototype.processMoveCommand = function(command) {
-    var gc = Game_Character;
-    var params = command.parameters;
+    let gc = Game_Character;
+    let params = command.parameters;
     switch (command.code) {
     case gc.ROUTE_END:
         this.processRouteEnd();
@@ -273,7 +273,7 @@ Game_Character.prototype.processMoveCommand = function(command) {
             eval(params[0]);
         } catch (error) {
             if (this._callerEventInfo) {
-                for (var key in this._callerEventInfo) {
+                for (let key in this._callerEventInfo) {
                     error[key] = this._callerEventInfo[key];
                 }
                 error.line += this._moveRouteIndex + 1;
@@ -303,15 +303,15 @@ Game_Character.prototype.deltaYFrom = function(y) {
 };
 
 Game_Character.prototype.moveRandom = function() {
-    var d = 2 + Math.randomInt(4) * 2;
+    let d = 2 + Math.randomInt(4) * 2;
     if (this.canPass(this.x, this.y, d)) {
         this.moveStraight(d);
     }
 };
 
 Game_Character.prototype.moveTowardCharacter = function(character) {
-    var sx = this.deltaXFrom(character.x);
-    var sy = this.deltaYFrom(character.y);
+    let sx = this.deltaXFrom(character.x);
+    let sy = this.deltaYFrom(character.y);
     if (Math.abs(sx) > Math.abs(sy)) {
         this.moveStraight(sx > 0 ? 4 : 6);
         if (!this.isMovementSucceeded() && sy !== 0) {
@@ -326,8 +326,8 @@ Game_Character.prototype.moveTowardCharacter = function(character) {
 };
 
 Game_Character.prototype.moveAwayFromCharacter = function(character) {
-    var sx = this.deltaXFrom(character.x);
-    var sy = this.deltaYFrom(character.y);
+    let sx = this.deltaXFrom(character.x);
+    let sy = this.deltaYFrom(character.y);
     if (Math.abs(sx) > Math.abs(sy)) {
         this.moveStraight(sx > 0 ? 6 : 4);
         if (!this.isMovementSucceeded() && sy !== 0) {
@@ -342,8 +342,8 @@ Game_Character.prototype.moveAwayFromCharacter = function(character) {
 };
 
 Game_Character.prototype.turnTowardCharacter = function(character) {
-    var sx = this.deltaXFrom(character.x);
-    var sy = this.deltaYFrom(character.y);
+    let sx = this.deltaXFrom(character.x);
+    let sy = this.deltaYFrom(character.y);
     if (Math.abs(sx) > Math.abs(sy)) {
         this.setDirection(sx > 0 ? 4 : 6);
     } else if (sy !== 0) {
@@ -352,8 +352,8 @@ Game_Character.prototype.turnTowardCharacter = function(character) {
 };
 
 Game_Character.prototype.turnAwayFromCharacter = function(character) {
-    var sx = this.deltaXFrom(character.x);
-    var sy = this.deltaYFrom(character.y);
+    let sx = this.deltaXFrom(character.x);
+    let sy = this.deltaYFrom(character.y);
     if (Math.abs(sx) > Math.abs(sy)) {
         this.setDirection(sx > 0 ? 6 : 4);
     } else if (sy !== 0) {
@@ -382,7 +382,7 @@ Game_Character.prototype.moveForward = function() {
 };
 
 Game_Character.prototype.moveBackward = function() {
-    var lastDirectionFix = this.isDirectionFixed();
+    let lastDirectionFix = this.isDirectionFixed();
     this.setDirectionFix(true);
     this.moveStraight(this.reverseDir(this.direction()));
     this.setDirectionFix(lastDirectionFix);
@@ -398,9 +398,9 @@ Game_Character.prototype.processRouteEnd = function() {
 };
 
 Game_Character.prototype.advanceMoveRouteIndex = function() {
-    var moveRoute = this._moveRoute;
+    let moveRoute = this._moveRoute;
     if (moveRoute && (this.isMovementSucceeded() || moveRoute.skippable)) {
-        var numCommands = moveRoute.list.length - 1;
+        let numCommands = moveRoute.list.length - 1;
         this._moveRouteIndex++;
         if (moveRoute.repeat && this._moveRouteIndex >= numCommands) {
             this._moveRouteIndex = 0;
@@ -462,20 +462,20 @@ Game_Character.prototype.turnRandom = function() {
 };
 
 Game_Character.prototype.swap = function(character) {
-    var newX = character.x;
-    var newY = character.y;
+    let newX = character.x;
+    let newY = character.y;
     character.locate(this.x, this.y);
     this.locate(newX, newY);
 };
 
 Game_Character.prototype.findDirectionTo = function(goalX, goalY) {
-    var searchLimit = this.searchLimit();
-    var mapWidth = $gameMap.width();
-    var nodeList = [];
-    var openList = [];
-    var closedList = [];
-    var start = {};
-    var best = start;
+    let searchLimit = this.searchLimit();
+    let mapWidth = $gameMap.width();
+    let nodeList = [];
+    let openList = [];
+    let closedList = [];
+    let start = {};
+    let best = start;
 
     if (this.x === goalX && this.y === goalY) {
         return 0;
@@ -490,18 +490,18 @@ Game_Character.prototype.findDirectionTo = function(goalX, goalY) {
     openList.push(start.y * mapWidth + start.x);
 
     while (nodeList.length > 0) {
-        var bestIndex = 0;
-        for (var i = 0; i < nodeList.length; i++) {
+        let bestIndex = 0;
+        for (let i = 0; i < nodeList.length; i++) {
             if (nodeList[i].f < nodeList[bestIndex].f) {
                 bestIndex = i;
             }
         }
 
-        var current = nodeList[bestIndex];
-        var x1 = current.x;
-        var y1 = current.y;
-        var pos1 = y1 * mapWidth + x1;
-        var g1 = current.g;
+        let current = nodeList[bestIndex];
+        let x1 = current.x;
+        let y1 = current.y;
+        let pos1 = y1 * mapWidth + x1;
+        let g1 = current.g;
 
         nodeList.splice(bestIndex, 1);
         openList.splice(openList.indexOf(pos1), 1);
@@ -516,11 +516,11 @@ Game_Character.prototype.findDirectionTo = function(goalX, goalY) {
             continue;
         }
 
-        for (var j = 0; j < 4; j++) {
-            var direction = 2 + j * 2;
-            var x2 = $gameMap.roundXWithDirection(x1, direction);
-            var y2 = $gameMap.roundYWithDirection(y1, direction);
-            var pos2 = y2 * mapWidth + x2;
+        for (let j = 0; j < 4; j++) {
+            let direction = 2 + j * 2;
+            let x2 = $gameMap.roundXWithDirection(x1, direction);
+            let y2 = $gameMap.roundYWithDirection(y1, direction);
+            let pos2 = y2 * mapWidth + x2;
 
             if (closedList.contains(pos2)) {
                 continue;
@@ -529,11 +529,11 @@ Game_Character.prototype.findDirectionTo = function(goalX, goalY) {
                 continue;
             }
 
-            var g2 = g1 + 1;
-            var index2 = openList.indexOf(pos2);
+            let g2 = g1 + 1;
+            let index2 = openList.indexOf(pos2);
 
             if (index2 < 0 || g2 < nodeList[index2].g) {
-                var neighbor;
+                let neighbor;
                 if (index2 >= 0) {
                     neighbor = nodeList[index2];
                 } else {
@@ -553,13 +553,13 @@ Game_Character.prototype.findDirectionTo = function(goalX, goalY) {
         }
     }
 
-    var node = best;
+    let node = best;
     while (node.parent && node.parent !== start) {
         node = node.parent;
     }
 
-    var deltaX1 = $gameMap.deltaX(node.x, start.x);
-    var deltaY1 = $gameMap.deltaY(node.y, start.y);
+    let deltaX1 = $gameMap.deltaX(node.x, start.x);
+    let deltaY1 = $gameMap.deltaY(node.y, start.y);
     if (deltaY1 > 0) {
         return 2;
     } else if (deltaX1 < 0) {
@@ -570,8 +570,8 @@ Game_Character.prototype.findDirectionTo = function(goalX, goalY) {
         return 8;
     }
 
-    var deltaX2 = this.deltaXFrom(goalX);
-    var deltaY2 = this.deltaYFrom(goalY);
+    let deltaX2 = this.deltaXFrom(goalX);
+    let deltaY2 = this.deltaYFrom(goalY);
     if (Math.abs(deltaX2) > Math.abs(deltaY2)) {
         return deltaX2 > 0 ? 4 : 6;
     } else if (deltaY2 !== 0) {

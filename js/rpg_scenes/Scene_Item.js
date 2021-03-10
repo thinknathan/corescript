@@ -32,8 +32,8 @@ Scene_Item.prototype.createCategoryWindow = function() {
 };
 
 Scene_Item.prototype.createItemWindow = function() {
-    var wy = this._categoryWindow.y + this._categoryWindow.height;
-    var wh = Graphics.boxHeight - wy;
+    let wy = this._categoryWindow.y + this._categoryWindow.height;
+    let wh = Graphics.boxHeight - wy;
     this._itemWindow = new Window_ItemList(0, wy, Graphics.boxWidth, wh);
     this._itemWindow.setHelpWindow(this._helpWindow);
     this._itemWindow.setHandler('ok',     this.onItemOk.bind(this));
@@ -43,10 +43,10 @@ Scene_Item.prototype.createItemWindow = function() {
 };
 
 Scene_Item.prototype.user = function() {
-    var members = $gameParty.movableMembers();
-    var bestActor = members[0];
-    var bestPha = 0;
-    for (var i = 0; i < members.length; i++) {
+    let members = $gameParty.movableMembers();
+    let bestActor = members[0];
+    let bestPha = 0;
+    for (let i = 0; i < members.length; i++) {
         if (members[i].pha > bestPha) {
             bestPha = members[i].pha;
             bestActor = members[i];

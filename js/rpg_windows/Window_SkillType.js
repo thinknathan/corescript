@@ -33,12 +33,12 @@ Window_SkillType.prototype.numVisibleRows = function() {
 
 Window_SkillType.prototype.makeCommandList = function() {
     if (this._actor) {
-        var skillTypes = this._actor.addedSkillTypes();
+        let skillTypes = this._actor.addedSkillTypes();
         skillTypes.sort(function(a, b) {
             return a - b;
         });
         skillTypes.forEach(function(stypeId) {
-            var name = $dataSystem.skillTypes[stypeId];
+            let name = $dataSystem.skillTypes[stypeId];
             this.addCommand(name, 'skill', true, stypeId);
         }, this);
     }
@@ -56,7 +56,7 @@ Window_SkillType.prototype.setSkillWindow = function(skillWindow) {
 };
 
 Window_SkillType.prototype.selectLast = function() {
-    var skill = this._actor.lastMenuSkill();
+    let skill = this._actor.lastMenuSkill();
     if (skill) {
         this.selectExt(skill.stypeId);
     } else {

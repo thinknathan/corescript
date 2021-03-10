@@ -19,8 +19,8 @@ Game_Follower.prototype.initialize = function(memberIndex) {
 };
 
 Game_Follower.prototype.refresh = function() {
-    var characterName = this.isVisible() ? this.actor().characterName() : '';
-    var characterIndex = this.isVisible() ? this.actor().characterIndex() : 0;
+    let characterName = this.isVisible() ? this.actor().characterName() : '';
+    let characterIndex = this.isVisible() ? this.actor().characterIndex() : 0;
     this.setImage(characterName, characterIndex);
 };
 
@@ -44,8 +44,8 @@ Game_Follower.prototype.update = function() {
 };
 
 Game_Follower.prototype.chaseCharacter = function(character) {
-    var sx = this.deltaXFrom(character.x);
-    var sy = this.deltaYFrom(character.y);
+    let sx = this.deltaXFrom(character.x);
+    let sy = this.deltaYFrom(character.y);
     if (sx !== 0 && sy !== 0) {
         this.moveDiagonally(sx > 0 ? 4 : 6, sy > 0 ? 8 : 2);
     } else if (sx !== 0) {

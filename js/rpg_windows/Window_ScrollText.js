@@ -12,8 +12,8 @@ Window_ScrollText.prototype = Object.create(Window_Base.prototype);
 Window_ScrollText.prototype.constructor = Window_ScrollText;
 
 Window_ScrollText.prototype.initialize = function() {
-    var width = Graphics.boxWidth;
-    var height = Graphics.boxHeight;
+    let width = Graphics.boxWidth;
+    let height = Graphics.boxHeight;
     Window_Base.prototype.initialize.call(this, 0, 0, width, height);
     this.opacity = 0;
     this.hide();
@@ -40,7 +40,7 @@ Window_ScrollText.prototype.startMessage = function() {
 };
 
 Window_ScrollText.prototype.refresh = function() {
-    var textState = { index: 0 };
+    let textState = { index: 0 };
     textState.text = this.convertEscapeCharacters(this._text);
     this.resetFontSettings();
     this._allTextHeight = this.calcTextHeight(textState, true);
@@ -61,7 +61,7 @@ Window_ScrollText.prototype.updateMessage = function() {
 };
 
 Window_ScrollText.prototype.scrollSpeed = function() {
-    var speed = $gameMessage.scrollSpeed() / 2;
+    let speed = $gameMessage.scrollSpeed() / 2;
     if (this.isFastForward()) {
         speed *= this.fastForwardRate();
     }

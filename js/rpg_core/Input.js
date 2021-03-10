@@ -123,7 +123,7 @@ Input.update = function() {
     } else {
         this._latestButton = null;
     }
-    for (var name in this._currentState) {
+    for (let name in this._currentState) {
         if (this._currentState[name] && !this._previousState[name]) {
             this._latestButton = name;
             this._pressedTime = 0;
@@ -251,10 +251,10 @@ Object.defineProperty(Input, 'date', {
  */
 Input._wrapNwjsAlert = function() {
     if (Utils.isNwjs()) {
-        var _alert = window.alert;
+        let _alert = window.alert;
         window.alert = function() {
-            var gui = require('nw.gui');
-            var win = gui.Window.get();
+            let gui = require('nw.gui');
+            let win = gui.Window.get();
             _alert.apply(this, arguments);
             win.focus();
             Input.clear();
@@ -286,7 +286,7 @@ Input._onKeyDown = function(event) {
     if (event.keyCode === 144) {    // Numlock
         this.clear();
     }
-    var buttonName = this.keyMapper[event.keyCode];
+    let buttonName = this.keyMapper[event.keyCode];
     if (ResourceHandler.exists() && buttonName === 'ok') {
         ResourceHandler.retry();
     } else if (buttonName) {
@@ -321,7 +321,7 @@ Input._shouldPreventDefault = function(keyCode) {
  * @private
  */
 Input._onKeyUp = function(event) {
-    var buttonName = this.keyMapper[event.keyCode];
+    let buttonName = this.keyMapper[event.keyCode];
     if (buttonName) {
         this._currentState[buttonName] = false;
     }
@@ -346,10 +346,10 @@ Input._onLostFocus = function() {
  */
 Input._pollGamepads = function() {
     if (navigator.getGamepads) {
-        var gamepads = navigator.getGamepads();
+        let gamepads = navigator.getGamepads();
         if (gamepads) {
-            for (var i = 0; i < gamepads.length; i++) {
-                var gamepad = gamepads[i];
+            for (let i = 0; i < gamepads.length; i++) {
+                let gamepad = gamepads[i];
                 if (gamepad && gamepad.connected) {
                     this._updateGamepadState(gamepad);
                 }
@@ -366,16 +366,16 @@ Input._pollGamepads = function() {
  * @private
  */
 Input._updateGamepadState = function(gamepad) {
-    var lastState = this._gamepadStates[gamepad.index] || [];
-    var newState = [];
-    var buttons = gamepad.buttons;
-    var axes = gamepad.axes;
-    var threshold = 0.5;
+    let lastState = this._gamepadStates[gamepad.index] || [];
+    let newState = [];
+    let buttons = gamepad.buttons;
+    let axes = gamepad.axes;
+    let threshold = 0.5;
     newState[12] = false;
     newState[13] = false;
     newState[14] = false;
     newState[15] = false;
-    for (var i = 0; i < buttons.length; i++) {
+    for (let i = 0; i < buttons.length; i++) {
         newState[i] = buttons[i].pressed;
     }
     if (axes[1] < -threshold) {
@@ -388,9 +388,9 @@ Input._updateGamepadState = function(gamepad) {
     } else if (axes[0] > threshold) {
         newState[15] = true;    // right
     }
-    for (var j = 0; j < newState.length; j++) {
+    for (let j = 0; j < newState.length; j++) {
         if (newState[j] !== lastState[j]) {
-            var buttonName = this.gamepadMapper[j];
+            let buttonName = this.gamepadMapper[j];
             if (buttonName) {
                 this._currentState[buttonName] = newState[j];
             }
@@ -405,8 +405,8 @@ Input._updateGamepadState = function(gamepad) {
  * @private
  */
 Input._updateDirection = function() {
-    var x = this._signX();
-    var y = this._signY();
+    let x = this._signX();
+    let y = this._signY();
 
     this._dir8 = this._makeNumpadDirection(x, y);
 
@@ -431,7 +431,7 @@ Input._updateDirection = function() {
  * @private
  */
 Input._signX = function() {
-    var x = 0;
+    let x = 0;
 
     if (this.isPressed('left')) {
         x--;
@@ -448,7 +448,7 @@ Input._signX = function() {
  * @private
  */
 Input._signY = function() {
-    var y = 0;
+    let y = 0;
 
     if (this.isPressed('up')) {
         y--;

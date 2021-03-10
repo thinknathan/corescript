@@ -93,7 +93,7 @@ Weather.prototype._updateDimmer = function() {
  * @private
  */
 Weather.prototype._updateAllSprites = function() {
-    var maxSprites = Math.floor(this.power * 10);
+    let maxSprites = Math.floor(this.power * 10);
     while (this._sprites.length < maxSprites) {
         this._addSprite();
     }
@@ -112,7 +112,7 @@ Weather.prototype._updateAllSprites = function() {
  * @private
  */
 Weather.prototype._addSprite = function() {
-    var sprite = new Sprite(this.viewport);
+    let sprite = new Sprite(this.viewport);
     sprite.opacity = 0;
     this._sprites.push(sprite);
     this.addChild(sprite);

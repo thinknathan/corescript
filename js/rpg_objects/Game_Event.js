@@ -54,7 +54,7 @@ Game_Event.prototype.isCollidedWithCharacters = function(x, y) {
 };
 
 Game_Event.prototype.isCollidedWithEvents = function(x, y) {
-    var events = $gameMap.eventsXyNt(x, y);
+    let events = $gameMap.eventsXyNt(x, y);
     return events.length > 0;
 };
 
@@ -141,8 +141,8 @@ Game_Event.prototype.moveTypeTowardPlayer = function() {
 };
 
 Game_Event.prototype.isNearThePlayer = function() {
-    var sx = Math.abs(this.deltaXFrom($gamePlayer.x));
-    var sy = Math.abs(this.deltaYFrom($gamePlayer.y));
+    let sx = Math.abs(this.deltaXFrom($gamePlayer.x));
+    let sy = Math.abs(this.deltaYFrom($gamePlayer.y));
     return sx + sy < 20;
 };
 
@@ -163,7 +163,7 @@ Game_Event.prototype.isTriggerIn = function(triggers) {
 };
 
 Game_Event.prototype.start = function() {
-    var list = this.list();
+    let list = this.list();
     if (list && list.length > 1) {
         this._starting = true;
         if (this.isTriggerIn([0,1,2])) {
@@ -178,7 +178,7 @@ Game_Event.prototype.erase = function() {
 };
 
 Game_Event.prototype.refresh = function() {
-    var newPageIndex = this._erased ? -1 : this.findProperPageIndex();
+    let newPageIndex = this._erased ? -1 : this.findProperPageIndex();
     if (this._pageIndex !== newPageIndex) {
         this._pageIndex = newPageIndex;
         this.setupPage();
@@ -186,9 +186,9 @@ Game_Event.prototype.refresh = function() {
 };
 
 Game_Event.prototype.findProperPageIndex = function() {
-    var pages = this.event().pages;
-    for (var i = pages.length - 1; i >= 0; i--) {
-        var page = pages[i];
+    let pages = this.event().pages;
+    for (let i = pages.length - 1; i >= 0; i--) {
+        let page = pages[i];
         if (this.meetsConditions(page)) {
             return i;
         }
@@ -197,7 +197,7 @@ Game_Event.prototype.findProperPageIndex = function() {
 };
 
 Game_Event.prototype.meetsConditions = function(page) {
-    var c = page.conditions;
+    let c = page.conditions;
     if (c.switch1Valid) {
         if (!$gameSwitches.value(c.switch1Id)) {
             return false;
@@ -214,19 +214,19 @@ Game_Event.prototype.meetsConditions = function(page) {
         }
     }
     if (c.selfSwitchValid) {
-        var key = [this._mapId, this._eventId, c.selfSwitchCh];
+        let key = [this._mapId, this._eventId, c.selfSwitchCh];
         if ($gameSelfSwitches.value(key) !== true) {
             return false;
         }
     }
     if (c.itemValid) {
-        var item = $dataItems[c.itemId];
+        let item = $dataItems[c.itemId];
         if (!$gameParty.hasItem(item)) {
             return false;
         }
     }
     if (c.actorValid) {
-        var actor = $gameActors.actor(c.actorId);
+        let actor = $gameActors.actor(c.actorId);
         if (!$gameParty.members().contains(actor)) {
             return false;
         }
@@ -254,8 +254,8 @@ Game_Event.prototype.clearPageSettings = function() {
 };
 
 Game_Event.prototype.setupPageSettings = function() {
-    var page = this.page();
-    var image = page.image;
+    let page = this.page();
+    let image = page.image;
     if (image.tileId > 0) {
         this.setTileImage(image.tileId);
     } else {

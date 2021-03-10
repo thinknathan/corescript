@@ -149,7 +149,7 @@ Game_Map.prototype.airship = function() {
 
 Game_Map.prototype.setupEvents = function() {
     this._events = [];
-    for (var i = 0; i < $dataMap.events.length; i++) {
+    for (let i = 0; i < $dataMap.events.length; i++) {
         if ($dataMap.events[i]) {
             this._events[i] = new Game_Event(this._mapId, i);
         }
@@ -212,7 +212,7 @@ Game_Map.prototype.setDisplayPos = function(x, y) {
         this._displayX = x.mod(this.width());
         this._parallaxX = x;
     } else {
-        var endX = this.width() - this.screenTileX();
+        let endX = this.width() - this.screenTileX();
         this._displayX = endX < 0 ? endX / 2 : x.clamp(0, endX);
         this._parallaxX = this._displayX;
     }
@@ -220,7 +220,7 @@ Game_Map.prototype.setDisplayPos = function(x, y) {
         this._displayY = y.mod(this.height());
         this._parallaxY = y;
     } else {
-        var endY = this.height() - this.screenTileY();
+        let endY = this.height() - this.screenTileY();
         this._displayY = endY < 0 ? endY / 2 : y.clamp(0, endY);
         this._parallaxY = this._displayY;
     }
@@ -251,7 +251,7 @@ Game_Map.prototype.tileset = function() {
 };
 
 Game_Map.prototype.tilesetFlags = function() {
-    var tileset = this.tileset();
+    let tileset = this.tileset();
     if (tileset) {
         return tileset.flags;
     } else {
@@ -350,7 +350,7 @@ Game_Map.prototype.roundYWithDirection = function(y, d) {
 };
 
 Game_Map.prototype.deltaX = function(x1, x2) {
-    var result = x1 - x2;
+    let result = x1 - x2;
     if (this.isLoopHorizontal() && Math.abs(result) > this.width() / 2) {
         if (result < 0) {
             result += this.width();
@@ -362,7 +362,7 @@ Game_Map.prototype.deltaX = function(x1, x2) {
 };
 
 Game_Map.prototype.deltaY = function(y1, y2) {
-    var result = y1 - y2;
+    let result = y1 - y2;
     if (this.isLoopVertical() && Math.abs(result) > this.height() / 2) {
         if (result < 0) {
             result += this.height();
@@ -378,16 +378,16 @@ Game_Map.prototype.distance = function(x1, y1, x2, y2) {
 };
 
 Game_Map.prototype.canvasToMapX = function(x) {
-    var tileWidth = this.tileWidth();
-    var originX = this._displayX * tileWidth;
-    var mapX = Math.floor((originX + x) / tileWidth);
+    let tileWidth = this.tileWidth();
+    let originX = this._displayX * tileWidth;
+    let mapX = Math.floor((originX + x) / tileWidth);
     return this.roundX(mapX);
 };
 
 Game_Map.prototype.canvasToMapY = function(y) {
-    var tileHeight = this.tileHeight();
-    var originY = this._displayY * tileHeight;
-    var mapY = Math.floor((originY + y) / tileHeight);
+    let tileHeight = this.tileHeight();
+    let originY = this._displayY * tileHeight;
+    let mapY = Math.floor((originY + y) / tileHeight);
     return this.roundY(mapY);
 };
 
@@ -446,7 +446,7 @@ Game_Map.prototype.tileEventsXy = function(x, y) {
 };
 
 Game_Map.prototype.eventIdXy = function(x, y) {
-    var list = this.eventsXy(x, y);
+    let list = this.eventsXy(x, y);
     return list.length === 0 ? 0 : list[0].eventId();
 };
 
@@ -458,7 +458,7 @@ Game_Map.prototype.scrollDown = function(distance) {
             this._parallaxY += distance;
         }
     } else if (this.height() >= this.screenTileY()) {
-        var lastY = this._displayY;
+        let lastY = this._displayY;
         this._displayY = Math.min(this._displayY + distance,
             this.height() - this.screenTileY());
         this._parallaxY += this._displayY - lastY;
@@ -473,7 +473,7 @@ Game_Map.prototype.scrollLeft = function(distance) {
             this._parallaxX -= distance;
         }
     } else if (this.width() >= this.screenTileX()) {
-        var lastX = this._displayX;
+        let lastX = this._displayX;
         this._displayX = Math.max(this._displayX - distance, 0);
         this._parallaxX += this._displayX - lastX;
     }
@@ -487,7 +487,7 @@ Game_Map.prototype.scrollRight = function(distance) {
             this._parallaxX += distance;
         }
     } else if (this.width() >= this.screenTileX()) {
-        var lastX = this._displayX;
+        let lastX = this._displayX;
         this._displayX = Math.min(this._displayX + distance,
             this.width() - this.screenTileX());
         this._parallaxX += this._displayX - lastX;
@@ -502,7 +502,7 @@ Game_Map.prototype.scrollUp = function(distance) {
             this._parallaxY -= distance;
         }
     } else if (this.height() >= this.screenTileY()) {
-        var lastY = this._displayY;
+        let lastY = this._displayY;
         this._displayY = Math.max(this._displayY - distance, 0);
         this._parallaxY += this._displayY - lastY;
     }
@@ -513,10 +513,10 @@ Game_Map.prototype.isValid = function(x, y) {
 };
 
 Game_Map.prototype.checkPassage = function(x, y, bit) {
-    var flags = this.tilesetFlags();
-    var tiles = this.allTiles(x, y);
-    for (var i = 0; i < tiles.length; i++) {
-        var flag = flags[tiles[i]];
+    let flags = this.tilesetFlags();
+    let tiles = this.allTiles(x, y);
+    for (let i = 0; i < tiles.length; i++) {
+        let flag = flags[tiles[i]];
         if ((flag & 0x10) !== 0)  // [*] No effect on passage
             continue;
         if ((flag & bit) === 0)   // [o] Passable
@@ -528,28 +528,28 @@ Game_Map.prototype.checkPassage = function(x, y, bit) {
 };
 
 Game_Map.prototype.tileId = function(x, y, z) {
-    var width = $dataMap.width;
-    var height = $dataMap.height;
+    let width = $dataMap.width;
+    let height = $dataMap.height;
     return $dataMap.data[(z * height + y) * width + x] || 0;
 };
 
 Game_Map.prototype.layeredTiles = function(x, y) {
-    var tiles = [];
-    for (var i = 0; i < 4; i++) {
+    let tiles = [];
+    for (let i = 0; i < 4; i++) {
         tiles.push(this.tileId(x, y, 3 - i));
     }
     return tiles;
 };
 
 Game_Map.prototype.allTiles = function(x, y) {
-    var tiles = this.tileEventsXy(x, y).map(function(event) {
+    let tiles = this.tileEventsXy(x, y).map(function(event) {
         return event.tileId();
     });
     return tiles.concat(this.layeredTiles(x, y));
 };
 
 Game_Map.prototype.autotileType = function(x, y, z) {
-    var tileId = this.tileId(x, y, z);
+    let tileId = this.tileId(x, y, z);
     return tileId >= 2048 ? Math.floor((tileId - 2048) / 48) : -1;
 };
 
@@ -570,7 +570,7 @@ Game_Map.prototype.isAirshipLandOk = function(x, y) {
 };
 
 Game_Map.prototype.checkLayeredTilesFlags = function(x, y, bit) {
-    var flags = this.tilesetFlags();
+    let flags = this.tilesetFlags();
     return this.layeredTiles(x, y).some(function(tileId) {
         return (flags[tileId] & bit) !== 0;
     });
@@ -594,10 +594,10 @@ Game_Map.prototype.isDamageFloor = function(x, y) {
 
 Game_Map.prototype.terrainTag = function(x, y) {
     if (this.isValid(x, y)) {
-        var flags = this.tilesetFlags();
-        var tiles = this.layeredTiles(x, y);
-        for (var i = 0; i < tiles.length; i++) {
-            var tag = flags[tiles[i]] >> 12;
+        let flags = this.tilesetFlags();
+        let tiles = this.layeredTiles(x, y);
+        for (let i = 0; i < tiles.length; i++) {
+            let tag = flags[tiles[i]] >> 12;
             if (tag > 0) {
                 return tag;
             }
@@ -633,8 +633,8 @@ Game_Map.prototype.update = function(sceneActive) {
 
 Game_Map.prototype.updateScroll = function() {
     if (this.isScrolling()) {
-        var lastX = this._displayX;
-        var lastY = this._displayY;
+        let lastX = this._displayX;
+        let lastY = this._displayY;
         this.doScroll(this._scrollDirection, this.scrollDistance());
         if (this._displayX === lastX && this._displayY === lastY) {
             this._scrollRest = 0;
@@ -764,9 +764,9 @@ Game_Map.prototype.setupTestEvent = function() {
 };
 
 Game_Map.prototype.setupStartingMapEvent = function() {
-    var events = this.events();
-    for (var i = 0; i < events.length; i++) {
-        var event = events[i];
+    let events = this.events();
+    for (let i = 0; i < events.length; i++) {
+        let event = events[i];
         if (event.isStarting()) {
             event.clearStartingFlag();
             this._interpreter.setup(event.list(), event.eventId());
@@ -778,8 +778,8 @@ Game_Map.prototype.setupStartingMapEvent = function() {
 };
 
 Game_Map.prototype.setupAutorunCommonEvent = function() {
-    for (var i = 0; i < $dataCommonEvents.length; i++) {
-        var event = $dataCommonEvents[i];
+    for (let i = 0; i < $dataCommonEvents.length; i++) {
+        let event = $dataCommonEvents[i];
         if (event && event.trigger === 1 && $gameSwitches.value(event.switchId)) {
             this._interpreter.setup(event.list);
             this._interpreter.setEventInfo({ eventType: 'common_event', commonEventId: i });

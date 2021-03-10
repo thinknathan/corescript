@@ -152,10 +152,10 @@ Scene_Base.prototype.terminate = function() {
  * @memberof Scene_Base
  */
 Scene_Base.prototype.createWindowLayer = function() {
-    var width = Graphics.boxWidth;
-    var height = Graphics.boxHeight;
-    var x = (Graphics.width - width) / 2;
-    var y = (Graphics.height - height) / 2;
+    let width = Graphics.boxWidth;
+    let height = Graphics.boxHeight;
+    let x = (Graphics.width - width) / 2;
+    let y = (Graphics.height - height) / 2;
     this._windowLayer = new WindowLayer();
     this._windowLayer.move(x, y, width, height);
     this.addChild(this._windowLayer);
@@ -235,7 +235,7 @@ Scene_Base.prototype.createFadeSprite = function(white) {
  */
 Scene_Base.prototype.updateFade = function() {
     if (this._fadeDuration > 0) {
-        var d = this._fadeDuration;
+        let d = this._fadeDuration;
         if (this._fadeSign > 0) {
             this._fadeSprite.opacity -= this._fadeSprite.opacity / d;
         } else {
@@ -293,7 +293,7 @@ Scene_Base.prototype.checkGameover = function() {
  * @memberof Scene_Base
  */
 Scene_Base.prototype.fadeOutAll = function() {
-    var time = this.slowFadeSpeed() / 60;
+    let time = this.slowFadeSpeed() / 60;
     AudioManager.fadeOutBgm(time);
     AudioManager.fadeOutBgs(time);
     AudioManager.fadeOutMe(time);

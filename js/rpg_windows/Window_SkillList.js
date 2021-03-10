@@ -72,21 +72,21 @@ Window_SkillList.prototype.makeItemList = function() {
 };
 
 Window_SkillList.prototype.selectLast = function() {
-    var skill;
+    let skill;
     if ($gameParty.inBattle()) {
         skill = this._actor.lastBattleSkill();
     } else {
         skill = this._actor.lastMenuSkill();
     }
-    var index = this._data.indexOf(skill);
+    let index = this._data.indexOf(skill);
     this.select(index >= 0 ? index : 0);
 };
 
 Window_SkillList.prototype.drawItem = function(index) {
-    var skill = this._data[index];
+    let skill = this._data[index];
     if (skill) {
-        var costWidth = this.costWidth();
-        var rect = this.itemRect(index);
+        let costWidth = this.costWidth();
+        let rect = this.itemRect(index);
         rect.width -= this.textPadding();
         this.changePaintOpacity(this.isEnabled(skill));
         this.drawItemName(skill, rect.x, rect.y, rect.width - costWidth);

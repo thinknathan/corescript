@@ -29,8 +29,8 @@ Scene_Debug.prototype.createRangeWindow = function() {
 };
 
 Scene_Debug.prototype.createEditWindow = function() {
-    var wx = this._rangeWindow.width;
-    var ww = Graphics.boxWidth - wx;
+    let wx = this._rangeWindow.width;
+    let ww = Graphics.boxWidth - wx;
     this._editWindow = new Window_DebugEdit(wx, 0, ww);
     this._editWindow.setHandler('cancel', this.onEditCancel.bind(this));
     this._rangeWindow.setEditWindow(this._editWindow);
@@ -38,10 +38,10 @@ Scene_Debug.prototype.createEditWindow = function() {
 };
 
 Scene_Debug.prototype.createDebugHelpWindow = function() {
-    var wx = this._editWindow.x;
-    var wy = this._editWindow.height;
-    var ww = this._editWindow.width;
-    var wh = Graphics.boxHeight - wy;
+    let wx = this._editWindow.x;
+    let wy = this._editWindow.height;
+    let ww = this._editWindow.width;
+    let wh = Graphics.boxHeight - wy;
     this._debugHelpWindow = new Window_Base(wx, wy, ww, wh);
     this.addWindow(this._debugHelpWindow);
 };

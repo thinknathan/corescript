@@ -21,7 +21,7 @@ Scene_Map.prototype.initialize = function() {
 Scene_Map.prototype.create = function() {
     Scene_Base.prototype.create.call(this);
     this._transfer = $gamePlayer.isTransferring();
-    var mapId = this._transfer ? $gamePlayer.newMapId() : $gameMap.mapId();
+    let mapId = this._transfer ? $gamePlayer.newMapId() : $gameMap.mapId();
     DataManager.loadMapData(mapId);
 };
 
@@ -76,7 +76,7 @@ Scene_Map.prototype.updateMainMultiply = function() {
 };
 
 Scene_Map.prototype.updateMain = function() {
-    var active = this.isActive();
+    let active = this.isActive();
     $gameMap.update(active);
     $gamePlayer.update(active);
     $gameTimer.update(active);
@@ -164,8 +164,8 @@ Scene_Map.prototype.processMapTouch = function() {
     if (TouchInput.isTriggered() || this._touchCount > 0) {
         if (TouchInput.isPressed()) {
             if (this._touchCount === 0 || this._touchCount >= 15) {
-                var x = $gameMap.canvasToMapX(TouchInput.x);
-                var y = $gameMap.canvasToMapY(TouchInput.y);
+                let x = $gameMap.canvasToMapX(TouchInput.x);
+                let y = $gameMap.canvasToMapY(TouchInput.y);
                 $gameTemp.setDestination(x, y);
             }
             this._touchCount++;
@@ -283,7 +283,7 @@ Scene_Map.prototype.isDebugCalled = function() {
 };
 
 Scene_Map.prototype.fadeInForTransfer = function() {
-    var fadeType = $gamePlayer.fadeType();
+    let fadeType = $gamePlayer.fadeType();
     switch (fadeType) {
     case 0: case 1:
         this.startFadeIn(this.fadeSpeed(), fadeType === 1);
@@ -292,7 +292,7 @@ Scene_Map.prototype.fadeInForTransfer = function() {
 };
 
 Scene_Map.prototype.fadeOutForTransfer = function() {
-    var fadeType = $gamePlayer.fadeType();
+    let fadeType = $gamePlayer.fadeType();
     switch (fadeType) {
     case 0: case 1:
         this.startFadeOut(this.fadeSpeed(), fadeType === 1);
@@ -325,12 +325,12 @@ Scene_Map.prototype.startEncounterEffect = function() {
 Scene_Map.prototype.updateEncounterEffect = function() {
     if (this._encounterEffectDuration > 0) {
         this._encounterEffectDuration--;
-        var speed = this.encounterEffectSpeed();
-        var n = speed - this._encounterEffectDuration;
-        var p = n / speed;
-        var q = ((p - 1) * 20 * p + 5) * p + 1;
-        var zoomX = $gamePlayer.screenX();
-        var zoomY = $gamePlayer.screenY() - 24;
+        let speed = this.encounterEffectSpeed();
+        let n = speed - this._encounterEffectDuration;
+        let p = n / speed;
+        let q = ((p - 1) * 20 * p + 5) * p + 1;
+        let zoomX = $gamePlayer.screenX();
+        let zoomY = $gamePlayer.screenY() - 24;
         if (n === 2) {
             $gameScreen.setZoom(zoomX, zoomY, 1);
             this.snapForBattleBackground();
@@ -354,7 +354,7 @@ Scene_Map.prototype.snapForBattleBackground = function() {
 };
 
 Scene_Map.prototype.startFlashForEncounter = function(duration) {
-    var color = [255, 255, 255, 255];
+    let color = [255, 255, 255, 255];
     $gameScreen.startFlash(color, duration);
 };
 

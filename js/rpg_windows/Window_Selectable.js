@@ -108,7 +108,7 @@ Window_Selectable.prototype.maxTopRow = function() {
 };
 
 Window_Selectable.prototype.setTopRow = function(row) {
-    var scrollY = row.clamp(0, this.maxTopRow()) * this.itemHeight();
+    let scrollY = row.clamp(0, this.maxTopRow()) * this.itemHeight();
     if (this._scrollY !== scrollY) {
         this._scrollY = scrollY;
         this.refresh();
@@ -121,7 +121,7 @@ Window_Selectable.prototype.resetScroll = function() {
 };
 
 Window_Selectable.prototype.maxPageRows = function() {
-    var pageHeight = this.height - this.padding * 2;
+    let pageHeight = this.height - this.padding * 2;
     return Math.floor(pageHeight / this.itemHeight());
 };
 
@@ -146,8 +146,8 @@ Window_Selectable.prototype.topIndex = function() {
 };
 
 Window_Selectable.prototype.itemRect = function(index) {
-    var rect = new Rectangle();
-    var maxCols = this.maxCols();
+    let rect = new Rectangle();
+    let maxCols = this.maxCols();
     rect.width = this.itemWidth();
     rect.height = this.itemHeight();
     rect.x = index % maxCols * (rect.width + this.spacing()) - this._scrollX;
@@ -156,7 +156,7 @@ Window_Selectable.prototype.itemRect = function(index) {
 };
 
 Window_Selectable.prototype.itemRectForText = function(index) {
-    var rect = this.itemRect(index);
+    let rect = this.itemRect(index);
     rect.x += this.textPadding();
     rect.width -= this.textPadding() * 2;
     return rect;
@@ -203,44 +203,44 @@ Window_Selectable.prototype.isCursorMovable = function() {
 };
 
 Window_Selectable.prototype.cursorDown = function(wrap) {
-    var index = this.index();
-    var maxItems = this.maxItems();
-    var maxCols = this.maxCols();
+    let index = this.index();
+    let maxItems = this.maxItems();
+    let maxCols = this.maxCols();
     if (index < maxItems - maxCols || (wrap && maxCols === 1)) {
         this.select((index + maxCols) % maxItems);
     }
 };
 
 Window_Selectable.prototype.cursorUp = function(wrap) {
-    var index = this.index();
-    var maxItems = this.maxItems();
-    var maxCols = this.maxCols();
+    let index = this.index();
+    let maxItems = this.maxItems();
+    let maxCols = this.maxCols();
     if (index >= maxCols || (wrap && maxCols === 1)) {
         this.select((index - maxCols + maxItems) % maxItems);
     }
 };
 
 Window_Selectable.prototype.cursorRight = function(wrap) {
-    var index = this.index();
-    var maxItems = this.maxItems();
-    var maxCols = this.maxCols();
+    let index = this.index();
+    let maxItems = this.maxItems();
+    let maxCols = this.maxCols();
     if (maxCols >= 2 && (index < maxItems - 1 || (wrap && this.isHorizontal()))) {
         this.select((index + 1) % maxItems);
     }
 };
 
 Window_Selectable.prototype.cursorLeft = function(wrap) {
-    var index = this.index();
-    var maxItems = this.maxItems();
-    var maxCols = this.maxCols();
+    let index = this.index();
+    let maxItems = this.maxItems();
+    let maxCols = this.maxCols();
     if (maxCols >= 2 && (index > 0 || (wrap && this.isHorizontal()))) {
         this.select((index - 1 + maxItems) % maxItems);
     }
 };
 
 Window_Selectable.prototype.cursorPagedown = function() {
-    var index = this.index();
-    var maxItems = this.maxItems();
+    let index = this.index();
+    let maxItems = this.maxItems();
     if (this.topRow() + this.maxPageRows() < this.maxRows()) {
         this.setTopRow(this.topRow() + this.maxPageRows());
         this.select(Math.min(index + this.maxPageItems(), maxItems - 1));
@@ -248,7 +248,7 @@ Window_Selectable.prototype.cursorPagedown = function() {
 };
 
 Window_Selectable.prototype.cursorPageup = function() {
-    var index = this.index();
+    let index = this.index();
     if (this.topRow() > 0) {
         this.setTopRow(this.topRow() - this.maxPageRows());
         this.select(Math.max(index - this.maxPageItems(), 0));
@@ -278,15 +278,15 @@ Window_Selectable.prototype.update = function() {
 };
 
 Window_Selectable.prototype.updateArrows = function() {
-    var topRow = this.topRow();
-    var maxTopRow = this.maxTopRow();
+    let topRow = this.topRow();
+    let maxTopRow = this.maxTopRow();
     this.downArrowVisible = maxTopRow > 0 && topRow < maxTopRow;
     this.upArrowVisible = topRow > 0;
 };
 
 Window_Selectable.prototype.processCursorMove = function() {
     if (this.isCursorMovable()) {
-        var lastIndex = this.index();
+        let lastIndex = this.index();
         if (Input.isRepeated('down')) {
             this.cursorDown(Input.isTriggered('down'));
         }
@@ -327,7 +327,7 @@ Window_Selectable.prototype.processHandling = function() {
 
 Window_Selectable.prototype.processWheel = function() {
     if (this.isOpenAndActive()) {
-        var threshold = 20;
+        let threshold = 20;
         if (TouchInput.wheelY >= threshold) {
             this.scrollDown();
         }
@@ -360,16 +360,16 @@ Window_Selectable.prototype.processTouch = function() {
 };
 
 Window_Selectable.prototype.isTouchedInsideFrame = function() {
-    var x = this.canvasToLocalX(TouchInput.x);
-    var y = this.canvasToLocalY(TouchInput.y);
+    let x = this.canvasToLocalX(TouchInput.x);
+    let y = this.canvasToLocalY(TouchInput.y);
     return x >= 0 && y >= 0 && x < this.width && y < this.height;
 };
 
 Window_Selectable.prototype.onTouch = function(triggered) {
-    var lastIndex = this.index();
-    var x = this.canvasToLocalX(TouchInput.x);
-    var y = this.canvasToLocalY(TouchInput.y);
-    var hitIndex = this.hitTest(x, y);
+    let lastIndex = this.index();
+    let x = this.canvasToLocalX(TouchInput.x);
+    let y = this.canvasToLocalY(TouchInput.y);
+    let hitIndex = this.hitTest(x, y);
     if (hitIndex >= 0) {
         if (hitIndex === this.index()) {
             if (triggered && this.isTouchOkEnabled()) {
@@ -392,15 +392,15 @@ Window_Selectable.prototype.onTouch = function(triggered) {
 
 Window_Selectable.prototype.hitTest = function(x, y) {
     if (this.isContentsArea(x, y)) {
-        var cx = x - this.padding;
-        var cy = y - this.padding;
-        var topIndex = this.topIndex();
-        for (var i = 0; i < this.maxPageItems(); i++) {
-            var index = topIndex + i;
+        let cx = x - this.padding;
+        let cy = y - this.padding;
+        let topIndex = this.topIndex();
+        for (let i = 0; i < this.maxPageItems(); i++) {
+            let index = topIndex + i;
             if (index < this.maxItems()) {
-                var rect = this.itemRect(index);
-                var right = rect.x + rect.width;
-                var bottom = rect.y + rect.height;
+                let rect = this.itemRect(index);
+                let right = rect.x + rect.width;
+                let bottom = rect.y + rect.height;
                 if (cx >= rect.x && cy >= rect.y && cx < right && cy < bottom) {
                     return index;
                 }
@@ -411,10 +411,10 @@ Window_Selectable.prototype.hitTest = function(x, y) {
 };
 
 Window_Selectable.prototype.isContentsArea = function(x, y) {
-    var left = this.padding;
-    var top = this.padding;
-    var right = this.width - this.padding;
-    var bottom = this.height - this.padding;
+    let left = this.padding;
+    let top = this.padding;
+    let right = this.width - this.padding;
+    let bottom = this.height - this.padding;
     return (x >= left && y >= top && x < right && y < bottom);
 };
 
@@ -493,11 +493,11 @@ Window_Selectable.prototype.updateInputData = function() {
 
 Window_Selectable.prototype.updateCursor = function() {
     if (this._cursorAll) {
-        var allRowsHeight = this.maxRows() * this.itemHeight();
+        let allRowsHeight = this.maxRows() * this.itemHeight();
         this.setCursorRect(0, 0, this.contents.width, allRowsHeight);
         this.setTopRow(0);
     } else if (this.isCursorVisible()) {
-        var rect = this.itemRect(this.index());
+        let rect = this.itemRect(this.index());
         this.setCursorRect(rect.x, rect.y, rect.width, rect.height);
     } else {
         this.setCursorRect(0, 0, 0, 0);
@@ -505,12 +505,12 @@ Window_Selectable.prototype.updateCursor = function() {
 };
 
 Window_Selectable.prototype.isCursorVisible = function() {
-    var row = this.row();
+    let row = this.row();
     return row >= this.topRow() && row <= this.bottomRow();
 };
 
 Window_Selectable.prototype.ensureCursorVisible = function() {
-    var row = this.row();
+    let row = this.row();
     if (row < this.topRow()) {
         this.setTopRow(row);
     } else if (row > this.bottomRow()) {
@@ -539,9 +539,9 @@ Window_Selectable.prototype.isCurrentItemEnabled = function() {
 };
 
 Window_Selectable.prototype.drawAllItems = function() {
-    var topIndex = this.topIndex();
-    for (var i = 0; i < this.maxPageItems(); i++) {
-        var index = topIndex + i;
+    let topIndex = this.topIndex();
+    for (let i = 0; i < this.maxPageItems(); i++) {
+        let index = topIndex + i;
         if (index < this.maxItems()) {
             this.drawItem(index);
         }
@@ -552,7 +552,7 @@ Window_Selectable.prototype.drawItem = function(index) {
 };
 
 Window_Selectable.prototype.clearItem = function(index) {
-    var rect = this.itemRect(index);
+    let rect = this.itemRect(index);
     this.contents.clearRect(rect.x, rect.y, rect.width, rect.height);
 };
 

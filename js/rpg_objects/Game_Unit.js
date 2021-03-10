@@ -44,11 +44,11 @@ Game_Unit.prototype.clearActions = function() {
 };
 
 Game_Unit.prototype.agility = function() {
-    var members = this.members();
+    let members = this.members();
     if (members.length === 0) {
         return 1;
     }
-    var sum = members.reduce(function(r, member) {
+    let sum = members.reduce(function(r, member) {
         return r + member.agi;
     }, 0);
     return sum / members.length;
@@ -61,8 +61,8 @@ Game_Unit.prototype.tgrSum = function() {
 };
 
 Game_Unit.prototype.randomTarget = function() {
-    var tgrRand = Math.random() * this.tgrSum();
-    var target = null;
+    let tgrRand = Math.random() * this.tgrSum();
+    let target = null;
     this.aliveMembers().forEach(function(member) {
         tgrRand -= member.tgr;
         if (tgrRand <= 0 && !target) {
@@ -73,7 +73,7 @@ Game_Unit.prototype.randomTarget = function() {
 };
 
 Game_Unit.prototype.randomDeadTarget = function() {
-    var members = this.deadMembers();
+    let members = this.deadMembers();
     if (members.length === 0) {
         return null;
     }
@@ -84,7 +84,7 @@ Game_Unit.prototype.smoothTarget = function(index) {
     if (index < 0) {
         index = 0;
     }
-    var member = this.members()[index];
+    let member = this.members()[index];
     return (member && member.isAlive()) ? member : this.aliveMembers()[0];
 };
 
@@ -92,7 +92,7 @@ Game_Unit.prototype.smoothDeadTarget = function(index) {
     if (index < 0) {
         index = 0;
     }
-    var member = this.members()[index];
+    let member = this.members()[index];
     return (member && member.isDead()) ? member : this.deadMembers()[0];
 };
 
@@ -137,8 +137,8 @@ Game_Unit.prototype.isAllDead = function() {
 };
 
 Game_Unit.prototype.substituteBattler = function() {
-    var members = this.members();
-    for (var i = 0; i < members.length; i++) {
+    let members = this.members();
+    for (let i = 0; i < members.length; i++) {
         if (members[i].isSubstitute()) {
             return members[i];
         }

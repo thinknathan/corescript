@@ -155,15 +155,15 @@ Graphics.tickEnd = function() {};
  */
 Graphics.render = function(stage) {
     if (this._skipCount <= 0) {
-        var startTime = Date.now();
+        let startTime = Date.now();
         if (stage) {
             this._renderer.render(stage);
             //if (this._renderer.gl && this._renderer.gl.flush) {
             //    this._renderer.gl.flush();
             //}
         }
-        var endTime = Date.now();
-        var elapsed = endTime - startTime;
+        let endTime = Date.now();
+        let elapsed = endTime - startTime;
         this._skipCount = Math.min(Math.floor(elapsed / 15), this._maxSkip);
         this._rendered = true;
     } else {
@@ -193,7 +193,7 @@ Graphics.isWebGL = function() {
  */
 Graphics.hasWebGL = function() {
     try {
-        var canvas = document.createElement('canvas');
+        let canvas = document.createElement('canvas');
         return !!(canvas.getContext('webgl') || canvas.getContext('experimental-webgl'));
     } catch (e) {
         return false;
@@ -305,7 +305,7 @@ Graphics._hideProgress = function(){
 };
 
 Graphics._updateProgressCount = function(countLoaded, countLoading){
-    var progressValue;
+    let progressValue;
     if(countLoading !== 0){
         progressValue = (countLoaded/countLoading) * 100;
     }else{
@@ -360,7 +360,7 @@ Graphics.printLoadingError = function(url) {
         this._errorPrinter.style.msUserSelect     = 'text';
         this._errorPrinter.style.mozUserSelect    = 'text';
         this._errorPrinter.oncontextmenu = null;    // enable context menu
-        var button = document.createElement('button');
+        let button = document.createElement('button');
         button.innerHTML = 'Retry';
         button.style.fontSize = '24px';
         button.style.color = '#ffffff';
@@ -431,10 +431,10 @@ Graphics.printError = function(name, message) {
  */
 Graphics.printErrorDetail = function(error) {
     if (this._errorPrinter && this._showErrorDetail) {
-        var eventInfo = this._formatEventInfo(error);
-        var eventCommandInfo = this._formatEventCommandInfo(error);
-        var info = eventCommandInfo ? eventInfo + ", " + eventCommandInfo : eventInfo;
-        var stack = this._formatStackTrace(error);
+        let eventInfo = this._formatEventInfo(error);
+        let eventCommandInfo = this._formatEventCommandInfo(error);
+        let info = eventCommandInfo ? eventInfo + ", " + eventCommandInfo : eventInfo;
+        let stack = this._formatStackTrace(error);
         this._makeErrorDetail(info, stack);
     }
 };
@@ -500,9 +500,9 @@ Graphics.hideFps = function() {
  * @param {String} url The url of the font file
  */
 Graphics.loadFont = function(name, url) {
-    var style = document.createElement('style');
-    var head = document.getElementsByTagName('head');
-    var rule = '@font-face { font-family: "' + name + '"; src: url("' + url + '"); }';
+    let style = document.createElement('style');
+    let head = document.getElementsByTagName('head');
+    let rule = '@font-face { font-family: "' + name + '"; src: url("' + url + '"); }';
     style.type = 'text/css';
     head.item(0).appendChild(style);
     style.sheet.insertRule(rule, 0);
@@ -528,9 +528,9 @@ Graphics.isFontLoaded = function(name) {
         if (!this._hiddenCanvas) {
             this._hiddenCanvas = document.createElement('canvas');
         }
-        var context = this._hiddenCanvas.getContext('2d');
-        var text = 'abcdefghijklmnopqrstuvwxyz';
-        var width1, width2;
+        let context = this._hiddenCanvas.getContext('2d');
+        let text = 'abcdefghijklmnopqrstuvwxyz';
+        let width1, width2;
         context.font = '40px ' + name + ', sans-serif';
         width1 = context.measureText(text).width;
         context.font = '40px sans-serif';
@@ -614,7 +614,7 @@ Graphics.setVideoVolume = function(value) {
  */
 Graphics.pageToCanvasX = function(x) {
     if (this._canvas) {
-        var left = this._canvas.offsetLeft;
+        let left = this._canvas.offsetLeft;
         return Math.round((x - left) / this._realScale);
     } else {
         return 0;
@@ -632,7 +632,7 @@ Graphics.pageToCanvasX = function(x) {
  */
 Graphics.pageToCanvasY = function(y) {
     if (this._canvas) {
-        var top = this._canvas.offsetTop;
+        let top = this._canvas.offsetTop;
         return Math.round((y - top) / this._realScale);
     } else {
         return 0;
@@ -795,8 +795,8 @@ Graphics._updateAllElements = function() {
  */
 Graphics._updateRealScale = function() {
     if (this._stretchEnabled) {
-        var h = window.innerWidth / this._width;
-        var v = window.innerHeight / this._height;
+        let h = window.innerWidth / this._width;
+        let v = window.innerHeight / this._height;
         if (h >= 1 && h - 0.01 <= 1) h = 1;
         if (v >= 1 && v - 0.01 <= 1) v = 1;
         this._realScale = Math.min(h, v);
@@ -833,7 +833,7 @@ Graphics._defaultStretchMode = function() {
  * @private
  */
 Graphics._testCanvasBlendModes = function() {
-    var canvas, context, imageData1, imageData2;
+    let canvas, context, imageData1, imageData2;
     canvas = document.createElement('canvas');
     canvas.width = 1;
     canvas.height = 1;
@@ -862,8 +862,8 @@ Graphics._testCanvasBlendModes = function() {
  * @private
  */
 Graphics._modifyExistingElements = function() {
-    var elements = document.getElementsByTagName('*');
-    for (var i = 0; i < elements.length; i++) {
+    let elements = document.getElementsByTagName('*');
+    for (let i = 0; i < elements.length; i++) {
         if (elements[i].style.zIndex > 0) {
             elements[i].style.zIndex = 0;
         }
@@ -909,8 +909,8 @@ Graphics._updateErrorPrinter = function() {
  * @private
  */
 Graphics._makeErrorMessage = function() {
-    var mainMessage       = document.createElement('div');
-    var style             = mainMessage.style;
+    let mainMessage       = document.createElement('div');
+    let style             = mainMessage.style;
     style.color           = 'white';
     style.textAlign       = 'left';
     style.fontSize        = '18px';
@@ -924,8 +924,8 @@ Graphics._makeErrorMessage = function() {
  * @private
  */
 Graphics._makeErrorDetail = function(info, stack) {
-    var detail             = document.createElement('div');
-    var style              = detail.style;
+    let detail             = document.createElement('div');
+    let style              = detail.style;
     style.color            = 'white';
     style.textAlign        = 'left';
     style.fontSize         = '18px';
@@ -1074,7 +1074,7 @@ Graphics._updateUpperCanvas = function() {
  * @private
  */
 Graphics._clearUpperCanvas = function() {
-    var context = this._upperCanvas.getContext('2d');
+    let context = this._upperCanvas.getContext('2d');
     context.clearRect(0, 0, this._width, this._height);
 };
 
@@ -1086,10 +1086,10 @@ Graphics._clearUpperCanvas = function() {
 Graphics._paintUpperCanvas = function() {
     this._clearUpperCanvas();
     if (this._loadingImage && this._loadingCount >= 20) {
-        var context = this._upperCanvas.getContext('2d');
-        var dx = (this._width - this._loadingImage.width) / 2;
-        var dy = (this._height - this._loadingImage.height) / 2;
-        var alpha = ((this._loadingCount - 20) / 30).clamp(0, 1);
+        let context = this._upperCanvas.getContext('2d');
+        let dx = (this._width - this._loadingImage.width) / 2;
+        let dy = (this._height - this._loadingImage.height) / 2;
+        let alpha = ((this._loadingCount - 20) / 30).clamp(0, 1);
         context.save();
         context.globalAlpha = alpha;
         context.drawImage(this._loadingImage, dx, dy);
@@ -1103,7 +1103,7 @@ Graphics._paintUpperCanvas = function() {
  * @private
  */
 Graphics._createRenderer = function() {
-    var options = {
+    let options = {
         view: this._canvas,
         width: this._width,
         height: this._height,
@@ -1152,7 +1152,7 @@ Graphics._createFPSMeter = function() {
  * @private
  */
 Graphics._createModeBox = function() {
-    var box = document.createElement('div');
+    let box = document.createElement('div');
     box.id = 'modeTextBack';
     box.style.position = 'absolute';
     box.style.left = '5px';
@@ -1163,7 +1163,7 @@ Graphics._createModeBox = function() {
     box.style.zIndex = 9;
     box.style.opacity = 0;
 
-    var text = document.createElement('div');
+    let text = document.createElement('div');
     text.id = 'modeText';
     text.style.position = 'absolute';
     text.style.left = '0px';
@@ -1198,8 +1198,8 @@ Graphics._createGameFontLoader = function() {
  * @private
  */
 Graphics._createFontLoader = function(name) {
-    var div = document.createElement('div');
-    var text = document.createTextNode('.');
+    let div = document.createElement('div');
+    let text = document.createTextNode('.');
     div.style.fontFamily = name;
     div.style.fontSize = '0px';
     div.style.color = 'transparent';
@@ -1220,8 +1220,8 @@ Graphics._createFontLoader = function(name) {
  * @private
  */
 Graphics._centerElement = function(element) {
-    var width = element.width * this._realScale;
-    var height = element.height * this._realScale;
+    let width = element.width * this._realScale;
+    let height = element.height * this._realScale;
     element.style.position = 'absolute';
     element.style.margin = 'auto';
     element.style.top = 0;
@@ -1238,7 +1238,7 @@ Graphics._centerElement = function(element) {
  * @private
  */
 Graphics._disableTextSelection = function() {
-    var body = document.body;
+    let body = document.body;
     body.style.userSelect = 'none';
     body.style.webkitUserSelect = 'none';
     body.style.msUserSelect = 'none';
@@ -1251,9 +1251,9 @@ Graphics._disableTextSelection = function() {
  * @private
  */
 Graphics._disableContextMenu = function() {
-    var elements = document.body.getElementsByTagName('*');
-    var oncontextmenu = function() { return false; };
-    for (var i = 0; i < elements.length; i++) {
+    let elements = document.body.getElementsByTagName('*');
+    let oncontextmenu = function() { return false; };
+    for (let i = 0; i < elements.length; i++) {
         elements[i].oncontextmenu = oncontextmenu;
     }
 };
@@ -1443,7 +1443,7 @@ Graphics._isFullScreen = function() {
  * @private
  */
 Graphics._requestFullScreen = function() {
-    var element = document.body;
+    let element = document.body;
     if (element.requestFullscreen) {
         element.requestFullscreen();
     } else if (element.mozRequestFullScreen) {

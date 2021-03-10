@@ -45,10 +45,10 @@ Sprite_Balloon.prototype.update = function() {
 };
 
 Sprite_Balloon.prototype.updateFrame = function() {
-    var w = 48;
-    var h = 48;
-    var sx = this.frameIndex() * w;
-    var sy = (this._balloonId - 1) * h;
+    let w = 48;
+    let h = 48;
+    let sx = this.frameIndex() * w;
+    let sy = (this._balloonId - 1) * h;
     this.setFrame(sx, sy, w, h);
 };
 
@@ -61,7 +61,7 @@ Sprite_Balloon.prototype.waitTime = function() {
 };
 
 Sprite_Balloon.prototype.frameIndex = function() {
-    var index = (this._duration - this.waitTime()) / this.speed();
+    let index = (this._duration - this.waitTime()) / this.speed();
     return 7 - Math.max(Math.floor(index), 0);
 };
 

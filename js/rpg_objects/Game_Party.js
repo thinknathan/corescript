@@ -80,24 +80,24 @@ Game_Party.prototype.reviveBattleMembers = function() {
 };
 
 Game_Party.prototype.items = function() {
-    var list = [];
-    for (var id in this._items) {
+    let list = [];
+    for (let id in this._items) {
         list.push($dataItems[id]);
     }
     return list;
 };
 
 Game_Party.prototype.weapons = function() {
-    var list = [];
-    for (var id in this._weapons) {
+    let list = [];
+    for (let id in this._weapons) {
         list.push($dataWeapons[id]);
     }
     return list;
 };
 
 Game_Party.prototype.armors = function() {
-    var list = [];
-    for (var id in this._armors) {
+    let list = [];
+    for (let id in this._armors) {
         list.push($dataArmors[id]);
     }
     return list;
@@ -135,7 +135,7 @@ Game_Party.prototype.setupStartingMembers = function() {
 };
 
 Game_Party.prototype.name = function() {
-    var numBattleMembers = this.battleMembers().length;
+    let numBattleMembers = this.battleMembers().length;
     if (numBattleMembers === 0) {
         return '';
     } else if (numBattleMembers === 1) {
@@ -152,7 +152,7 @@ Game_Party.prototype.setupBattleTest = function() {
 
 Game_Party.prototype.setupBattleTestMembers = function() {
     $dataSystem.testBattlers.forEach(function(battler) {
-        var actor = $gameActors.actor(battler.actorId);
+        let actor = $gameActors.actor(battler.actorId);
         if (actor) {
             actor.changeLevel(battler.level, false);
             actor.initEquips(battler.equips);
@@ -217,7 +217,7 @@ Game_Party.prototype.increaseSteps = function() {
 };
 
 Game_Party.prototype.numItems = function(item) {
-    var container = this.itemContainer(item);
+    let container = this.itemContainer(item);
     return container ? container[item.id] || 0 : 0;
 };
 
@@ -249,10 +249,10 @@ Game_Party.prototype.isAnyMemberEquipped = function(item) {
 };
 
 Game_Party.prototype.gainItem = function(item, amount, includeEquip) {
-    var container = this.itemContainer(item);
+    let container = this.itemContainer(item);
     if (container) {
-        var lastNumber = this.numItems(item);
-        var newNumber = lastNumber + amount;
+        let lastNumber = this.numItems(item);
+        let newNumber = lastNumber + amount;
         container[item.id] = newNumber.clamp(0, this.maxItems(item));
         if (container[item.id] === 0) {
             delete container[item.id];
@@ -265,7 +265,7 @@ Game_Party.prototype.gainItem = function(item, amount, includeEquip) {
 };
 
 Game_Party.prototype.discardMembersEquip = function(item, amount) {
-    var n = amount;
+    let n = amount;
     this.members().forEach(function(actor) {
         while (n > 0 && actor.isEquipped(item)) {
             actor.discardEquip(item);
@@ -311,7 +311,7 @@ Game_Party.prototype.onPlayerWalk = function() {
 };
 
 Game_Party.prototype.menuActor = function() {
-    var actor = $gameActors.actor(this._menuActorId);
+    let actor = $gameActors.actor(this._menuActorId);
     if (!this.members().contains(actor)) {
         actor = this.members()[0];
     }
@@ -323,7 +323,7 @@ Game_Party.prototype.setMenuActor = function(actor) {
 };
 
 Game_Party.prototype.makeMenuActorNext = function() {
-    var index = this.members().indexOf(this.menuActor());
+    let index = this.members().indexOf(this.menuActor());
     if (index >= 0) {
         index = (index + 1) % this.members().length;
         this.setMenuActor(this.members()[index]);
@@ -333,7 +333,7 @@ Game_Party.prototype.makeMenuActorNext = function() {
 };
 
 Game_Party.prototype.makeMenuActorPrevious = function() {
-    var index = this.members().indexOf(this.menuActor());
+    let index = this.members().indexOf(this.menuActor());
     if (index >= 0) {
         index = (index + this.members().length - 1) % this.members().length;
         this.setMenuActor(this.members()[index]);
@@ -343,7 +343,7 @@ Game_Party.prototype.makeMenuActorPrevious = function() {
 };
 
 Game_Party.prototype.targetActor = function() {
-    var actor = $gameActors.actor(this._targetActorId);
+    let actor = $gameActors.actor(this._targetActorId);
     if (!this.members().contains(actor)) {
         actor = this.members()[0];
     }
@@ -363,7 +363,7 @@ Game_Party.prototype.setLastItem = function(item) {
 };
 
 Game_Party.prototype.swapOrder = function(index1, index2) {
-    var temp = this._actors[index1];
+    let temp = this._actors[index1];
     this._actors[index1] = this._actors[index2];
     this._actors[index2] = temp;
     $gamePlayer.refresh();
@@ -412,7 +412,7 @@ Game_Party.prototype.hasDropItemDouble = function() {
 };
 
 Game_Party.prototype.ratePreemptive = function(troopAgi) {
-    var rate = this.agility() >= troopAgi ? 0.05 : 0.03;
+    let rate = this.agility() >= troopAgi ? 0.05 : 0.03;
     if (this.hasRaisePreemptive()) {
         rate *= 4;
     }
@@ -420,7 +420,7 @@ Game_Party.prototype.ratePreemptive = function(troopAgi) {
 };
 
 Game_Party.prototype.rateSurprise = function(troopAgi) {
-    var rate = this.agility() >= troopAgi ? 0.03 : 0.05;
+    let rate = this.agility() >= troopAgi ? 0.03 : 0.05;
     if (this.hasCancelSurprise()) {
         rate = 0;
     }

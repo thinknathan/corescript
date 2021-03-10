@@ -40,7 +40,7 @@ Number.prototype.mod = function(n) {
  * @return {String} A formatted string
  */
 String.prototype.format = function() {
-    var args = arguments;
+    let args = arguments;
     return this.replace(/%([0-9]+)/g, function(s, n) {
         return args[Number(n) - 1];
     });
@@ -54,7 +54,7 @@ String.prototype.format = function() {
  * @return {String} A string with leading zeros
  */
 String.prototype.padZero = function(length){
-    var s = this;
+    let s = this;
     while (s.length < length) {
         s = '0' + s;
     }
@@ -86,7 +86,7 @@ Object.defineProperties(Array.prototype, {
             if (!array || this.length !== array.length) {
                 return false;
             }
-            for (var i = 0; i < this.length; i++) {
+            for (let i = 0; i < this.length; i++) {
                 if (this[i] instanceof Array && array[i] instanceof Array) {
                     if (!this[i].equals(array[i])) {
                         return false;

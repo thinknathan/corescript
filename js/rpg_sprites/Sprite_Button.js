@@ -25,7 +25,7 @@ Sprite_Button.prototype.update = function() {
 };
 
 Sprite_Button.prototype.updateFrame = function() {
-    var frame;
+    let frame;
     if (this._touching) {
         frame = this._hotFrame;
     } else {
@@ -73,7 +73,7 @@ Sprite_Button.prototype.processTouch = function() {
 };
 
 Sprite_Button.prototype.isActive = function() {
-    var node = this;
+    let node = this;
     while (node) {
         if (!node.visible) {
             return false;
@@ -84,13 +84,13 @@ Sprite_Button.prototype.isActive = function() {
 };
 
 Sprite_Button.prototype.isButtonTouched = function() {
-    var x = this.canvasToLocalX(TouchInput.x);
-    var y = this.canvasToLocalY(TouchInput.y);
+    let x = this.canvasToLocalX(TouchInput.x);
+    let y = this.canvasToLocalY(TouchInput.y);
     return x >= 0 && y >= 0 && x < this.width && y < this.height;
 };
 
 Sprite_Button.prototype.canvasToLocalX = function(x) {
-    var node = this;
+    let node = this;
     while (node) {
         x -= node.x;
         node = node.parent;
@@ -99,7 +99,7 @@ Sprite_Button.prototype.canvasToLocalX = function(x) {
 };
 
 Sprite_Button.prototype.canvasToLocalY = function(y) {
-    var node = this;
+    let node = this;
     while (node) {
         y -= node.y;
         node = node.parent;

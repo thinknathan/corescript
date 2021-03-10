@@ -52,7 +52,7 @@ Sprite_StateIcon.prototype.animationWait = function() {
 };
 
 Sprite_StateIcon.prototype.updateIcon = function() {
-    var icons = [];
+    let icons = [];
     if (this._battler && this._battler.isAlive()) {
         icons = this._battler.allIcons();
     }
@@ -69,9 +69,9 @@ Sprite_StateIcon.prototype.updateIcon = function() {
 };
 
 Sprite_StateIcon.prototype.updateFrame = function() {
-    var pw = Sprite_StateIcon._iconWidth;
-    var ph = Sprite_StateIcon._iconHeight;
-    var sx = this._iconIndex % 16 * pw;
-    var sy = Math.floor(this._iconIndex / 16) * ph;
+    let pw = Sprite_StateIcon._iconWidth;
+    let ph = Sprite_StateIcon._iconHeight;
+    let sx = this._iconIndex % 16 * pw;
+    let sy = Math.floor(this._iconIndex / 16) * ph;
     this.setFrame(sx, sy, pw, ph);
 };

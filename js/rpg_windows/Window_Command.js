@@ -13,8 +13,8 @@ Window_Command.prototype.constructor = Window_Command;
 Window_Command.prototype.initialize = function(x, y) {
     this.clearCommandList();
     this.makeCommandList();
-    var width = this.windowWidth();
-    var height = this.windowHeight();
+    let width = this.windowWidth();
+    let height = this.windowHeight();
     Window_Selectable.prototype.initialize.call(this, x, y, width, height);
     this.refresh();
     this.select(0);
@@ -83,7 +83,7 @@ Window_Command.prototype.currentExt = function() {
 };
 
 Window_Command.prototype.findSymbol = function(symbol) {
-    for (var i = 0; i < this._list.length; i++) {
+    for (let i = 0; i < this._list.length; i++) {
         if (this._list[i].symbol === symbol) {
             return i;
         }
@@ -92,7 +92,7 @@ Window_Command.prototype.findSymbol = function(symbol) {
 };
 
 Window_Command.prototype.selectSymbol = function(symbol) {
-    var index = this.findSymbol(symbol);
+    let index = this.findSymbol(symbol);
     if (index >= 0) {
         this.select(index);
     } else {
@@ -101,7 +101,7 @@ Window_Command.prototype.selectSymbol = function(symbol) {
 };
 
 Window_Command.prototype.findExt = function(ext) {
-    for (var i = 0; i < this._list.length; i++) {
+    for (let i = 0; i < this._list.length; i++) {
         if (this._list[i].ext === ext) {
             return i;
         }
@@ -110,7 +110,7 @@ Window_Command.prototype.findExt = function(ext) {
 };
 
 Window_Command.prototype.selectExt = function(ext) {
-    var index = this.findExt(ext);
+    let index = this.findExt(ext);
     if (index >= 0) {
         this.select(index);
     } else {
@@ -119,8 +119,8 @@ Window_Command.prototype.selectExt = function(ext) {
 };
 
 Window_Command.prototype.drawItem = function(index) {
-    var rect = this.itemRectForText(index);
-    var align = this.itemTextAlign();
+    let rect = this.itemRectForText(index);
+    let align = this.itemTextAlign();
     this.resetTextColor();
     this.changePaintOpacity(this.isCommandEnabled(index));
     this.drawText(this.commandName(index), rect.x, rect.y, rect.width, align);
@@ -135,7 +135,7 @@ Window_Command.prototype.isOkEnabled = function() {
 };
 
 Window_Command.prototype.callOkHandler = function() {
-    var symbol = this.currentSymbol();
+    let symbol = this.currentSymbol();
     if (this.isHandled(symbol)) {
         this.callHandler(symbol);
     } else if (this.isHandled('ok')) {

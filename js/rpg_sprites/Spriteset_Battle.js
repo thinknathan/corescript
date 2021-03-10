@@ -37,10 +37,10 @@ Spriteset_Battle.prototype.update = function() {
 };
 
 Spriteset_Battle.prototype.createBattleField = function() {
-    var width = Graphics.boxWidth;
-    var height = Graphics.boxHeight;
-    var x = (Graphics.width - width) / 2;
-    var y = (Graphics.height - height) / 2;
+    let width = Graphics.boxWidth;
+    let height = Graphics.boxHeight;
+    let x = (Graphics.width - width) / 2;
+    let y = (Graphics.height - height) / 2;
     this._battleField = new Sprite();
     this._battleField.setFrame(x, y, width, height);
     this._battleField.x = x;
@@ -49,11 +49,11 @@ Spriteset_Battle.prototype.createBattleField = function() {
 };
 
 Spriteset_Battle.prototype.createBattleback = function() {
-    var margin = 32;
-    var x = -this._battleField.x - margin;
-    var y = -this._battleField.y - margin;
-    var width = Graphics.width + margin * 2;
-    var height = Graphics.height + margin * 2;
+    let margin = 32;
+    let x = -this._battleField.x - margin;
+    let y = -this._battleField.y - margin;
+    let width = Graphics.width + margin * 2;
+    let height = Graphics.height + margin * 2;
     this._back1Sprite = new TilingSprite();
     this._back2Sprite = new TilingSprite();
     this._back1Sprite.bitmap = this.battleback1Bitmap();
@@ -72,10 +72,10 @@ Spriteset_Battle.prototype.updateBattleback = function() {
 };
 
 Spriteset_Battle.prototype.locateBattleback = function() {
-    var width = this._battleField.width;
-    var height = this._battleField.height;
-    var sprite1 = this._back1Sprite;
-    var sprite2 = this._back2Sprite;
+    let width = this._battleField.width;
+    let height = this._battleField.height;
+    let sprite1 = this._back1Sprite;
+    let sprite2 = this._back2Sprite;
     sprite1.origin.x = sprite1.x + (sprite1.bitmap.width - width) / 2;
     sprite2.origin.x = sprite1.y + (sprite2.bitmap.width - width) / 2;
     if ($gameSystem.isSideView()) {
@@ -211,13 +211,13 @@ Spriteset_Battle.prototype.autotileType = function(z) {
 };
 
 Spriteset_Battle.prototype.createEnemies = function() {
-    var enemies = $gameTroop.members();
-    var sprites = [];
-    for (var i = 0; i < enemies.length; i++) {
+    let enemies = $gameTroop.members();
+    let sprites = [];
+    for (let i = 0; i < enemies.length; i++) {
         sprites[i] = new Sprite_Enemy(enemies[i]);
     }
     sprites.sort(this.compareEnemySprite.bind(this));
-    for (var j = 0; j < sprites.length; j++) {
+    for (let j = 0; j < sprites.length; j++) {
         this._battleField.addChild(sprites[j]);
     }
     this._enemySprites = sprites;
@@ -233,15 +233,15 @@ Spriteset_Battle.prototype.compareEnemySprite = function(a, b) {
 
 Spriteset_Battle.prototype.createActors = function() {
     this._actorSprites = [];
-    for (var i = 0; i < $gameParty.maxBattleMembers(); i++) {
+    for (let i = 0; i < $gameParty.maxBattleMembers(); i++) {
         this._actorSprites[i] = new Sprite_Actor();
         this._battleField.addChild(this._actorSprites[i]);
     }
 };
 
 Spriteset_Battle.prototype.updateActors = function() {
-    var members = $gameParty.battleMembers();
-    for (var i = 0; i < this._actorSprites.length; i++) {
+    let members = $gameParty.battleMembers();
+    for (let i = 0; i < this._actorSprites.length; i++) {
         this._actorSprites[i].setBattler(members[i]);
     }
 };
