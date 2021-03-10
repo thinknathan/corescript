@@ -29,6 +29,21 @@ BitmapPIXI.prototype.initialize = function (width, height) {
     this.textColor = '#ffffff';
     this.outlineColor = 'rgba(0, 0, 0, 0.5)';
     this.outlineWidth = 4;
+    this.textCache = [];
+
+    this.on('removed', this.onRemoveAsAChild);
+};
+
+BitmapPIXI.prototype.onRemoveAsAChild = function () {
+    // Make sure the text cache is emptied and all children are destroyed
+    this.textCache = [];
+    for (let i = this.children.length - 1; i >= 0; i--) {
+        this.children[i].destroy({
+            children: true,
+            texture: true,
+        });
+        this.removeChild(this.children[i]);
+    }
 };
 
 Object.defineProperty(BitmapPIXI.prototype, 'paintOpacity', {
@@ -70,6 +85,12 @@ BitmapPIXI.prototype.resize = function (width, height) {
 
 BitmapPIXI.prototype.clear = function () {
     for (let i = this.children.length - 1; i >= 0; i--) {
+
+        if (this.children[i].isBitmapText) {
+            this.children[i].text = '';
+            continue;
+        }
+
         this.children[i].destroy({
             children: true,
             texture: true,
@@ -87,7 +108,11 @@ BitmapPIXI.prototype.clearRect = function (x, y, width, height) {
             (child.x >= x && child.x < x + width) &&
             (child.y >= y && child.y < y + height)
         ) {
-            toRemove.push(child);
+            if (child.isBitmapText) {
+                child.text = '';
+            } else {
+                toRemove.push(child);
+            }
         }
     });
 
@@ -118,6 +143,29 @@ BitmapPIXI.prototype.drawText = function (text, x, y, maxWidth, lineHeight, alig
         stroke: this.outlineColor,
         strokeThickness: this.outlineWidth,
     }
+    let exitEarly = false;
+    let alpha = this._paintOpacity / 255;
+
+    // [note] Non-String values crash BitmapText updates in PIXI 5.3.3
+    // since they use {text}.replace
+    text = String(text);
+    if (align === 'center') {
+        x = x + (maxWidth / 2);
+    } else if (align === 'right') {
+        x = x + maxWidth;
+    }
+    y = y + lineHeight - Math.round(this.fontSize * 1.25);
+
+    let context = this;
+    this.textCache.forEach(function (BitmapTextInstance) {
+        if (BitmapTextInstance && BitmapTextInstance.x === x && BitmapTextInstance.y === y) {
+            exitEarly = true;
+            if (BitmapTextInstance.text !== text) BitmapTextInstance.text = text;
+            if (BitmapTextInstance.alpha !== alpha) BitmapTextInstance.alpha = alpha;
+            context.addChild(BitmapTextInstance);
+        }
+    });
+    if (exitEarly) return;
 
     if (!PIXI.BitmapFont.available[style.fontFamily]) {
         let bitmapOptions = {
@@ -130,9 +178,6 @@ BitmapPIXI.prototype.drawText = function (text, x, y, maxWidth, lineHeight, alig
         PIXI.BitmapFont.from(style.fontFamily, style, bitmapOptions);
     }
 
-    // [note] Non-String values crash BitmapText updates in PIXI 5.3.3
-    // since they use {text}.replace
-    text = String(text);
     let pixiText = new PIXI.BitmapText(text, {
         fontName: style.fontFamily,
         fontSize: style.fontSize,
@@ -142,18 +187,22 @@ BitmapPIXI.prototype.drawText = function (text, x, y, maxWidth, lineHeight, alig
         let scaling = maxWidth / pixiText.width;
         pixiText.scale.x = scaling;
     }
-    pixiText.x = x;
-    pixiText.y = y + lineHeight - Math.round(this.fontSize * 1.25);
-    maxWidth = maxWidth || 0xffffffff;
-    if (align == 'center') {
+    if (align === 'center') {
         pixiText.anchor.set(0.5, 0);
-        pixiText.x = x + (maxWidth / 2);
-    } else if (align == 'right') {
+    } else if (align === 'right') {
         pixiText.anchor.set(1, 0);
-        pixiText.x = x + maxWidth;
     }
-    pixiText.alpha = this._paintOpacity / 255;
-    if (pixiText) this.addChild(pixiText);
+
+    maxWidth = maxWidth || 0xffffffff;
+
+    pixiText.x = x;
+    pixiText.y = y;
+    pixiText.alpha = alpha;
+    pixiText.isBitmapText = true;
+    if (pixiText) {
+        this.textCache.push(pixiText);
+        this.addChild(pixiText);
+    }
 };
 
 BitmapPIXI.prototype.measureTextWidth = function (text) {
