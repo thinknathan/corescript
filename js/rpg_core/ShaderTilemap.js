@@ -84,14 +84,8 @@ ShaderTilemap.prototype.refreshTileset = function() {
  * @private
  */
 ShaderTilemap.prototype.updateTransform = function() {
-    let ox, oy;
-    if (this.roundPixels) {
-        ox = Math.floor(this.origin.x);
-        oy = Math.floor(this.origin.y);
-    } else {
-        ox = this.origin.x;
-        oy = this.origin.y;
-    }
+    let ox = Math.floor(this.origin.x);
+    let oy = Math.floor(this.origin.y);
     let startX = Math.floor((ox - this._margin) / this._tileWidth);
     let startY = Math.floor((oy - this._margin) / this._tileHeight);
     this._updateLayerPositions(startX, startY);
@@ -138,14 +132,8 @@ ShaderTilemap.prototype._createLayers = function() {
  * @private
  */
 ShaderTilemap.prototype._updateLayerPositions = function(startX, startY) {
-    let ox, oy;
-    if (this.roundPixels) {
-        ox = Math.floor(this.origin.x);
-        oy = Math.floor(this.origin.y);
-    } else {
-        ox = this.origin.x;
-        oy = this.origin.y;
-    }
+    let ox = Math.floor(this.origin.x);
+    let oy = Math.floor(this.origin.y);
     this.lowerZLayer.position.x = startX * this._tileWidth - ox;
     this.lowerZLayer.position.y = startY * this._tileHeight - oy;
     this.upperZLayer.position.x = startX * this._tileWidth - ox;
