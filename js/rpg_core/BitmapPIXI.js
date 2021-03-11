@@ -143,7 +143,6 @@ BitmapPIXI.prototype.drawText = function (text, x, y, maxWidth, lineHeight, alig
         stroke: this.outlineColor,
         strokeThickness: this.outlineWidth,
     }
-    let exitEarly = false;
     let alpha = this._paintOpacity / 255;
 
     // [note] Non-String values crash BitmapText updates in PIXI 5.3.3
@@ -156,7 +155,13 @@ BitmapPIXI.prototype.drawText = function (text, x, y, maxWidth, lineHeight, alig
     }
     y = y + lineHeight - Math.round(this.fontSize * 1.25);
 
+    let updateExisting = this.updateExistingText(text, x, y, alpha);
+    if (!updateExisting) this.drawNewText(text, x, y, maxWidth, align, style, alpha);
+};
+
+BitmapPIXI.prototype.updateExistingText = function (text, x, y, alpha) {
     let context = this;
+    let exitEarly = false;
     this.textCache.forEach(function (BitmapTextInstance) {
         if (BitmapTextInstance && BitmapTextInstance.x === x && BitmapTextInstance.y === y) {
             exitEarly = true;
@@ -165,8 +170,10 @@ BitmapPIXI.prototype.drawText = function (text, x, y, maxWidth, lineHeight, alig
             context.addChild(BitmapTextInstance);
         }
     });
-    if (exitEarly) return;
+    return exitEarly;
+};
 
+BitmapPIXI.prototype.drawNewText = function (text, x, y, maxWidth, align, style, alpha) {
     if (!PIXI.BitmapFont.available[style.fontFamily]) {
         let bitmapOptions = {
             chars: [
@@ -265,38 +272,100 @@ BitmapPIXI.prototype.blt = function (source, sx, sy, sw, sh, dx, dy, dw, dh) {
 };
 
 BitmapPIXI.prototype.fillRect = function (x, y, width, height, color) {
-    const rectangle = new PIXI.Graphics();
-    color = PIXI.utils.string2hex(color);
-    rectangle.beginFill(color);
-    rectangle.drawRect(
-        0,
-        0,
-        width,
-        height,
-    );
-    rectangle.endFill();
-    rectangle.x = x;
-    rectangle.y = y;
-    rectangle.alpha = this._paintOpacity / 255;
-    if (rectangle) this.addChild(rectangle);
+    let texture = ShapeTextureCache.get('rectangle', color, height);
+
+    if (!texture) {
+        let rectangle = new PIXI.Graphics();
+        color = PIXI.utils.string2hex(color);
+        rectangle.beginFill(color);
+        rectangle.drawRect(
+            0,
+            0,
+            width,
+            height,
+        );
+        rectangle.endFill();
+
+        if (rectangle) {
+            texture = Graphics._renderer.generateTexture(rectangle);
+            ShapeTextureCache.add('rectangle', color, height, texture);
+        }
+    }
+
+    let sprite = new PIXI.Sprite(texture);
+    sprite.x = x;
+    sprite.y = y;
+    sprite.alpha = this._paintOpacity / 255;
+
+    this.addChild(sprite);
+    return sprite;
 };
 
 BitmapPIXI.prototype.gradientFillRect = function (x, y, width, height, color1, color2, vertical) {
-    this.fillRect(x, y, width, height, color1);
+    return this.fillRect(x, y, width, height, color1);
 };
 
 BitmapPIXI.prototype.drawCircle = function (x, y, radius, color) {
-    const circle = new PIXI.Graphics();
-    color = PIXI.utils.string2hex(color);
-    circle.beginFill(color);
-    circle.drawCircle(
-        0,
-        0,
-        radius,
-    );
-    circle.endFill();
-    circle.x = x;
-    circle.y = y;
-    circle.alpha = this._paintOpacity / 255;
-    if (circle) this.addChild(circle);
+    let texture = ShapeTextureCache.get('circle', color, radius);
+
+    if (!texture) {
+        let circle = new PIXI.Graphics();
+        color = PIXI.utils.string2hex(color);
+        circle.beginFill(color);
+        circle.drawCircle(
+            0,
+            0,
+            radius,
+        );
+        circle.endFill();
+        if (circle) {
+            texture = Graphics._renderer.generateTexture(circle);
+            ShapeTextureCache.add('circle', color, radius, texture);
+        }
+    }
+
+    let sprite = new PIXI.Sprite(texture);
+    sprite.x = x;
+    sprite.y = y;
+    sprite.alpha = this._paintOpacity / 255;
+
+    this.addChild(sprite);
+    return sprite;
+};
+
+
+
+//-----------------------------------------------------------------------------
+/**
+ * Stores shape textures
+ *
+ */
+
+ShapeTextureCache = {};
+
+ShapeTextureCache._cache = [];
+
+ShapeTextureCache.get = function (type, color, height) {
+    let texture = false;
+    this._cache.forEach(function (storedVal) {
+        if (storedVal.type === type && storedVal.color == color && storedVal.height == height) {
+            texture = storedVal.texture;
+            console.log('retrieved texture');
+        }
+    });
+    return texture;
+};
+
+ShapeTextureCache.add = function (type, color, height, texture) {
+    let key = type + color + height;
+    if (!this._cache.some((value) => value.key === key)) {
+        let object = {
+            key: key,
+            type: type,
+            color: color,
+            height: height,
+            texture: texture
+        };
+        this._cache.push(object);
+    }
 };
