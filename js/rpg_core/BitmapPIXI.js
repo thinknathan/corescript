@@ -272,33 +272,24 @@ BitmapPIXI.prototype.blt = function (source, sx, sy, sw, sh, dx, dy, dw, dh) {
 };
 
 BitmapPIXI.prototype.fillRect = function (x, y, width, height, color) {
-    let texture = ShapeTextureCache.get('rectangle', color, height);
+    let rectangle = new PIXI.Graphics();
+    color = PIXI.utils.string2hex(color);
+    rectangle.beginFill(color);
+    rectangle.drawRect(
+        0,
+        0,
+        width,
+        height,
+    );
+    rectangle.endFill();
 
-    if (!texture) {
-        let rectangle = new PIXI.Graphics();
-        color = PIXI.utils.string2hex(color);
-        rectangle.beginFill(color);
-        rectangle.drawRect(
-            0,
-            0,
-            width,
-            height,
-        );
-        rectangle.endFill();
-
-        if (rectangle) {
-            texture = Graphics._renderer.generateTexture(rectangle);
-            ShapeTextureCache.add('rectangle', color, height, texture);
-        }
+    if (rectangle) {
+        rectangle.x = x;
+        rectangle.y = y;
+        rectangle.alpha = this._paintOpacity / 255;
+        this.addChild(rectangle);
     }
-
-    let sprite = new PIXI.Sprite(texture);
-    sprite.x = x;
-    sprite.y = y;
-    sprite.alpha = this._paintOpacity / 255;
-
-    this.addChild(sprite);
-    return sprite;
+    return rectangle;
 };
 
 BitmapPIXI.prototype.gradientFillRect = function (x, y, width, height, color1, color2, vertical) {
@@ -306,66 +297,20 @@ BitmapPIXI.prototype.gradientFillRect = function (x, y, width, height, color1, c
 };
 
 BitmapPIXI.prototype.drawCircle = function (x, y, radius, color) {
-    let texture = ShapeTextureCache.get('circle', color, radius);
-
-    if (!texture) {
-        let circle = new PIXI.Graphics();
-        color = PIXI.utils.string2hex(color);
-        circle.beginFill(color);
-        circle.drawCircle(
-            0,
-            0,
-            radius,
-        );
-        circle.endFill();
-        if (circle) {
-            texture = Graphics._renderer.generateTexture(circle);
-            ShapeTextureCache.add('circle', color, radius, texture);
-        }
+    let circle = new PIXI.Graphics();
+    color = PIXI.utils.string2hex(color);
+    circle.beginFill(color);
+    circle.drawCircle(
+        0,
+        0,
+        radius,
+    );
+    circle.endFill();
+    if (circle) {
+        circle.x = x;
+        circle.y = y;
+        circle.alpha = this._paintOpacity / 255;
+        this.addChild(circle);
     }
-
-    let sprite = new PIXI.Sprite(texture);
-    sprite.x = x;
-    sprite.y = y;
-    sprite.alpha = this._paintOpacity / 255;
-
-    this.addChild(sprite);
-    return sprite;
-};
-
-
-
-//-----------------------------------------------------------------------------
-/**
- * Stores shape textures
- *
- */
-
-ShapeTextureCache = {};
-
-ShapeTextureCache._cache = [];
-
-ShapeTextureCache.get = function (type, color, height) {
-    let texture = false;
-    this._cache.forEach(function (storedVal) {
-        if (storedVal.type === type && storedVal.color == color && storedVal.height == height) {
-            texture = storedVal.texture;
-            console.log('retrieved texture');
-        }
-    });
-    return texture;
-};
-
-ShapeTextureCache.add = function (type, color, height, texture) {
-    let key = type + color + height;
-    if (!this._cache.some((value) => value.key === key)) {
-        let object = {
-            key: key,
-            type: type,
-            color: color,
-            height: height,
-            texture: texture
-        };
-        this._cache.push(object);
-    }
+    return circle;
 };
