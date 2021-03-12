@@ -1,12 +1,13 @@
 //-----------------------------------------------------------------------------
 /**
- * Cached window skin textures.
+ * WindowSkinCache
  *
- * @class WindowSkinCache
- * @function
+ * Cached window skin textures.
  */
 
-WindowSkinCache = {};
+function WindowSkinCache() {
+    throw new Error('This is a static class');
+}
 
 WindowSkinCache.addFrame = function (name, resource) {
     if (!WindowSkinCache[name]) {
@@ -475,7 +476,6 @@ Window.prototype._refreshBack = function () {
             child.tint = tone;
         }
     });
-    //this._windowBackSprite.setFrame(0, 0, w, h);
 };
 
 
@@ -525,7 +525,6 @@ Window.prototype._refreshFrame = function () {
         this._windowFramePlane.width = w;
         this._windowFramePlane.height = h;
     }
-    //this._windowFrameSprite.setFrame(0, 0, w, h);
 };
 
 /**
@@ -563,8 +562,6 @@ Window.prototype._refreshCursor = function () {
         this._windowCursorPlane.width = w;
         this._windowCursorPlane.height = h;
     }
-
-    //this._windowCursorSprite.setFrame(0, 0, w2, h2);
 };
 
 /**
