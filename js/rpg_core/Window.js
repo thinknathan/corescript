@@ -9,17 +9,19 @@ function WindowSkinCache() {
     throw new Error('This is a static class');
 }
 
-WindowSkinCache.addFrame = function (name, resource) {
-    if (!WindowSkinCache[name]) {
-        WindowSkinCache[name] = {};
+WindowSkinCache._cache = {};
+
+WindowSkinCache.setItem = function (name, resource, type) {
+    if (!WindowSkinCache._cache[name]) {
+        WindowSkinCache._cache[name] = {};
     }
-    WindowSkinCache[name]._frame = resource;
+    WindowSkinCache._cache[name][type] = resource;
 };
 
-WindowSkinCache.getFrame = function (name) {
-    if (!WindowSkinCache[name]) return false;
-    if (!WindowSkinCache[name]._frame) return false;
-    return WindowSkinCache[name]._frame;
+WindowSkinCache.getItem = function (name, type) {
+    if (!WindowSkinCache._cache[name]) return false;
+    if (!WindowSkinCache._cache[name][type]) return false;
+    return WindowSkinCache._cache[name][type];
 };
 
 //-----------------------------------------------------------------------------
@@ -490,7 +492,7 @@ Window.prototype._refreshFrame = function () {
 
     if (w > 0 && h > 0 && this._windowskin && !this._windowFrameSprite._setupComplete) {
         let texture;
-        let cachedFrame = WindowSkinCache.getFrame(this._windowskin._url);
+        let cachedFrame = WindowSkinCache.getItem(this._windowskin._url, 'frame');
         if (cachedFrame) {
             texture = cachedFrame;
         } else {
@@ -513,7 +515,7 @@ Window.prototype._refreshFrame = function () {
                 children: true,
                 texture: true,
             });
-            WindowSkinCache.addFrame(this._windowskin._url, texture);
+            WindowSkinCache.setItem(this._windowskin._url, texture, 'frame');
         }
 
         this._windowFramePlane = new PIXI.NineSlicePlane(texture, 12, 12, 12, 12);
