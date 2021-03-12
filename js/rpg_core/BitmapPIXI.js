@@ -131,20 +131,9 @@ BitmapPIXI.prototype.clearRect = function (x, y, width, height) {
 
 BitmapPIXI.prototype.drawText = function (text, x, y, maxWidth, lineHeight, align) {
     if (text === undefined) return;
-    let style = {
-        fontFamily: this.fontFace,
-        fontSize: this.fontSize,
-        fill: 0xffffff,
-        lineHeight: lineHeight,
-        wordWrap: this.wordWrap,
-        wordWrapWidth: this.wordWrapWidth,
-        padding: this.textPadding,
-        fontStyle: this.fontItalic ? 'italic' : 'normal',
-        stroke: this.outlineColor,
-        strokeThickness: this.outlineWidth,
-    }
     let alpha = this._paintOpacity / 255;
 
+    maxWidth = maxWidth || 0xffffffff;
     // [note] Non-String values crash BitmapText updates in PIXI 5.3.3
     // since they use {text}.replace
     text = String(text);
@@ -155,8 +144,12 @@ BitmapPIXI.prototype.drawText = function (text, x, y, maxWidth, lineHeight, alig
     }
     y = y + lineHeight - Math.round(this.fontSize * 1.25);
 
+    // Try to updating existing text object at the same X and Y position
     let updateExisting = this.updateExistingText(text, x, y, alpha);
-    if (!updateExisting) this.drawNewText(text, x, y, maxWidth, align, style, alpha);
+    // If no text object exists, create a new one
+    if (!updateExisting) {
+        this.drawNewText(text, x, y, alpha, maxWidth, lineHeight, align);
+    }
 };
 
 BitmapPIXI.prototype.updateExistingText = function (text, x, y, alpha) {
@@ -173,7 +166,20 @@ BitmapPIXI.prototype.updateExistingText = function (text, x, y, alpha) {
     return exitEarly;
 };
 
-BitmapPIXI.prototype.drawNewText = function (text, x, y, maxWidth, align, style, alpha) {
+BitmapPIXI.prototype.drawNewText = function (text, x, y, alpha, maxWidth, lineHeight, align) {
+    let style = {
+        fontFamily: this.fontFace,
+        fontSize: this.fontSize,
+        fill: 0xffffff,
+        lineHeight: lineHeight,
+        wordWrap: this.wordWrap,
+        wordWrapWidth: this.wordWrapWidth,
+        padding: this.textPadding,
+        fontStyle: this.fontItalic ? 'italic' : 'normal',
+        stroke: this.outlineColor,
+        strokeThickness: this.outlineWidth,
+    }
+
     if (!PIXI.BitmapFont.available[style.fontFamily]) {
         let bitmapOptions = {
             chars: [
@@ -190,23 +196,23 @@ BitmapPIXI.prototype.drawNewText = function (text, x, y, maxWidth, align, style,
         fontSize: style.fontSize,
         tint: PIXI.utils.string2hex(this.textColor),
     });
+
     if (!style.wordWrap && pixiText.width > maxWidth) {
         let scaling = maxWidth / pixiText.width;
         pixiText.scale.x = scaling;
     }
+
     if (align === 'center') {
         pixiText.anchor.set(0.5, 0);
     } else if (align === 'right') {
         pixiText.anchor.set(1, 0);
     }
 
-    maxWidth = maxWidth || 0xffffffff;
-
-    pixiText.x = x;
-    pixiText.y = y;
-    pixiText.alpha = alpha;
-    pixiText.isBitmapText = true;
     if (pixiText) {
+        pixiText.x = x;
+        pixiText.y = y;
+        pixiText.alpha = alpha;
+        pixiText.isBitmapText = true;
         this.textCache.push(pixiText);
         this.addChild(pixiText);
     }
@@ -282,7 +288,6 @@ BitmapPIXI.prototype.fillRect = function (x, y, width, height, color) {
         height,
     );
     rectangle.endFill();
-
     if (rectangle) {
         rectangle.x = x;
         rectangle.y = y;
