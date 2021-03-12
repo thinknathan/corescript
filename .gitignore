@@ -14,6 +14,7 @@ icon/*
 img/*
 movies/*
 save/*
+js/plugins/*
 package.json
 js/plugins.js
 
