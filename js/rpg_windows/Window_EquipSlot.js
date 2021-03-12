@@ -40,7 +40,7 @@ Window_EquipSlot.prototype.item = function() {
 
 Window_EquipSlot.prototype.drawItem = function(index) {
     if (this._actor) {
-        var rect = this.itemRectForText(index);
+        let rect = this.itemRectForText(index);
         this.changeTextColor(this.systemColor());
         this.changePaintOpacity(this.isEnabled(index));
         this.drawText(this.slotName(index), rect.x, rect.y, 138, this.lineHeight());
@@ -50,7 +50,7 @@ Window_EquipSlot.prototype.drawItem = function(index) {
 };
 
 Window_EquipSlot.prototype.slotName = function(index) {
-    var slots = this._actor.equipSlots();
+    let slots = this._actor.equipSlots();
     return this._actor ? $dataSystem.equipTypes[slots[index]] : '';
 };
 

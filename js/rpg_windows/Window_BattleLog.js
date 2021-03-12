@@ -12,8 +12,8 @@ Window_BattleLog.prototype = Object.create(Window_Selectable.prototype);
 Window_BattleLog.prototype.constructor = Window_BattleLog;
 
 Window_BattleLog.prototype.initialize = function() {
-    var width = this.windowWidth();
-    var height = this.windowHeight();
+    let width = this.windowWidth();
+    let height = this.windowHeight();
     Window_Selectable.prototype.initialize.call(this, 0, 0, width, height);
     this.opacity = 0;
     this._lines = [];
@@ -88,7 +88,7 @@ Window_BattleLog.prototype.updateWaitCount = function() {
 };
 
 Window_BattleLog.prototype.updateWaitMode = function() {
-    var waiting = false;
+    let waiting = false;
     switch (this._waitMode) {
     case 'effect':
         waiting = this._spriteset.isEffecting();
@@ -109,7 +109,7 @@ Window_BattleLog.prototype.setWaitMode = function(waitMode) {
 
 Window_BattleLog.prototype.callNextMethod = function() {
     if (this._methods.length > 0) {
-        var method = this._methods.shift();
+        let method = this._methods.shift();
         if (method.name && this[method.name]) {
             this[method.name].apply(this, method.params);
         } else {
@@ -124,7 +124,7 @@ Window_BattleLog.prototype.isFastForward = function() {
 };
 
 Window_BattleLog.prototype.push = function(methodName) {
-    var methodArgs = Array.prototype.slice.call(arguments, 1);
+    let methodArgs = Array.prototype.slice.call(arguments, 1);
     this._methods.push({ name: methodName, params: methodArgs });
 };
 
@@ -157,14 +157,14 @@ Window_BattleLog.prototype.pushBaseLine = function() {
 };
 
 Window_BattleLog.prototype.popBaseLine = function() {
-    var baseLine = this._baseLineStack.pop();
+    let baseLine = this._baseLineStack.pop();
     while (this._lines.length > baseLine) {
         this._lines.pop();
     }
 };
 
 Window_BattleLog.prototype.waitForNewLine = function() {
-    var baseLine = 0;
+    let baseLine = 0;
     if (this._baseLineStack.length > 0) {
         baseLine = this._baseLineStack[this._baseLineStack.length - 1];
     }
@@ -251,10 +251,10 @@ Window_BattleLog.prototype.showEnemyAttackAnimation = function(subject, targets)
 };
 
 Window_BattleLog.prototype.showNormalAnimation = function(targets, animationId, mirror) {
-    var animation = $dataAnimations[animationId];
+    let animation = $dataAnimations[animationId];
     if (animation) {
-        var delay = this.animationBaseDelay();
-        var nextDelay = this.animationNextDelay();
+        let delay = this.animationBaseDelay();
+        let nextDelay = this.animationNextDelay();
         targets.forEach(function(target) {
             target.startAnimation(animationId, mirror, delay);
             delay += nextDelay;
@@ -273,14 +273,14 @@ Window_BattleLog.prototype.animationNextDelay = function() {
 Window_BattleLog.prototype.refresh = function() {
     this.drawBackground();
     this.contents.clear();
-    for (var i = 0; i < this._lines.length; i++) {
+    for (let i = 0; i < this._lines.length; i++) {
         this.drawLineText(i);
     }
 };
 
 Window_BattleLog.prototype.drawBackground = function() {
-    var rect = this.backRect();
-    var color = this.backColor();
+    let rect = this.backRect();
+    let color = this.backColor();
     this._backBitmap.clear();
     this._backBitmap.paintOpacity = this.backPaintOpacity();
     this._backBitmap.fillRect(rect.x, rect.y, rect.width, rect.height, color);
@@ -305,7 +305,7 @@ Window_BattleLog.prototype.backPaintOpacity = function() {
 };
 
 Window_BattleLog.prototype.drawLineText = function(index) {
-    var rect = this.itemRectForText(index);
+    let rect = this.itemRectForText(index);
     this.contents.clearRect(rect.x, rect.y, rect.width, rect.height);
     this.drawTextEx(this._lines[index], rect.x, rect.y, rect.width);
 };
@@ -315,7 +315,7 @@ Window_BattleLog.prototype.startTurn = function() {
 };
 
 Window_BattleLog.prototype.startAction = function(subject, action, targets) {
-    var item = action.item();
+    let item = action.item();
     this.push('performActionStart', subject, action);
     this.push('waitForMovement');
     this.push('performAction', subject, action);
@@ -330,7 +330,7 @@ Window_BattleLog.prototype.endAction = function(subject) {
 };
 
 Window_BattleLog.prototype.displayCurrentState = function(subject) {
-    var stateText = subject.mostImportantStateText();
+    let stateText = subject.mostImportantStateText();
     if (stateText) {
         this.push('addText', subject.name() + stateText);
         this.push('wait');
@@ -343,7 +343,7 @@ Window_BattleLog.prototype.displayRegeneration = function(subject) {
 };
 
 Window_BattleLog.prototype.displayAction = function(subject, item) {
-    var numMethods = this._methods.length;
+    let numMethods = this._methods.length;
     if (DataManager.isSkill(item)) {
         if (item.message1) {
             this.push('addText', subject.name() + item.message1.format(item.name));
@@ -370,7 +370,7 @@ Window_BattleLog.prototype.displayReflection = function(target) {
 };
 
 Window_BattleLog.prototype.displaySubstitute = function(substitute, target) {
-    var substName = substitute.name();
+    let substName = substitute.name();
     this.push('performSubstitute', substitute, target);
     this.push('addText', TextManager.substitute.format(substName, target.name()));
 };
@@ -418,7 +418,7 @@ Window_BattleLog.prototype.displayDamage = function(target) {
 };
 
 Window_BattleLog.prototype.displayMiss = function(target) {
-    var fmt;
+    let fmt;
     if (target.result().physical) {
         fmt = target.isActor() ? TextManager.actorNoHit : TextManager.enemyNoHit;
         this.push('performMiss', target);
@@ -429,7 +429,7 @@ Window_BattleLog.prototype.displayMiss = function(target) {
 };
 
 Window_BattleLog.prototype.displayEvasion = function(target) {
-    var fmt;
+    let fmt;
     if (target.result().physical) {
         fmt = TextManager.evasion;
         this.push('performEvasion', target);
@@ -494,7 +494,7 @@ Window_BattleLog.prototype.displayChangedStates = function(target) {
 
 Window_BattleLog.prototype.displayAddedStates = function(target) {
     target.result().addedStateObjects().forEach(function(state) {
-        var stateMsg = target.isActor() ? state.message1 : state.message2;
+        let stateMsg = target.isActor() ? state.message1 : state.message2;
         if (state.id === target.deathStateId()) {
             this.push('performCollapse', target);
         }
@@ -518,7 +518,7 @@ Window_BattleLog.prototype.displayRemovedStates = function(target) {
 };
 
 Window_BattleLog.prototype.displayChangedBuffs = function(target) {
-    var result = target.result();
+    let result = target.result();
     this.displayBuffs(target, result.addedBuffs, TextManager.buffAdd);
     this.displayBuffs(target, result.addedDebuffs, TextManager.debuffAdd);
     this.displayBuffs(target, result.removedBuffs, TextManager.buffRemove);
@@ -533,10 +533,10 @@ Window_BattleLog.prototype.displayBuffs = function(target, buffs, fmt) {
 };
 
 Window_BattleLog.prototype.makeHpDamageText = function(target) {
-    var result = target.result();
-    var damage = result.hpDamage;
-    var isActor = target.isActor();
-    var fmt;
+    let result = target.result();
+    let damage = result.hpDamage;
+    let isActor = target.isActor();
+    let fmt;
     if (damage > 0 && result.drain) {
         fmt = isActor ? TextManager.actorDrain : TextManager.enemyDrain;
         return fmt.format(target.name(), TextManager.hp, damage);
@@ -553,10 +553,10 @@ Window_BattleLog.prototype.makeHpDamageText = function(target) {
 };
 
 Window_BattleLog.prototype.makeMpDamageText = function(target) {
-    var result = target.result();
-    var damage = result.mpDamage;
-    var isActor = target.isActor();
-    var fmt;
+    let result = target.result();
+    let damage = result.mpDamage;
+    let isActor = target.isActor();
+    let fmt;
     if (damage > 0 && result.drain) {
         fmt = isActor ? TextManager.actorDrain : TextManager.enemyDrain;
         return fmt.format(target.name(), TextManager.mp, damage);
@@ -572,10 +572,10 @@ Window_BattleLog.prototype.makeMpDamageText = function(target) {
 };
 
 Window_BattleLog.prototype.makeTpDamageText = function(target) {
-    var result = target.result();
-    var damage = result.tpDamage;
-    var isActor = target.isActor();
-    var fmt;
+    let result = target.result();
+    let damage = result.tpDamage;
+    let isActor = target.isActor();
+    let fmt;
     if (damage > 0) {
         fmt = isActor ? TextManager.actorLoss : TextManager.enemyLoss;
         return fmt.format(target.name(), TextManager.tp, damage);

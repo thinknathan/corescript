@@ -11,7 +11,7 @@ Window_ActorCommand.prototype = Object.create(Window_Command.prototype);
 Window_ActorCommand.prototype.constructor = Window_ActorCommand;
 
 Window_ActorCommand.prototype.initialize = function() {
-    var y = Graphics.boxHeight - this.windowHeight();
+    let y = Graphics.boxHeight - this.windowHeight();
     Window_Command.prototype.initialize.call(this, 0, y);
     this.openness = 0;
     this.deactivate();
@@ -40,12 +40,12 @@ Window_ActorCommand.prototype.addAttackCommand = function() {
 };
 
 Window_ActorCommand.prototype.addSkillCommands = function() {
-    var skillTypes = this._actor.addedSkillTypes();
+    let skillTypes = this._actor.addedSkillTypes();
     skillTypes.sort(function(a, b) {
         return a - b;
     });
     skillTypes.forEach(function(stypeId) {
-        var name = $dataSystem.skillTypes[stypeId];
+        let name = $dataSystem.skillTypes[stypeId];
         this.addCommand(name, 'skill', true, stypeId);
     }, this);
 };
@@ -82,10 +82,10 @@ Window_ActorCommand.prototype.processOk = function() {
 Window_ActorCommand.prototype.selectLast = function() {
     this.select(0);
     if (this._actor && ConfigManager.commandRemember) {
-        var symbol = this._actor.lastCommandSymbol();
+        let symbol = this._actor.lastCommandSymbol();
         this.selectSymbol(symbol);
         if (symbol === 'skill') {
-            var skill = this._actor.lastBattleSkill();
+            let skill = this._actor.lastBattleSkill();
             if (skill) {
                 this.selectExt(skill.stypeId);
             }

@@ -63,10 +63,10 @@ Scene_Title.prototype.createForeground = function() {
 };
 
 Scene_Title.prototype.drawGameTitle = function() {
-    var x = 20;
-    var y = Graphics.height / 4;
-    var maxWidth = Graphics.width - x * 2;
-    var text = $dataSystem.gameTitle;
+    let x = 20;
+    let y = Graphics.height / 4;
+    let maxWidth = Graphics.width - x * 2;
+    let text = $dataSystem.gameTitle;
     this._gameTitleSprite.bitmap.outlineColor = 'black';
     this._gameTitleSprite.bitmap.outlineWidth = 8;
     this._gameTitleSprite.bitmap.fontSize = 72;

@@ -21,7 +21,7 @@ Window_ShopStatus.prototype.initialize = function(x, y, width, height) {
 Window_ShopStatus.prototype.refresh = function() {
     this.contents.clear();
     if (this._item) {
-        var x = this.textPadding();
+        let x = this.textPadding();
         this.drawPossession(x, 0);
         if (this.isEquipItem()) {
             this.drawEquipInfo(x, this.lineHeight() * 2);
@@ -39,8 +39,8 @@ Window_ShopStatus.prototype.isEquipItem = function() {
 };
 
 Window_ShopStatus.prototype.drawPossession = function(x, y) {
-    var width = this.contents.width - this.textPadding() - x;
-    var possessionWidth = this.textWidth('0000');
+    let width = this.contents.width - this.textPadding() - x;
+    let possessionWidth = this.textWidth('0000');
     this.changeTextColor(this.systemColor());
     this.drawText(TextManager.possession, x, y, width - possessionWidth);
     this.resetTextColor();
@@ -48,15 +48,15 @@ Window_ShopStatus.prototype.drawPossession = function(x, y) {
 };
 
 Window_ShopStatus.prototype.drawEquipInfo = function(x, y) {
-    var members = this.statusMembers();
-    for (var i = 0; i < members.length; i++) {
+    let members = this.statusMembers();
+    for (let i = 0; i < members.length; i++) {
         this.drawActorEquipInfo(x, y + this.lineHeight() * (i * 2.4), members[i]);
     }
 };
 
 Window_ShopStatus.prototype.statusMembers = function() {
-    var start = this._pageIndex * this.pageSize();
-    var end = start + this.pageSize();
+    let start = this._pageIndex * this.pageSize();
+    let end = start + this.pageSize();
     return $gameParty.members().slice(start, end);
 };
 
@@ -69,11 +69,11 @@ Window_ShopStatus.prototype.maxPages = function() {
 };
 
 Window_ShopStatus.prototype.drawActorEquipInfo = function(x, y, actor) {
-    var enabled = actor.canEquip(this._item);
+    let enabled = actor.canEquip(this._item);
     this.changePaintOpacity(enabled);
     this.resetTextColor();
     this.drawText(actor.name(), x, y, 168);
-    var item1 = this.currentEquippedItem(actor, this._item.etypeId);
+    let item1 = this.currentEquippedItem(actor, this._item.etypeId);
     if (enabled) {
         this.drawActorParamChange(x, y, actor, item1);
     }
@@ -82,9 +82,9 @@ Window_ShopStatus.prototype.drawActorEquipInfo = function(x, y, actor) {
 };
 
 Window_ShopStatus.prototype.drawActorParamChange = function(x, y, actor, item1) {
-    var width = this.contents.width - this.textPadding() - x;
-    var paramId = this.paramId();
-    var change = this._item.params[paramId] - (item1 ? item1.params[paramId] : 0);
+    let width = this.contents.width - this.textPadding() - x;
+    let paramId = this.paramId();
+    let change = this._item.params[paramId] - (item1 ? item1.params[paramId] : 0);
     this.changeTextColor(this.paramchangeTextColor(change));
     this.drawText((change > 0 ? '+' : '') + change, x, y, width, 'right');
 };
@@ -94,18 +94,18 @@ Window_ShopStatus.prototype.paramId = function() {
 };
 
 Window_ShopStatus.prototype.currentEquippedItem = function(actor, etypeId) {
-    var list = [];
-    var equips = actor.equips();
-    var slots = actor.equipSlots();
-    for (var i = 0; i < slots.length; i++) {
+    let list = [];
+    let equips = actor.equips();
+    let slots = actor.equipSlots();
+    for (let i = 0; i < slots.length; i++) {
         if (slots[i] === etypeId) {
             list.push(equips[i]);
         }
     }
-    var paramId = this.paramId();
-    var worstParam = Number.MAX_VALUE;
-    var worstItem = null;
-    for (var j = 0; j < list.length; j++) {
+    let paramId = this.paramId();
+    let worstParam = Number.MAX_VALUE;
+    let worstItem = null;
+    for (let j = 0; j < list.length; j++) {
         if (list[j] && list[j].params[paramId] < worstParam) {
             worstParam = list[j].params[paramId];
             worstItem = list[j];
@@ -140,8 +140,8 @@ Window_ShopStatus.prototype.isPageChangeRequested = function() {
 };
 
 Window_ShopStatus.prototype.isTouchedInsideFrame = function() {
-    var x = this.canvasToLocalX(TouchInput.x);
-    var y = this.canvasToLocalY(TouchInput.y);
+    let x = this.canvasToLocalX(TouchInput.x);
+    let y = this.canvasToLocalY(TouchInput.y);
     return x >= 0 && y >= 0 && x < this.width && y < this.height;
 };
 

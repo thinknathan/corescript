@@ -48,8 +48,8 @@ Sprite_Enemy.prototype.update = function() {
 
 Sprite_Enemy.prototype.updateBitmap = function() {
     Sprite_Battler.prototype.updateBitmap.call(this);
-    var name = this._enemy.battlerName();
-    var hue = this._enemy.battlerHue();
+    let name = this._enemy.battlerName();
+    let hue = this._enemy.battlerHue();
     if (this._battlerName !== name || this._battlerHue !== hue) {
         this._battlerName = name;
         this._battlerHue = hue;
@@ -68,7 +68,7 @@ Sprite_Enemy.prototype.loadBitmap = function(name, hue) {
 
 Sprite_Enemy.prototype.updateFrame = function() {
     Sprite_Battler.prototype.updateFrame.call(this);
-    var frameHeight = this.bitmap.height;
+    let frameHeight = this.bitmap.height;
     if (this._effectType === 'bossCollapse') {
         frameHeight = this._effectDuration;
     }
@@ -212,7 +212,7 @@ Sprite_Enemy.prototype.revertToNormal = function() {
 };
 
 Sprite_Enemy.prototype.updateWhiten = function() {
-    var alpha = 128 - (16 - this._effectDuration) * 10;
+    let alpha = 128 - (16 - this._effectDuration) * 10;
     this.setBlendColor([255, 255, 255, alpha]);
 };
 

@@ -32,9 +32,9 @@ JsonEx._generateId = function(){
  * @return {String} The JSON string
  */
 JsonEx.stringify = function(object) {
-    var circular = [];
+    let circular = [];
     JsonEx._id = 1;
-    var json = JSON.stringify(this._encode(object, circular, 0));
+    let json = JSON.stringify(this._encode(object, circular, 0));
     this._cleanMetadata(object);
     this._restoreCircularReference(circular);
 
@@ -43,9 +43,9 @@ JsonEx.stringify = function(object) {
 
 JsonEx._restoreCircularReference = function(circulars){
     circulars.forEach(function(circular){
-        var key = circular[0];
-        var value = circular[1];
-        var content = circular[2];
+        let key = circular[0];
+        let value = circular[1];
+        let content = circular[2];
 
         value[key] = content;
     });
@@ -60,9 +60,9 @@ JsonEx._restoreCircularReference = function(circulars){
  * @return {Object} The reconstructed object
  */
 JsonEx.parse = function(json) {
-    var circular = [];
-    var registry = {};
-    var contents = this._decode(JSON.parse(json), circular, registry);
+    let circular = [];
+    let registry = {};
+    let contents = this._decode(JSON.parse(json), circular, registry);
     this._cleanMetadata(contents);
     this._linkCircularReference(contents, circular, registry);
 
@@ -71,9 +71,9 @@ JsonEx.parse = function(json) {
 
 JsonEx._linkCircularReference = function(contents, circulars, registry){
     circulars.forEach(function(circular){
-        var key = circular[0];
-        var value = circular[1];
-        var id = circular[2];
+        let key = circular[0];
+        let value = circular[1];
+        let id = circular[2];
 
         value[key] = registry[id];
     });
@@ -87,7 +87,7 @@ JsonEx._cleanMetadata = function(object){
 
     if(typeof object === 'object'){
         Object.keys(object).forEach(function(key){
-            var value = object[key];
+            let value = object[key];
             if(typeof value === 'object'){
                 JsonEx._cleanMetadata(value);
             }
@@ -122,15 +122,15 @@ JsonEx._encode = function(value, circular, depth) {
     if (++depth >= this.maxDepth) {
         throw new Error('Object too deep');
     }
-    var type = Object.prototype.toString.call(value);
+    let type = Object.prototype.toString.call(value);
     if (type === '[object Object]' || type === '[object Array]') {
         value['@c'] = JsonEx._generateId();
 
-        var constructorName = this._getConstructorName(value);
+        let constructorName = this._getConstructorName(value);
         if (constructorName !== 'Object' && constructorName !== 'Array') {
             value['@'] = constructorName;
         }
-        for (var key in value) {
+        for (let key in value) {
             if ((!value.hasOwnProperty || value.hasOwnProperty(key)) && !key.match(/^@./)) {
                 if(value[key] && typeof value[key] === 'object'){
                     if(value[key]['@c']){
@@ -169,23 +169,23 @@ JsonEx._encode = function(value, circular, depth) {
  * @private
  */
 JsonEx._decode = function(value, circular, registry) {
-    var type = Object.prototype.toString.call(value);
+    let type = Object.prototype.toString.call(value);
     if (type === '[object Object]' || type === '[object Array]') {
         registry[value['@c']] = value;
 
         if (value['@'] === null) {
             value = this._resetPrototype(value, null);
         } else if (value['@']) {
-            var constructor = window[value['@']];
+            let constructor = window[value['@']];
             if (constructor) {
                 value = this._resetPrototype(value, constructor.prototype);
             }
         }
-        for (var key in value) {
+        for (let key in value) {
             if (!value.hasOwnProperty || value.hasOwnProperty(key)) {
                 if(value[key] && value[key]['@a']){
                     //object is array wrapper
-                    var body = value[key]['@a'];
+                    let body = value[key]['@a'];
                     body['@c'] = value[key]['@c'];
                     value[key] = body;
                 }
@@ -211,9 +211,9 @@ JsonEx._getConstructorName = function(value) {
     if (!value.constructor) {
         return null;
     }
-    var name = value.constructor.name;
+    let name = value.constructor.name;
     if (name === undefined) {
-        var func = /^\s*function\s*([A-Za-z0-9_$]*)/;
+        let func = /^\s*function\s*([A-Za-z0-9_$]*)/;
         name = func.exec(value.constructor)[1];
     }
     return name;
@@ -233,8 +233,8 @@ JsonEx._resetPrototype = function(value, prototype) {
     } else if ('__proto__' in value) {
         value.__proto__ = prototype;
     } else {
-        var newValue = Object.create(prototype);
-        for (var key in value) {
+        let newValue = Object.create(prototype);
+        for (let key in value) {
             if (value.hasOwnProperty(key)) {
                 newValue[key] = value[key];
             }

@@ -11,8 +11,8 @@ Window_Gold.prototype = Object.create(Window_Base.prototype);
 Window_Gold.prototype.constructor = Window_Gold;
 
 Window_Gold.prototype.initialize = function(x, y) {
-    var width = this.windowWidth();
-    var height = this.windowHeight();
+    let width = this.windowWidth();
+    let height = this.windowHeight();
     Window_Base.prototype.initialize.call(this, x, y, width, height);
     this.refresh();
 };
@@ -26,8 +26,8 @@ Window_Gold.prototype.windowHeight = function() {
 };
 
 Window_Gold.prototype.refresh = function() {
-    var x = this.textPadding();
-    var width = this.contents.width - this.textPadding() * 2;
+    let x = this.textPadding();
+    let width = this.contents.width - this.textPadding() * 2;
     this.contents.clear();
     this.drawCurrencyValue(this.value(), this.currencyUnit(), x, 0, width);
 };

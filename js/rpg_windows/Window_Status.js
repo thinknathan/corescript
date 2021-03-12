@@ -11,8 +11,8 @@ Window_Status.prototype = Object.create(Window_Selectable.prototype);
 Window_Status.prototype.constructor = Window_Status;
 
 Window_Status.prototype.initialize = function() {
-    var width = Graphics.boxWidth;
-    var height = Graphics.boxHeight;
+    let width = Graphics.boxWidth;
+    let height = Graphics.boxHeight;
     Window_Selectable.prototype.initialize.call(this, 0, 0, width, height);
     this._actor = null;
     this.refresh();
@@ -29,7 +29,7 @@ Window_Status.prototype.setActor = function(actor) {
 Window_Status.prototype.refresh = function() {
     this.contents.clear();
     if (this._actor) {
-        var lineHeight = this.lineHeight();
+        let lineHeight = this.lineHeight();
         this.drawBlock1(lineHeight * 0);
         this.drawHorzLine(lineHeight * 1);
         this.drawBlock2(lineHeight * 2);
@@ -62,7 +62,7 @@ Window_Status.prototype.drawBlock4 = function(y) {
 };
 
 Window_Status.prototype.drawHorzLine = function(y) {
-    var lineY = y + this.lineHeight() / 2 - 1;
+    let lineY = y + this.lineHeight() / 2 - 1;
     this.contents.paintOpacity = 48;
     this.contents.fillRect(0, lineY, this.contentsWidth(), 2, this.lineColor());
     this.contents.paintOpacity = 255;
@@ -73,7 +73,7 @@ Window_Status.prototype.lineColor = function() {
 };
 
 Window_Status.prototype.drawBasicInfo = function(x, y) {
-    var lineHeight = this.lineHeight();
+    let lineHeight = this.lineHeight();
     this.drawActorLevel(this._actor, x, y + lineHeight * 0);
     this.drawActorIcons(this._actor, x, y + lineHeight * 1);
     this.drawActorHp(this._actor, x, y + lineHeight * 2);
@@ -81,10 +81,10 @@ Window_Status.prototype.drawBasicInfo = function(x, y) {
 };
 
 Window_Status.prototype.drawParameters = function(x, y) {
-    var lineHeight = this.lineHeight();
-    for (var i = 0; i < 6; i++) {
-        var paramId = i + 2;
-        var y2 = y + lineHeight * i;
+    let lineHeight = this.lineHeight();
+    for (let i = 0; i < 6; i++) {
+        let paramId = i + 2;
+        let y2 = y + lineHeight * i;
         this.changeTextColor(this.systemColor());
         this.drawText(TextManager.param(paramId), x, y2, 160);
         this.resetTextColor();
@@ -93,11 +93,11 @@ Window_Status.prototype.drawParameters = function(x, y) {
 };
 
 Window_Status.prototype.drawExpInfo = function(x, y) {
-    var lineHeight = this.lineHeight();
-    var expTotal = TextManager.expTotal.format(TextManager.exp);
-    var expNext = TextManager.expNext.format(TextManager.level);
-    var value1 = this._actor.currentExp();
-    var value2 = this._actor.nextRequiredExp();
+    let lineHeight = this.lineHeight();
+    let expTotal = TextManager.expTotal.format(TextManager.exp);
+    let expNext = TextManager.expNext.format(TextManager.level);
+    let value1 = this._actor.currentExp();
+    let value2 = this._actor.nextRequiredExp();
     if (this._actor.isMaxLevel()) {
         value1 = '-------';
         value2 = '-------';
@@ -111,9 +111,9 @@ Window_Status.prototype.drawExpInfo = function(x, y) {
 };
 
 Window_Status.prototype.drawEquipments = function(x, y) {
-    var equips = this._actor.equips();
-    var count = Math.min(equips.length, this.maxEquipmentLines());
-    for (var i = 0; i < count; i++) {
+    let equips = this._actor.equips();
+    let count = Math.min(equips.length, this.maxEquipmentLines());
+    for (let i = 0; i < count; i++) {
         this.drawItemName(equips[i], x, y + this.lineHeight() * i);
     }
 };

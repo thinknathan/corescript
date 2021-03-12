@@ -11,7 +11,7 @@ Window_PartyCommand.prototype = Object.create(Window_Command.prototype);
 Window_PartyCommand.prototype.constructor = Window_PartyCommand;
 
 Window_PartyCommand.prototype.initialize = function() {
-    var y = Graphics.boxHeight - this.windowHeight();
+    let y = Graphics.boxHeight - this.windowHeight();
     Window_Command.prototype.initialize.call(this, 0, y);
     this.openness = 0;
     this.deactivate();

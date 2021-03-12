@@ -32,7 +32,7 @@ Game_CommonEvent.prototype.refresh = function() {
 };
 
 Game_CommonEvent.prototype.isActive = function() {
-    var event = this.event();
+    let event = this.event();
     return event.trigger === 2 && $gameSwitches.value(event.switchId);
 };
 

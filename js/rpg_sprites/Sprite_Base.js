@@ -39,10 +39,10 @@ Sprite_Base.prototype.updateVisibility = function() {
 
 Sprite_Base.prototype.updateAnimationSprites = function() {
     if (this._animationSprites.length > 0) {
-        var sprites = this._animationSprites.clone();
+        let sprites = this._animationSprites.clone();
         this._animationSprites = [];
-        for (var i = 0; i < sprites.length; i++) {
-            var sprite = sprites[i];
+        for (let i = 0; i < sprites.length; i++) {
+            let sprite = sprites[i];
             if (sprite.isPlaying()) {
                 this._animationSprites.push(sprite);
             } else {
@@ -53,7 +53,7 @@ Sprite_Base.prototype.updateAnimationSprites = function() {
 };
 
 Sprite_Base.prototype.startAnimation = function(animation, mirror, delay) {
-    var sprite = new Sprite_Animation();
+    let sprite = new Sprite_Animation();
     sprite.setup(this._effectTarget, animation, mirror, delay);
     this.parent.addChild(sprite);
     this._animationSprites.push(sprite);

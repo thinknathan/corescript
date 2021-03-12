@@ -246,7 +246,7 @@ Object.defineProperty(TouchInput, 'date', {
  * @private
  */
 TouchInput._setupEventHandlers = function() {
-    var isSupportPassive = Utils.isSupportPassiveEvent();
+    let isSupportPassive = Utils.isSupportPassiveEvent();
     document.addEventListener('mousedown', this._onMouseDown.bind(this));
     document.addEventListener('mousemove', this._onMouseMove.bind(this));
     document.addEventListener('mouseup', this._onMouseUp.bind(this));
@@ -282,8 +282,8 @@ TouchInput._onMouseDown = function(event) {
  * @private
  */
 TouchInput._onLeftButtonDown = function(event) {
-    var x = Graphics.pageToCanvasX(event.pageX);
-    var y = Graphics.pageToCanvasY(event.pageY);
+    let x = Graphics.pageToCanvasX(event.pageX);
+    let y = Graphics.pageToCanvasY(event.pageY);
     if (Graphics.isInsideCanvas(x, y)) {
         this._mousePressed = true;
         this._pressedTime = 0;
@@ -307,8 +307,8 @@ TouchInput._onMiddleButtonDown = function(event) {
  * @private
  */
 TouchInput._onRightButtonDown = function(event) {
-    var x = Graphics.pageToCanvasX(event.pageX);
-    var y = Graphics.pageToCanvasY(event.pageY);
+    let x = Graphics.pageToCanvasX(event.pageX);
+    let y = Graphics.pageToCanvasY(event.pageY);
     if (Graphics.isInsideCanvas(x, y)) {
         this._onCancel(x, y);
     }
@@ -322,8 +322,8 @@ TouchInput._onRightButtonDown = function(event) {
  */
 TouchInput._onMouseMove = function(event) {
     if (this._mousePressed) {
-        var x = Graphics.pageToCanvasX(event.pageX);
-        var y = Graphics.pageToCanvasY(event.pageY);
+        let x = Graphics.pageToCanvasX(event.pageX);
+        let y = Graphics.pageToCanvasY(event.pageY);
         this._onMove(x, y);
     }
 };
@@ -336,8 +336,8 @@ TouchInput._onMouseMove = function(event) {
  */
 TouchInput._onMouseUp = function(event) {
     if (event.button === 0) {
-        var x = Graphics.pageToCanvasX(event.pageX);
-        var y = Graphics.pageToCanvasY(event.pageY);
+        let x = Graphics.pageToCanvasX(event.pageX);
+        let y = Graphics.pageToCanvasY(event.pageY);
         this._mousePressed = false;
         this._onRelease(x, y);
     }
@@ -362,10 +362,10 @@ TouchInput._onWheel = function(event) {
  * @private
  */
 TouchInput._onTouchStart = function(event) {
-    for (var i = 0; i < event.changedTouches.length; i++) {
-        var touch = event.changedTouches[i];
-        var x = Graphics.pageToCanvasX(touch.pageX);
-        var y = Graphics.pageToCanvasY(touch.pageY);
+    for (let i = 0; i < event.changedTouches.length; i++) {
+        let touch = event.changedTouches[i];
+        let x = Graphics.pageToCanvasX(touch.pageX);
+        let y = Graphics.pageToCanvasY(touch.pageY);
         if (Graphics.isInsideCanvas(x, y)) {
             this._screenPressed = true;
             this._pressedTime = 0;
@@ -389,10 +389,10 @@ TouchInput._onTouchStart = function(event) {
  * @private
  */
 TouchInput._onTouchMove = function(event) {
-    for (var i = 0; i < event.changedTouches.length; i++) {
-        var touch = event.changedTouches[i];
-        var x = Graphics.pageToCanvasX(touch.pageX);
-        var y = Graphics.pageToCanvasY(touch.pageY);
+    for (let i = 0; i < event.changedTouches.length; i++) {
+        let touch = event.changedTouches[i];
+        let x = Graphics.pageToCanvasX(touch.pageX);
+        let y = Graphics.pageToCanvasY(touch.pageY);
         this._onMove(x, y);
     }
 };
@@ -404,10 +404,10 @@ TouchInput._onTouchMove = function(event) {
  * @private
  */
 TouchInput._onTouchEnd = function(event) {
-    for (var i = 0; i < event.changedTouches.length; i++) {
-        var touch = event.changedTouches[i];
-        var x = Graphics.pageToCanvasX(touch.pageX);
-        var y = Graphics.pageToCanvasY(touch.pageY);
+    for (let i = 0; i < event.changedTouches.length; i++) {
+        let touch = event.changedTouches[i];
+        let x = Graphics.pageToCanvasX(touch.pageX);
+        let y = Graphics.pageToCanvasY(touch.pageY);
         this._screenPressed = false;
         this._onRelease(x, y);
     }
@@ -431,8 +431,8 @@ TouchInput._onTouchCancel = function(event) {
  */
 TouchInput._onPointerDown = function(event) {
     if (event.pointerType === 'touch' && !event.isPrimary) {
-        var x = Graphics.pageToCanvasX(event.pageX);
-        var y = Graphics.pageToCanvasY(event.pageY);
+        let x = Graphics.pageToCanvasX(event.pageX);
+        let y = Graphics.pageToCanvasY(event.pageY);
         if (Graphics.isInsideCanvas(x, y)) {
             // For Microsoft Edge
             this._onCancel(x, y);

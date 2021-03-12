@@ -11,9 +11,9 @@ Window_Message.prototype = Object.create(Window_Base.prototype);
 Window_Message.prototype.constructor = Window_Message;
 
 Window_Message.prototype.initialize = function() {
-    var width = this.windowWidth();
-    var height = this.windowHeight();
-    var x = (Graphics.boxWidth - width) / 2;
+    let width = this.windowWidth();
+    let height = this.windowHeight();
+    let x = (Graphics.boxWidth - width) / 2;
     Window_Base.prototype.initialize.call(this, x, 0, width, height);
     this.openness = 0;
     this.initMembers();

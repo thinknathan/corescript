@@ -32,8 +32,8 @@ Window_ChoiceList.prototype.selectDefault = function() {
 };
 
 Window_ChoiceList.prototype.updatePlacement = function() {
-    var positionType = $gameMessage.choicePositionType();
-    var messageY = this._messageWindow.y;
+    let positionType = $gameMessage.choicePositionType();
+    let messageY = this._messageWindow.y;
     this.width = this.windowWidth();
     this.height = this.windowHeight();
     switch (positionType) {
@@ -60,17 +60,17 @@ Window_ChoiceList.prototype.updateBackground = function() {
 };
 
 Window_ChoiceList.prototype.windowWidth = function() {
-    var width = this.maxChoiceWidth() + this.padding * 2;
+    let width = this.maxChoiceWidth() + this.padding * 2;
     return Math.min(width, Graphics.boxWidth);
 };
 
 Window_ChoiceList.prototype.numVisibleRows = function() {
-    var messageY = this._messageWindow.y;
-    var messageHeight = this._messageWindow.height;
-    var centerY = Graphics.boxHeight / 2;
-    var choices = $gameMessage.choices();
-    var numLines = choices.length;
-    var maxLines = 8;
+    let messageY = this._messageWindow.y;
+    let messageHeight = this._messageWindow.height;
+    let centerY = Graphics.boxHeight / 2;
+    let choices = $gameMessage.choices();
+    let numLines = choices.length;
+    let maxLines = 8;
     if (messageY < centerY && messageY + messageHeight > centerY) {
         maxLines = 4;
     }
@@ -81,10 +81,10 @@ Window_ChoiceList.prototype.numVisibleRows = function() {
 };
 
 Window_ChoiceList.prototype.maxChoiceWidth = function() {
-    var maxWidth = 96;
-    var choices = $gameMessage.choices();
-    for (var i = 0; i < choices.length; i++) {
-        var choiceWidth = this.textWidthEx(choices[i]) + this.textPadding() * 2;
+    let maxWidth = 96;
+    let choices = $gameMessage.choices();
+    for (let i = 0; i < choices.length; i++) {
+        let choiceWidth = this.textWidthEx(choices[i]) + this.textPadding() * 2;
         if (maxWidth < choiceWidth) {
             maxWidth = choiceWidth;
         }
@@ -101,14 +101,14 @@ Window_ChoiceList.prototype.contentsHeight = function() {
 };
 
 Window_ChoiceList.prototype.makeCommandList = function() {
-    var choices = $gameMessage.choices();
-    for (var i = 0; i < choices.length; i++) {
+    let choices = $gameMessage.choices();
+    for (let i = 0; i < choices.length; i++) {
         this.addCommand(choices[i], 'choice');
     }
 };
 
 Window_ChoiceList.prototype.drawItem = function(index) {
-    var rect = this.itemRectForText(index);
+    let rect = this.itemRectForText(index);
     this.drawTextEx(this.commandName(index), rect.x, rect.y);
 };
 

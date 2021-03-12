@@ -20,7 +20,7 @@ ImageCache.prototype.add = function(key, value){
 
 ImageCache.prototype.get = function(key){
     if(this._items[key]){
-        var item = this._items[key];
+        let item = this._items[key];
         item.touch = Date.now();
         return item.bitmap;
     }
@@ -41,7 +41,7 @@ ImageCache.prototype.reserve = function(key, value, reservationId){
 };
 
 ImageCache.prototype.releaseReservation = function(reservationId){
-    var items = this._items;
+    let items = this._items;
 
     Object.keys(items)
         .map(function(key){return items[key];})
@@ -53,8 +53,8 @@ ImageCache.prototype.releaseReservation = function(reservationId){
 };
 
 ImageCache.prototype._truncateCache = function(){
-    var items = this._items;
-    var sizeLeft = ImageCache.limit;
+    let items = this._items;
+    let sizeLeft = ImageCache.limit;
 
     Object.keys(items).map(function(key){
         return items[key];
@@ -62,7 +62,7 @@ ImageCache.prototype._truncateCache = function(){
         return b.touch - a.touch;
     }).forEach(function(item){
         if(sizeLeft > 0 || this._mustBeHeld(item)){
-            var bitmap = item.bitmap;
+            let bitmap = item.bitmap;
             sizeLeft -= bitmap.width * bitmap.height;
         }else{
             delete items[item.key];
@@ -82,15 +82,15 @@ ImageCache.prototype._mustBeHeld = function(item){
 };
 
 ImageCache.prototype.isReady = function(){
-    var items = this._items;
+    let items = this._items;
     return !Object.keys(items).some(function(key){
         return !items[key].bitmap.isRequestOnly() && !items[key].bitmap.isReady();
     });
 };
 
 ImageCache.prototype.getErrorBitmap = function(){
-    var items = this._items;
-    var bitmap = null;
+    let items = this._items;
+    let bitmap = null;
     if(Object.keys(items).some(function(key){
             if(items[key].bitmap.isError()){
                 bitmap = items[key].bitmap;

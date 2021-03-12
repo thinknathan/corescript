@@ -15,6 +15,7 @@ const $priorityScripts = [
     {"path":"js/rpg_core/","name":"Point"},
     {"path":"js/rpg_core/","name":"Rectangle"},
     {"path":"js/rpg_core/","name":"Bitmap"},
+    {"path":"js/rpg_core/","name":"BitmapPIXI"},
     {"path":"js/rpg_core/","name":"Graphics"},
     {"path":"js/rpg_core/","name":"Input"},
     {"path":"js/rpg_core/","name":"TouchInput"},
@@ -188,9 +189,9 @@ PluginManager.init = function(priorities, plugins) {
 };
 
 PluginManager.setupCounter = function() {
-    var counter = document.createElement('div');
-    var counterInner = document.createElement('div');
-    var counterSpan = document.createElement('span');
+    let counter = document.createElement('div');
+    let counterInner = document.createElement('div');
+    let counterSpan = document.createElement('span');
     counter.id = "counter";
     counterInner.id = 'counter--inner';
     counterInner.innerHTML = "Loading ";
@@ -202,12 +203,12 @@ PluginManager.setupCounter = function() {
 };
 
 PluginManager.updateCounter = function() {
-    var counter = document.getElementById('counter--count');
+    let counter = document.getElementById('counter--count');
     if (counter) counter.innerHTML = Math.floor((this._scriptsLoadedLength / this._scriptsToLoadLength) * 100) + '%';
 };
 
 PluginManager.removeCounter = function() {
-    var counter = document.getElementById('counter');
+    let counter = document.getElementById('counter');
     document.body.removeChild(counter);
 };
 
@@ -229,7 +230,7 @@ PluginManager.setup = function(plugins) {
 };
 
 PluginManager.checkErrors = function() {
-    var url = this._errorUrls.shift();
+    let url = this._errorUrls.shift();
     if (url) {
         throw new Error('Failed to load: ' + url);
     }
@@ -244,8 +245,8 @@ PluginManager.setParameters = function(name, parameters) {
 };
 
 PluginManager.loadScript = function(name, path) {
-    var url;
-    var script = document.createElement('script');
+    let url;
+    let script = document.createElement('script');
     if (path) {
         url = path + name;
     } else {
@@ -271,8 +272,9 @@ PluginManager.onLoad = function(e) {
         this.removeCounter();
         PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.NEAREST;
         PIXI.settings.ROUND_PIXELS = true;
+        PIXI.settings.MIPMAP_TEXTURES = PIXI.MIPMAP_MODES.ON;
         PIXI.settings.GC_MODE = PIXI.GC_MODES.AUTO;
-        PIXI.settings.GC_MAX_IDLE = 120;
+        PIXI.settings.GC_MAX_IDLE = 150;
         SceneManager.run(Scene_Boot);
     }
 };

@@ -60,11 +60,11 @@ DataManager._databaseFiles = [
 ];
 
 DataManager.loadDatabase = function() {
-    var test = this.isBattleTest() || this.isEventTest();
-    var prefix = test ? 'Test_' : '';
-    for (var i = 0; i < this._databaseFiles.length; i++) {
-        var name = this._databaseFiles[i].name;
-        var src = this._databaseFiles[i].src;
+    let test = this.isBattleTest() || this.isEventTest();
+    let prefix = test ? 'Test_' : '';
+    for (let i = 0; i < this._databaseFiles.length; i++) {
+        let name = this._databaseFiles[i].name;
+        let src = this._databaseFiles[i].src;
         this.loadDataFile(name, prefix + src);
     }
     if (this.isEventTest()) {
@@ -73,8 +73,8 @@ DataManager.loadDatabase = function() {
 };
 
 DataManager.loadDataFile = function(name, src) {
-    var xhr = new XMLHttpRequest();
-    var url = 'data/' + src;
+    let xhr = new XMLHttpRequest();
+    let url = 'data/' + src;
     xhr.open('GET', url);
     xhr.overrideMimeType('application/json');
     xhr.onload = function() {
@@ -92,7 +92,7 @@ DataManager.loadDataFile = function(name, src) {
 
 DataManager.isDatabaseLoaded = function() {
     this.checkError();
-    for (var i = 0; i < this._databaseFiles.length; i++) {
+    for (let i = 0; i < this._databaseFiles.length; i++) {
         if (!window[this._databaseFiles[i].name]) {
             return false;
         }
@@ -102,7 +102,7 @@ DataManager.isDatabaseLoaded = function() {
 
 DataManager.loadMapData = function(mapId) {
     if (mapId > 0) {
-        var filename = 'Map%1.json'.format(mapId.padZero(3));
+        let filename = 'Map%1.json'.format(mapId.padZero(3));
         this._mapLoader = ResourceHandler.createLoader('data/' + filename, this.loadDataFile.bind(this, '$dataMap', filename));
         this.loadDataFile('$dataMap', filename);
     } else {
@@ -125,7 +125,7 @@ DataManager.isMapLoaded = function() {
 };
 
 DataManager.onLoad = function(object) {
-    var array;
+    let array;
     if (object === $dataMap) {
         this.extractMetadata(object);
         array = object.events;
@@ -133,8 +133,8 @@ DataManager.onLoad = function(object) {
         array = object;
     }
     if (Array.isArray(array)) {
-        for (var i = 0; i < array.length; i++) {
-            var data = array[i];
+        for (let i = 0; i < array.length; i++) {
+            let data = array[i];
             if (data && data.note !== undefined) {
                 this.extractMetadata(data);
             }
@@ -148,10 +148,10 @@ DataManager.onLoad = function(object) {
 };
 
 DataManager.extractMetadata = function(data) {
-    var re = /<([^<>:]+)(:?)([^>]*)>/g;
+    let re = /<([^<>:]+)(:?)([^>]*)>/g;
     data.meta = {};
     for (;;) {
-        var match = re.exec(data.note);
+        let match = re.exec(data.note);
         if (match) {
             if (match[2] === ':') {
                 data.meta[match[1]] = match[3];
@@ -240,7 +240,7 @@ DataManager.loadGlobalInfo = function() {
     if (this._globalInfo) {
         return this._globalInfo;
     }
-    var json;
+    let json;
     try {
         json = StorageManager.load(0);
     } catch (e) {
@@ -249,7 +249,7 @@ DataManager.loadGlobalInfo = function() {
     }
     if (json) {
         this._globalInfo = JSON.parse(json);
-        for (var i = 1; i <= this.maxSavefiles(); i++) {
+        for (let i = 1; i <= this.maxSavefiles(); i++) {
             if (!StorageManager.exists(i)) {
                 delete this._globalInfo[i];
             }
@@ -266,12 +266,12 @@ DataManager.saveGlobalInfo = function(info) {
 };
 
 DataManager.isThisGameFile = function(savefileId) {
-    var globalInfo = this.loadGlobalInfo();
+    let globalInfo = this.loadGlobalInfo();
     if (globalInfo && globalInfo[savefileId]) {
         if (StorageManager.isLocalMode()) {
             return true;
         } else {
-            var savefile = globalInfo[savefileId];
+            let savefile = globalInfo[savefileId];
             return (savefile.globalId === this._globalId &&
                     savefile.title === $dataSystem.gameTitle);
         }
@@ -281,9 +281,9 @@ DataManager.isThisGameFile = function(savefileId) {
 };
 
 DataManager.isAnySavefileExists = function() {
-    var globalInfo = this.loadGlobalInfo();
+    let globalInfo = this.loadGlobalInfo();
     if (globalInfo) {
-        for (var i = 1; i < globalInfo.length; i++) {
+        for (let i = 1; i < globalInfo.length; i++) {
             if (this.isThisGameFile(i)) {
                 return true;
             }
@@ -293,11 +293,11 @@ DataManager.isAnySavefileExists = function() {
 };
 
 DataManager.latestSavefileId = function() {
-    var globalInfo = this.loadGlobalInfo();
-    var savefileId = 1;
-    var timestamp = 0;
+    let globalInfo = this.loadGlobalInfo();
+    let savefileId = 1;
+    let timestamp = 0;
     if (globalInfo) {
-        for (var i = 1; i < globalInfo.length; i++) {
+        for (let i = 1; i < globalInfo.length; i++) {
             if (this.isThisGameFile(i) && globalInfo[i].timestamp > timestamp) {
                 timestamp = globalInfo[i].timestamp;
                 savefileId = i;
@@ -308,11 +308,11 @@ DataManager.latestSavefileId = function() {
 };
 
 DataManager.loadAllSavefileImages = function() {
-    var globalInfo = this.loadGlobalInfo();
+    let globalInfo = this.loadGlobalInfo();
     if (globalInfo) {
-        for (var i = 1; i < globalInfo.length; i++) {
+        for (let i = 1; i < globalInfo.length; i++) {
             if (this.isThisGameFile(i)) {
-                var info = globalInfo[i];
+                let info = globalInfo[i];
                 this.loadSavefileImages(info);
             }
         }
@@ -321,12 +321,12 @@ DataManager.loadAllSavefileImages = function() {
 
 DataManager.loadSavefileImages = function(info) {
     if (info.characters) {
-        for (var i = 0; i < info.characters.length; i++) {
+        for (let i = 0; i < info.characters.length; i++) {
             ImageManager.reserveCharacter(info.characters[i][0]);
         }
     }
     if (info.faces) {
-        for (var j = 0; j < info.faces.length; j++) {
+        for (let j = 0; j < info.faces.length; j++) {
             ImageManager.reserveFace(info.faces[j][0]);
         }
     }
@@ -361,7 +361,7 @@ DataManager.loadGame = function(savefileId) {
 };
 
 DataManager.loadSavefileInfo = function(savefileId) {
-    var globalInfo = this.loadGlobalInfo();
+    let globalInfo = this.loadGlobalInfo();
     return (globalInfo && globalInfo[savefileId]) ? globalInfo[savefileId] : null;
 };
 
@@ -370,13 +370,13 @@ DataManager.lastAccessedSavefileId = function() {
 };
 
 DataManager.saveGameWithoutRescue = function(savefileId) {
-    var json = JsonEx.stringify(this.makeSaveContents());
+    let json = JsonEx.stringify(this.makeSaveContents());
     if (json.length >= 200000) {
         console.warn('Save data too big!');
     }
     StorageManager.save(savefileId, json);
     this._lastAccessedId = savefileId;
-    var globalInfo = this.loadGlobalInfo() || [];
+    let globalInfo = this.loadGlobalInfo() || [];
     globalInfo[savefileId] = this.makeSavefileInfo();
     this.saveGlobalInfo(globalInfo);
     return true;
@@ -384,7 +384,7 @@ DataManager.saveGameWithoutRescue = function(savefileId) {
 
 DataManager.loadGameWithoutRescue = function(savefileId) {
     if (this.isThisGameFile(savefileId)) {
-        var json = StorageManager.load(savefileId);
+        let json = StorageManager.load(savefileId);
         this.createGameObjects();
         this.extractSaveContents(JsonEx.parse(json));
         this._lastAccessedId = savefileId;
@@ -395,15 +395,15 @@ DataManager.loadGameWithoutRescue = function(savefileId) {
 };
 
 DataManager.selectSavefileForNewGame = function() {
-    var globalInfo = this.loadGlobalInfo();
+    let globalInfo = this.loadGlobalInfo();
     this._lastAccessedId = 1;
     if (globalInfo) {
-        var numSavefiles = Math.max(0, globalInfo.length - 1);
+        let numSavefiles = Math.max(0, globalInfo.length - 1);
         if (numSavefiles < this.maxSavefiles()) {
             this._lastAccessedId = numSavefiles + 1;
         } else {
-            var timestamp = Number.MAX_VALUE;
-            for (var i = 1; i < globalInfo.length; i++) {
+            let timestamp = Number.MAX_VALUE;
+            for (let i = 1; i < globalInfo.length; i++) {
                 if (!globalInfo[i]) {
                     this._lastAccessedId = i;
                     break;
@@ -418,7 +418,7 @@ DataManager.selectSavefileForNewGame = function() {
 };
 
 DataManager.makeSavefileInfo = function() {
-    var info = {};
+    let info = {};
     info.globalId   = this._globalId;
     info.title      = $dataSystem.gameTitle;
     info.characters = $gameParty.charactersForSavefile();
@@ -430,7 +430,7 @@ DataManager.makeSavefileInfo = function() {
 
 DataManager.makeSaveContents = function() {
     // A save data does not contain $gameTemp, $gameMessage, and $gameTroop.
-    var contents = {};
+    let contents = {};
     contents.system       = $gameSystem;
     contents.screen       = $gameScreen;
     contents.timer        = $gameTimer;

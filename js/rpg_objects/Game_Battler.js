@@ -117,7 +117,7 @@ Game_Battler.prototype.shiftAnimation = function() {
 };
 
 Game_Battler.prototype.startAnimation = function(animationId, mirror, delay) {
-    var data = { animationId: animationId, mirror: mirror, delay: delay };
+    let data = { animationId: animationId, mirror: mirror, delay: delay };
     this._animations.push(data);
 };
 
@@ -253,7 +253,7 @@ Game_Battler.prototype.removeBattleStates = function() {
 };
 
 Game_Battler.prototype.removeAllBuffs = function() {
-    for (var i = 0; i < this.buffLength(); i++) {
+    for (let i = 0; i < this.buffLength(); i++) {
         this.removeBuff(i);
     }
 };
@@ -267,7 +267,7 @@ Game_Battler.prototype.removeStatesAuto = function(timing) {
 };
 
 Game_Battler.prototype.removeBuffsAuto = function() {
-    for (var i = 0; i < this.buffLength(); i++) {
+    for (let i = 0; i < this.buffLength(); i++) {
         if (this.isBuffExpired(i)) {
             this.removeBuff(i);
         }
@@ -291,9 +291,9 @@ Game_Battler.prototype.makeActionTimes = function() {
 Game_Battler.prototype.makeActions = function() {
     this.clearActions();
     if (this.canMove()) {
-        var actionTimes = this.makeActionTimes();
+        let actionTimes = this.makeActionTimes();
         this._actions = [];
-        for (var i = 0; i < actionTimes; i++) {
+        for (let i = 0; i < actionTimes; i++) {
             this._actions.push(new Game_Action(this));
         }
     }
@@ -327,7 +327,7 @@ Game_Battler.prototype.setLastTarget = function(target) {
 
 Game_Battler.prototype.forceAction = function(skillId, targetIndex) {
     this.clearActions();
-    var action = new Game_Action(this, true);
+    let action = new Game_Action(this, true);
     action.setSkill(skillId);
     if (targetIndex === -2) {
         action.setTarget(this._lastTargetIndex);
@@ -380,12 +380,12 @@ Game_Battler.prototype.clearTp = function() {
 };
 
 Game_Battler.prototype.chargeTpByDamage = function(damageRate) {
-    var value = Math.floor(50 * damageRate * this.tcr);
+    let value = Math.floor(50 * damageRate * this.tcr);
     this.gainSilentTp(value);
 };
 
 Game_Battler.prototype.regenerateHp = function() {
-    var value = Math.floor(this.mhp * this.hrg);
+    let value = Math.floor(this.mhp * this.hrg);
     value = Math.max(value, -this.maxSlipDamage());
     if (value !== 0) {
         this.gainHp(value);
@@ -397,14 +397,14 @@ Game_Battler.prototype.maxSlipDamage = function() {
 };
 
 Game_Battler.prototype.regenerateMp = function() {
-    var value = Math.floor(this.mmp * this.mrg);
+    let value = Math.floor(this.mmp * this.mrg);
     if (value !== 0) {
         this.gainMp(value);
     }
 };
 
 Game_Battler.prototype.regenerateTp = function() {
-    var value = Math.floor(100 * this.trg);
+    let value = Math.floor(100 * this.trg);
     this.gainSilentTp(value);
 };
 

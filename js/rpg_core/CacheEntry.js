@@ -57,7 +57,7 @@ CacheEntry.prototype.setTimeToLive = function (ticks, seconds) {
 };
 
 CacheEntry.prototype.isStillAlive = function () {
-    var cache = this.cache;
+    let cache = this.cache;
     return ((this.ttlTicks == 0) || (this.touchTicks + this.ttlTicks < cache.updateTicks )) &&
         ((this.ttlSeconds == 0) || (this.touchSeconds + this.ttlSeconds < cache.updateSeconds ));
 };
@@ -67,7 +67,7 @@ CacheEntry.prototype.isStillAlive = function () {
  * if resource was already freed by TTL, put it in cache again
  */
 CacheEntry.prototype.touch = function () {
-    var cache = this.cache;
+    let cache = this.cache;
     if (this.cached) {
         this.touchTicks = cache.updateTicks;
         this.touchSeconds = cache.updateSeconds;

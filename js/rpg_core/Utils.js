@@ -69,9 +69,19 @@ Utils.isNwjs = function() {
  * @method isMobileDevice
  * @return {Boolean} True if the platform is a mobile device
  */
-Utils.isMobileDevice = function() {
-    var r = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i;
-    return !!navigator.userAgent.match(r);
+Utils.isMobileDevice = function () {
+    let r = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i;
+    if (!!navigator.userAgent.match(r)) {
+        Utils.isMobileDevice = function () {
+            return true;
+        };
+        return true;
+    }
+
+    Utils.isMobileDevice = function () {
+        return false;
+    };
+    return false;
 };
 
 /**
@@ -81,10 +91,19 @@ Utils.isMobileDevice = function() {
  * @method isMobileSafari
  * @return {Boolean} True if the browser is Mobile Safari
  */
-Utils.isMobileSafari = function() {
-    var agent = navigator.userAgent;
-    return !!(agent.match(/iPhone|iPad|iPod/) && agent.match(/AppleWebKit/) &&
-              !agent.match('CriOS'));
+Utils.isMobileSafari = function () {
+    let agent = navigator.userAgent;
+    if (!!(agent.match(/iPhone|iPad|iPod/) && agent.match(/AppleWebKit/) &&
+            !agent.match('CriOS'))) {
+        Utils.isMobileSafari = function () {
+            return true;
+        };
+        return true;
+    }
+    Utils.isMobileSafari = function () {
+        return false;
+    };
+    return false;
 };
 
 /**
@@ -95,7 +114,7 @@ Utils.isMobileSafari = function() {
  * @return {Boolean} True if the browser is Android Chrome
  */
 Utils.isAndroidChrome = function() {
-    var agent = navigator.userAgent;
+    let agent = navigator.userAgent;
     return !!(agent.match(/Android/) && agent.match(/Chrome/));
 };
 
@@ -107,9 +126,9 @@ Utils.isAndroidChrome = function() {
  * @return {Boolean} True if the browser can read files in the game folder
  */
 Utils.canReadGameFiles = function() {
-    var scripts = document.getElementsByTagName('script');
-    var lastScript = scripts[scripts.length - 1];
-    var xhr = new XMLHttpRequest();
+    let scripts = document.getElementsByTagName('script');
+    let lastScript = scripts[scripts.length - 1];
+    let xhr = new XMLHttpRequest();
     try {
         xhr.open('GET', lastScript.src);
         xhr.overrideMimeType('text/javascript');
@@ -156,8 +175,8 @@ Utils.isSupportPassiveEvent = function() {
     }
     // test support passive event
     // https://github.com/WICG/EventListenerOptions/blob/gh-pages/explainer.md#feature-detection
-    var passive = false;
-    var options = Object.defineProperty({}, "passive", {
+    let passive = false;
+    let options = Object.defineProperty({}, "passive", {
         get: function() { passive = true; }
     });
     window.addEventListener("test", null, options);

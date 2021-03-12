@@ -11,10 +11,10 @@ Window_BattleStatus.prototype = Object.create(Window_Selectable.prototype);
 Window_BattleStatus.prototype.constructor = Window_BattleStatus;
 
 Window_BattleStatus.prototype.initialize = function() {
-    var width = this.windowWidth();
-    var height = this.windowHeight();
-    var x = Graphics.boxWidth - width;
-    var y = Graphics.boxHeight - height;
+    let width = this.windowWidth();
+    let height = this.windowHeight();
+    let x = Graphics.boxWidth - width;
+    let y = Graphics.boxHeight - height;
     Window_Selectable.prototype.initialize.call(this, x, y, width, height);
     this.refresh();
     this.openness = 0;
@@ -42,19 +42,19 @@ Window_BattleStatus.prototype.refresh = function() {
 };
 
 Window_BattleStatus.prototype.drawItem = function(index) {
-    var actor = $gameParty.battleMembers()[index];
+    let actor = $gameParty.battleMembers()[index];
     this.drawBasicArea(this.basicAreaRect(index), actor);
     this.drawGaugeArea(this.gaugeAreaRect(index), actor);
 };
 
 Window_BattleStatus.prototype.basicAreaRect = function(index) {
-    var rect = this.itemRectForText(index);
+    let rect = this.itemRectForText(index);
     rect.width -= this.gaugeAreaWidth() + 15;
     return rect;
 };
 
 Window_BattleStatus.prototype.gaugeAreaRect = function(index) {
-    var rect = this.itemRectForText(index);
+    let rect = this.itemRectForText(index);
     rect.x += rect.width - this.gaugeAreaWidth();
     rect.width = this.gaugeAreaWidth();
     return rect;

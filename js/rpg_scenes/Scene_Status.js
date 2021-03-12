@@ -30,7 +30,7 @@ Scene_Status.prototype.start = function() {
 };
 
 Scene_Status.prototype.refreshActor = function() {
-    var actor = this.actor();
+    let actor = this.actor();
     this._statusWindow.setActor(actor);
 };
 

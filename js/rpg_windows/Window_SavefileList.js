@@ -29,15 +29,15 @@ Window_SavefileList.prototype.maxVisibleItems = function() {
 };
 
 Window_SavefileList.prototype.itemHeight = function() {
-    var innerHeight = this.height - this.padding * 2;
+    let innerHeight = this.height - this.padding * 2;
     return Math.floor(innerHeight / this.maxVisibleItems());
 };
 
 Window_SavefileList.prototype.drawItem = function(index) {
-    var id = index + 1;
-    var valid = DataManager.isThisGameFile(id);
-    var info = DataManager.loadSavefileInfo(id);
-    var rect = this.itemRectForText(index);
+    let id = index + 1;
+    let valid = DataManager.isThisGameFile(id);
+    let info = DataManager.loadSavefileInfo(id);
+    let rect = this.itemRectForText(index);
     this.resetTextColor();
     if (this._mode === 'load') {
         this.changePaintOpacity(valid);
@@ -62,15 +62,15 @@ Window_SavefileList.prototype.drawFileId = function(id, x, y) {
 };
 
 Window_SavefileList.prototype.drawContents = function(info, rect, valid) {
-    var bottom = rect.y + rect.height;
+    let bottom = rect.y + rect.height;
     if (rect.width >= 420) {
         this.drawGameTitle(info, rect.x + 192, rect.y, rect.width - 192);
         if (valid) {
             this.drawPartyCharacters(info, rect.x + 220, bottom - 4);
         }
     }
-    var lineHeight = this.lineHeight();
-    var y2 = bottom - lineHeight;
+    let lineHeight = this.lineHeight();
+    let y2 = bottom - lineHeight;
     if (y2 >= lineHeight) {
         this.drawPlaytime(info, rect.x, y2, rect.width);
     }
@@ -84,8 +84,8 @@ Window_SavefileList.prototype.drawGameTitle = function(info, x, y, width) {
 
 Window_SavefileList.prototype.drawPartyCharacters = function(info, x, y) {
     if (info.characters) {
-        for (var i = 0; i < info.characters.length; i++) {
-            var data = info.characters[i];
+        for (let i = 0; i < info.characters.length; i++) {
+            let data = info.characters[i];
             this.drawCharacter(data[0], data[1], x + i * 48, y);
         }
     }

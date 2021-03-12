@@ -19,7 +19,7 @@ Sprite_Damage.prototype.initialize = function() {
 };
 
 Sprite_Damage.prototype.setup = function(target) {
-    var result = target.result();
+    let result = target.result();
     if (result.missed || result.evaded) {
         this.createMiss();
     } else if (result.hpAffected) {
@@ -46,21 +46,21 @@ Sprite_Damage.prototype.digitHeight = function() {
 };
 
 Sprite_Damage.prototype.createMiss = function() {
-    var w = this.digitWidth();
-    var h = this.digitHeight();
-    var sprite = this.createChildSprite();
+    let w = this.digitWidth();
+    let h = this.digitHeight();
+    let sprite = this.createChildSprite();
     sprite.setFrame(0, 4 * h, 4 * w, h);
     sprite.dy = 0;
 };
 
 Sprite_Damage.prototype.createDigits = function(baseRow, value) {
-    var string = Math.abs(value).toString();
-    var row = baseRow + (value < 0 ? 1 : 0);
-    var w = this.digitWidth();
-    var h = this.digitHeight();
-    for (var i = 0; i < string.length; i++) {
-        var sprite = this.createChildSprite();
-        var n = Number(string[i]);
+    let string = Math.abs(value).toString();
+    let row = baseRow + (value < 0 ? 1 : 0);
+    let w = this.digitWidth();
+    let h = this.digitHeight();
+    for (let i = 0; i < string.length; i++) {
+        let sprite = this.createChildSprite();
+        let n = Number(string[i]);
         sprite.setFrame(n * w, row * h, w, h);
         sprite.x = (i - (string.length - 1) / 2) * w;
         sprite.dy = -i;
@@ -68,7 +68,7 @@ Sprite_Damage.prototype.createDigits = function(baseRow, value) {
 };
 
 Sprite_Damage.prototype.createChildSprite = function() {
-    var sprite = new Sprite();
+    let sprite = new Sprite();
     sprite.bitmap = this._damageBitmap;
     sprite.anchor.x = 0.5;
     sprite.anchor.y = 1;
@@ -82,7 +82,7 @@ Sprite_Damage.prototype.update = function() {
     Sprite.prototype.update.call(this);
     if (this._duration > 0) {
         this._duration--;
-        for (var i = 0; i < this.children.length; i++) {
+        for (let i = 0; i < this.children.length; i++) {
             this.updateChild(this.children[i]);
         }
     }
@@ -103,7 +103,7 @@ Sprite_Damage.prototype.updateChild = function(sprite) {
 
 Sprite_Damage.prototype.updateFlash = function() {
     if (this._flashDuration > 0) {
-        var d = this._flashDuration--;
+        let d = this._flashDuration--;
         this._flashColor[3] *= (d - 1) / d;
     }
 };

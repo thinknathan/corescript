@@ -60,10 +60,10 @@ Game_Troop.prototype.setup = function(troopId) {
     this._enemies = [];
     this.troop().members.forEach(function(member) {
         if ($dataEnemies[member.enemyId]) {
-            var enemyId = member.enemyId;
-            var x = member.x;
-            var y = member.y;
-            var enemy = new Game_Enemy(enemyId, x, y);
+            let enemyId = member.enemyId;
+            let x = member.x;
+            let y = member.y;
+            let enemy = new Game_Enemy(enemyId, x, y);
             if (member.hidden) {
                 enemy.hide();
             }
@@ -74,17 +74,17 @@ Game_Troop.prototype.setup = function(troopId) {
 };
 
 Game_Troop.prototype.makeUniqueNames = function() {
-    var table = this.letterTable();
+    let table = this.letterTable();
     this.members().forEach(function(enemy) {
         if (enemy.isAlive() && enemy.isLetterEmpty()) {
-            var name = enemy.originalName();
-            var n = this._namesCount[name] || 0;
+            let name = enemy.originalName();
+            let n = this._namesCount[name] || 0;
             enemy.setLetter(table[n % table.length]);
             this._namesCount[name] = n + 1;
         }
     }, this);
     this.members().forEach(function(enemy) {
-        var name = enemy.originalName();
+        let name = enemy.originalName();
         if (this._namesCount[name] >= 2) {
             enemy.setPlural(true);
         }
@@ -97,9 +97,9 @@ Game_Troop.prototype.letterTable = function() {
 };
 
 Game_Troop.prototype.enemyNames = function() {
-    var names = [];
+    let names = [];
     this.members().forEach(function(enemy) {
-        var name = enemy.originalName();
+        let name = enemy.originalName();
         if (enemy.isAlive() && !names.contains(name)) {
             names.push(name);
         }
@@ -108,7 +108,7 @@ Game_Troop.prototype.enemyNames = function() {
 };
 
 Game_Troop.prototype.meetsConditions = function(page) {
-    var c = page.conditions;
+    let c = page.conditions;
     if (!c.turnEnding && !c.turnValid && !c.enemyValid &&
             !c.actorValid && !c.switchValid) {
         return false;  // Conditions not set
@@ -119,9 +119,9 @@ Game_Troop.prototype.meetsConditions = function(page) {
         }
     }
     if (c.turnValid) {
-        var n = this._turnCount;
-        var a = c.turnA;
-        var b = c.turnB;
+        let n = this._turnCount;
+        let a = c.turnA;
+        let b = c.turnB;
         if ((b === 0 && n !== a)) {
             return false;
         }
@@ -130,13 +130,13 @@ Game_Troop.prototype.meetsConditions = function(page) {
         }
     }
     if (c.enemyValid) {
-        var enemy = $gameTroop.members()[c.enemyIndex];
+        let enemy = $gameTroop.members()[c.enemyIndex];
         if (!enemy || enemy.hpRate() * 100 > c.enemyHp) {
             return false;
         }
     }
     if (c.actorValid) {
-        var actor = $gameActors.actor(c.actorId);
+        let actor = $gameActors.actor(c.actorId);
         if (!actor || actor.hpRate() * 100 > c.actorHp) {
             return false;
         }
@@ -154,9 +154,9 @@ Game_Troop.prototype.setupBattleEvent = function() {
         if (this._interpreter.setupReservedCommonEvent()) {
             return;
         }
-        var pages = this.troop().pages;
-        for (var i = 0; i < pages.length; i++) {
-            var page = pages[i];
+        let pages = this.troop().pages;
+        for (let i = 0; i < pages.length; i++) {
+            let page = pages[i];
             if (this.meetsConditions(page) && !this._eventFlags[i]) {
                 this._interpreter.setup(page.list);
                 this._interpreter.setEventInfo({ eventType: 'battle_event', troopId: this._troopId, page: i + 1 });
@@ -170,9 +170,9 @@ Game_Troop.prototype.setupBattleEvent = function() {
 };
 
 Game_Troop.prototype.increaseTurn = function() {
-    var pages = this.troop().pages;
-    for (var i = 0; i < pages.length; i++) {
-        var page = pages[i];
+    let pages = this.troop().pages;
+    for (let i = 0; i < pages.length; i++) {
+        let page = pages[i];
         if (page.span === 1) {
             this._eventFlags[i] = false;
         }

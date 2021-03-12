@@ -11,7 +11,7 @@ Window_DebugEdit.prototype = Object.create(Window_Selectable.prototype);
 Window_DebugEdit.prototype.constructor = Window_DebugEdit;
 
 Window_DebugEdit.prototype.initialize = function(x, y, width) {
-    var height = this.fittingHeight(10);
+    let height = this.fittingHeight(10);
     Window_Selectable.prototype.initialize.call(this, x, y, width, height);
     this._mode = 'switch';
     this._topId = 1;
@@ -28,13 +28,13 @@ Window_DebugEdit.prototype.refresh = function() {
 };
 
 Window_DebugEdit.prototype.drawItem = function(index) {
-    var dataId = this._topId + index;
-    var idText = dataId.padZero(4) + ':';
-    var idWidth = this.textWidth(idText);
-    var statusWidth = this.textWidth('-00000000');
-    var name = this.itemName(dataId);
-    var status = this.itemStatus(dataId);
-    var rect = this.itemRectForText(index);
+    let dataId = this._topId + index;
+    let idText = dataId.padZero(4) + ':';
+    let idWidth = this.textWidth(idText);
+    let statusWidth = this.textWidth('-00000000');
+    let name = this.itemName(dataId);
+    let status = this.itemStatus(dataId);
+    let rect = this.itemRectForText(index);
     this.resetTextColor();
     this.drawText(idText, rect.x, rect.y, rect.width);
     rect.x += idWidth;
@@ -90,7 +90,7 @@ Window_DebugEdit.prototype.update = function() {
 
 Window_DebugEdit.prototype.updateSwitch = function() {
     if (Input.isRepeated('ok')) {
-        var switchId = this.currentId();
+        let switchId = this.currentId();
         SoundManager.playCursor();
         $gameSwitches.setValue(switchId, !$gameSwitches.value(switchId));
         this.redrawCurrentItem();
@@ -98,8 +98,8 @@ Window_DebugEdit.prototype.updateSwitch = function() {
 };
 
 Window_DebugEdit.prototype.updateVariable = function() {
-    var variableId = this.currentId();
-    var value = $gameVariables.value(variableId);
+    let variableId = this.currentId();
+    let value = $gameVariables.value(variableId);
     if (typeof value === 'number') {
         if (Input.isRepeated('right')) {
             value++;

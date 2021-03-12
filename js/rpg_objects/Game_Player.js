@@ -46,9 +46,9 @@ Game_Player.prototype.followers = function() {
 };
 
 Game_Player.prototype.refresh = function() {
-    var actor = $gameParty.leader();
-    var characterName = actor ? actor.characterName() : '';
-    var characterIndex = actor ? actor.characterIndex() : 0;
+    let actor = $gameParty.leader();
+    let characterName = actor ? actor.characterName() : '';
+    let characterIndex = actor ? actor.characterIndex() : 0;
     this.setImage(characterName, characterIndex);
     this._followers.refresh();
 };
@@ -100,7 +100,7 @@ Game_Player.prototype.performTransfer = function() {
 };
 
 Game_Player.prototype.isMapPassable = function(x, y, d) {
-    var vehicle = this.vehicle();
+    let vehicle = this.vehicle();
     if (vehicle) {
         return vehicle.isMapPassable(x, y, d);
     } else {
@@ -178,13 +178,13 @@ Game_Player.prototype.increaseSteps = function() {
 };
 
 Game_Player.prototype.makeEncounterCount = function() {
-    var n = $gameMap.encounterStep();
+    let n = $gameMap.encounterStep();
     this._encounterCount = Math.randomInt(n) + Math.randomInt(n) + 1;
 };
 
 Game_Player.prototype.makeEncounterTroopId = function() {
-    var encounterList = [];
-    var weightSum = 0;
+    let encounterList = [];
+    let weightSum = 0;
     $gameMap.encounterList().forEach(function(encounter) {
         if (this.meetsEncounterConditions(encounter)) {
             encounterList.push(encounter);
@@ -192,8 +192,8 @@ Game_Player.prototype.makeEncounterTroopId = function() {
         }
     }, this);
     if (weightSum > 0) {
-        var value = Math.randomInt(weightSum);
-        for (var i = 0; i < encounterList.length; i++) {
+        let value = Math.randomInt(weightSum);
+        for (let i = 0; i < encounterList.length; i++) {
             value -= encounterList[i].weight;
             if (value < 0) {
                 return encounterList[i].troopId;
@@ -211,7 +211,7 @@ Game_Player.prototype.meetsEncounterConditions = function(encounter) {
 Game_Player.prototype.executeEncounter = function() {
     if (!$gameMap.isEventRunning() && this._encounterCount <= 0) {
         this.makeEncounterCount();
-        var troopId = this.makeEncounterTroopId();
+        let troopId = this.makeEncounterTroopId();
         if ($dataTroops[troopId]) {
             BattleManager.setup(troopId, true, false);
             BattleManager.onEncounter();
@@ -236,12 +236,12 @@ Game_Player.prototype.startMapEvent = function(x, y, triggers, normal) {
 
 Game_Player.prototype.moveByInput = function() {
     if (!this.isMoving() && this.canMove()) {
-        var direction = this.getInputDirection();
+        let direction = this.getInputDirection();
         if (direction > 0) {
             $gameTemp.clearDestination();
         } else if ($gameTemp.isDestinationValid()){
-            var x = $gameTemp.destinationX();
-            var y = $gameTemp.destinationY();
+            let x = $gameTemp.destinationX();
+            let y = $gameTemp.destinationY();
             direction = this.findDirectionTo(x, y);
         }
         if (direction > 0) {
@@ -275,9 +275,9 @@ Game_Player.prototype.executeMove = function(direction) {
 };
 
 Game_Player.prototype.update = function(sceneActive) {
-    var lastScrolledX = this.scrolledX();
-    var lastScrolledY = this.scrolledY();
-    var wasMoving = this.isMoving();
+    let lastScrolledX = this.scrolledX();
+    let lastScrolledY = this.scrolledY();
+    let wasMoving = this.isMoving();
     this.updateDashing();
     if (sceneActive) {
         this.moveByInput();
@@ -303,7 +303,7 @@ Game_Player.prototype.updateDashing = function() {
 };
 
 Game_Player.prototype.isDashButtonPressed = function() {
-    var shift = Input.isPressed('shift');
+    let shift = Input.isPressed('shift');
     if (ConfigManager.alwaysDash) {
         return !shift;
     } else {
@@ -312,10 +312,10 @@ Game_Player.prototype.isDashButtonPressed = function() {
 };
 
 Game_Player.prototype.updateScroll = function(lastScrolledX, lastScrolledY) {
-    var x1 = lastScrolledX;
-    var y1 = lastScrolledY;
-    var x2 = this.scrolledX();
-    var y2 = this.scrolledY();
+    let x1 = lastScrolledX;
+    let y1 = lastScrolledY;
+    let x2 = this.scrolledX();
+    let y2 = this.scrolledY();
     if (y2 > y1 && y2 > this.centerY()) {
         $gameMap.scrollDown(y2 - y1);
     }
@@ -414,15 +414,15 @@ Game_Player.prototype.triggerButtonAction = function() {
 
 Game_Player.prototype.triggerTouchAction = function() {
     if ($gameTemp.isDestinationValid()){
-        var direction = this.direction();
-        var x1 = this.x;
-        var y1 = this.y;
-        var x2 = $gameMap.roundXWithDirection(x1, direction);
-        var y2 = $gameMap.roundYWithDirection(y1, direction);
-        var x3 = $gameMap.roundXWithDirection(x2, direction);
-        var y3 = $gameMap.roundYWithDirection(y2, direction);
-        var destX = $gameTemp.destinationX();
-        var destY = $gameTemp.destinationY();
+        let direction = this.direction();
+        let x1 = this.x;
+        let y1 = this.y;
+        let x2 = $gameMap.roundXWithDirection(x1, direction);
+        let y2 = $gameMap.roundYWithDirection(y1, direction);
+        let x3 = $gameMap.roundXWithDirection(x2, direction);
+        let y3 = $gameMap.roundYWithDirection(y2, direction);
+        let destX = $gameTemp.destinationX();
+        let destY = $gameTemp.destinationY();
         if (destX === x1 && destY === y1) {
             return this.triggerTouchActionD1(x1, y1);
         } else if (destX === x2 && destY === y2) {
@@ -478,7 +478,7 @@ Game_Player.prototype.canEncounter = function() {
 };
 
 Game_Player.prototype.encounterProgressValue = function() {
-    var value = $gameMap.isBush(this.x, this.y) ? 2 : 1;
+    let value = $gameMap.isBush(this.x, this.y) ? 2 : 1;
     if ($gameParty.hasEncounterHalf()) {
         value *= 0.5;
     }
@@ -496,15 +496,15 @@ Game_Player.prototype.checkEventTriggerHere = function(triggers) {
 
 Game_Player.prototype.checkEventTriggerThere = function(triggers) {
     if (this.canStartLocalEvents()) {
-        var direction = this.direction();
-        var x1 = this.x;
-        var y1 = this.y;
-        var x2 = $gameMap.roundXWithDirection(x1, direction);
-        var y2 = $gameMap.roundYWithDirection(y1, direction);
+        let direction = this.direction();
+        let x1 = this.x;
+        let y1 = this.y;
+        let x2 = $gameMap.roundXWithDirection(x1, direction);
+        let y2 = $gameMap.roundYWithDirection(y1, direction);
         this.startMapEvent(x2, y2, triggers, true);
         if (!$gameMap.isAnyEventStarting() && $gameMap.isCounter(x2, y2)) {
-            var x3 = $gameMap.roundXWithDirection(x2, direction);
-            var y3 = $gameMap.roundYWithDirection(y2, direction);
+            let x3 = $gameMap.roundXWithDirection(x2, direction);
+            let y3 = $gameMap.roundYWithDirection(y2, direction);
             this.startMapEvent(x3, y3, triggers, true);
         }
     }
@@ -529,11 +529,11 @@ Game_Player.prototype.getOnOffVehicle = function() {
 };
 
 Game_Player.prototype.getOnVehicle = function() {
-    var direction = this.direction();
-    var x1 = this.x;
-    var y1 = this.y;
-    var x2 = $gameMap.roundXWithDirection(x1, direction);
-    var y2 = $gameMap.roundYWithDirection(y1, direction);
+    let direction = this.direction();
+    let x1 = this.x;
+    let y1 = this.y;
+    let x2 = $gameMap.roundXWithDirection(x1, direction);
+    let y2 = $gameMap.roundYWithDirection(y1, direction);
     if ($gameMap.airship().pos(x1, y1)) {
         this._vehicleType = 'airship';
     } else if ($gameMap.ship().pos(x2, y2)) {

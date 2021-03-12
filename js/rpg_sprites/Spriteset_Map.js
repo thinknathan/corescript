@@ -34,8 +34,8 @@ Spriteset_Map.prototype.update = function() {
 };
 
 Spriteset_Map.prototype.hideCharacters = function() {
-    for (var i = 0; i < this._characterSprites.length; i++) {
-        var sprite = this._characterSprites[i];
+    for (let i = 0; i < this._characterSprites.length; i++) {
+        let sprite = this._characterSprites[i];
         if (!sprite.isTile()) {
             sprite.hide();
         }
@@ -66,11 +66,11 @@ Spriteset_Map.prototype.createTilemap = function() {
 Spriteset_Map.prototype.loadTileset = function() {
     this._tileset = $gameMap.tileset();
     if (this._tileset) {
-        var tilesetNames = this._tileset.tilesetNames;
-        for (var i = 0; i < tilesetNames.length; i++) {
+        let tilesetNames = this._tileset.tilesetNames;
+        for (let i = 0; i < tilesetNames.length; i++) {
             this._tilemap.bitmaps[i] = ImageManager.loadTileset(tilesetNames[i]);
         }
-        var newTilesetFlags = $gameMap.tilesetFlags();
+        let newTilesetFlags = $gameMap.tilesetFlags();
         this._tilemap.refreshTileset();
         if (!this._tilemap.flags.equals(newTilesetFlags)) {
             this._tilemap.refresh();
@@ -91,7 +91,7 @@ Spriteset_Map.prototype.createCharacters = function() {
         this._characterSprites.push(new Sprite_Character(follower));
     }, this);
     this._characterSprites.push(new Sprite_Character($gamePlayer));
-    for (var i = 0; i < this._characterSprites.length; i++) {
+    for (let i = 0; i < this._characterSprites.length; i++) {
         this._tilemap.addChild(this._characterSprites[i]);
     }
 };
@@ -126,7 +126,7 @@ Spriteset_Map.prototype.updateTileset = function() {
  * Simple fix for canvas parallax issue, destroy old parallax and readd to  the tree.
  */
 Spriteset_Map.prototype._canvasReAddParallax = function() {
-    var index = this._baseSprite.children.indexOf(this._parallax);
+    let index = this._baseSprite.children.indexOf(this._parallax);
     this._baseSprite.removeChild(this._parallax);
     this._parallax = new TilingSprite();
     this._parallax.move(0, 0, Graphics.width, Graphics.height);
@@ -165,7 +165,7 @@ Spriteset_Map.prototype.updateTilemap = function() {
 };
 
 Spriteset_Map.prototype.updateShadow = function() {
-    var airship = $gameMap.airship();
+    let airship = $gameMap.airship();
     this._shadowSprite.x = airship.shadowX();
     this._shadowSprite.y = airship.shadowY();
     this._shadowSprite.opacity = airship.shadowOpacity();

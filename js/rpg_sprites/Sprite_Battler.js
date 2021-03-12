@@ -77,7 +77,7 @@ Sprite_Battler.prototype.updateFrame = function() {
 
 Sprite_Battler.prototype.updateMove = function() {
     if (this._movementDuration > 0) {
-        var d = this._movementDuration;
+        let d = this._movementDuration;
         this._offsetX = (this._offsetX * (d - 1) + this._targetOffsetX) / d;
         this._offsetY = (this._offsetY * (d - 1) + this._targetOffsetY) / d;
         this._movementDuration--;
@@ -99,7 +99,7 @@ Sprite_Battler.prototype.updateAnimation = function() {
 Sprite_Battler.prototype.updateDamagePopup = function() {
     this.setupDamagePopup();
     if (this._damages.length > 0) {
-        for (var i = 0; i < this._damages.length; i++) {
+        for (let i = 0; i < this._damages.length; i++) {
             this._damages[i].update();
         }
         if (!this._damages[0].isPlaying()) {
@@ -110,7 +110,7 @@ Sprite_Battler.prototype.updateDamagePopup = function() {
 };
 
 Sprite_Battler.prototype.updateSelectionEffect = function() {
-    var target = this._effectTarget;
+    let target = this._effectTarget;
     if (this._battler.isSelected()) {
         this._selectionEffectCount++;
         if (this._selectionEffectCount % 30 < 15) {
@@ -126,13 +126,13 @@ Sprite_Battler.prototype.updateSelectionEffect = function() {
 
 Sprite_Battler.prototype.setupAnimation = function() {
     while (this._battler.isAnimationRequested()) {
-        var data = this._battler.shiftAnimation();
-        var animation = $dataAnimations[data.animationId];
-        var mirror = data.mirror;
-        var delay = animation.position === 3 ? 0 : data.delay;
+        let data = this._battler.shiftAnimation();
+        let animation = $dataAnimations[data.animationId];
+        let mirror = data.mirror;
+        let delay = animation.position === 3 ? 0 : data.delay;
         this.startAnimation(animation, mirror, delay);
-        for (var i = 0; i < this._animationSprites.length; i++) {
-            var sprite = this._animationSprites[i];
+        for (let i = 0; i < this._animationSprites.length; i++) {
+            let sprite = this._animationSprites[i];
             sprite.visible = this._battler.isSpriteVisible();
         }
     }
@@ -141,7 +141,7 @@ Sprite_Battler.prototype.setupAnimation = function() {
 Sprite_Battler.prototype.setupDamagePopup = function() {
     if (this._battler.isDamagePopupRequested()) {
         if (this._battler.isSpriteVisible()) {
-            var sprite = new Sprite_Damage();
+            let sprite = new Sprite_Damage();
             sprite.x = this.x + this.damageOffsetX();
             sprite.y = this.y + this.damageOffsetY();
             sprite.setup(this._battler);

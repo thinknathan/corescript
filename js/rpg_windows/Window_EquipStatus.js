@@ -11,8 +11,8 @@ Window_EquipStatus.prototype = Object.create(Window_Base.prototype);
 Window_EquipStatus.prototype.constructor = Window_EquipStatus;
 
 Window_EquipStatus.prototype.initialize = function(x, y) {
-    var width = this.windowWidth();
-    var height = this.windowHeight();
+    let width = this.windowWidth();
+    let height = this.windowHeight();
     Window_Base.prototype.initialize.call(this, x, y, width, height);
     this._actor = null;
     this._tempActor = null;
@@ -42,7 +42,7 @@ Window_EquipStatus.prototype.refresh = function() {
     this.contents.clear();
     if (this._actor) {
         this.drawActorName(this._actor, this.textPadding(), 0);
-        for (var i = 0; i < 6; i++) {
+        for (let i = 0; i < 6; i++) {
             this.drawItem(0, this.lineHeight() * (1 + i), 2 + i);
         }
     }
@@ -82,8 +82,8 @@ Window_EquipStatus.prototype.drawRightArrow = function(x, y) {
 };
 
 Window_EquipStatus.prototype.drawNewParam = function(x, y, paramId) {
-    var newValue = this._tempActor.param(paramId);
-    var diffvalue = newValue - this._actor.param(paramId);
+    let newValue = this._tempActor.param(paramId);
+    let diffvalue = newValue - this._actor.param(paramId);
     this.changeTextColor(this.paramchangeTextColor(diffvalue));
     this.drawText(newValue, x, y, 48, 'right');
 };

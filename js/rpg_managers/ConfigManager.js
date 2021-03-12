@@ -51,8 +51,8 @@ Object.defineProperty(ConfigManager, 'seVolume', {
 });
 
 ConfigManager.load = function() {
-    var json;
-    var config = {};
+    let json;
+    let config = {};
     try {
         json = StorageManager.load(-1);
     } catch (e) {
@@ -69,7 +69,7 @@ ConfigManager.save = function() {
 };
 
 ConfigManager.makeData = function() {
-    var config = {};
+    let config = {};
     config.alwaysDash = this.alwaysDash;
     config.commandRemember = this.commandRemember;
     config.bgmVolume = this.bgmVolume;
@@ -93,7 +93,7 @@ ConfigManager.readFlag = function(config, name) {
 };
 
 ConfigManager.readVolume = function(config, name) {
-    var value = config[name];
+    let value = config[name];
     if (value !== undefined) {
         return Number(value).clamp(0, 100);
     } else {

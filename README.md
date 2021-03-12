@@ -3,13 +3,18 @@
 
 ## This Fork
 
-This fork introduces opinionated changes that may break functionality.
+This fork introduces opinionated changes and is not necessarily a drop-in replacement for the default RPG Maker MV scripts.
 
-- Updated to use PIXI v5
-- Picture blend modes no longer work
-- Windows can overlap with each other
-- HTML5Audio removed
-- Smooth picture scaling is disabled
+- Updated to use PIXI v5 and PIXI-Tilemap v2.1.3
+- Uses PIXI equivalents whenever possible instead of the Bitmap object
+- Uses PIXI.BitmapText for fast, memory-efficient text
+- Allows windows to overlap each other
+- REMOVED: Picture blend modes
+- REMOVED: Picture smooth scaling
+- REMOVED: HTML5Audio
+- REMOVED: Gradients in gauges
+- NOTE: "Window Color" in the System menu of the editor is now applied differently than the default scripts. The default value of (0, 0, 0) is black. Using pure white (255, 255, 255) will disable it.
+- NOTE: Core scripts are now loaded via the plugin manager, allowing us to show the total number of scripts loading, not just plugins.
 
 ## Introduction
 

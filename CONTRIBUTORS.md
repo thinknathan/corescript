@@ -15,5 +15,6 @@
 - rev2nym
 - seea17
 - ayamada
-- LTN Games & DoubleX for their guide "Upgrade MV to PIXI v5"
+- LTN Games & DoubleX for their guide ["Upgrade MV to PIXI v5"](https://forums.rpgmakerweb.com/index.php?threads/guide-to-upgrade-mv-to-pixi-v5.123317/)
 - thinknathan
+- [kins-dev](https://github.com/kins-dev/rpgmaker-mv-pixi5)

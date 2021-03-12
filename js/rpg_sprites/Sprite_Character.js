@@ -52,8 +52,8 @@ Sprite_Character.prototype.isTile = function() {
 };
 
 Sprite_Character.prototype.tilesetBitmap = function(tileId) {
-    var tileset = $gameMap.tileset();
-    var setNumber = 5 + Math.floor(tileId / 256);
+    let tileset = $gameMap.tileset();
+    let setNumber = 5 + Math.floor(tileId / 256);
     return ImageManager.loadTileset(tileset.tilesetNames[setNumber]);
 };
 
@@ -96,21 +96,21 @@ Sprite_Character.prototype.updateFrame = function() {
 };
 
 Sprite_Character.prototype.updateTileFrame = function() {
-    var pw = this.patternWidth();
-    var ph = this.patternHeight();
-    var sx = (Math.floor(this._tileId / 128) % 2 * 8 + this._tileId % 8) * pw;
-    var sy = Math.floor(this._tileId % 256 / 8) % 16 * ph;
+    let pw = this.patternWidth();
+    let ph = this.patternHeight();
+    let sx = (Math.floor(this._tileId / 128) % 2 * 8 + this._tileId % 8) * pw;
+    let sy = Math.floor(this._tileId % 256 / 8) % 16 * ph;
     this.setFrame(sx, sy, pw, ph);
 };
 
 Sprite_Character.prototype.updateCharacterFrame = function() {
-    var pw = this.patternWidth();
-    var ph = this.patternHeight();
-    var sx = (this.characterBlockX() + this.characterPatternX()) * pw;
-    var sy = (this.characterBlockY() + this.characterPatternY()) * ph;
+    let pw = this.patternWidth();
+    let ph = this.patternHeight();
+    let sx = (this.characterBlockX() + this.characterPatternX()) * pw;
+    let sy = (this.characterBlockY() + this.characterPatternY()) * ph;
     this.updateHalfBodySprites();
     if (this._bushDepth > 0) {
-        var d = this._bushDepth;
+        let d = this._bushDepth;
         this._upperBody.setFrame(sx, sy, pw, ph - d);
         this._lowerBody.setFrame(sx, sy + ph - d, pw, d);
         this.setFrame(sx, sy, 0, ph);
@@ -123,7 +123,7 @@ Sprite_Character.prototype.characterBlockX = function() {
     if (this._isBigCharacter) {
         return 0;
     } else {
-        var index = this._character.characterIndex();
+        let index = this._character.characterIndex();
         return index % 4 * 3;
     }
 };
@@ -132,7 +132,7 @@ Sprite_Character.prototype.characterBlockY = function() {
     if (this._isBigCharacter) {
         return 0;
     } else {
-        var index = this._character.characterIndex();
+        let index = this._character.characterIndex();
         return Math.floor(index / 4) * 4;
     }
 };
@@ -223,7 +223,7 @@ Sprite_Character.prototype.updateOther = function() {
 
 Sprite_Character.prototype.setupAnimation = function() {
     if (this._character.animationId() > 0) {
-        var animation = $dataAnimations[this._character.animationId()];
+        let animation = $dataAnimations[this._character.animationId()];
         this.startAnimation(animation, false, 0);
         this._character.startAnimation();
     }

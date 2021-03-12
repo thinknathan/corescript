@@ -71,10 +71,10 @@ Window_NameInput.JAPAN3 =
           '／','＝','＠','＜','＞',  '：','；','　','かな','決定' ];
 
 Window_NameInput.prototype.initialize = function(editWindow) {
-    var x = editWindow.x;
-    var y = editWindow.y + editWindow.height + 8;
-    var width = editWindow.width;
-    var height = this.windowHeight();
+    let x = editWindow.x;
+    let y = editWindow.y + editWindow.height + 8;
+    let width = editWindow.width;
+    let height = this.windowHeight();
     Window_Selectable.prototype.initialize.call(this, x, y, width, height);
     this._editWindow = editWindow;
     this._page = 0;
@@ -131,11 +131,11 @@ Window_NameInput.prototype.itemRect = function(index) {
 };
 
 Window_NameInput.prototype.refresh = function() {
-    var table = this.table();
+    let table = this.table();
     this.contents.clear();
     this.resetTextColor();
-    for (var i = 0; i < 90; i++) {
-        var rect = this.itemRect(i);
+    for (let i = 0; i < 90; i++) {
+        let rect = this.itemRect(i);
         rect.x += 3;
         rect.width -= 6;
         this.drawText(table[this._page][i], rect.x, rect.y, rect.width, 'center');
@@ -143,7 +143,7 @@ Window_NameInput.prototype.refresh = function() {
 };
 
 Window_NameInput.prototype.updateCursor = function() {
-    var rect = this.itemRect(this._index);
+    let rect = this.itemRect(this._index);
     this.setCursorRect(rect.x, rect.y, rect.width, rect.height);
 };
 
@@ -190,7 +190,7 @@ Window_NameInput.prototype.cursorPageup = function() {
 };
 
 Window_NameInput.prototype.processCursorMove = function() {
-    var lastPage = this._page;
+    let lastPage = this._page;
     Window_Selectable.prototype.processCursorMove.call(this);
     this.updateCursor();
     if (this._page !== lastPage) {

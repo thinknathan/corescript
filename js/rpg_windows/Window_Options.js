@@ -46,9 +46,9 @@ Window_Options.prototype.addVolumeOptions = function() {
 };
 
 Window_Options.prototype.drawItem = function(index) {
-    var rect = this.itemRectForText(index);
-    var statusWidth = this.statusWidth();
-    var titleWidth = rect.width - statusWidth;
+    let rect = this.itemRectForText(index);
+    let statusWidth = this.statusWidth();
+    let titleWidth = rect.width - statusWidth;
     this.resetTextColor();
     this.changePaintOpacity(this.isCommandEnabled(index));
     this.drawText(this.commandName(index), rect.x, rect.y, titleWidth, 'left');
@@ -60,8 +60,8 @@ Window_Options.prototype.statusWidth = function() {
 };
 
 Window_Options.prototype.statusText = function(index) {
-    var symbol = this.commandSymbol(index);
-    var value = this.getConfigValue(symbol);
+    let symbol = this.commandSymbol(index);
+    let value = this.getConfigValue(symbol);
     if (this.isVolumeSymbol(symbol)) {
         return this.volumeStatusText(value);
     } else {
@@ -82,9 +82,9 @@ Window_Options.prototype.volumeStatusText = function(value) {
 };
 
 Window_Options.prototype.processOk = function() {
-    var index = this.index();
-    var symbol = this.commandSymbol(index);
-    var value = this.getConfigValue(symbol);
+    let index = this.index();
+    let symbol = this.commandSymbol(index);
+    let value = this.getConfigValue(symbol);
     if (this.isVolumeSymbol(symbol)) {
         value += this.volumeOffset();
         if (value > 100) {
@@ -98,9 +98,9 @@ Window_Options.prototype.processOk = function() {
 };
 
 Window_Options.prototype.cursorRight = function(wrap) {
-    var index = this.index();
-    var symbol = this.commandSymbol(index);
-    var value = this.getConfigValue(symbol);
+    let index = this.index();
+    let symbol = this.commandSymbol(index);
+    let value = this.getConfigValue(symbol);
     if (this.isVolumeSymbol(symbol)) {
         value += this.volumeOffset();
         value = value.clamp(0, 100);
@@ -111,9 +111,9 @@ Window_Options.prototype.cursorRight = function(wrap) {
 };
 
 Window_Options.prototype.cursorLeft = function(wrap) {
-    var index = this.index();
-    var symbol = this.commandSymbol(index);
-    var value = this.getConfigValue(symbol);
+    let index = this.index();
+    let symbol = this.commandSymbol(index);
+    let value = this.getConfigValue(symbol);
     if (this.isVolumeSymbol(symbol)) {
         value -= this.volumeOffset();
         value = value.clamp(0, 100);
@@ -128,7 +128,7 @@ Window_Options.prototype.volumeOffset = function() {
 };
 
 Window_Options.prototype.changeValue = function(symbol, value) {
-    var lastValue = this.getConfigValue(symbol);
+    let lastValue = this.getConfigValue(symbol);
     if (lastValue !== value) {
         this.setConfigValue(symbol, value);
         this.redrawItem(this.findSymbol(symbol));

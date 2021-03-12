@@ -109,7 +109,7 @@ Game_Action.prototype.isItem = function() {
 };
 
 Game_Action.prototype.numRepeats = function() {
-    var repeats = this.item().repeats;
+    let repeats = this.item().repeats;
     if (this.isAttack()) {
         repeats += this.subject().attackTimesAdd();
     }
@@ -217,7 +217,7 @@ Game_Action.prototype.isMagicSkill = function() {
 };
 
 Game_Action.prototype.decideRandomTarget = function() {
-    var target;
+    let target;
     if (this.isForDeadFriend()) {
         target = this.friendsUnit().randomDeadTarget();
     } else if (this.isForFriend()) {
@@ -247,8 +247,8 @@ Game_Action.prototype.isValid = function() {
 };
 
 Game_Action.prototype.speed = function() {
-    var agi = this.subject().agi;
-    var speed = agi + Math.randomInt(Math.floor(5 + agi / 4));
+    let agi = this.subject().agi;
+    let speed = agi + Math.randomInt(Math.floor(5 + agi / 4));
     if (this.item()) {
         speed += this.item().speed;
     }
@@ -259,7 +259,7 @@ Game_Action.prototype.speed = function() {
 };
 
 Game_Action.prototype.makeTargets = function() {
-    var targets = [];
+    let targets = [];
     if (!this._forcing && this.subject().isConfused()) {
         targets = [this.confusionTarget()];
     } else if (this.isForOpponent()) {
@@ -271,12 +271,12 @@ Game_Action.prototype.makeTargets = function() {
 };
 
 Game_Action.prototype.repeatTargets = function(targets) {
-    var repeatedTargets = [];
-    var repeats = this.numRepeats();
-    for (var i = 0; i < targets.length; i++) {
-        var target = targets[i];
+    let repeatedTargets = [];
+    let repeats = this.numRepeats();
+    for (let i = 0; i < targets.length; i++) {
+        let target = targets[i];
         if (target) {
-            for (var j = 0; j < repeats; j++) {
+            for (let j = 0; j < repeats; j++) {
                 repeatedTargets.push(target);
             }
         }
@@ -299,10 +299,10 @@ Game_Action.prototype.confusionTarget = function() {
 };
 
 Game_Action.prototype.targetsForOpponents = function() {
-    var targets = [];
-    var unit = this.opponentsUnit();
+    let targets = [];
+    let unit = this.opponentsUnit();
     if (this.isForRandom()) {
-        for (var i = 0; i < this.numTargets(); i++) {
+        for (let i = 0; i < this.numTargets(); i++) {
             targets.push(unit.randomTarget());
         }
     } else if (this.isForOne()) {
@@ -318,8 +318,8 @@ Game_Action.prototype.targetsForOpponents = function() {
 };
 
 Game_Action.prototype.targetsForFriends = function() {
-    var targets = [];
-    var unit = this.friendsUnit();
+    let targets = [];
+    let unit = this.friendsUnit();
     if (this.isForUser()) {
         return [this.subject()];
     } else if (this.isForDeadFriend()) {
@@ -341,9 +341,9 @@ Game_Action.prototype.targetsForFriends = function() {
 };
 
 Game_Action.prototype.evaluate = function() {
-    var value = 0;
+    let value = 0;
     this.itemTargetCandidates().forEach(function(target) {
-        var targetValue = this.evaluateWithTarget(target);
+        let targetValue = this.evaluateWithTarget(target);
         if (this.isForAll()) {
             value += targetValue;
         } else if (targetValue > value) {
@@ -374,11 +374,11 @@ Game_Action.prototype.itemTargetCandidates = function() {
 
 Game_Action.prototype.evaluateWithTarget = function(target) {
     if (this.isHpEffect()) {
-        var value = this.makeDamageValue(target, false);
+        let value = this.makeDamageValue(target, false);
         if (this.isForOpponent()) {
             return value / Math.max(target.hp, 1);
         } else {
-            var recovery = Math.min(-value, target.mhp - target.hp);
+            let recovery = Math.min(-value, target.mhp - target.hp);
             return recovery / target.mhp;
         }
     }
@@ -462,7 +462,7 @@ Game_Action.prototype.itemCri = function(target) {
 };
 
 Game_Action.prototype.apply = function(target) {
-    var result = target.result();
+    let result = target.result();
     this.subject().clearResult();
     result.clear();
     result.used = this.testApply(target);
@@ -473,7 +473,7 @@ Game_Action.prototype.apply = function(target) {
     if (result.isHit()) {
         if (this.item().damage.type > 0) {
             result.critical = (Math.random() < this.itemCri(target));
-            var value = this.makeDamageValue(target, result.critical);
+            let value = this.makeDamageValue(target, result.critical);
             this.executeDamage(target, value);
         }
         this.item().effects.forEach(function(effect) {
@@ -484,9 +484,9 @@ Game_Action.prototype.apply = function(target) {
 };
 
 Game_Action.prototype.makeDamageValue = function(target, critical) {
-    var item = this.item();
-    var baseValue = this.evalDamageFormula(target);
-    var value = baseValue * this.calcElementRate(target);
+    let item = this.item();
+    let baseValue = this.evalDamageFormula(target);
+    let value = baseValue * this.calcElementRate(target);
     if (this.isPhysical()) {
         value *= target.pdr;
     }
@@ -507,12 +507,12 @@ Game_Action.prototype.makeDamageValue = function(target, critical) {
 
 Game_Action.prototype.evalDamageFormula = function(target) {
     try {
-        var item = this.item();
-        var a = this.subject();
-        var b = target;
-        var v = $gameVariables._data;
-        var sign = ([3, 4].contains(item.damage.type) ? -1 : 1);
-        var value = Math.max(eval(item.damage.formula), 0) * sign;
+        let item = this.item();
+        let a = this.subject();
+        let b = target;
+        let v = $gameVariables._data;
+        let sign = ([3, 4].contains(item.damage.type) ? -1 : 1);
+        let value = Math.max(eval(item.damage.formula), 0) * sign;
 		if (isNaN(value)) value = 0;
 		return value;
     } catch (e) {
@@ -543,8 +543,8 @@ Game_Action.prototype.applyCritical = function(damage) {
 };
 
 Game_Action.prototype.applyVariance = function(damage, variance) {
-    var amp = Math.floor(Math.max(Math.abs(damage) * variance / 100, 0));
-    var v = Math.randomInt(amp + 1) + Math.randomInt(amp + 1) - amp;
+    let amp = Math.floor(Math.max(Math.abs(damage) * variance / 100, 0));
+    let v = Math.randomInt(amp + 1) + Math.randomInt(amp + 1) - amp;
     return damage >= 0 ? damage + v : damage - v;
 };
 
@@ -553,7 +553,7 @@ Game_Action.prototype.applyGuard = function(damage, target) {
 };
 
 Game_Action.prototype.executeDamage = function(target, value) {
-    var result = target.result();
+    let result = target.result();
     if (value === 0) {
         result.critical = false;
     }
@@ -590,7 +590,7 @@ Game_Action.prototype.executeMpDamage = function(target, value) {
 
 Game_Action.prototype.gainDrainedHp = function(value) {
     if (this.isDrain()) {
-       var gainTarget = this.subject();
+       let gainTarget = this.subject();
        if (this._reflectionTarget !== undefined) {
             gainTarget = this._reflectionTarget;
         }
@@ -600,7 +600,7 @@ Game_Action.prototype.gainDrainedHp = function(value) {
 
 Game_Action.prototype.gainDrainedMp = function(value) {
     if (this.isDrain()) {
-       var gainTarget = this.subject();
+       let gainTarget = this.subject();
        if (this._reflectionTarget !== undefined) {
            gainTarget = this._reflectionTarget;
        }
@@ -653,7 +653,7 @@ Game_Action.prototype.applyItemEffect = function(target, effect) {
 };
 
 Game_Action.prototype.itemEffectRecoverHp = function(target, effect) {
-    var value = (target.mhp * effect.value1 + effect.value2) * target.rec;
+    let value = (target.mhp * effect.value1 + effect.value2) * target.rec;
     if (this.isItem()) {
         value *= this.subject().pha;
     }
@@ -665,7 +665,7 @@ Game_Action.prototype.itemEffectRecoverHp = function(target, effect) {
 };
 
 Game_Action.prototype.itemEffectRecoverMp = function(target, effect) {
-    var value = (target.mmp * effect.value1 + effect.value2) * target.rec;
+    let value = (target.mmp * effect.value1 + effect.value2) * target.rec;
     if (this.isItem()) {
         value *= this.subject().pha;
     }
@@ -677,7 +677,7 @@ Game_Action.prototype.itemEffectRecoverMp = function(target, effect) {
 };
 
 Game_Action.prototype.itemEffectGainTp = function(target, effect) {
-    var value = Math.floor(effect.value1);
+    let value = Math.floor(effect.value1);
     if (value !== 0) {
         target.gainTp(value);
         this.makeSuccess(target);
@@ -694,7 +694,7 @@ Game_Action.prototype.itemEffectAddState = function(target, effect) {
 
 Game_Action.prototype.itemEffectAddAttackState = function(target, effect) {
     this.subject().attackStates().forEach(function(stateId) {
-        var chance = effect.value1;
+        let chance = effect.value1;
         chance *= target.stateRate(stateId);
         chance *= this.subject().attackStatesRate(stateId);
         chance *= this.lukEffectRate(target);
@@ -706,7 +706,7 @@ Game_Action.prototype.itemEffectAddAttackState = function(target, effect) {
 };
 
 Game_Action.prototype.itemEffectAddNormalState = function(target, effect) {
-    var chance = effect.value1;
+    let chance = effect.value1;
     if (!this.isCertainHit()) {
         chance *= target.stateRate(effect.dataId);
         chance *= this.lukEffectRate(target);
@@ -718,7 +718,7 @@ Game_Action.prototype.itemEffectAddNormalState = function(target, effect) {
 };
 
 Game_Action.prototype.itemEffectRemoveState = function(target, effect) {
-    var chance = effect.value1;
+    let chance = effect.value1;
     if (Math.random() < chance) {
         target.removeState(effect.dataId);
         this.makeSuccess(target);
@@ -731,7 +731,7 @@ Game_Action.prototype.itemEffectAddBuff = function(target, effect) {
 };
 
 Game_Action.prototype.itemEffectAddDebuff = function(target, effect) {
-    var chance = target.debuffRate(effect.dataId) * this.lukEffectRate(target);
+    let chance = target.debuffRate(effect.dataId) * this.lukEffectRate(target);
     if (Math.random() < chance) {
         target.addDebuff(effect.dataId, effect.value1);
         this.makeSuccess(target);
@@ -779,7 +779,7 @@ Game_Action.prototype.makeSuccess = function(target) {
 };
 
 Game_Action.prototype.applyItemUserEffect = function(target) {
-    var value = Math.floor(this.item().tpGain * this.subject().tcr);
+    let value = Math.floor(this.item().tpGain * this.subject().tcr);
     this.subject().gainSilentTp(value);
 };
 
