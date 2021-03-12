@@ -16,6 +16,33 @@ This fork introduces opinionated changes and is not necessarily a drop-in replac
 - NOTE: "Window Color" in the System menu of the editor is now applied differently than the default scripts. The default value of (0, 0, 0) is black. Using pure white (255, 255, 255) will disable it.
 - NOTE: Core scripts are now loaded via the plugin manager, allowing us to show the total number of scripts loading, not just plugins.
 
+# Performance Benchmarks
+
+## Running the drawText command inside Window_Base.drawActorName x1000 times
+
+### Vanilla RPG Maker (PixiJS 4.5.4)
+- totalMilliseconds: 12.415000004693866
+
+### This branch (PixiJS 5.3.8)
+- totalMilliseconds: 3.109999932348728
+
+
+## Running the Window._refreshAllParts function on the title screen x1000 times
+
+### Vanilla RPG Maker (PixiJS 4.5.4)
+1: totalMilliseconds: 68.654999951832
+2: totalMilliseconds: 142.04500010237098
+3: totalMilliseconds: 104.53000001143664
+
+### This branch (PixiJS 5.3.8)
+1: totalMilliseconds: 5.775000085122883
+2: totalMilliseconds: 19.564999965950847
+3: totalMilliseconds: 7.569999899715185
+
+
+
+
+
 ## Introduction
 
 "RPG Maker MV CoreScript" is a game engine for 2D games that runs on the browser. "RPG Maker MV CoreScript" is designed as a game engine dedicated to "RPG Maker MV", the latest work of "RPG Maker" series of 2DRPG world number one software with more than 20 years history, and more than 1000 games are running. (February 2017)
