@@ -18,7 +18,7 @@ This fork introduces opinionated changes and is not necessarily a drop-in replac
 
 # Performance Benchmarks
 
-## Running the drawText command inside Window_Base.drawActorName x1000 times
+## Running the drawText command inside Window_Base.drawActorName x1000 times (smaller is better)
 
 ### Vanilla RPG Maker (PixiJS 4.5.4)
 - totalMilliseconds: 12.415000004693866
@@ -27,17 +27,17 @@ This fork introduces opinionated changes and is not necessarily a drop-in replac
 - totalMilliseconds: 3.109999932348728
 
 
-## Running the Window._refreshAllParts function on the title screen x1000 times
+## Running the Window._refreshAllParts function on the title screen x1000 times (smaller is better)
 
 ### Vanilla RPG Maker (PixiJS 4.5.4)
-1: totalMilliseconds: 68.654999951832
-2: totalMilliseconds: 142.04500010237098
-3: totalMilliseconds: 104.53000001143664
+- 1: totalMilliseconds: 68.654999951832
+- 2: totalMilliseconds: 142.04500010237098
+- 3: totalMilliseconds: 104.53000001143664
 
 ### This branch (PixiJS 5.3.8)
-1: totalMilliseconds: 5.775000085122883
-2: totalMilliseconds: 19.564999965950847
-3: totalMilliseconds: 7.569999899715185
+- 1: totalMilliseconds: 5.775000085122883
+- 2: totalMilliseconds: 19.564999965950847
+- 3: totalMilliseconds: 7.569999899715185
 
 
 
