@@ -469,10 +469,13 @@ Graphics.showFps = function() {
     if (this._fpsMeter) {
         if (!this._fpsApp) {
             this._fpsApp = new PIXI.Application({
-                width: 200,
-                height: 100,
+                width: 120,
+                height: 50,
+                transparent: true,
                 sharedTicker: true
             });
+            this._fpsApp.view.style.position = "relative";
+            this._fpsApp.view.style.zIndex = "4";
             document.body.appendChild(this._fpsApp.view);
         }
         this._fpsApp.stage.addChild(this._fpsMeter);
