@@ -149,21 +149,6 @@ Goal: Assist in game development
 - Guidelines and sample writing for plugins
 - Refined bug report
 
-### ver 1.4
-
-Goal: Accelerate speed, reduce experience time
-- High-speed loading of sound source
-- Progress bar on load screen
-- Lightweight Save File
-
-### ver 1.5
-
-Goal: Improve UI
-- Multilingual
-- Multi-touch
-- Battle system touch compliance
-- Touch correspondence of basic system such as equipment
-
 ## Constitution
 The core script is finally output to mainly 6 files.
 <dl>
