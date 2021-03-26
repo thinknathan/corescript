@@ -1,6 +1,6 @@
 /*!
- * pixi.js-legacy - v5.3.8
- * Compiled Sat, 20 Feb 2021 22:31:43 UTC
+ * pixi.js-legacy - v5.3.9
+ * Compiled Wed, 24 Mar 2021 19:57:28 UTC
  *
  * pixi.js-legacy is licensed under the MIT License.
  * http://www.opensource.org/licenses/mit-license
@@ -471,8 +471,8 @@ var PIXI = (function (exports) {
 	};
 
 	/*!
-	 * @pixi/polyfill - v5.3.8
-	 * Compiled Sat, 20 Feb 2021 22:31:43 UTC
+	 * @pixi/polyfill - v5.3.9
+	 * Compiled Wed, 24 Mar 2021 19:57:28 UTC
 	 *
 	 * @pixi/polyfill is licensed under the MIT License.
 	 * http://www.opensource.org/licenses/mit-license
@@ -707,8 +707,8 @@ var PIXI = (function (exports) {
 	}
 
 	/*!
-	 * @pixi/settings - v5.3.8
-	 * Compiled Sat, 20 Feb 2021 22:31:43 UTC
+	 * @pixi/settings - v5.3.9
+	 * Compiled Wed, 24 Mar 2021 19:57:28 UTC
 	 *
 	 * @pixi/settings is licensed under the MIT License.
 	 * http://www.opensource.org/licenses/mit-license
@@ -3458,8 +3458,8 @@ var PIXI = (function (exports) {
 	};
 
 	/*!
-	 * @pixi/constants - v5.3.8
-	 * Compiled Sat, 20 Feb 2021 22:31:43 UTC
+	 * @pixi/constants - v5.3.9
+	 * Compiled Wed, 24 Mar 2021 19:57:28 UTC
 	 *
 	 * @pixi/constants is licensed under the MIT License.
 	 * http://www.opensource.org/licenses/mit-license
@@ -3898,8 +3898,8 @@ var PIXI = (function (exports) {
 	})(exports.MSAA_QUALITY || (exports.MSAA_QUALITY = {}));
 
 	/*!
-	 * @pixi/utils - v5.3.8
-	 * Compiled Sat, 20 Feb 2021 22:31:43 UTC
+	 * @pixi/utils - v5.3.9
+	 * Compiled Wed, 24 Mar 2021 19:57:28 UTC
 	 *
 	 * @pixi/utils is licensed under the MIT License.
 	 * http://www.opensource.org/licenses/mit-license
@@ -3930,7 +3930,7 @@ var PIXI = (function (exports) {
 	settings.FAIL_IF_MAJOR_PERFORMANCE_CAVEAT = true;
 
 	var saidHello = false;
-	var VERSION = '5.3.8';
+	var VERSION = '5.3.9';
 	/**
 	 * Skips the hello message of renderers that are created after this is run.
 	 *
@@ -4799,8 +4799,8 @@ var PIXI = (function (exports) {
 	});
 
 	/*!
-	 * @pixi/math - v5.3.8
-	 * Compiled Sat, 20 Feb 2021 22:31:43 UTC
+	 * @pixi/math - v5.3.9
+	 * Compiled Wed, 24 Mar 2021 19:57:28 UTC
 	 *
 	 * @pixi/math is licensed under the MIT License.
 	 * http://www.opensource.org/licenses/mit-license
@@ -6708,8 +6708,8 @@ var PIXI = (function (exports) {
 	}());
 
 	/*!
-	 * @pixi/display - v5.3.8
-	 * Compiled Sat, 20 Feb 2021 22:31:43 UTC
+	 * @pixi/display - v5.3.9
+	 * Compiled Wed, 24 Mar 2021 19:57:28 UTC
 	 *
 	 * @pixi/display is licensed under the MIT License.
 	 * http://www.opensource.org/licenses/mit-license
@@ -8375,8 +8375,8 @@ var PIXI = (function (exports) {
 	Container.prototype.containerUpdateTransform = Container.prototype.updateTransform;
 
 	/*!
-	 * @pixi/accessibility - v5.3.8
-	 * Compiled Sat, 20 Feb 2021 22:31:43 UTC
+	 * @pixi/accessibility - v5.3.9
+	 * Compiled Wed, 24 Mar 2021 19:57:28 UTC
 	 *
 	 * @pixi/accessibility is licensed under the MIT License.
 	 * http://www.opensource.org/licenses/mit-license
@@ -8959,8 +8959,8 @@ var PIXI = (function (exports) {
 	}());
 
 	/*!
-	 * @pixi/ticker - v5.3.8
-	 * Compiled Sat, 20 Feb 2021 22:31:43 UTC
+	 * @pixi/ticker - v5.3.9
+	 * Compiled Wed, 24 Mar 2021 19:57:28 UTC
 	 *
 	 * @pixi/ticker is licensed under the MIT License.
 	 * http://www.opensource.org/licenses/mit-license
@@ -9802,8 +9802,8 @@ var PIXI = (function (exports) {
 	}());
 
 	/*!
-	 * @pixi/interaction - v5.3.8
-	 * Compiled Sat, 20 Feb 2021 22:31:43 UTC
+	 * @pixi/interaction - v5.3.9
+	 * Compiled Wed, 24 Mar 2021 19:57:28 UTC
 	 *
 	 * @pixi/interaction is licensed under the MIT License.
 	 * http://www.opensource.org/licenses/mit-license
@@ -11998,8 +11998,8 @@ var PIXI = (function (exports) {
 	}(eventemitter3));
 
 	/*!
-	 * @pixi/runner - v5.3.8
-	 * Compiled Sat, 20 Feb 2021 22:31:43 UTC
+	 * @pixi/runner - v5.3.9
+	 * Compiled Wed, 24 Mar 2021 19:57:28 UTC
 	 *
 	 * @pixi/runner is licensed under the MIT License.
 	 * http://www.opensource.org/licenses/mit-license
@@ -12194,8 +12194,8 @@ var PIXI = (function (exports) {
 	});
 
 	/*!
-	 * @pixi/core - v5.3.8
-	 * Compiled Sat, 20 Feb 2021 22:31:43 UTC
+	 * @pixi/core - v5.3.9
+	 * Compiled Wed, 24 Mar 2021 19:57:28 UTC
 	 *
 	 * @pixi/core is licensed under the MIT License.
 	 * http://www.opensource.org/licenses/mit-license
@@ -23158,8 +23158,8 @@ var PIXI = (function (exports) {
 	var BatchRenderer = BatchPluginFactory.create();
 
 	/*!
-	 * @pixi/app - v5.3.8
-	 * Compiled Sat, 20 Feb 2021 22:31:43 UTC
+	 * @pixi/app - v5.3.9
+	 * Compiled Wed, 24 Mar 2021 19:57:28 UTC
 	 *
 	 * @pixi/app is licensed under the MIT License.
 	 * http://www.opensource.org/licenses/mit-license
@@ -23417,6 +23417,7 @@ var PIXI = (function (exports) {
 	     * @private
 	     */
 	    ResizePlugin.destroy = function () {
+	        window.removeEventListener('resize', this.queueResize);
 	        this.cancelResize();
 	        this.cancelResize = null;
 	        this.queueResize = null;
@@ -23429,8 +23430,8 @@ var PIXI = (function (exports) {
 	Application.registerPlugin(ResizePlugin);
 
 	/*!
-	 * @pixi/extract - v5.3.8
-	 * Compiled Sat, 20 Feb 2021 22:31:43 UTC
+	 * @pixi/extract - v5.3.9
+	 * Compiled Wed, 24 Mar 2021 19:57:28 UTC
 	 *
 	 * @pixi/extract is licensed under the MIT License.
 	 * http://www.opensource.org/licenses/mit-license
@@ -26203,8 +26204,8 @@ var PIXI = (function (exports) {
 	};
 
 	/*!
-	 * @pixi/loaders - v5.3.8
-	 * Compiled Sat, 20 Feb 2021 22:31:43 UTC
+	 * @pixi/loaders - v5.3.9
+	 * Compiled Wed, 24 Mar 2021 19:57:28 UTC
 	 *
 	 * @pixi/loaders is licensed under the MIT License.
 	 * http://www.opensource.org/licenses/mit-license
@@ -26520,8 +26521,8 @@ var PIXI = (function (exports) {
 	}());
 
 	/*!
-	 * @pixi/particles - v5.3.8
-	 * Compiled Sat, 20 Feb 2021 22:31:43 UTC
+	 * @pixi/particles - v5.3.9
+	 * Compiled Wed, 24 Mar 2021 19:57:28 UTC
 	 *
 	 * @pixi/particles is licensed under the MIT License.
 	 * http://www.opensource.org/licenses/mit-license
@@ -27323,8 +27324,8 @@ var PIXI = (function (exports) {
 	}(ObjectRenderer));
 
 	/*!
-	 * @pixi/graphics - v5.3.8
-	 * Compiled Sat, 20 Feb 2021 22:31:43 UTC
+	 * @pixi/graphics - v5.3.9
+	 * Compiled Wed, 24 Mar 2021 19:57:28 UTC
 	 *
 	 * @pixi/graphics is licensed under the MIT License.
 	 * http://www.opensource.org/licenses/mit-license
@@ -30577,8 +30578,8 @@ var PIXI = (function (exports) {
 	}(Container));
 
 	/*!
-	 * @pixi/sprite - v5.3.8
-	 * Compiled Sat, 20 Feb 2021 22:31:43 UTC
+	 * @pixi/sprite - v5.3.9
+	 * Compiled Wed, 24 Mar 2021 19:57:28 UTC
 	 *
 	 * @pixi/sprite is licensed under the MIT License.
 	 * http://www.opensource.org/licenses/mit-license
@@ -31158,8 +31159,8 @@ var PIXI = (function (exports) {
 	}(Container));
 
 	/*!
-	 * @pixi/text - v5.3.8
-	 * Compiled Sat, 20 Feb 2021 22:31:43 UTC
+	 * @pixi/text - v5.3.9
+	 * Compiled Wed, 24 Mar 2021 19:57:28 UTC
 	 *
 	 * @pixi/text is licensed under the MIT License.
 	 * http://www.opensource.org/licenses/mit-license
@@ -33205,8 +33206,8 @@ var PIXI = (function (exports) {
 	}(Sprite));
 
 	/*!
-	 * @pixi/prepare - v5.3.8
-	 * Compiled Sat, 20 Feb 2021 22:31:43 UTC
+	 * @pixi/prepare - v5.3.9
+	 * Compiled Wed, 24 Mar 2021 19:57:28 UTC
 	 *
 	 * @pixi/prepare is licensed under the MIT License.
 	 * http://www.opensource.org/licenses/mit-license
@@ -33831,8 +33832,8 @@ var PIXI = (function (exports) {
 	}());
 
 	/*!
-	 * @pixi/spritesheet - v5.3.8
-	 * Compiled Sat, 20 Feb 2021 22:31:43 UTC
+	 * @pixi/spritesheet - v5.3.9
+	 * Compiled Wed, 24 Mar 2021 19:57:28 UTC
 	 *
 	 * @pixi/spritesheet is licensed under the MIT License.
 	 * http://www.opensource.org/licenses/mit-license
@@ -34162,8 +34163,8 @@ var PIXI = (function (exports) {
 	}());
 
 	/*!
-	 * @pixi/sprite-tiling - v5.3.8
-	 * Compiled Sat, 20 Feb 2021 22:31:43 UTC
+	 * @pixi/sprite-tiling - v5.3.9
+	 * Compiled Wed, 24 Mar 2021 19:57:28 UTC
 	 *
 	 * @pixi/sprite-tiling is licensed under the MIT License.
 	 * http://www.opensource.org/licenses/mit-license
@@ -34563,8 +34564,8 @@ var PIXI = (function (exports) {
 	}(ObjectRenderer));
 
 	/*!
-	 * @pixi/mesh - v5.3.8
-	 * Compiled Sat, 20 Feb 2021 22:31:43 UTC
+	 * @pixi/mesh - v5.3.9
+	 * Compiled Wed, 24 Mar 2021 19:57:28 UTC
 	 *
 	 * @pixi/mesh is licensed under the MIT License.
 	 * http://www.opensource.org/licenses/mit-license
@@ -35268,8 +35269,8 @@ var PIXI = (function (exports) {
 	}(Geometry));
 
 	/*!
-	 * @pixi/text-bitmap - v5.3.8
-	 * Compiled Sat, 20 Feb 2021 22:31:43 UTC
+	 * @pixi/text-bitmap - v5.3.9
+	 * Compiled Wed, 24 Mar 2021 19:57:28 UTC
 	 *
 	 * @pixi/text-bitmap is licensed under the MIT License.
 	 * http://www.opensource.org/licenses/mit-license
@@ -35831,13 +35832,16 @@ var PIXI = (function (exports) {
 	    /**
 	     * @param {PIXI.BitmapFontData} data
 	     * @param {PIXI.Texture[]|Object.<string, PIXI.Texture>} textures
+	     * @param {boolean} [ownsTextures] - Setting to `true` will destroy page textures
+	     *        when the font is uninstalled.
 	     */
-	    function BitmapFont(data, textures) {
+	    function BitmapFont(data, textures, ownsTextures) {
 	        var info = data.info[0];
 	        var common = data.common[0];
 	        var page = data.page[0];
 	        var res = getResolutionOfUrl(page.file);
 	        var pageTextures = {};
+	        this._ownsTextures = ownsTextures;
 	        /**
 	         * The name of the font face.
 	         *
@@ -35922,7 +35926,9 @@ var PIXI = (function (exports) {
 	            this.chars[id].texture = null;
 	        }
 	        for (var id in this.pageTextures) {
-	            this.pageTextures[id].destroy(true);
+	            if (this._ownsTextures) {
+	                this.pageTextures[id].destroy(true);
+	            }
 	            this.pageTextures[id] = null;
 	        }
 	        // Set readonly null.
@@ -35937,10 +35943,13 @@ var PIXI = (function (exports) {
 	     *        characters map that could be provided as xml or raw string.
 	     * @param {Object.<string, PIXI.Texture>|PIXI.Texture|PIXI.Texture[]}
 	     *        textures - List of textures for each page.
+	     * @param {boolean} managedTexture - Set to `true` to destroy page textures
+	     *        when the font is uninstalled. By default fonts created with
+	     *        `BitmapFont.from` or from the `BitmapFontLoader` are `true`.
 	     * @return {PIXI.BitmapFont} Result font object with font, size, lineHeight
 	     *         and char fields.
 	     */
-	    BitmapFont.install = function (data, textures) {
+	    BitmapFont.install = function (data, textures, ownsTextures) {
 	        var fontData;
 	        if (data instanceof BitmapFontData) {
 	            fontData = data;
@@ -35956,7 +35965,7 @@ var PIXI = (function (exports) {
 	        if (textures instanceof Texture) {
 	            textures = [textures];
 	        }
-	        var font = new BitmapFont(fontData, textures);
+	        var font = new BitmapFont(fontData, textures, ownsTextures);
 	        BitmapFont.available[font.font] = font;
 	        return font;
 	    };
@@ -35964,7 +35973,7 @@ var PIXI = (function (exports) {
 	     * Remove bitmap font by name.
 	     *
 	     * @static
-	     * @param {string} name
+	     * @param {string} name - Name of the font to uninstall.
 	     */
 	    BitmapFont.uninstall = function (name) {
 	        var font = BitmapFont.available[name];
@@ -36107,7 +36116,7 @@ var PIXI = (function (exports) {
 	            positionX += (textureGlyphWidth + (2 * padding)) * resolution;
 	            positionX = Math.ceil(positionX);
 	        }
-	        var font = new BitmapFont(fontData, textures);
+	        var font = new BitmapFont(fontData, textures, true);
 	        // Make it easier to replace a font
 	        if (BitmapFont.available[name] !== undefined) {
 	            BitmapFont.uninstall(name);
@@ -36964,7 +36973,7 @@ var PIXI = (function (exports) {
 	        var completed = function (page) {
 	            textures[page.metadata.pageFile] = page.texture;
 	            if (Object.keys(textures).length === data.page.length) {
-	                resource.bitmapFont = BitmapFont.install(data, textures);
+	                resource.bitmapFont = BitmapFont.install(data, textures, true);
 	                next();
 	            }
 	        };
@@ -37054,8 +37063,8 @@ var PIXI = (function (exports) {
 	}());
 
 	/*!
-	 * @pixi/filter-alpha - v5.3.8
-	 * Compiled Sat, 20 Feb 2021 22:31:43 UTC
+	 * @pixi/filter-alpha - v5.3.9
+	 * Compiled Wed, 24 Mar 2021 19:57:28 UTC
 	 *
 	 * @pixi/filter-alpha is licensed under the MIT License.
 	 * http://www.opensource.org/licenses/mit-license
@@ -37140,8 +37149,8 @@ var PIXI = (function (exports) {
 	}(Filter));
 
 	/*!
-	 * @pixi/filter-blur - v5.3.8
-	 * Compiled Sat, 20 Feb 2021 22:31:43 UTC
+	 * @pixi/filter-blur - v5.3.9
+	 * Compiled Wed, 24 Mar 2021 19:57:28 UTC
 	 *
 	 * @pixi/filter-blur is licensed under the MIT License.
 	 * http://www.opensource.org/licenses/mit-license
@@ -37964,8 +37973,8 @@ var PIXI = (function (exports) {
 	}(Filter));
 
 	/*!
-	 * @pixi/filter-color-matrix - v5.3.8
-	 * Compiled Sat, 20 Feb 2021 22:31:43 UTC
+	 * @pixi/filter-color-matrix - v5.3.9
+	 * Compiled Wed, 24 Mar 2021 19:57:28 UTC
 	 *
 	 * @pixi/filter-color-matrix is licensed under the MIT License.
 	 * http://www.opensource.org/licenses/mit-license
@@ -38493,8 +38502,8 @@ var PIXI = (function (exports) {
 	ColorMatrixFilter.prototype.grayscale = ColorMatrixFilter.prototype.greyscale;
 
 	/*!
-	 * @pixi/filter-displacement - v5.3.8
-	 * Compiled Sat, 20 Feb 2021 22:31:43 UTC
+	 * @pixi/filter-displacement - v5.3.9
+	 * Compiled Wed, 24 Mar 2021 19:57:28 UTC
 	 *
 	 * @pixi/filter-displacement is licensed under the MIT License.
 	 * http://www.opensource.org/licenses/mit-license
@@ -38624,8 +38633,8 @@ var PIXI = (function (exports) {
 	}(Filter));
 
 	/*!
-	 * @pixi/filter-fxaa - v5.3.8
-	 * Compiled Sat, 20 Feb 2021 22:31:43 UTC
+	 * @pixi/filter-fxaa - v5.3.9
+	 * Compiled Wed, 24 Mar 2021 19:57:28 UTC
 	 *
 	 * @pixi/filter-fxaa is licensed under the MIT License.
 	 * http://www.opensource.org/licenses/mit-license
@@ -38685,8 +38694,8 @@ var PIXI = (function (exports) {
 	}(Filter));
 
 	/*!
-	 * @pixi/filter-noise - v5.3.8
-	 * Compiled Sat, 20 Feb 2021 22:31:43 UTC
+	 * @pixi/filter-noise - v5.3.9
+	 * Compiled Wed, 24 Mar 2021 19:57:28 UTC
 	 *
 	 * @pixi/filter-noise is licensed under the MIT License.
 	 * http://www.opensource.org/licenses/mit-license
@@ -38786,8 +38795,8 @@ var PIXI = (function (exports) {
 	}(Filter));
 
 	/*!
-	 * @pixi/mixin-cache-as-bitmap - v5.3.8
-	 * Compiled Sat, 20 Feb 2021 22:31:43 UTC
+	 * @pixi/mixin-cache-as-bitmap - v5.3.9
+	 * Compiled Wed, 24 Mar 2021 19:57:28 UTC
 	 *
 	 * @pixi/mixin-cache-as-bitmap is licensed under the MIT License.
 	 * http://www.opensource.org/licenses/mit-license
@@ -38928,6 +38937,7 @@ var PIXI = (function (exports) {
 	    // this could be more elegant..
 	    var cachedRenderTexture = renderer.renderTexture.current;
 	    var cachedSourceFrame = renderer.renderTexture.sourceFrame.clone();
+	    var cachedDestinationFrame = renderer.renderTexture.destinationFrame.clone();
 	    var cachedProjectionTransform = renderer.projection.transform;
 	    // We also store the filter stack - I will definitely look to change how this works a little later down the line.
 	    // const stack = renderer.filterManager.filterStack;
@@ -38944,7 +38954,7 @@ var PIXI = (function (exports) {
 	    renderer.render(this, renderTexture, true, m, false);
 	    // now restore the state be setting the new properties
 	    renderer.projection.transform = cachedProjectionTransform;
-	    renderer.renderTexture.bind(cachedRenderTexture, cachedSourceFrame);
+	    renderer.renderTexture.bind(cachedRenderTexture, cachedSourceFrame, cachedDestinationFrame);
 	    // renderer.filterManager.filterStack = stack;
 	    this.render = this._renderCached;
 	    // the rest is the same as for Canvas
@@ -39102,8 +39112,8 @@ var PIXI = (function (exports) {
 	};
 
 	/*!
-	 * @pixi/mixin-get-child-by-name - v5.3.8
-	 * Compiled Sat, 20 Feb 2021 22:31:43 UTC
+	 * @pixi/mixin-get-child-by-name - v5.3.9
+	 * Compiled Wed, 24 Mar 2021 19:57:28 UTC
 	 *
 	 * @pixi/mixin-get-child-by-name is licensed under the MIT License.
 	 * http://www.opensource.org/licenses/mit-license
@@ -39149,8 +39159,8 @@ var PIXI = (function (exports) {
 	};
 
 	/*!
-	 * @pixi/mixin-get-global-position - v5.3.8
-	 * Compiled Sat, 20 Feb 2021 22:31:43 UTC
+	 * @pixi/mixin-get-global-position - v5.3.9
+	 * Compiled Wed, 24 Mar 2021 19:57:28 UTC
 	 *
 	 * @pixi/mixin-get-global-position is licensed under the MIT License.
 	 * http://www.opensource.org/licenses/mit-license
@@ -39181,8 +39191,8 @@ var PIXI = (function (exports) {
 	};
 
 	/*!
-	 * @pixi/mesh-extras - v5.3.8
-	 * Compiled Sat, 20 Feb 2021 22:31:43 UTC
+	 * @pixi/mesh-extras - v5.3.9
+	 * Compiled Wed, 24 Mar 2021 19:57:28 UTC
 	 *
 	 * @pixi/mesh-extras is licensed under the MIT License.
 	 * http://www.opensource.org/licenses/mit-license
@@ -39905,8 +39915,8 @@ var PIXI = (function (exports) {
 	}(SimplePlane));
 
 	/*!
-	 * @pixi/sprite-animated - v5.3.8
-	 * Compiled Sat, 20 Feb 2021 22:31:43 UTC
+	 * @pixi/sprite-animated - v5.3.9
+	 * Compiled Wed, 24 Mar 2021 19:57:28 UTC
 	 *
 	 * @pixi/sprite-animated is licensed under the MIT License.
 	 * http://www.opensource.org/licenses/mit-license
@@ -40364,8 +40374,8 @@ var PIXI = (function (exports) {
 	}(Sprite));
 
 	/*!
-	 * pixi.js - v5.3.8
-	 * Compiled Sat, 20 Feb 2021 22:31:43 UTC
+	 * pixi.js - v5.3.9
+	 * Compiled Wed, 24 Mar 2021 19:57:28 UTC
 	 *
 	 * pixi.js is licensed under the MIT License.
 	 * http://www.opensource.org/licenses/mit-license
@@ -41659,7 +41669,7 @@ var PIXI = (function (exports) {
 	 * @name VERSION
 	 * @type {string}
 	 */
-	var VERSION$1 = '5.3.8';
+	var VERSION$1 = '5.3.9';
 	/**
 	 * @namespace PIXI
 	 */
@@ -41701,8 +41711,8 @@ var PIXI = (function (exports) {
 	};
 
 	/*!
-	 * @pixi/canvas-renderer - v5.3.8
-	 * Compiled Sat, 20 Feb 2021 22:31:43 UTC
+	 * @pixi/canvas-renderer - v5.3.9
+	 * Compiled Wed, 24 Mar 2021 19:57:28 UTC
 	 *
 	 * @pixi/canvas-renderer is licensed under the MIT License.
 	 * http://www.opensource.org/licenses/mit-license
@@ -42566,8 +42576,8 @@ var PIXI = (function (exports) {
 	Texture.prototype.tintCache = null;
 
 	/*!
-	 * @pixi/canvas-mesh - v5.3.8
-	 * Compiled Sat, 20 Feb 2021 22:31:43 UTC
+	 * @pixi/canvas-mesh - v5.3.9
+	 * Compiled Wed, 24 Mar 2021 19:57:28 UTC
 	 *
 	 * @pixi/canvas-mesh is licensed under the MIT License.
 	 * http://www.opensource.org/licenses/mit-license
@@ -42974,8 +42984,8 @@ var PIXI = (function (exports) {
 	};
 
 	/*!
-	 * @pixi/canvas-graphics - v5.3.8
-	 * Compiled Sat, 20 Feb 2021 22:31:43 UTC
+	 * @pixi/canvas-graphics - v5.3.9
+	 * Compiled Wed, 24 Mar 2021 19:57:28 UTC
 	 *
 	 * @pixi/canvas-graphics is licensed under the MIT License.
 	 * http://www.opensource.org/licenses/mit-license
@@ -43322,8 +43332,8 @@ var PIXI = (function (exports) {
 	};
 
 	/*!
-	 * @pixi/canvas-sprite - v5.3.8
-	 * Compiled Sat, 20 Feb 2021 22:31:43 UTC
+	 * @pixi/canvas-sprite - v5.3.9
+	 * Compiled Wed, 24 Mar 2021 19:57:28 UTC
 	 *
 	 * @pixi/canvas-sprite is licensed under the MIT License.
 	 * http://www.opensource.org/licenses/mit-license
@@ -43468,8 +43478,8 @@ var PIXI = (function (exports) {
 	};
 
 	/*!
-	 * @pixi/canvas-extract - v5.3.8
-	 * Compiled Sat, 20 Feb 2021 22:31:43 UTC
+	 * @pixi/canvas-extract - v5.3.9
+	 * Compiled Wed, 24 Mar 2021 19:57:28 UTC
 	 *
 	 * @pixi/canvas-extract is licensed under the MIT License.
 	 * http://www.opensource.org/licenses/mit-license
@@ -43617,8 +43627,8 @@ var PIXI = (function (exports) {
 	});
 
 	/*!
-	 * @pixi/canvas-prepare - v5.3.8
-	 * Compiled Sat, 20 Feb 2021 22:31:43 UTC
+	 * @pixi/canvas-prepare - v5.3.9
+	 * Compiled Wed, 24 Mar 2021 19:57:28 UTC
 	 *
 	 * @pixi/canvas-prepare is licensed under the MIT License.
 	 * http://www.opensource.org/licenses/mit-license
@@ -43730,8 +43740,8 @@ var PIXI = (function (exports) {
 	}(BasePrepare));
 
 	/*!
-	 * @pixi/canvas-sprite-tiling - v5.3.8
-	 * Compiled Sat, 20 Feb 2021 22:31:43 UTC
+	 * @pixi/canvas-sprite-tiling - v5.3.9
+	 * Compiled Wed, 24 Mar 2021 19:57:28 UTC
 	 *
 	 * @pixi/canvas-sprite-tiling is licensed under the MIT License.
 	 * http://www.opensource.org/licenses/mit-license
@@ -43794,8 +43804,8 @@ var PIXI = (function (exports) {
 	};
 
 	/*!
-	 * @pixi/canvas-particles - v5.3.8
-	 * Compiled Sat, 20 Feb 2021 22:31:43 UTC
+	 * @pixi/canvas-particles - v5.3.9
+	 * Compiled Wed, 24 Mar 2021 19:57:28 UTC
 	 *
 	 * @pixi/canvas-particles is licensed under the MIT License.
 	 * http://www.opensource.org/licenses/mit-license
@@ -43861,8 +43871,8 @@ var PIXI = (function (exports) {
 	};
 
 	/*!
-	 * @pixi/canvas-display - v5.3.8
-	 * Compiled Sat, 20 Feb 2021 22:31:43 UTC
+	 * @pixi/canvas-display - v5.3.9
+	 * Compiled Wed, 24 Mar 2021 19:57:28 UTC
 	 *
 	 * @pixi/canvas-display is licensed under the MIT License.
 	 * http://www.opensource.org/licenses/mit-license
@@ -43912,8 +43922,8 @@ var PIXI = (function (exports) {
 	};
 
 	/*!
-	 * @pixi/canvas-text - v5.3.8
-	 * Compiled Sat, 20 Feb 2021 22:31:43 UTC
+	 * @pixi/canvas-text - v5.3.9
+	 * Compiled Wed, 24 Mar 2021 19:57:28 UTC
 	 *
 	 * @pixi/canvas-text is licensed under the MIT License.
 	 * http://www.opensource.org/licenses/mit-license
