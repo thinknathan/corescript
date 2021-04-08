@@ -105,7 +105,6 @@ Scene_Menu.prototype.onPersonalCancel = function() {
 
 Scene_Menu.prototype.onFormationOk = function() {
     let index = this._statusWindow.index();
-    let actor = $gameParty.members()[index];
     let pendingIndex = this._statusWindow.pendingIndex();
     if (pendingIndex >= 0) {
         $gameParty.swapOrder(index, pendingIndex);
