@@ -7,6 +7,7 @@ function DataManager() {
     throw new Error('This is a static class');
 }
 
+/* jshint ignore:start */
 var $dataActors       = null;
 var $dataClasses      = null;
 var $dataSkills       = null;
@@ -36,6 +37,7 @@ var $gameTroop        = null;
 var $gameMap          = null;
 var $gamePlayer       = null;
 var $testEvent        = null;
+/* jshint ignore:end */
 
 DataManager._globalId       = 'RPGMV';
 DataManager._lastAccessedId = 1;

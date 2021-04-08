@@ -559,7 +559,7 @@ Game_Interpreter.prototype.command111 = function() {
             break;
         case 12:  // Script
             try {
-                result = !!eval(this._params[1]);
+                result = !!eval(this._params[1]); // jshint ignore:line
             } catch (error) {
                 error.eventCommand = "conditional_branch_script";
                 error.content = this._params[1];
@@ -703,7 +703,7 @@ Game_Interpreter.prototype.command122 = function() {
             break;
         case 4: // Script
             try {
-                value = eval(this._params[4]);
+                value = eval(this._params[4]); // jshint ignore:line
             } catch (error) {
                 error.eventCommand = "control_variables";
                 error.content = this._params[4];
@@ -1770,7 +1770,7 @@ Game_Interpreter.prototype.command355 = function() {
     }
     let endLine = this._index + 1;
     try {
-        eval(script);
+        eval(script); // jshint ignore:line
     } catch (error) {
         error.line = startLine + "-" + endLine;
         error.eventCommand = "script";
@@ -1913,7 +1913,7 @@ Game_Interpreter.requestImagesForCommand = function(command){
             let commandName = args.shift();
             Game_Interpreter.requestImagesByPluginCommand(commandName,args);
         break;
-            
+
     }
 };
 
@@ -1940,7 +1940,7 @@ Game_Interpreter.requestImages = function(list, commonList){
         if(command.code ===117){
             Game_Interpreter.requestImagesByChildEvent(command,commonList);
         }else{
-            Game_Interpreter.requestImagesForCommand(command);            
+            Game_Interpreter.requestImagesForCommand(command);
         }
     }
 };

@@ -507,14 +507,16 @@ Game_Action.prototype.makeDamageValue = function(target, critical) {
 
 Game_Action.prototype.evalDamageFormula = function(target) {
     try {
+        /* jshint ignore:start */
         let item = this.item();
         let a = this.subject();
         let b = target;
         let v = $gameVariables._data;
         let sign = ([3, 4].contains(item.damage.type) ? -1 : 1);
         let value = Math.max(eval(item.damage.formula), 0) * sign;
-		if (isNaN(value)) value = 0;
-		return value;
+        if (isNaN(value)) value = 0;
+        return value;
+        /* jshint ignore:end */
     } catch (e) {
         return 0;
     }

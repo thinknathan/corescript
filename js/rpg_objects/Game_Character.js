@@ -270,7 +270,7 @@ Game_Character.prototype.processMoveCommand = function(command) {
         break;
     case gc.ROUTE_SCRIPT:
         try {
-            eval(params[0]);
+            eval(params[0]); // jshint ignore:line
         } catch (error) {
             if (this._callerEventInfo) {
                 for (let key in this._callerEventInfo) {
