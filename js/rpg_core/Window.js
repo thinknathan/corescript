@@ -539,16 +539,8 @@ Window.prototype._refreshCursor = function () {
     let y = this._cursorRect.y + pad - this.origin.y;
     let w = this._cursorRect.width;
     let h = this._cursorRect.height;
-    let m = 4;
-    let x2 = Math.max(x, pad);
-    let y2 = Math.max(y, pad);
-    let ox = x - x2;
-    let oy = y - y2;
-    let w2 = Math.min(w, this._width - pad - x2);
-    let h2 = Math.min(h, this._height - pad - y2);
 
     if (w > 0 && h > 0 && this._windowskin && !this._windowCursorSprite._setupComplete) {
-        let skin = this._windowskin;
         let p = 96;
         let q = 48;
         this._windowCursorPlane = this._windowCursorSprite.create9Slice(this._windowskin.baseTexture, p, p, q, q, 12, 12, 12, 12);
