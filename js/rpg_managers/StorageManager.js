@@ -72,7 +72,6 @@ StorageManager.cleanBackup = function(savefileId) {
 	if (this.backupExists(savefileId)) {
 		if (this.isLocalMode()) {
 			let fs = require('fs');
-            let dirPath = this.localFileDirectoryPath();
             let filePath = this.localFilePath(savefileId);
             fs.unlinkSync(filePath + ".bak");
 		} else {
