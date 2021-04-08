@@ -64,7 +64,7 @@ ShaderTilemap.prototype.refresh = function() {
     if (this._lastBitmapLength !== this.bitmaps.length) {
         this._lastBitmapLength = this.bitmaps.length;
         this.refreshTileset();
-    };
+    }
     this._needsRepaint = true;
 };
 

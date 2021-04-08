@@ -191,7 +191,7 @@ JsonEx._decode = function(value, circular, registry) {
                 }
                 if(value[key] && value[key]['@r']){
                     //object is reference
-                    circular.push([key, value, value[key]['@r']])
+                    circular.push([key, value, value[key]['@r']]);
                 }
                 value[key] = this._decode(value[key], circular, registry);
             }

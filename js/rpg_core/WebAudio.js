@@ -153,7 +153,7 @@ WebAudio._setupEventHandlers = function() {
         if (context && context.state === "suspended" && typeof context.resume === "function") {
             context.resume().then(function() {
                 WebAudio._onTouchStart();
-            })
+            });
         } else {
             WebAudio._onTouchStart();
         }

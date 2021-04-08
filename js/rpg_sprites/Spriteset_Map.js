@@ -153,13 +153,13 @@ Spriteset_Map.prototype.updateParallax = function() {
 Spriteset_Map.prototype.updateTilemap = function() {
     this._tilemap.origin.x = $gameMap.displayX() * $gameMap.tileWidth();
     this._tilemap.origin.y = $gameMap.displayY() * $gameMap.tileHeight();
-    
+
     // Fix tilemap not being ready, by LTN Gaming
     if (this._tilemap.bitmaps) {
         if (!this.isTilesetReady && this._tilemap.bitmaps.every(bitmap => bitmap.isRequestReady())) {
             this._tilemap.refresh();
-            this._tilemap.refreshTileset()
-            this.isTilesetReady = true
+            this._tilemap.refreshTileset();
+            this.isTilesetReady = true;
         }
     }
 };

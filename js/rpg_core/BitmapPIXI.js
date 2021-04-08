@@ -178,7 +178,7 @@ BitmapPIXI.prototype.drawNewText = function (text, x, y, alpha, maxWidth, lineHe
         fontStyle: this.fontItalic ? 'italic' : 'normal',
         stroke: this.outlineColor,
         strokeThickness: this.outlineWidth,
-    }
+    };
 
     if (!PIXI.BitmapFont.available[style.fontFamily]) {
         let bitmapOptions = {
@@ -187,7 +187,7 @@ BitmapPIXI.prototype.drawNewText = function (text, x, y, alpha, maxWidth, lineHe
                 '\u2192',
                 '’',
             ]
-        }
+        };
         PIXI.BitmapFont.from(style.fontFamily, style, bitmapOptions);
     }
 
@@ -247,7 +247,7 @@ BitmapPIXI.prototype.createTilingSprite = function (source, x, y, w, h, tileWidt
         new PIXI.Texture(
             source,
             new PIXI.Rectangle(x, y, w, h)
-        ), tileWidth, tileHeight,
+        ), tileWidth, tileHeight
     );
 };
 
@@ -285,7 +285,7 @@ BitmapPIXI.prototype.fillRect = function (x, y, width, height, color) {
         0,
         0,
         width,
-        height,
+        height
     );
     rectangle.endFill();
     if (rectangle) {
@@ -308,7 +308,7 @@ BitmapPIXI.prototype.drawCircle = function (x, y, radius, color) {
     circle.drawCircle(
         0,
         0,
-        radius,
+        radius
     );
     circle.endFill();
     if (circle) {

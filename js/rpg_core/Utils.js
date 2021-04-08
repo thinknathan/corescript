@@ -164,7 +164,7 @@ Utils.generateRuntimeId = function(){
 Utils._supportPassiveEvent = null;
 /**
  * Test this browser support passive event feature
- * 
+ *
  * @static
  * @method isSupportPassiveEvent
  * @return {Boolean} this browser support passive event or not
@@ -182,4 +182,4 @@ Utils.isSupportPassiveEvent = function() {
     window.addEventListener("test", null, options);
     Utils._supportPassiveEvent = passive;
     return passive;
-}
+};

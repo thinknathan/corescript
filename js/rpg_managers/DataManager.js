@@ -256,7 +256,8 @@ DataManager.loadGlobalInfo = function() {
         }
         return this._globalInfo;
     } else {
-        return this._globalInfo = [];
+        this._globalInfo = [];
+        return this._globalInfo;
     }
 };
 
