@@ -105,13 +105,6 @@ ShaderTilemap.prototype.updateTransform = function() {
  * @private
  */
 ShaderTilemap.prototype._createLayers = function() {
-    let width = this._width;
-    let height = this._height;
-    let margin = this._margin;
-    let tileCols = Math.ceil(width / this._tileWidth) + 1;
-    let tileRows = Math.ceil(height / this._tileHeight) + 1;
-    let layerWidth = this._layerWidth = tileCols * this._tileWidth;
-    let layerHeight = this._layerHeight = tileRows * this._tileHeight;
     this._needsRepaint = true;
 
     if (!this.lowerZLayer) {
