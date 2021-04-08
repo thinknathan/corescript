@@ -675,7 +675,7 @@ WebAudio.prototype._readOgg = function(array) {
             for (let i = 0; i < numSegments; i++) {
                 segments.push(array[index++]);
             }
-            for (i = 0; i < numSegments; i++) {
+            for (let i = 0; i < numSegments; i++) {
                 if (this._readFourCharacters(array, index + 1) === 'vorb') {
                     let headerType = array[index];
                     if (headerType === 1) {
