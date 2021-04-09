@@ -300,7 +300,6 @@ SceneManager.onSceneCreate = function() {
 };
 
 SceneManager.onSceneStart = function() {
-    if (typeof gc == 'function') gc();
     Graphics.callGC();
     Graphics.endLoading();
 };
