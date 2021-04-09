@@ -158,6 +158,8 @@
         "CacheEntry": true,
         "PixiFps": true,
         "gc": true,
+        "$plugins": true,
+        "$priorityScripts": true,
         "ProgressWatcher": true,
         "Game_Actor": true,
         "Game_ActionResult": true,
