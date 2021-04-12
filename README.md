@@ -54,58 +54,6 @@ This project is a project aimed at improving "RPG Maker MV CoreScript" better by
 The core script developed by this project is widely distributed to RPG Maker users through KADOKAWA.
 The RPGMaker MV community is centered around plugins. Therefore, Ver1 series is developed while minimizing destructive change.
 
-## How to use
-
-There are three releases
-
-- Develop --- Development version. You can download it with GitHub.
-- RC --- Release candidate version. It is for game developers to do the test. It will be distributed from game posting site "RPG Atsumaru".
-- Stable --- Stable version. KADOKAWA is widely distributed to general users through Steam and official website.
-
-## How to build
-
-To build Corescripts, install Node.js, change working directory, and just type in console:
-
-```
-npm install
-npm run build
-```
-
-Then you can find Corescripts in folder “dist”
-
-If you want to build indivisually, Here’s some command,
-```
-npm run build:core
-npm run build:managers
-npm run build:objects
-npm run build:scenes
-npm run build:sprites
-npm run build:windows
-```
-
-To test, place MV’s project in game/ and type
-
-```
-npm test
-```
-
-There are helpful tasks, watch and start.
-
-Watch task is watching js/rpg_*** changes, concat them, and copy that to ./game/js/ .
-
-```
-npm run watch
-```
-
-Start task starts local server. You can test Corescripts in your browser.
-
-http://localhost:8080/
-
-```
-npm start
-```
-
-
 ## How to join
 
 - This project uses English as the main language.
