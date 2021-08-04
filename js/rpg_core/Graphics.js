@@ -184,6 +184,7 @@ Graphics.isWebGL = function() {
     return this._renderer && this._renderer.type === PIXI.RENDERER_TYPE.WEBGL;
 };
 
+Graphics._canWebGL = null;
 /**
  * Checks whether the current browser supports WebGL.
  *
@@ -192,10 +193,16 @@ Graphics.isWebGL = function() {
  * @return {Boolean} True if the current browser supports WebGL.
  */
 Graphics.hasWebGL = function() {
+    if (typeof Graphics._canWebGL === "boolean") {
+        return Graphics._canWebGL;
+    }
     try {
-        let canvas = document.createElement('canvas');
-        return !!(canvas.getContext('webgl') || canvas.getContext('experimental-webgl'));
+        const canvas = document.createElement('canvas');
+        const result = !!(canvas.getContext('webgl') || canvas.getContext('experimental-webgl'));
+        Graphics._canWebGL = result;
+        return result;
     } catch (e) {
+        Graphics._canWebGL = false;
         return false;
     }
 };
@@ -1400,7 +1407,7 @@ Graphics._switchFPSMeter = function() {
     } else if (this._fpsMeter && !this._fpsMeterToggled) {
         this.showFps();
         this._fpsMeterToggled = true;
-    } 
+    }
 };
 
 /**
@@ -1435,7 +1442,7 @@ Graphics._switchFullScreen = function() {
  */
 Graphics._isFullScreen = function() {
     return document.fullscreenElement ||
-           document.mozFullScreen || 
+           document.mozFullScreen ||
            document.webkitFullscreenElement ||
            document.msFullscreenElement;
 };
@@ -1464,7 +1471,7 @@ Graphics._requestFullScreen = function() {
  * @private
  */
 Graphics._cancelFullScreen = function() {
-    if (document.exitFullscreen) { 
+    if (document.exitFullscreen) {
         document.exitFullscreen();
     } else if (document.mozCancelFullScreen) {
         document.mozCancelFullScreen();
