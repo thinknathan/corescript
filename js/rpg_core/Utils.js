@@ -51,6 +51,7 @@ Utils.isOptionValid = function(name) {
     return false;
 };
 
+Utils._nwjs = null;
 /**
  * Checks whether the platform is NW.js.
  *
@@ -59,9 +60,15 @@ Utils.isOptionValid = function(name) {
  * @return {Boolean} True if the platform is NW.js
  */
 Utils.isNwjs = function() {
-    return typeof require === 'function' && typeof process === 'object';
+    if (typeof Utils._nwjs === "boolean") {
+        return Utils._nwjs;
+    }
+    const result = typeof require === 'function' && typeof process === 'object';
+    Utils._nwjs = result;
+    return result;
 };
 
+Utils._mobileDevice = null;
 /**
  * Checks whether the platform is a mobile device.
  *
@@ -70,20 +77,16 @@ Utils.isNwjs = function() {
  * @return {Boolean} True if the platform is a mobile device
  */
 Utils.isMobileDevice = function () {
-    let r = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i;
-    if (!!navigator.userAgent.match(r)) {
-        Utils.isMobileDevice = function () {
-            return true;
-        };
-        return true;
+    if (typeof Utils._mobileDevice === "boolean") {
+        return Utils._mobileDevice;
     }
-
-    Utils.isMobileDevice = function () {
-        return false;
-    };
-    return false;
+    const r = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i;
+    const result = !!navigator.userAgent.match(r);
+    Utils._mobileDevice = result;
+    return result;
 };
 
+Utils._mobileSafari = null;
 /**
  * Checks whether the browser is Mobile Safari.
  *
@@ -92,20 +95,17 @@ Utils.isMobileDevice = function () {
  * @return {Boolean} True if the browser is Mobile Safari
  */
 Utils.isMobileSafari = function () {
-    let agent = navigator.userAgent;
-    if (!!(agent.match(/iPhone|iPad|iPod/) && agent.match(/AppleWebKit/) &&
-            !agent.match('CriOS'))) {
-        Utils.isMobileSafari = function () {
-            return true;
-        };
-        return true;
+    if (typeof Utils._mobileSafari === "boolean") {
+        return Utils._mobileSafari;
     }
-    Utils.isMobileSafari = function () {
-        return false;
-    };
-    return false;
+    const agent = navigator.userAgent;
+    const result = !!(agent.match(/iPhone|iPad|iPod/) && agent.match(/AppleWebKit/) &&
+            !agent.match('CriOS'));
+    Utils._mobileSafari = result;
+    return result;
 };
 
+Utils._androidChrome = null;
 /**
  * Checks whether the browser is Android Chrome.
  *
@@ -114,8 +114,13 @@ Utils.isMobileSafari = function () {
  * @return {Boolean} True if the browser is Android Chrome
  */
 Utils.isAndroidChrome = function() {
-    let agent = navigator.userAgent;
-    return !!(agent.match(/Android/) && agent.match(/Chrome/));
+    if (typeof Utils._androidChrome === "boolean") {
+        return Utils._androidChrome;
+    }
+    const agent = navigator.userAgent;
+    const result = !!(agent.match(/Android/) && agent.match(/Chrome/));
+    Utils._androidChrome = result;
+    return result;
 };
 
 /**
