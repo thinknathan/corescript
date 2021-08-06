@@ -14,7 +14,6 @@ This fork introduces opinionated changes and is not necessarily a drop-in replac
 - REMOVED: HTML5Audio
 - REMOVED: Gradients in gauges
 - NOTE: "Window Color" in the System menu of the editor is now applied differently than the default scripts. The default value of (0, 0, 0) is black. Using pure white (255, 255, 255) will disable it.
-- NOTE: Core scripts are now loaded via the plugin manager, allowing us to show the total number of scripts loading, not just plugins.
 
 # Performance Benchmarks
 
