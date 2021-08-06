@@ -25,14 +25,14 @@ Decrypter.checkImgIgnore = function (url) {
 Decrypter.decryptImg = function (url, bitmap) {
 	url = this.extToEncryptExt(url);
 
-	let requestFile = new XMLHttpRequest();
+	const requestFile = new XMLHttpRequest();
 	requestFile.open("GET", url);
 	requestFile.responseType = "arraybuffer";
 	requestFile.send();
 
 	requestFile.onload = function () {
 		if (this.status < Decrypter._xhrOk) {
-			let arrayBuffer = Decrypter.decryptArrayBuffer(requestFile.response);
+			const arrayBuffer = Decrypter.decryptArrayBuffer(requestFile.response);
 			bitmap._image.src = Decrypter.createBlobUrl(arrayBuffer);
 			bitmap._image.addEventListener('load', bitmap._loadListener = Bitmap.prototype._onLoad.bind(bitmap));
 			bitmap._image.addEventListener('error', bitmap._errorListener = bitmap._loader || Bitmap.prototype._onError.bind(bitmap));
@@ -54,11 +54,11 @@ Decrypter.cutArrayHeader = function (arrayBuffer, length) {
 
 Decrypter.decryptArrayBuffer = function (arrayBuffer) {
 	if (!arrayBuffer) return null;
-	let header = new Uint8Array(arrayBuffer, 0, this._headerlength);
+	const header = new Uint8Array(arrayBuffer, 0, this._headerlength);
 
 	let i;
-	let ref = this.SIGNATURE + this.VER + this.REMAIN;
-	let refBytes = new Uint8Array(16);
+	const ref = this.SIGNATURE + this.VER + this.REMAIN;
+	const refBytes = new Uint8Array(16);
 	for (i = 0; i < this._headerlength; i++) {
 		refBytes[i] = parseInt("0x" + ref.substr(i * 2, 2), 16);
 	}
@@ -69,10 +69,10 @@ Decrypter.decryptArrayBuffer = function (arrayBuffer) {
 	}
 
 	arrayBuffer = this.cutArrayHeader(arrayBuffer, Decrypter._headerlength);
-	let view = new DataView(arrayBuffer);
+	const view = new DataView(arrayBuffer);
 	this.readEncryptionkey();
 	if (arrayBuffer) {
-		let byteArray = new Uint8Array(arrayBuffer);
+		const byteArray = new Uint8Array(arrayBuffer);
 		for (i = 0; i < this._headerlength; i++) {
 			byteArray[i] = byteArray[i] ^ parseInt(Decrypter._encryptionKey[i], 16);
 			view.setUint8(i, byteArray[i]);
@@ -83,12 +83,12 @@ Decrypter.decryptArrayBuffer = function (arrayBuffer) {
 };
 
 Decrypter.createBlobUrl = function (arrayBuffer) {
-	let blob = new Blob([arrayBuffer]);
+	const blob = new Blob([arrayBuffer]);
 	return window.URL.createObjectURL(blob);
 };
 
 Decrypter.extToEncryptExt = function (url) {
-	let ext = url.split('.')
+	const ext = url.split('.')
 		.pop();
 	let encryptedExt = ext;
 

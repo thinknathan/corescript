@@ -12,7 +12,7 @@ Window_ShopNumber.prototype = Object.create(Window_Selectable.prototype);
 Window_ShopNumber.prototype.constructor = Window_ShopNumber;
 
 Window_ShopNumber.prototype.initialize = function (x, y, height) {
-	let width = this.windowWidth();
+	const width = this.windowWidth();
 	Window_Selectable.prototype.initialize.call(this, x, y, width, height);
 	this._item = null;
 	this._max = 1;
@@ -46,14 +46,14 @@ Window_ShopNumber.prototype.setCurrencyUnit = function (currencyUnit) {
 };
 
 Window_ShopNumber.prototype.createButtons = function () {
-	let bitmap = ImageManager.loadSystem('ButtonSet');
-	let buttonWidth = 48;
-	let buttonHeight = 48;
+	const bitmap = ImageManager.loadSystem('ButtonSet');
+	const buttonWidth = 48;
+	const buttonHeight = 48;
 	this._buttons = [];
 	for (let i = 0; i < 5; i++) {
-		let button = new Sprite_Button();
-		let x = buttonWidth * i;
-		let w = buttonWidth * (i === 4 ? 2 : 1);
+		const button = new Sprite_Button();
+		const x = buttonWidth * i;
+		const w = buttonWidth * (i === 4 ? 2 : 1);
 		button.bitmap = bitmap;
 		button.setColdFrame(x, 0, w, buttonHeight);
 		button.setHotFrame(x, buttonHeight, w, buttonHeight);
@@ -69,15 +69,15 @@ Window_ShopNumber.prototype.createButtons = function () {
 };
 
 Window_ShopNumber.prototype.placeButtons = function () {
-	let numButtons = this._buttons.length;
-	let spacing = 16;
+	const numButtons = this._buttons.length;
+	const spacing = 16;
 	let totalWidth = -spacing;
 	for (let i = 0; i < numButtons; i++) {
 		totalWidth += this._buttons[i].width + spacing;
 	}
 	let x = (this.width - totalWidth) / 2;
 	for (let j = 0; j < numButtons; j++) {
-		let button = this._buttons[j];
+		const button = this._buttons[j];
 		button.x = x;
 		button.y = this.buttonY();
 		x += button.width + spacing;
@@ -113,25 +113,25 @@ Window_ShopNumber.prototype.refresh = function () {
 };
 
 Window_ShopNumber.prototype.drawMultiplicationSign = function () {
-	let sign = '\u00d7';
-	let width = this.textWidth(sign);
-	let x = this.cursorX() - width * 2;
-	let y = this.itemY();
+	const sign = '\u00d7';
+	const width = this.textWidth(sign);
+	const x = this.cursorX() - width * 2;
+	const y = this.itemY();
 	this.resetTextColor();
 	this.drawText(sign, x, y, width);
 };
 
 Window_ShopNumber.prototype.drawNumber = function () {
-	let x = this.cursorX();
-	let y = this.itemY();
-	let width = this.cursorWidth() - this.textPadding();
+	const x = this.cursorX();
+	const y = this.itemY();
+	const width = this.cursorWidth() - this.textPadding();
 	this.resetTextColor();
 	this.drawText(this._number, x, y, width, 'right');
 };
 
 Window_ShopNumber.prototype.drawTotalPrice = function () {
-	let total = this._price * this._number;
-	let width = this.contentsWidth() - this.textPadding();
+	const total = this._price * this._number;
+	const width = this.contentsWidth() - this.textPadding();
 	this.drawCurrencyValue(total, this._currencyUnit, 0, this.priceY(), width);
 };
 
@@ -148,7 +148,7 @@ Window_ShopNumber.prototype.buttonY = function () {
 };
 
 Window_ShopNumber.prototype.cursorWidth = function () {
-	let digitWidth = this.textWidth('0');
+	const digitWidth = this.textWidth('0');
 	return this.maxDigits() * digitWidth + this.textPadding() * 2;
 };
 
@@ -189,7 +189,7 @@ Window_ShopNumber.prototype.processNumberChange = function () {
 };
 
 Window_ShopNumber.prototype.changeNumber = function (amount) {
-	let lastNumber = this._number;
+	const lastNumber = this._number;
 	this._number = (this._number + amount)
 		.clamp(1, this._max);
 	if (this._number !== lastNumber) {

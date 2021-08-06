@@ -12,8 +12,8 @@ Window_ScrollText.prototype = Object.create(Window_Base.prototype);
 Window_ScrollText.prototype.constructor = Window_ScrollText;
 
 Window_ScrollText.prototype.initialize = function () {
-	let width = Graphics.boxWidth;
-	let height = Graphics.boxHeight;
+	const width = Graphics.boxWidth;
+	const height = Graphics.boxHeight;
 	Window_Base.prototype.initialize.call(this, 0, 0, width, height);
 	this.opacity = 0;
 	this.hide();
@@ -40,7 +40,7 @@ Window_ScrollText.prototype.startMessage = function () {
 };
 
 Window_ScrollText.prototype.refresh = function () {
-	let textState = {
+	const textState = {
 		index: 0
 	};
 	textState.text = this.convertEscapeCharacters(this._text);

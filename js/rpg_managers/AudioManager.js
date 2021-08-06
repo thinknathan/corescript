@@ -95,7 +95,7 @@ AudioManager.playBgm = function (bgm, pos) {
 };
 
 AudioManager.playEncryptedBgm = function (bgm, pos) {
-	let ext = this.audioFileExt();
+	const ext = this.audioFileExt();
 	let url = this._path + 'bgm/' + encodeURIComponent(bgm.name) + ext;
 	url = Decrypter.extToEncryptExt(url);
 };
@@ -266,7 +266,7 @@ AudioManager.playSe = function (se) {
 		this._seBuffers = this._seBuffers.filter(function (audio) {
 			return audio.isPlaying();
 		});
-		let buffer = this.createBuffer('se', se.name);
+		const buffer = this.createBuffer('se', se.name);
 		this.updateSeParameters(buffer, se);
 		buffer.play(false);
 		this._seBuffers.push(buffer);
@@ -288,7 +288,7 @@ AudioManager.playStaticSe = function (se) {
 	if (se.name) {
 		this.loadStaticSe(se);
 		for (let i = 0; i < this._staticBuffers.length; i++) {
-			let buffer = this._staticBuffers[i];
+			const buffer = this._staticBuffers[i];
 			if (buffer._reservedSeName === se.name) {
 				buffer.stop();
 				this.updateSeParameters(buffer, se);
@@ -301,7 +301,7 @@ AudioManager.playStaticSe = function (se) {
 
 AudioManager.loadStaticSe = function (se) {
 	if (se.name && !this.isStaticSe(se)) {
-		let buffer = this.createBuffer('se', se.name);
+		const buffer = this.createBuffer('se', se.name);
 		buffer._reservedSeName = se.name;
 		this._staticBuffers.push(buffer);
 	}
@@ -309,7 +309,7 @@ AudioManager.loadStaticSe = function (se) {
 
 AudioManager.isStaticSe = function (se) {
 	for (let i = 0; i < this._staticBuffers.length; i++) {
-		let buffer = this._staticBuffers[i];
+		const buffer = this._staticBuffers[i];
 		if (buffer._reservedSeName === se.name) {
 			return true;
 		}
@@ -326,7 +326,7 @@ AudioManager.stopAll = function () {
 
 AudioManager.saveBgm = function () {
 	if (this._currentBgm) {
-		let bgm = this._currentBgm;
+		const bgm = this._currentBgm;
 		return {
 			name: bgm.name,
 			volume: bgm.volume,
@@ -341,7 +341,7 @@ AudioManager.saveBgm = function () {
 
 AudioManager.saveBgs = function () {
 	if (this._currentBgs) {
-		let bgs = this._currentBgs;
+		const bgs = this._currentBgs;
 		return {
 			name: bgs.name,
 			volume: bgs.volume,
@@ -363,9 +363,9 @@ AudioManager.makeEmptyAudioObject = function () {
 };
 
 AudioManager.createBuffer = function (folder, name) {
-	let ext = this.audioFileExt();
-	let url = this._path + folder + '/' + encodeURIComponent(name) + ext;
-	let audio = new WebAudio(url);
+	const ext = this.audioFileExt();
+	const url = this._path + folder + '/' + encodeURIComponent(name) + ext;
+	const audio = new WebAudio(url);
 	this._callCreationHook(audio);
 	return audio;
 };

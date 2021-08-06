@@ -25,10 +25,10 @@ Window_SkillStatus.prototype.setActor = function (actor) {
 Window_SkillStatus.prototype.refresh = function () {
 	this.contents.clear();
 	if (this._actor) {
-		let w = this.width - this.padding * 2;
-		let h = this.height - this.padding * 2;
-		let y = h / 2 - this.lineHeight() * 1.5;
-		let width = w - 162 - this.textPadding();
+		const w = this.width - this.padding * 2;
+		const h = this.height - this.padding * 2;
+		const y = h / 2 - this.lineHeight() * 1.5;
+		const width = w - 162 - this.textPadding();
 		this.drawActorFace(this._actor, 0, 0, 144, h);
 		this.drawActorSimpleStatus(this._actor, 162, y, width);
 	}

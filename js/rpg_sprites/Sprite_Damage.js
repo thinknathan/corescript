@@ -19,7 +19,7 @@ Sprite_Damage.prototype.initialize = function () {
 };
 
 Sprite_Damage.prototype.setup = function (target) {
-	let result = target.result();
+	const result = target.result();
 	if (result.missed || result.evaded) {
 		this.createMiss();
 	} else if (result.hpAffected) {
@@ -46,22 +46,22 @@ Sprite_Damage.prototype.digitHeight = function () {
 };
 
 Sprite_Damage.prototype.createMiss = function () {
-	let w = this.digitWidth();
-	let h = this.digitHeight();
-	let sprite = this.createChildSprite();
+	const w = this.digitWidth();
+	const h = this.digitHeight();
+	const sprite = this.createChildSprite();
 	sprite.setFrame(0, 4 * h, 4 * w, h);
 	sprite.dy = 0;
 };
 
 Sprite_Damage.prototype.createDigits = function (baseRow, value) {
-	let string = Math.abs(value)
+	const string = Math.abs(value)
 		.toString();
-	let row = baseRow + (value < 0 ? 1 : 0);
-	let w = this.digitWidth();
-	let h = this.digitHeight();
+	const row = baseRow + (value < 0 ? 1 : 0);
+	const w = this.digitWidth();
+	const h = this.digitHeight();
 	for (let i = 0; i < string.length; i++) {
-		let sprite = this.createChildSprite();
-		let n = Number(string[i]);
+		const sprite = this.createChildSprite();
+		const n = Number(string[i]);
 		sprite.setFrame(n * w, row * h, w, h);
 		sprite.x = (i - (string.length - 1) / 2) * w;
 		sprite.dy = -i;
@@ -69,7 +69,7 @@ Sprite_Damage.prototype.createDigits = function (baseRow, value) {
 };
 
 Sprite_Damage.prototype.createChildSprite = function () {
-	let sprite = new Sprite();
+	const sprite = new Sprite();
 	sprite.bitmap = this._damageBitmap;
 	sprite.anchor.x = 0.5;
 	sprite.anchor.y = 1;
@@ -104,7 +104,7 @@ Sprite_Damage.prototype.updateChild = function (sprite) {
 
 Sprite_Damage.prototype.updateFlash = function () {
 	if (this._flashDuration > 0) {
-		let d = this._flashDuration--;
+		const d = this._flashDuration--;
 		this._flashColor[3] *= (d - 1) / d;
 	}
 };

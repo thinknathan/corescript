@@ -11,8 +11,8 @@ Window_MapName.prototype = Object.create(Window_Base.prototype);
 Window_MapName.prototype.constructor = Window_MapName;
 
 Window_MapName.prototype.initialize = function () {
-	let wight = this.windowWidth();
-	let height = this.windowHeight();
+	const wight = this.windowWidth();
+	const height = this.windowHeight();
 	Window_Base.prototype.initialize.call(this, 0, 0, wight, height);
 	this.opacity = 0;
 	this.contentsOpacity = 0;
@@ -58,15 +58,15 @@ Window_MapName.prototype.close = function () {
 Window_MapName.prototype.refresh = function () {
 	this.contents.clear();
 	if ($gameMap.displayName()) {
-		let width = this.contentsWidth();
+		const width = this.contentsWidth();
 		this.drawBackground(0, 0, width, this.lineHeight());
 		this.drawText($gameMap.displayName(), 0, 0, width, 'center');
 	}
 };
 
 Window_MapName.prototype.drawBackground = function (x, y, width, height) {
-	let color1 = this.dimColor1();
-	let color2 = this.dimColor2();
+	const color1 = this.dimColor1();
+	const color2 = this.dimColor2();
 	this.contents.gradientFillRect(x, y, width / 2, height, color2, color1);
 	this.contents.gradientFillRect(x + width / 2, y, width / 2, height, color1, color2);
 };

@@ -44,7 +44,7 @@ Game_Actor.prototype.initMembers = function () {
 };
 
 Game_Actor.prototype.setup = function (actorId) {
-	let actor = $dataActors[actorId];
+	const actor = $dataActors[actorId];
 	this._actorId = actorId;
 	this._name = actor.name;
 	this._nickname = actor.nickname;
@@ -127,7 +127,7 @@ Game_Actor.prototype.resetStateCounts = function (stateId) {
 };
 
 Game_Actor.prototype.initImages = function () {
-	let actor = this.actor();
+	const actor = this.actor();
 	this._characterName = actor.characterName;
 	this._characterIndex = actor.characterIndex;
 	this._faceName = actor.faceName;
@@ -136,11 +136,11 @@ Game_Actor.prototype.initImages = function () {
 };
 
 Game_Actor.prototype.expForLevel = function (level) {
-	let c = this.currentClass();
-	let basis = c.expParams[0];
-	let extra = c.expParams[1];
-	let acc_a = c.expParams[2];
-	let acc_b = c.expParams[3];
+	const c = this.currentClass();
+	const basis = c.expParams[0];
+	const extra = c.expParams[1];
+	const acc_a = c.expParams[2];
+	const acc_b = c.expParams[3];
 	return Math.round(basis * (Math.pow(level - 1, 0.9 + acc_a / 250)) * level *
 		(level + 1) / (6 + Math.pow(level, 2) / 50 / acc_b) + (level - 1) * extra);
 };
@@ -185,8 +185,8 @@ Game_Actor.prototype.initSkills = function () {
 };
 
 Game_Actor.prototype.initEquips = function (equips) {
-	let slots = this.equipSlots();
-	let maxSlots = slots.length;
+	const slots = this.equipSlots();
+	const maxSlots = slots.length;
 	this._equips = [];
 	for (let i = 0; i < maxSlots; i++) {
 		this._equips[i] = new Game_Item();
@@ -201,7 +201,7 @@ Game_Actor.prototype.initEquips = function (equips) {
 };
 
 Game_Actor.prototype.equipSlots = function () {
-	let slots = [];
+	const slots = [];
 	for (let i = 1; i < $dataSystem.equipTypes.length; i++) {
 		slots.push(i);
 	}
@@ -271,7 +271,7 @@ Game_Actor.prototype.tradeItemWithParty = function (newItem, oldItem) {
 };
 
 Game_Actor.prototype.changeEquipById = function (etypeId, itemId) {
-	let slotId = etypeId - 1;
+	const slotId = etypeId - 1;
 	if (this.equipSlots()[slotId] === 1) {
 		this.changeEquip(slotId, $dataWeapons[itemId]);
 	} else {
@@ -285,7 +285,7 @@ Game_Actor.prototype.isEquipped = function (item) {
 };
 
 Game_Actor.prototype.discardEquip = function (item) {
-	let slotId = this.equips()
+	const slotId = this.equips()
 		.indexOf(item);
 	if (slotId >= 0) {
 		this._equips[slotId].setObject(null);
@@ -294,11 +294,11 @@ Game_Actor.prototype.discardEquip = function (item) {
 
 Game_Actor.prototype.releaseUnequippableItems = function (forcing) {
 	for (;;) {
-		let slots = this.equipSlots();
-		let equips = this.equips();
+		const slots = this.equipSlots();
+		const equips = this.equips();
 		let changed = false;
 		for (let i = 0; i < equips.length; i++) {
-			let item = equips[i];
+			const item = equips[i];
 			if (item && (!this.canEquip(item) || item.etypeId !== slots[i])) {
 				if (!forcing) {
 					this.tradeItemWithParty(null, item);
@@ -314,7 +314,7 @@ Game_Actor.prototype.releaseUnequippableItems = function (forcing) {
 };
 
 Game_Actor.prototype.clearEquipments = function () {
-	let maxSlots = this.equipSlots()
+	const maxSlots = this.equipSlots()
 		.length;
 	for (let i = 0; i < maxSlots; i++) {
 		if (this.isEquipChangeOk(i)) {
@@ -324,7 +324,7 @@ Game_Actor.prototype.clearEquipments = function () {
 };
 
 Game_Actor.prototype.optimizeEquipments = function () {
-	let maxSlots = this.equipSlots()
+	const maxSlots = this.equipSlots()
 		.length;
 	this.clearEquipments();
 	for (let i = 0; i < maxSlots; i++) {
@@ -335,15 +335,15 @@ Game_Actor.prototype.optimizeEquipments = function () {
 };
 
 Game_Actor.prototype.bestEquipItem = function (slotId) {
-	let etypeId = this.equipSlots()[slotId];
-	let items = $gameParty.equipItems()
+	const etypeId = this.equipSlots()[slotId];
+	const items = $gameParty.equipItems()
 		.filter(function (item) {
 			return item.etypeId === etypeId && this.canEquip(item);
 		}, this);
 	let bestItem = null;
 	let bestPerformance = -1000;
 	for (let i = 0; i < items.length; i++) {
-		let performance = this.calcEquipItemPerformance(items[i]);
+		const performance = this.calcEquipItemPerformance(items[i]);
 		if (performance > bestPerformance) {
 			bestPerformance = performance;
 			bestItem = items[i];
@@ -359,8 +359,8 @@ Game_Actor.prototype.calcEquipItemPerformance = function (item) {
 };
 
 Game_Actor.prototype.isSkillWtypeOk = function (skill) {
-	let wtypeId1 = skill.requiredWtypeId1;
-	let wtypeId2 = skill.requiredWtypeId2;
+	const wtypeId1 = skill.requiredWtypeId1;
+	const wtypeId2 = skill.requiredWtypeId2;
 	if ((wtypeId1 === 0 && wtypeId2 === 0) ||
 		(wtypeId1 > 0 && this.isWtypeEquipped(wtypeId1)) ||
 		(wtypeId2 > 0 && this.isWtypeEquipped(wtypeId2))) {
@@ -417,7 +417,7 @@ Game_Actor.prototype.isClass = function (gameClass) {
 };
 
 Game_Actor.prototype.skills = function () {
-	let list = [];
+	const list = [];
 	this._skills.concat(this.addedSkills())
 		.forEach(function (id) {
 			if (!list.contains($dataSkills[id])) {
@@ -437,9 +437,9 @@ Game_Actor.prototype.usableSkills = function () {
 Game_Actor.prototype.traitObjects = function () {
 	let objects = Game_Battler.prototype.traitObjects.call(this);
 	objects = objects.concat([this.actor(), this.currentClass()]);
-	let equips = this.equips();
+	const equips = this.equips();
 	for (let i = 0; i < equips.length; i++) {
-		let item = equips[i];
+		const item = equips[i];
 		if (item) {
 			objects.push(item);
 		}
@@ -448,7 +448,7 @@ Game_Actor.prototype.traitObjects = function () {
 };
 
 Game_Actor.prototype.attackElements = function () {
-	let set = Game_Battler.prototype.attackElements.call(this);
+	const set = Game_Battler.prototype.attackElements.call(this);
 	if (this.hasNoWeapons() && !set.contains(this.bareHandsElementId())) {
 		set.push(this.bareHandsElementId());
 	}
@@ -478,9 +478,9 @@ Game_Actor.prototype.paramBase = function (paramId) {
 
 Game_Actor.prototype.paramPlus = function (paramId) {
 	let value = Game_Battler.prototype.paramPlus.call(this, paramId);
-	let equips = this.equips();
+	const equips = this.equips();
 	for (let i = 0; i < equips.length; i++) {
-		let item = equips[i];
+		const item = equips[i];
 		if (item) {
 			value += item.params[paramId];
 		}
@@ -492,13 +492,13 @@ Game_Actor.prototype.attackAnimationId1 = function () {
 	if (this.hasNoWeapons()) {
 		return this.bareHandsAnimationId();
 	} else {
-		let weapons = this.weapons();
+		const weapons = this.weapons();
 		return weapons[0] ? weapons[0].animationId : 0;
 	}
 };
 
 Game_Actor.prototype.attackAnimationId2 = function () {
-	let weapons = this.weapons();
+	const weapons = this.weapons();
 	return weapons[1] ? weapons[1].animationId : 0;
 };
 
@@ -508,8 +508,8 @@ Game_Actor.prototype.bareHandsAnimationId = function () {
 
 Game_Actor.prototype.changeExp = function (exp, show) {
 	this._exp[this._classId] = Math.max(exp, 0);
-	let lastLevel = this._level;
-	let lastSkills = this.skills();
+	const lastLevel = this._level;
+	const lastSkills = this.skills();
 	while (!this.isMaxLevel() && this.currentExp() >= this.nextLevelExp()) {
 		this.levelUp();
 	}
@@ -537,9 +537,9 @@ Game_Actor.prototype.levelDown = function () {
 };
 
 Game_Actor.prototype.findNewSkills = function (lastSkills) {
-	let newSkills = this.skills();
+	const newSkills = this.skills();
 	for (let i = 0; i < lastSkills.length; i++) {
-		let index = newSkills.indexOf(lastSkills[i]);
+		const index = newSkills.indexOf(lastSkills[i]);
 		if (index >= 0) {
 			newSkills.splice(index, 1);
 		}
@@ -548,7 +548,7 @@ Game_Actor.prototype.findNewSkills = function (lastSkills) {
 };
 
 Game_Actor.prototype.displayLevelUp = function (newSkills) {
-	let text = TextManager.levelUp.format(this._name, TextManager.level, this._level);
+	const text = TextManager.levelUp.format(this._name, TextManager.level, this._level);
 	$gameMessage.newPage();
 	$gameMessage.add(text);
 	newSkills.forEach(function (skill) {
@@ -557,7 +557,7 @@ Game_Actor.prototype.displayLevelUp = function (newSkills) {
 };
 
 Game_Actor.prototype.gainExp = function (exp) {
-	let newExp = this.currentExp() + Math.round(exp * this.finalExpRate());
+	const newExp = this.currentExp() + Math.round(exp * this.finalExpRate());
 	this.changeExp(newExp, this.shouldDisplayLevelUp());
 };
 
@@ -588,7 +588,7 @@ Game_Actor.prototype.learnSkill = function (skillId) {
 };
 
 Game_Actor.prototype.forgetSkill = function (skillId) {
-	let index = this._skills.indexOf(skillId);
+	const index = this._skills.indexOf(skillId);
 	if (index >= 0) {
 		this._skills.splice(index, 1);
 	}
@@ -659,9 +659,9 @@ Game_Actor.prototype.performActionEnd = function () {
 };
 
 Game_Actor.prototype.performAttack = function () {
-	let weapons = this.weapons();
-	let wtypeId = weapons[0] ? weapons[0].wtypeId : 0;
-	let attackMotion = $dataSystem.attackMotions[wtypeId];
+	const weapons = this.weapons();
+	const wtypeId = weapons[0] ? weapons[0].wtypeId : 0;
+	const attackMotion = $dataSystem.attackMotions[wtypeId];
 	if (attackMotion) {
 		if (attackMotion.type === 0) {
 			this.requestMotion('thrust');
@@ -719,7 +719,7 @@ Game_Actor.prototype.performEscape = function () {
 };
 
 Game_Actor.prototype.makeActionList = function () {
-	let list = [];
+	const list = [];
 	let action = new Game_Action(this);
 	action.setAttack();
 	list.push(action);
@@ -734,10 +734,10 @@ Game_Actor.prototype.makeActionList = function () {
 
 Game_Actor.prototype.makeAutoBattleActions = function () {
 	for (let i = 0; i < this.numActions(); i++) {
-		let list = this.makeActionList();
+		const list = this.makeActionList();
 		let maxValue = Number.MIN_VALUE;
 		for (let j = 0; j < list.length; j++) {
-			let value = list[j].evaluate();
+			const value = list[j].evaluate();
 			if (value > maxValue) {
 				maxValue = value;
 				this.setAction(i, list[j]);

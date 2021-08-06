@@ -56,11 +56,11 @@ ToneSprite.prototype.setTone = function (r, g, b, gray) {
  */
 ToneSprite.prototype._renderCanvas = function (renderer) {
 	if (this.visible) {
-		let context = renderer.context;
-		let t = this.worldTransform;
-		let r = renderer.resolution;
-		let width = Graphics.width;
-		let height = Graphics.height;
+		const context = renderer.context;
+		const t = this.worldTransform;
+		const r = renderer.resolution;
+		const width = Graphics.width;
+		const height = Graphics.height;
 		context.save();
 		context.setTransform(t.a, t.b, t.c, t.d, t.tx * r, t.ty * r);
 		if (Graphics.canUseSaturationBlend() && this._gray > 0) {
@@ -70,18 +70,18 @@ ToneSprite.prototype._renderCanvas = function (renderer) {
 			context.fillRect(0, 0, width, height);
 		}
 		context.globalAlpha = 1;
-		let r1 = Math.max(0, this._red);
-		let g1 = Math.max(0, this._green);
-		let b1 = Math.max(0, this._blue);
+		const r1 = Math.max(0, this._red);
+		const g1 = Math.max(0, this._green);
+		const b1 = Math.max(0, this._blue);
 		if (r1 || g1 || b1) {
 			context.globalCompositeOperation = 'lighter';
 			context.fillStyle = Utils.rgbToCssColor(r1, g1, b1);
 			context.fillRect(0, 0, width, height);
 		}
 		if (Graphics.canUseDifferenceBlend()) {
-			let r2 = Math.max(0, -this._red);
-			let g2 = Math.max(0, -this._green);
-			let b2 = Math.max(0, -this._blue);
+			const r2 = Math.max(0, -this._red);
+			const g2 = Math.max(0, -this._green);
+			const b2 = Math.max(0, -this._blue);
 			if (r2 || g2 || b2) {
 				context.globalCompositeOperation = 'difference';
 				context.fillStyle = '#ffffff';

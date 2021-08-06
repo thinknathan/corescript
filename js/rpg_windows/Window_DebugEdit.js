@@ -11,7 +11,7 @@ Window_DebugEdit.prototype = Object.create(Window_Selectable.prototype);
 Window_DebugEdit.prototype.constructor = Window_DebugEdit;
 
 Window_DebugEdit.prototype.initialize = function (x, y, width) {
-	let height = this.fittingHeight(10);
+	const height = this.fittingHeight(10);
 	Window_Selectable.prototype.initialize.call(this, x, y, width, height);
 	this._mode = 'switch';
 	this._topId = 1;
@@ -28,13 +28,13 @@ Window_DebugEdit.prototype.refresh = function () {
 };
 
 Window_DebugEdit.prototype.drawItem = function (index) {
-	let dataId = this._topId + index;
-	let idText = dataId.padZero(4) + ':';
-	let idWidth = this.textWidth(idText);
-	let statusWidth = this.textWidth('-00000000');
-	let name = this.itemName(dataId);
-	let status = this.itemStatus(dataId);
-	let rect = this.itemRectForText(index);
+	const dataId = this._topId + index;
+	const idText = dataId.padZero(4) + ':';
+	const idWidth = this.textWidth(idText);
+	const statusWidth = this.textWidth('-00000000');
+	const name = this.itemName(dataId);
+	const status = this.itemStatus(dataId);
+	const rect = this.itemRectForText(index);
 	this.resetTextColor();
 	this.drawText(idText, rect.x, rect.y, rect.width);
 	rect.x += idWidth;
@@ -90,7 +90,7 @@ Window_DebugEdit.prototype.update = function () {
 
 Window_DebugEdit.prototype.updateSwitch = function () {
 	if (Input.isRepeated('ok')) {
-		let switchId = this.currentId();
+		const switchId = this.currentId();
 		SoundManager.playCursor();
 		$gameSwitches.setValue(switchId, !$gameSwitches.value(switchId));
 		this.redrawCurrentItem();
@@ -98,7 +98,7 @@ Window_DebugEdit.prototype.updateSwitch = function () {
 };
 
 Window_DebugEdit.prototype.updateVariable = function () {
-	let variableId = this.currentId();
+	const variableId = this.currentId();
 	let value = $gameVariables.value(variableId);
 	if (typeof value === 'number') {
 		if (Input.isRepeated('right')) {

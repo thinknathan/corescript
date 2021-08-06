@@ -84,8 +84,8 @@ Sprite_Button.prototype.isActive = function () {
 };
 
 Sprite_Button.prototype.isButtonTouched = function () {
-	let x = this.canvasToLocalX(TouchInput.x);
-	let y = this.canvasToLocalY(TouchInput.y);
+	const x = this.canvasToLocalX(TouchInput.x);
+	const y = this.canvasToLocalY(TouchInput.y);
 	return x >= 0 && y >= 0 && x < this.width && y < this.height;
 };
 

@@ -77,7 +77,7 @@ Sprite_Actor.prototype.createStateSprite = function () {
 
 Sprite_Actor.prototype.setBattler = function (battler) {
 	Sprite_Battler.prototype.setBattler.call(this, battler);
-	let changed = (battler !== this._actor);
+	const changed = (battler !== this._actor);
 	if (changed) {
 		this._actor = battler;
 		if (battler) {
@@ -130,7 +130,7 @@ Sprite_Actor.prototype.setupWeaponAnimation = function () {
 };
 
 Sprite_Actor.prototype.startMotion = function (motionType) {
-	let newMotion = Sprite_Actor.MOTIONS[motionType];
+	const newMotion = Sprite_Actor.MOTIONS[motionType];
 	if (this._motion !== newMotion) {
 		this._motion = newMotion;
 		this._motionCount = 0;
@@ -150,7 +150,7 @@ Sprite_Actor.prototype.updateTargetPosition = function () {
 
 Sprite_Actor.prototype.updateBitmap = function () {
 	Sprite_Battler.prototype.updateBitmap.call(this);
-	let name = this._actor.battlerName();
+	const name = this._actor.battlerName();
 	if (this._battlerName !== name) {
 		this._battlerName = name;
 		this._mainSprite.bitmap = ImageManager.loadSvActor(name);
@@ -159,20 +159,20 @@ Sprite_Actor.prototype.updateBitmap = function () {
 
 Sprite_Actor.prototype.updateFrame = function () {
 	Sprite_Battler.prototype.updateFrame.call(this);
-	let bitmap = this._mainSprite.bitmap;
+	const bitmap = this._mainSprite.bitmap;
 	if (bitmap) {
-		let motionIndex = this._motion ? this._motion.index : 0;
-		let pattern = this._pattern < 3 ? this._pattern : 1;
-		let cw = bitmap.width / 9;
-		let ch = bitmap.height / 6;
-		let cx = Math.floor(motionIndex / 6) * 3 + pattern;
-		let cy = motionIndex % 6;
+		const motionIndex = this._motion ? this._motion.index : 0;
+		const pattern = this._pattern < 3 ? this._pattern : 1;
+		const cw = bitmap.width / 9;
+		const ch = bitmap.height / 6;
+		const cx = Math.floor(motionIndex / 6) * 3 + pattern;
+		const cy = motionIndex % 6;
 		this._mainSprite.setFrame(cx * cw, cy * ch, cw, ch);
 	}
 };
 
 Sprite_Actor.prototype.updateMove = function () {
-	let bitmap = this._mainSprite.bitmap;
+	const bitmap = this._mainSprite.bitmap;
 	if (!bitmap || bitmap.isReady()) {
 		Sprite_Battler.prototype.updateMove.call(this);
 	}
@@ -206,13 +206,13 @@ Sprite_Actor.prototype.motionSpeed = function () {
 };
 
 Sprite_Actor.prototype.refreshMotion = function () {
-	let actor = this._actor;
-	let motionGuard = Sprite_Actor.MOTIONS.guard;
+	const actor = this._actor;
+	const motionGuard = Sprite_Actor.MOTIONS.guard;
 	if (actor) {
 		if (this._motion === motionGuard && !BattleManager.isInputting()) {
 			return;
 		}
-		let stateMotion = actor.stateMotionIndex();
+		const stateMotion = actor.stateMotionIndex();
 		if (actor.isInputting() || actor.isActing()) {
 			this.startMotion('walk');
 		} else if (stateMotion === 3) {

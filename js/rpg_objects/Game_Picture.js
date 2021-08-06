@@ -143,7 +143,7 @@ Game_Picture.prototype.update = function () {
 
 Game_Picture.prototype.updateMove = function () {
 	if (this._duration > 0) {
-		let d = this._duration;
+		const d = this._duration;
 		this._x = (this._x * (d - 1) + this._targetX) / d;
 		this._y = (this._y * (d - 1) + this._targetY) / d;
 		this._scaleX = (this._scaleX * (d - 1) + this._targetScaleX) / d;
@@ -155,7 +155,7 @@ Game_Picture.prototype.updateMove = function () {
 
 Game_Picture.prototype.updateTone = function () {
 	if (this._toneDuration > 0) {
-		let d = this._toneDuration;
+		const d = this._toneDuration;
 		for (let i = 0; i < 4; i++) {
 			this._tone[i] = (this._tone[i] * (d - 1) + this._toneTarget[i]) / d;
 		}

@@ -37,10 +37,10 @@ Scene_File.prototype.createHelpWindow = function () {
 };
 
 Scene_File.prototype.createListWindow = function () {
-	let x = 0;
-	let y = this._helpWindow.height;
-	let width = Graphics.boxWidth;
-	let height = Graphics.boxHeight - y;
+	const x = 0;
+	const y = this._helpWindow.height;
+	const width = Graphics.boxWidth;
+	const height = Graphics.boxHeight - y;
 	this._listWindow = new Window_SavefileList(x, y, width, height);
 	this._listWindow.setHandler('ok', this.onSavefileOk.bind(this));
 	this._listWindow.setHandler('cancel', this.popScene.bind(this));

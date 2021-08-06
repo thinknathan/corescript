@@ -104,11 +104,11 @@ DataManager._databaseFiles = [
 ];
 
 DataManager.loadDatabase = function () {
-	let test = this.isBattleTest() || this.isEventTest();
-	let prefix = test ? 'Test_' : '';
+	const test = this.isBattleTest() || this.isEventTest();
+	const prefix = test ? 'Test_' : '';
 	for (let i = 0; i < this._databaseFiles.length; i++) {
-		let name = this._databaseFiles[i].name;
-		let src = this._databaseFiles[i].src;
+		const name = this._databaseFiles[i].name;
+		const src = this._databaseFiles[i].src;
 		this.loadDataFile(name, prefix + src);
 	}
 	if (this.isEventTest()) {
@@ -117,8 +117,8 @@ DataManager.loadDatabase = function () {
 };
 
 DataManager.loadDataFile = function (name, src) {
-	let xhr = new XMLHttpRequest();
-	let url = 'data/' + src;
+	const xhr = new XMLHttpRequest();
+	const url = 'data/' + src;
 	xhr.open('GET', url);
 	xhr.overrideMimeType('application/json');
 	xhr.onload = function () {
@@ -146,7 +146,7 @@ DataManager.isDatabaseLoaded = function () {
 
 DataManager.loadMapData = function (mapId) {
 	if (mapId > 0) {
-		let filename = 'Map%1.json'.format(mapId.padZero(3));
+		const filename = 'Map%1.json'.format(mapId.padZero(3));
 		this._mapLoader = ResourceHandler.createLoader('data/' + filename, this.loadDataFile.bind(this, '$dataMap', filename));
 		this.loadDataFile('$dataMap', filename);
 	} else {
@@ -178,7 +178,7 @@ DataManager.onLoad = function (object) {
 	}
 	if (Array.isArray(array)) {
 		for (let i = 0; i < array.length; i++) {
-			let data = array[i];
+			const data = array[i];
 			if (data && data.note !== undefined) {
 				this.extractMetadata(data);
 			}
@@ -192,10 +192,10 @@ DataManager.onLoad = function (object) {
 };
 
 DataManager.extractMetadata = function (data) {
-	let re = /<([^<>:]+)(:?)([^>]*)>/g;
+	const re = /<([^<>:]+)(:?)([^>]*)>/g;
 	data.meta = {};
 	for (;;) {
-		let match = re.exec(data.note);
+		const match = re.exec(data.note);
 		if (match) {
 			if (match[2] === ':') {
 				data.meta[match[1]] = match[3];
@@ -311,12 +311,12 @@ DataManager.saveGlobalInfo = function (info) {
 };
 
 DataManager.isThisGameFile = function (savefileId) {
-	let globalInfo = this.loadGlobalInfo();
+	const globalInfo = this.loadGlobalInfo();
 	if (globalInfo && globalInfo[savefileId]) {
 		if (StorageManager.isLocalMode()) {
 			return true;
 		} else {
-			let savefile = globalInfo[savefileId];
+			const savefile = globalInfo[savefileId];
 			return (savefile.globalId === this._globalId &&
 				savefile.title === $dataSystem.gameTitle);
 		}
@@ -326,7 +326,7 @@ DataManager.isThisGameFile = function (savefileId) {
 };
 
 DataManager.isAnySavefileExists = function () {
-	let globalInfo = this.loadGlobalInfo();
+	const globalInfo = this.loadGlobalInfo();
 	if (globalInfo) {
 		for (let i = 1; i < globalInfo.length; i++) {
 			if (this.isThisGameFile(i)) {
@@ -338,7 +338,7 @@ DataManager.isAnySavefileExists = function () {
 };
 
 DataManager.latestSavefileId = function () {
-	let globalInfo = this.loadGlobalInfo();
+	const globalInfo = this.loadGlobalInfo();
 	let savefileId = 1;
 	let timestamp = 0;
 	if (globalInfo) {
@@ -353,11 +353,11 @@ DataManager.latestSavefileId = function () {
 };
 
 DataManager.loadAllSavefileImages = function () {
-	let globalInfo = this.loadGlobalInfo();
+	const globalInfo = this.loadGlobalInfo();
 	if (globalInfo) {
 		for (let i = 1; i < globalInfo.length; i++) {
 			if (this.isThisGameFile(i)) {
-				let info = globalInfo[i];
+				const info = globalInfo[i];
 				this.loadSavefileImages(info);
 			}
 		}
@@ -405,7 +405,7 @@ DataManager.loadGame = function (savefileId) {
 };
 
 DataManager.loadSavefileInfo = function (savefileId) {
-	let globalInfo = this.loadGlobalInfo();
+	const globalInfo = this.loadGlobalInfo();
 	return (globalInfo && globalInfo[savefileId]) ? globalInfo[savefileId] : null;
 };
 
@@ -414,13 +414,13 @@ DataManager.lastAccessedSavefileId = function () {
 };
 
 DataManager.saveGameWithoutRescue = function (savefileId) {
-	let json = JsonEx.stringify(this.makeSaveContents());
+	const json = JsonEx.stringify(this.makeSaveContents());
 	if (json.length >= 200000) {
 		console.warn('Save data too big!');
 	}
 	StorageManager.save(savefileId, json);
 	this._lastAccessedId = savefileId;
-	let globalInfo = this.loadGlobalInfo() || [];
+	const globalInfo = this.loadGlobalInfo() || [];
 	globalInfo[savefileId] = this.makeSavefileInfo();
 	this.saveGlobalInfo(globalInfo);
 	return true;
@@ -428,7 +428,7 @@ DataManager.saveGameWithoutRescue = function (savefileId) {
 
 DataManager.loadGameWithoutRescue = function (savefileId) {
 	if (this.isThisGameFile(savefileId)) {
-		let json = StorageManager.load(savefileId);
+		const json = StorageManager.load(savefileId);
 		this.createGameObjects();
 		this.extractSaveContents(JsonEx.parse(json));
 		this._lastAccessedId = savefileId;
@@ -439,10 +439,10 @@ DataManager.loadGameWithoutRescue = function (savefileId) {
 };
 
 DataManager.selectSavefileForNewGame = function () {
-	let globalInfo = this.loadGlobalInfo();
+	const globalInfo = this.loadGlobalInfo();
 	this._lastAccessedId = 1;
 	if (globalInfo) {
-		let numSavefiles = Math.max(0, globalInfo.length - 1);
+		const numSavefiles = Math.max(0, globalInfo.length - 1);
 		if (numSavefiles < this.maxSavefiles()) {
 			this._lastAccessedId = numSavefiles + 1;
 		} else {
@@ -462,7 +462,7 @@ DataManager.selectSavefileForNewGame = function () {
 };
 
 DataManager.makeSavefileInfo = function () {
-	let info = {};
+	const info = {};
 	info.globalId = this._globalId;
 	info.title = $dataSystem.gameTitle;
 	info.characters = $gameParty.charactersForSavefile();
@@ -474,7 +474,7 @@ DataManager.makeSavefileInfo = function () {
 
 DataManager.makeSaveContents = function () {
 	// A save data does not contain $gameTemp, $gameMessage, and $gameTroop.
-	let contents = {};
+	const contents = {};
 	contents.system = $gameSystem;
 	contents.screen = $gameScreen;
 	contents.timer = $gameTimer;

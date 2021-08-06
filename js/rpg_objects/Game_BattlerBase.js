@@ -282,7 +282,7 @@ Game_BattlerBase.prototype.clearStates = function () {
 };
 
 Game_BattlerBase.prototype.eraseState = function (stateId) {
-	let index = this._states.indexOf(stateId);
+	const index = this._states.indexOf(stateId);
 	if (index >= 0) {
 		this._states.splice(index, 1);
 	}
@@ -302,8 +302,8 @@ Game_BattlerBase.prototype.deathStateId = function () {
 };
 
 Game_BattlerBase.prototype.resetStateCounts = function (stateId) {
-	let state = $dataStates[stateId];
-	let variance = 1 + Math.max(state.maxTurns - state.minTurns, 0);
+	const state = $dataStates[stateId];
+	const variance = 1 + Math.max(state.maxTurns - state.minTurns, 0);
 	this._stateTurns[stateId] = state.minTurns + Math.randomInt(variance);
 };
 
@@ -416,7 +416,7 @@ Game_BattlerBase.prototype.stateIcons = function () {
 };
 
 Game_BattlerBase.prototype.buffIcons = function () {
-	let icons = [];
+	const icons = [];
 	for (let i = 0; i < this._buffs.length; i++) {
 		if (this._buffs[i] !== 0) {
 			icons.push(this.buffIconIndex(this._buffs[i], i));
@@ -531,8 +531,8 @@ Game_BattlerBase.prototype.paramBuffRate = function (paramId) {
 Game_BattlerBase.prototype.param = function (paramId) {
 	let value = this.paramBase(paramId) + this.paramPlus(paramId);
 	value *= this.paramRate(paramId) * this.paramBuffRate(paramId);
-	let maxValue = this.paramMax(paramId);
-	let minValue = this.paramMin(paramId);
+	const maxValue = this.paramMax(paramId);
+	const minValue = this.paramMin(paramId);
 	return Math.round(value.clamp(minValue, maxValue));
 };
 
@@ -624,7 +624,7 @@ Game_BattlerBase.prototype.isEquipTypeSealed = function (etypeId) {
 };
 
 Game_BattlerBase.prototype.slotType = function () {
-	let set = this.traitsSet(Game_BattlerBase.TRAIT_SLOT_TYPE);
+	const set = this.traitsSet(Game_BattlerBase.TRAIT_SLOT_TYPE);
 	return set.length > 0 ? Math.max.apply(null, set) : 0;
 };
 
@@ -647,7 +647,7 @@ Game_BattlerBase.prototype.specialFlag = function (flagId) {
 };
 
 Game_BattlerBase.prototype.collapseType = function () {
-	let set = this.traitsSet(Game_BattlerBase.TRAIT_COLLAPSE_TYPE);
+	const set = this.traitsSet(Game_BattlerBase.TRAIT_COLLAPSE_TYPE);
 	return set.length > 0 ? Math.max.apply(null, set) : 0;
 };
 
@@ -784,8 +784,8 @@ Game_BattlerBase.prototype.isEnemy = function () {
 
 Game_BattlerBase.prototype.sortStates = function () {
 	this._states.sort(function (a, b) {
-		let p1 = $dataStates[a].priority;
-		let p2 = $dataStates[b].priority;
+		const p1 = $dataStates[a].priority;
+		const p2 = $dataStates[b].priority;
 		if (p1 !== p2) {
 			return p2 - p1;
 		}
@@ -805,7 +805,7 @@ Game_BattlerBase.prototype.addNewState = function (stateId) {
 	if (stateId === this.deathStateId()) {
 		this.die();
 	}
-	let restricted = this.isRestricted();
+	const restricted = this.isRestricted();
 	this._states.push(stateId);
 	this.sortStates();
 	if (!restricted && this.isRestricted()) {
@@ -816,7 +816,7 @@ Game_BattlerBase.prototype.addNewState = function (stateId) {
 Game_BattlerBase.prototype.onRestrict = function () {};
 
 Game_BattlerBase.prototype.mostImportantStateText = function () {
-	let states = this.states();
+	const states = this.states();
 	for (let i = 0; i < states.length; i++) {
 		if (states[i].message3) {
 			return states[i].message3;
@@ -826,7 +826,7 @@ Game_BattlerBase.prototype.mostImportantStateText = function () {
 };
 
 Game_BattlerBase.prototype.stateMotionIndex = function () {
-	let states = this.states();
+	const states = this.states();
 	if (states.length > 0) {
 		return states[0].motion;
 	} else {
@@ -835,7 +835,7 @@ Game_BattlerBase.prototype.stateMotionIndex = function () {
 };
 
 Game_BattlerBase.prototype.stateOverlayIndex = function () {
-	let states = this.states();
+	const states = this.states();
 	if (states.length > 0) {
 		return states[0].overlay;
 	} else {

@@ -121,7 +121,7 @@ WebAudio._createContext = function () {
  * @private
  */
 WebAudio._detectCodecs = function () {
-	let audio = document.createElement('audio');
+	const audio = document.createElement('audio');
 	if (audio.canPlayType) {
 		this._canPlayOgg = audio.canPlayType('audio/ogg');
 		this._canPlayM4a = audio.canPlayType('audio/mp4');
@@ -134,7 +134,7 @@ WebAudio._detectCodecs = function () {
  * @private
  */
 WebAudio._createMasterGainNode = function () {
-	let context = WebAudio._context;
+	const context = WebAudio._context;
 	if (context) {
 		this._masterGainNode = context.createGain();
 		this._masterGainNode.gain.setValueAtTime(this._masterVolume, context.currentTime);
@@ -148,8 +148,8 @@ WebAudio._createMasterGainNode = function () {
  * @private
  */
 WebAudio._setupEventHandlers = function () {
-	let resumeHandler = function () {
-		let context = WebAudio._context;
+	const resumeHandler = function () {
+		const context = WebAudio._context;
 		if (context && context.state === "suspended" && typeof context.resume === "function") {
 			context.resume()
 				.then(function () {
@@ -172,10 +172,10 @@ WebAudio._setupEventHandlers = function () {
  * @private
  */
 WebAudio._onTouchStart = function () {
-	let context = WebAudio._context;
+	const context = WebAudio._context;
 	if (context && !this._unlocked) {
 		// Unlock Web Audio on iOS
-		let node = context.createBufferSource();
+		const node = context.createBufferSource();
 		node.start(0);
 		this._unlocked = true;
 	}
@@ -233,8 +233,8 @@ WebAudio._shouldMuteOnHide = function () {
  */
 WebAudio._fadeIn = function (duration) {
 	if (this._masterGainNode) {
-		let gain = this._masterGainNode.gain;
-		let currentTime = WebAudio._context.currentTime;
+		const gain = this._masterGainNode.gain;
+		const currentTime = WebAudio._context.currentTime;
 		gain.setValueAtTime(0, currentTime);
 		gain.linearRampToValueAtTime(this._masterVolume, currentTime + duration);
 	}
@@ -248,8 +248,8 @@ WebAudio._fadeIn = function (duration) {
  */
 WebAudio._fadeOut = function (duration) {
 	if (this._masterGainNode) {
-		let gain = this._masterGainNode.gain;
-		let currentTime = WebAudio._context.currentTime;
+		const gain = this._masterGainNode.gain;
+		const currentTime = WebAudio._context.currentTime;
 		gain.setValueAtTime(this._masterVolume, currentTime);
 		gain.linearRampToValueAtTime(0, currentTime + duration);
 	}
@@ -413,7 +413,7 @@ WebAudio.prototype.stop = function () {
 	this._removeNodes();
 	if (this._stopListeners) {
 		while (this._stopListeners.length > 0) {
-			let listner = this._stopListeners.shift();
+			const listner = this._stopListeners.shift();
 			listner();
 		}
 	}
@@ -428,8 +428,8 @@ WebAudio.prototype.stop = function () {
 WebAudio.prototype.fadeIn = function (duration) {
 	if (this.isReady()) {
 		if (this._gainNode) {
-			let gain = this._gainNode.gain;
-			let currentTime = WebAudio._context.currentTime;
+			const gain = this._gainNode.gain;
+			const currentTime = WebAudio._context.currentTime;
 			gain.setValueAtTime(0, currentTime);
 			gain.linearRampToValueAtTime(this._volume, currentTime + duration);
 		}
@@ -448,8 +448,8 @@ WebAudio.prototype.fadeIn = function (duration) {
  */
 WebAudio.prototype.fadeOut = function (duration) {
 	if (this._gainNode) {
-		let gain = this._gainNode.gain;
-		let currentTime = WebAudio._context.currentTime;
+		const gain = this._gainNode.gain;
+		const currentTime = WebAudio._context.currentTime;
 		gain.setValueAtTime(this._volume, currentTime);
 		gain.linearRampToValueAtTime(0, currentTime + duration);
 	}
@@ -502,7 +502,7 @@ WebAudio.prototype.addStopListener = function (listner) {
  */
 WebAudio.prototype._load = function (url) {
 	if (WebAudio._context) {
-		let xhr = new XMLHttpRequest();
+		const xhr = new XMLHttpRequest();
 		if (Decrypter.hasEncryptedAudio) url = Decrypter.extToEncryptExt(url);
 		xhr.open('GET', url);
 		xhr.responseType = 'arraybuffer';
@@ -568,7 +568,7 @@ WebAudio.prototype._startPlaying = function (loop, offset) {
  * @private
  */
 WebAudio.prototype._createNodes = function () {
-	let context = WebAudio._context;
+	const context = WebAudio._context;
 	this._sourceNode = context.createBufferSource();
 	this._sourceNode.buffer = this._buffer;
 	this._sourceNode.loopStart = this._loopStart;
@@ -610,8 +610,8 @@ WebAudio.prototype._removeNodes = function () {
  */
 WebAudio.prototype._createEndTimer = function () {
 	if (this._sourceNode && !this._sourceNode.loop) {
-		let endTime = this._startTime + this._totalTime / this._pitch;
-		let delay = endTime - WebAudio._context.currentTime;
+		const endTime = this._startTime + this._totalTime / this._pitch;
+		const delay = endTime - WebAudio._context.currentTime;
 		this._endTimer = setTimeout(function () {
 			this.stop();
 		}.bind(this), delay * 1000);
@@ -635,8 +635,8 @@ WebAudio.prototype._removeEndTimer = function () {
  */
 WebAudio.prototype._updatePanner = function () {
 	if (this._pannerNode) {
-		let x = this._pan;
-		let z = 1 - Math.abs(x);
+		const x = this._pan;
+		const z = 1 - Math.abs(x);
 		this._pannerNode.setPosition(x, 0, z);
 	}
 };
@@ -647,7 +647,7 @@ WebAudio.prototype._updatePanner = function () {
  */
 WebAudio.prototype._onLoad = function () {
 	while (this._loadListeners.length > 0) {
-		let listner = this._loadListeners.shift();
+		const listner = this._loadListeners.shift();
 		listner();
 	}
 };
@@ -673,14 +673,14 @@ WebAudio.prototype._readOgg = function (array) {
 		if (this._readFourCharacters(array, index) === 'OggS') {
 			index += 26;
 			let vorbisHeaderFound = false;
-			let numSegments = array[index++];
-			let segments = [];
+			const numSegments = array[index++];
+			const segments = [];
 			for (let i = 0; i < numSegments; i++) {
 				segments.push(array[index++]);
 			}
 			for (let i = 0; i < numSegments; i++) {
 				if (this._readFourCharacters(array, index + 1) === 'vorb') {
-					let headerType = array[index];
+					const headerType = array[index];
 					if (headerType === 1) {
 						this._sampleRate = this._readLittleEndian(array, index + 12);
 					} else if (headerType === 3) {
@@ -715,8 +715,8 @@ WebAudio.prototype._readMp4 = function (array) {
 	if (this._readFourCharacters(array, 4) === 'ftyp') {
 		let index = 0;
 		while (index < array.length) {
-			let size = this._readBigEndian(array, index);
-			let name = this._readFourCharacters(array, index + 4);
+			const size = this._readBigEndian(array, index);
+			const name = this._readFourCharacters(array, index + 4);
 			if (name === 'moov') {
 				index += 8;
 			} else {

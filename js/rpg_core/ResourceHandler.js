@@ -13,7 +13,7 @@ ResourceHandler._defaultRetryInterval = [500, 1000, 3000];
 
 ResourceHandler.createLoader = function (url, retryMethod, resignMethod, retryInterval) {
 	retryInterval = retryInterval || this._defaultRetryInterval;
-	let reloaders = this._reloaders;
+	const reloaders = this._reloaders;
 	let retryCount = 0;
 	return function () {
 		if (retryCount < retryInterval.length) {

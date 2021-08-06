@@ -84,7 +84,7 @@ Game_Party.prototype.reviveBattleMembers = function () {
 };
 
 Game_Party.prototype.items = function () {
-	let list = [];
+	const list = [];
 	for (let id in this._items) {
 		list.push($dataItems[id]);
 	}
@@ -92,7 +92,7 @@ Game_Party.prototype.items = function () {
 };
 
 Game_Party.prototype.weapons = function () {
-	let list = [];
+	const list = [];
 	for (let id in this._weapons) {
 		list.push($dataWeapons[id]);
 	}
@@ -100,7 +100,7 @@ Game_Party.prototype.weapons = function () {
 };
 
 Game_Party.prototype.armors = function () {
-	let list = [];
+	const list = [];
 	for (let id in this._armors) {
 		list.push($dataArmors[id]);
 	}
@@ -141,7 +141,7 @@ Game_Party.prototype.setupStartingMembers = function () {
 };
 
 Game_Party.prototype.name = function () {
-	let numBattleMembers = this.battleMembers()
+	const numBattleMembers = this.battleMembers()
 		.length;
 	if (numBattleMembers === 0) {
 		return '';
@@ -161,7 +161,7 @@ Game_Party.prototype.setupBattleTest = function () {
 
 Game_Party.prototype.setupBattleTestMembers = function () {
 	$dataSystem.testBattlers.forEach(function (battler) {
-		let actor = $gameActors.actor(battler.actorId);
+		const actor = $gameActors.actor(battler.actorId);
 		if (actor) {
 			actor.changeLevel(battler.level, false);
 			actor.initEquips(battler.equips);
@@ -228,7 +228,7 @@ Game_Party.prototype.increaseSteps = function () {
 };
 
 Game_Party.prototype.numItems = function (item) {
-	let container = this.itemContainer(item);
+	const container = this.itemContainer(item);
 	return container ? container[item.id] || 0 : 0;
 };
 
@@ -262,10 +262,10 @@ Game_Party.prototype.isAnyMemberEquipped = function (item) {
 };
 
 Game_Party.prototype.gainItem = function (item, amount, includeEquip) {
-	let container = this.itemContainer(item);
+	const container = this.itemContainer(item);
 	if (container) {
-		let lastNumber = this.numItems(item);
-		let newNumber = lastNumber + amount;
+		const lastNumber = this.numItems(item);
+		const newNumber = lastNumber + amount;
 		container[item.id] = newNumber.clamp(0, this.maxItems(item));
 		if (container[item.id] === 0) {
 			delete container[item.id];
@@ -387,7 +387,7 @@ Game_Party.prototype.setLastItem = function (item) {
 };
 
 Game_Party.prototype.swapOrder = function (index1, index2) {
-	let temp = this._actors[index1];
+	const temp = this._actors[index1];
 	this._actors[index1] = this._actors[index2];
 	this._actors[index2] = temp;
 	$gamePlayer.refresh();

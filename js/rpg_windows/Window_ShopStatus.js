@@ -21,7 +21,7 @@ Window_ShopStatus.prototype.initialize = function (x, y, width, height) {
 Window_ShopStatus.prototype.refresh = function () {
 	this.contents.clear();
 	if (this._item) {
-		let x = this.textPadding();
+		const x = this.textPadding();
 		this.drawPossession(x, 0);
 		if (this.isEquipItem()) {
 			this.drawEquipInfo(x, this.lineHeight() * 2);
@@ -39,8 +39,8 @@ Window_ShopStatus.prototype.isEquipItem = function () {
 };
 
 Window_ShopStatus.prototype.drawPossession = function (x, y) {
-	let width = this.contents.width - this.textPadding() - x;
-	let possessionWidth = this.textWidth('0000');
+	const width = this.contents.width - this.textPadding() - x;
+	const possessionWidth = this.textWidth('0000');
 	this.changeTextColor(this.systemColor());
 	this.drawText(TextManager.possession, x, y, width - possessionWidth);
 	this.resetTextColor();
@@ -48,15 +48,15 @@ Window_ShopStatus.prototype.drawPossession = function (x, y) {
 };
 
 Window_ShopStatus.prototype.drawEquipInfo = function (x, y) {
-	let members = this.statusMembers();
+	const members = this.statusMembers();
 	for (let i = 0; i < members.length; i++) {
 		this.drawActorEquipInfo(x, y + this.lineHeight() * (i * 2.4), members[i]);
 	}
 };
 
 Window_ShopStatus.prototype.statusMembers = function () {
-	let start = this._pageIndex * this.pageSize();
-	let end = start + this.pageSize();
+	const start = this._pageIndex * this.pageSize();
+	const end = start + this.pageSize();
 	return $gameParty.members()
 		.slice(start, end);
 };
@@ -70,11 +70,11 @@ Window_ShopStatus.prototype.maxPages = function () {
 };
 
 Window_ShopStatus.prototype.drawActorEquipInfo = function (x, y, actor) {
-	let enabled = actor.canEquip(this._item);
+	const enabled = actor.canEquip(this._item);
 	this.changePaintOpacity(enabled);
 	this.resetTextColor();
 	this.drawText(actor.name(), x, y, 168);
-	let item1 = this.currentEquippedItem(actor, this._item.etypeId);
+	const item1 = this.currentEquippedItem(actor, this._item.etypeId);
 	if (enabled) {
 		this.drawActorParamChange(x, y, actor, item1);
 	}
@@ -83,9 +83,9 @@ Window_ShopStatus.prototype.drawActorEquipInfo = function (x, y, actor) {
 };
 
 Window_ShopStatus.prototype.drawActorParamChange = function (x, y, actor, item1) {
-	let width = this.contents.width - this.textPadding() - x;
-	let paramId = this.paramId();
-	let change = this._item.params[paramId] - (item1 ? item1.params[paramId] : 0);
+	const width = this.contents.width - this.textPadding() - x;
+	const paramId = this.paramId();
+	const change = this._item.params[paramId] - (item1 ? item1.params[paramId] : 0);
 	this.changeTextColor(this.paramchangeTextColor(change));
 	this.drawText((change > 0 ? '+' : '') + change, x, y, width, 'right');
 };
@@ -95,15 +95,15 @@ Window_ShopStatus.prototype.paramId = function () {
 };
 
 Window_ShopStatus.prototype.currentEquippedItem = function (actor, etypeId) {
-	let list = [];
-	let equips = actor.equips();
-	let slots = actor.equipSlots();
+	const list = [];
+	const equips = actor.equips();
+	const slots = actor.equipSlots();
 	for (let i = 0; i < slots.length; i++) {
 		if (slots[i] === etypeId) {
 			list.push(equips[i]);
 		}
 	}
-	let paramId = this.paramId();
+	const paramId = this.paramId();
 	let worstParam = Number.MAX_VALUE;
 	let worstItem = null;
 	for (let j = 0; j < list.length; j++) {
@@ -141,8 +141,8 @@ Window_ShopStatus.prototype.isPageChangeRequested = function () {
 };
 
 Window_ShopStatus.prototype.isTouchedInsideFrame = function () {
-	let x = this.canvasToLocalX(TouchInput.x);
-	let y = this.canvasToLocalY(TouchInput.y);
+	const x = this.canvasToLocalX(TouchInput.x);
+	const y = this.canvasToLocalY(TouchInput.y);
 	return x >= 0 && y >= 0 && x < this.width && y < this.height;
 };
 

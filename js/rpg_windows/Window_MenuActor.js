@@ -28,8 +28,8 @@ Window_MenuActor.prototype.selectLast = function () {
 };
 
 Window_MenuActor.prototype.selectForItem = function (item) {
-	let actor = $gameParty.menuActor();
-	let action = new Game_Action(actor);
+	const actor = $gameParty.menuActor();
+	const action = new Game_Action(actor);
 	action.setItemObject(item);
 	this.setCursorFixed(false);
 	this.setCursorAll(false);

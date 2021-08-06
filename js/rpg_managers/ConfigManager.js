@@ -69,7 +69,7 @@ ConfigManager.save = function () {
 };
 
 ConfigManager.makeData = function () {
-	let config = {};
+	const config = {};
 	config.alwaysDash = this.alwaysDash;
 	config.commandRemember = this.commandRemember;
 	config.bgmVolume = this.bgmVolume;
@@ -93,7 +93,7 @@ ConfigManager.readFlag = function (config, name) {
 };
 
 ConfigManager.readVolume = function (config, name) {
-	let value = config[name];
+	const value = config[name];
 	if (value !== undefined) {
 		return Number(value)
 			.clamp(0, 100);

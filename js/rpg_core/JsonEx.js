@@ -32,9 +32,9 @@ JsonEx._generateId = function () {
  * @return {String} The JSON string
  */
 JsonEx.stringify = function (object) {
-	let circular = [];
+	const circular = [];
 	JsonEx._id = 1;
-	let json = JSON.stringify(this._encode(object, circular, 0));
+	const json = JSON.stringify(this._encode(object, circular, 0));
 	this._cleanMetadata(object);
 	this._restoreCircularReference(circular);
 
@@ -43,9 +43,9 @@ JsonEx.stringify = function (object) {
 
 JsonEx._restoreCircularReference = function (circulars) {
 	circulars.forEach(function (circular) {
-		let key = circular[0];
-		let value = circular[1];
-		let content = circular[2];
+		const key = circular[0];
+		const value = circular[1];
+		const content = circular[2];
 
 		value[key] = content;
 	});
@@ -60,9 +60,9 @@ JsonEx._restoreCircularReference = function (circulars) {
  * @return {Object} The reconstructed object
  */
 JsonEx.parse = function (json) {
-	let circular = [];
-	let registry = {};
-	let contents = this._decode(JSON.parse(json), circular, registry);
+	const circular = [];
+	const registry = {};
+	const contents = this._decode(JSON.parse(json), circular, registry);
 	this._cleanMetadata(contents);
 	this._linkCircularReference(contents, circular, registry);
 
@@ -71,9 +71,9 @@ JsonEx.parse = function (json) {
 
 JsonEx._linkCircularReference = function (contents, circulars, registry) {
 	circulars.forEach(function (circular) {
-		let key = circular[0];
-		let value = circular[1];
-		let id = circular[2];
+		const key = circular[0];
+		const value = circular[1];
+		const id = circular[2];
 
 		value[key] = registry[id];
 	});
@@ -88,7 +88,7 @@ JsonEx._cleanMetadata = function (object) {
 	if (typeof object === 'object') {
 		Object.keys(object)
 			.forEach(function (key) {
-				let value = object[key];
+				const value = object[key];
 				if (typeof value === 'object') {
 					JsonEx._cleanMetadata(value);
 				}
@@ -123,11 +123,11 @@ JsonEx._encode = function (value, circular, depth) {
 	if (++depth >= this.maxDepth) {
 		throw new Error('Object too deep');
 	}
-	let type = Object.prototype.toString.call(value);
+	const type = Object.prototype.toString.call(value);
 	if (type === '[object Object]' || type === '[object Array]') {
 		value['@c'] = JsonEx._generateId();
 
-		let constructorName = this._getConstructorName(value);
+		const constructorName = this._getConstructorName(value);
 		if (constructorName !== 'Object' && constructorName !== 'Array') {
 			value['@'] = constructorName;
 		}
@@ -172,14 +172,14 @@ JsonEx._encode = function (value, circular, depth) {
  * @private
  */
 JsonEx._decode = function (value, circular, registry) {
-	let type = Object.prototype.toString.call(value);
+	const type = Object.prototype.toString.call(value);
 	if (type === '[object Object]' || type === '[object Array]') {
 		registry[value['@c']] = value;
 
 		if (value['@'] === null) {
 			value = this._resetPrototype(value, null);
 		} else if (value['@']) {
-			let constructor = window[value['@']];
+			const constructor = window[value['@']];
 			if (constructor) {
 				value = this._resetPrototype(value, constructor.prototype);
 			}
@@ -188,7 +188,7 @@ JsonEx._decode = function (value, circular, registry) {
 			if (!value.hasOwnProperty || value.hasOwnProperty(key)) {
 				if (value[key] && value[key]['@a']) {
 					//object is array wrapper
-					let body = value[key]['@a'];
+					const body = value[key]['@a'];
 					body['@c'] = value[key]['@c'];
 					value[key] = body;
 				}
@@ -216,7 +216,7 @@ JsonEx._getConstructorName = function (value) {
 	}
 	let name = value.constructor.name;
 	if (name === undefined) {
-		let func = /^\s*function\s*([A-Za-z0-9_$]*)/;
+		const func = /^\s*function\s*([A-Za-z0-9_$]*)/;
 		name = func.exec(value.constructor)[1];
 	}
 	return name;
@@ -236,7 +236,7 @@ JsonEx._resetPrototype = function (value, prototype) {
 	} else if ('__proto__' in value) {
 		value.__proto__ = prototype;
 	} else {
-		let newValue = Object.create(prototype);
+		const newValue = Object.create(prototype);
 		for (let key in value) {
 			if (value.hasOwnProperty(key)) {
 				newValue[key] = value[key];

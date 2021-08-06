@@ -12,8 +12,8 @@ Window_BattleLog.prototype = Object.create(Window_Selectable.prototype);
 Window_BattleLog.prototype.constructor = Window_BattleLog;
 
 Window_BattleLog.prototype.initialize = function () {
-	let width = this.windowWidth();
-	let height = this.windowHeight();
+	const width = this.windowWidth();
+	const height = this.windowHeight();
 	Window_Selectable.prototype.initialize.call(this, 0, 0, width, height);
 	this.opacity = 0;
 	this._lines = [];
@@ -109,7 +109,7 @@ Window_BattleLog.prototype.setWaitMode = function (waitMode) {
 
 Window_BattleLog.prototype.callNextMethod = function () {
 	if (this._methods.length > 0) {
-		let method = this._methods.shift();
+		const method = this._methods.shift();
 		if (method.name && this[method.name]) {
 			this[method.name].apply(this, method.params);
 		} else {
@@ -124,7 +124,7 @@ Window_BattleLog.prototype.isFastForward = function () {
 };
 
 Window_BattleLog.prototype.push = function (methodName) {
-	let methodArgs = Array.prototype.slice.call(arguments, 1);
+	const methodArgs = Array.prototype.slice.call(arguments, 1);
 	this._methods.push({
 		name: methodName,
 		params: methodArgs
@@ -160,7 +160,7 @@ Window_BattleLog.prototype.pushBaseLine = function () {
 };
 
 Window_BattleLog.prototype.popBaseLine = function () {
-	let baseLine = this._baseLineStack.pop();
+	const baseLine = this._baseLineStack.pop();
 	while (this._lines.length > baseLine) {
 		this._lines.pop();
 	}
@@ -254,10 +254,10 @@ Window_BattleLog.prototype.showEnemyAttackAnimation = function (subject, targets
 };
 
 Window_BattleLog.prototype.showNormalAnimation = function (targets, animationId, mirror) {
-	let animation = $dataAnimations[animationId];
+	const animation = $dataAnimations[animationId];
 	if (animation) {
 		let delay = this.animationBaseDelay();
-		let nextDelay = this.animationNextDelay();
+		const nextDelay = this.animationNextDelay();
 		targets.forEach(function (target) {
 			target.startAnimation(animationId, mirror, delay);
 			delay += nextDelay;
@@ -282,8 +282,8 @@ Window_BattleLog.prototype.refresh = function () {
 };
 
 Window_BattleLog.prototype.drawBackground = function () {
-	let rect = this.backRect();
-	let color = this.backColor();
+	const rect = this.backRect();
+	const color = this.backColor();
 	this._backBitmap.clear();
 	this._backBitmap.paintOpacity = this.backPaintOpacity();
 	this._backBitmap.fillRect(rect.x, rect.y, rect.width, rect.height, color);
@@ -308,7 +308,7 @@ Window_BattleLog.prototype.backPaintOpacity = function () {
 };
 
 Window_BattleLog.prototype.drawLineText = function (index) {
-	let rect = this.itemRectForText(index);
+	const rect = this.itemRectForText(index);
 	this.contents.clearRect(rect.x, rect.y, rect.width, rect.height);
 	this.drawTextEx(this._lines[index], rect.x, rect.y, rect.width);
 };
@@ -318,7 +318,7 @@ Window_BattleLog.prototype.startTurn = function () {
 };
 
 Window_BattleLog.prototype.startAction = function (subject, action, targets) {
-	let item = action.item();
+	const item = action.item();
 	this.push('performActionStart', subject, action);
 	this.push('waitForMovement');
 	this.push('performAction', subject, action);
@@ -333,7 +333,7 @@ Window_BattleLog.prototype.endAction = function (subject) {
 };
 
 Window_BattleLog.prototype.displayCurrentState = function (subject) {
-	let stateText = subject.mostImportantStateText();
+	const stateText = subject.mostImportantStateText();
 	if (stateText) {
 		this.push('addText', subject.name() + stateText);
 		this.push('wait');
@@ -346,7 +346,7 @@ Window_BattleLog.prototype.displayRegeneration = function (subject) {
 };
 
 Window_BattleLog.prototype.displayAction = function (subject, item) {
-	let numMethods = this._methods.length;
+	const numMethods = this._methods.length;
 	if (DataManager.isSkill(item)) {
 		if (item.message1) {
 			this.push('addText', subject.name() + item.message1.format(item.name));
@@ -373,7 +373,7 @@ Window_BattleLog.prototype.displayReflection = function (target) {
 };
 
 Window_BattleLog.prototype.displaySubstitute = function (substitute, target) {
-	let substName = substitute.name();
+	const substName = substitute.name();
 	this.push('performSubstitute', substitute, target);
 	this.push('addText', TextManager.substitute.format(substName, target.name()));
 };
@@ -517,7 +517,7 @@ Window_BattleLog.prototype.displayAddedStates = function (target) {
 	target.result()
 		.addedStateObjects()
 		.forEach(function (state) {
-			let stateMsg = target.isActor() ? state.message1 : state.message2;
+			const stateMsg = target.isActor() ? state.message1 : state.message2;
 			if (state.id === target.deathStateId()) {
 				this.push('performCollapse', target);
 			}
@@ -543,7 +543,7 @@ Window_BattleLog.prototype.displayRemovedStates = function (target) {
 };
 
 Window_BattleLog.prototype.displayChangedBuffs = function (target) {
-	let result = target.result();
+	const result = target.result();
 	this.displayBuffs(target, result.addedBuffs, TextManager.buffAdd);
 	this.displayBuffs(target, result.addedDebuffs, TextManager.debuffAdd);
 	this.displayBuffs(target, result.removedBuffs, TextManager.buffRemove);
@@ -558,9 +558,9 @@ Window_BattleLog.prototype.displayBuffs = function (target, buffs, fmt) {
 };
 
 Window_BattleLog.prototype.makeHpDamageText = function (target) {
-	let result = target.result();
-	let damage = result.hpDamage;
-	let isActor = target.isActor();
+	const result = target.result();
+	const damage = result.hpDamage;
+	const isActor = target.isActor();
 	let fmt;
 	if (damage > 0 && result.drain) {
 		fmt = isActor ? TextManager.actorDrain : TextManager.enemyDrain;
@@ -578,9 +578,9 @@ Window_BattleLog.prototype.makeHpDamageText = function (target) {
 };
 
 Window_BattleLog.prototype.makeMpDamageText = function (target) {
-	let result = target.result();
-	let damage = result.mpDamage;
-	let isActor = target.isActor();
+	const result = target.result();
+	const damage = result.mpDamage;
+	const isActor = target.isActor();
 	let fmt;
 	if (damage > 0 && result.drain) {
 		fmt = isActor ? TextManager.actorDrain : TextManager.enemyDrain;
@@ -597,9 +597,9 @@ Window_BattleLog.prototype.makeMpDamageText = function (target) {
 };
 
 Window_BattleLog.prototype.makeTpDamageText = function (target) {
-	let result = target.result();
-	let damage = result.tpDamage;
-	let isActor = target.isActor();
+	const result = target.result();
+	const damage = result.tpDamage;
+	const isActor = target.isActor();
 	let fmt;
 	if (damage > 0) {
 		fmt = isActor ? TextManager.actorLoss : TextManager.enemyLoss;

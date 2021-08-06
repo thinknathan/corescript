@@ -27,7 +27,7 @@ Scene_Battle.prototype.start = function () {
 };
 
 Scene_Battle.prototype.update = function () {
-	let active = this.isActive();
+	const active = this.isActive();
 	$gameTimer.update(active);
 	$gameScreen.update();
 	this.updateStatusWindow();
@@ -188,8 +188,8 @@ Scene_Battle.prototype.createHelpWindow = function () {
 };
 
 Scene_Battle.prototype.createSkillWindow = function () {
-	let wy = this._helpWindow.y + this._helpWindow.height;
-	let wh = this._statusWindow.y - wy;
+	const wy = this._helpWindow.y + this._helpWindow.height;
+	const wh = this._statusWindow.y - wy;
 	this._skillWindow = new Window_BattleSkill(0, wy, Graphics.boxWidth, wh);
 	this._skillWindow.setHelpWindow(this._helpWindow);
 	this._skillWindow.setHandler('ok', this.onSkillOk.bind(this));
@@ -198,8 +198,8 @@ Scene_Battle.prototype.createSkillWindow = function () {
 };
 
 Scene_Battle.prototype.createItemWindow = function () {
-	let wy = this._helpWindow.y + this._helpWindow.height;
-	let wh = this._statusWindow.y - wy;
+	const wy = this._helpWindow.y + this._helpWindow.height;
+	const wh = this._statusWindow.y - wy;
 	this._itemWindow = new Window_BattleItem(0, wy, Graphics.boxWidth, wh);
 	this._itemWindow.setHelpWindow(this._helpWindow);
 	this._itemWindow.setHandler('ok', this.onItemOk.bind(this));
@@ -307,7 +307,7 @@ Scene_Battle.prototype.selectActorSelection = function () {
 };
 
 Scene_Battle.prototype.onActorOk = function () {
-	let action = BattleManager.inputtingAction();
+	const action = BattleManager.inputtingAction();
 	action.setTarget(this._actorWindow.index());
 	this._actorWindow.hide();
 	this._skillWindow.hide();
@@ -337,7 +337,7 @@ Scene_Battle.prototype.selectEnemySelection = function () {
 };
 
 Scene_Battle.prototype.onEnemyOk = function () {
-	let action = BattleManager.inputtingAction();
+	const action = BattleManager.inputtingAction();
 	action.setTarget(this._enemyWindow.enemyIndex());
 	this._enemyWindow.hide();
 	this._skillWindow.hide();
@@ -363,8 +363,8 @@ Scene_Battle.prototype.onEnemyCancel = function () {
 };
 
 Scene_Battle.prototype.onSkillOk = function () {
-	let skill = this._skillWindow.item();
-	let action = BattleManager.inputtingAction();
+	const skill = this._skillWindow.item();
+	const action = BattleManager.inputtingAction();
 	action.setSkill(skill.id);
 	BattleManager.actor()
 		.setLastBattleSkill(skill);
@@ -377,8 +377,8 @@ Scene_Battle.prototype.onSkillCancel = function () {
 };
 
 Scene_Battle.prototype.onItemOk = function () {
-	let item = this._itemWindow.item();
-	let action = BattleManager.inputtingAction();
+	const item = this._itemWindow.item();
+	const action = BattleManager.inputtingAction();
 	action.setItem(item.id);
 	$gameParty.setLastItem(item);
 	this.onSelectAction();
@@ -390,7 +390,7 @@ Scene_Battle.prototype.onItemCancel = function () {
 };
 
 Scene_Battle.prototype.onSelectAction = function () {
-	let action = BattleManager.inputtingAction();
+	const action = BattleManager.inputtingAction();
 	this._skillWindow.hide();
 	this._itemWindow.hide();
 	if (!action.needsSelection()) {

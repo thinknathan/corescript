@@ -156,15 +156,15 @@ Graphics.tickEnd = function () {};
  */
 Graphics.render = function (stage) {
 	if (this._skipCount <= 0) {
-		let startTime = Date.now();
+		const startTime = Date.now();
 		if (stage) {
 			this._renderer.render(stage);
 			//if (this._renderer.gl && this._renderer.gl.flush) {
 			//    this._renderer.gl.flush();
 			//}
 		}
-		let endTime = Date.now();
-		let elapsed = endTime - startTime;
+		const endTime = Date.now();
+		const elapsed = endTime - startTime;
 		this._skipCount = Math.min(Math.floor(elapsed / 15), this._maxSkip);
 		this._rendered = true;
 	} else {
@@ -368,7 +368,7 @@ Graphics.printLoadingError = function (url) {
 		this._errorPrinter.style.msUserSelect = 'text';
 		this._errorPrinter.style.mozUserSelect = 'text';
 		this._errorPrinter.oncontextmenu = null; // enable context menu
-		let button = document.createElement('button');
+		const button = document.createElement('button');
 		button.innerHTML = 'Retry';
 		button.style.fontSize = '24px';
 		button.style.color = '#ffffff';
@@ -441,10 +441,10 @@ Graphics.printError = function (name, message) {
  */
 Graphics.printErrorDetail = function (error) {
 	if (this._errorPrinter && this._showErrorDetail) {
-		let eventInfo = this._formatEventInfo(error);
-		let eventCommandInfo = this._formatEventCommandInfo(error);
-		let info = eventCommandInfo ? eventInfo + ", " + eventCommandInfo : eventInfo;
-		let stack = this._formatStackTrace(error);
+		const eventInfo = this._formatEventInfo(error);
+		const eventCommandInfo = this._formatEventCommandInfo(error);
+		const info = eventCommandInfo ? eventInfo + ", " + eventCommandInfo : eventInfo;
+		const stack = this._formatStackTrace(error);
 		this._makeErrorDetail(info, stack);
 	}
 };
@@ -513,9 +513,9 @@ Graphics.hideFps = function () {
  * @param {String} url The url of the font file
  */
 Graphics.loadFont = function (name, url) {
-	let style = document.createElement('style');
-	let head = document.getElementsByTagName('head');
-	let rule = '@font-face { font-family: "' + name + '"; src: url("' + url + '"); }';
+	const style = document.createElement('style');
+	const head = document.getElementsByTagName('head');
+	const rule = '@font-face { font-family: "' + name + '"; src: url("' + url + '"); }';
 	style.type = 'text/css';
 	head.item(0)
 		.appendChild(style);
@@ -542,8 +542,8 @@ Graphics.isFontLoaded = function (name) {
 		if (!this._hiddenCanvas) {
 			this._hiddenCanvas = document.createElement('canvas');
 		}
-		let context = this._hiddenCanvas.getContext('2d');
-		let text = 'abcdefghijklmnopqrstuvwxyz';
+		const context = this._hiddenCanvas.getContext('2d');
+		const text = 'abcdefghijklmnopqrstuvwxyz';
 		let width1, width2;
 		context.font = '40px ' + name + ', sans-serif';
 		width1 = context.measureText(text)
@@ -630,7 +630,7 @@ Graphics.setVideoVolume = function (value) {
  */
 Graphics.pageToCanvasX = function (x) {
 	if (this._canvas) {
-		let left = this._canvas.offsetLeft;
+		const left = this._canvas.offsetLeft;
 		return Math.round((x - left) / this._realScale);
 	} else {
 		return 0;
@@ -648,7 +648,7 @@ Graphics.pageToCanvasX = function (x) {
  */
 Graphics.pageToCanvasY = function (y) {
 	if (this._canvas) {
-		let top = this._canvas.offsetTop;
+		const top = this._canvas.offsetTop;
 		return Math.round((y - top) / this._realScale);
 	} else {
 		return 0;
@@ -878,7 +878,7 @@ Graphics._testCanvasBlendModes = function () {
  * @private
  */
 Graphics._modifyExistingElements = function () {
-	let elements = document.getElementsByTagName('*');
+	const elements = document.getElementsByTagName('*');
 	for (let i = 0; i < elements.length; i++) {
 		if (elements[i].style.zIndex > 0) {
 			elements[i].style.zIndex = 0;
@@ -925,8 +925,8 @@ Graphics._updateErrorPrinter = function () {
  * @private
  */
 Graphics._makeErrorMessage = function () {
-	let mainMessage = document.createElement('div');
-	let style = mainMessage.style;
+	const mainMessage = document.createElement('div');
+	const style = mainMessage.style;
 	style.color = 'white';
 	style.textAlign = 'left';
 	style.fontSize = '18px';
@@ -940,8 +940,8 @@ Graphics._makeErrorMessage = function () {
  * @private
  */
 Graphics._makeErrorDetail = function (info, stack) {
-	let detail = document.createElement('div');
-	let style = detail.style;
+	const detail = document.createElement('div');
+	const style = detail.style;
 	style.color = 'white';
 	style.textAlign = 'left';
 	style.fontSize = '18px';
@@ -1090,7 +1090,7 @@ Graphics._updateUpperCanvas = function () {
  * @private
  */
 Graphics._clearUpperCanvas = function () {
-	let context = this._upperCanvas.getContext('2d');
+	const context = this._upperCanvas.getContext('2d');
 	context.clearRect(0, 0, this._width, this._height);
 };
 
@@ -1102,10 +1102,10 @@ Graphics._clearUpperCanvas = function () {
 Graphics._paintUpperCanvas = function () {
 	this._clearUpperCanvas();
 	if (this._loadingImage && this._loadingCount >= 20) {
-		let context = this._upperCanvas.getContext('2d');
-		let dx = (this._width - this._loadingImage.width) / 2;
-		let dy = (this._height - this._loadingImage.height) / 2;
-		let alpha = ((this._loadingCount - 20) / 30)
+		const context = this._upperCanvas.getContext('2d');
+		const dx = (this._width - this._loadingImage.width) / 2;
+		const dy = (this._height - this._loadingImage.height) / 2;
+		const alpha = ((this._loadingCount - 20) / 30)
 			.clamp(0, 1);
 		context.save();
 		context.globalAlpha = alpha;
@@ -1120,7 +1120,7 @@ Graphics._paintUpperCanvas = function () {
  * @private
  */
 Graphics._createRenderer = function () {
-	let options = {
+	const options = {
 		view: this._canvas,
 		width: this._width,
 		height: this._height,
@@ -1171,7 +1171,7 @@ Graphics._createFPSMeter = function () {
  * @private
  */
 Graphics._createModeBox = function () {
-	let box = document.createElement('div');
+	const box = document.createElement('div');
 	box.id = 'modeTextBack';
 	box.style.position = 'absolute';
 	box.style.left = '5px';
@@ -1182,7 +1182,7 @@ Graphics._createModeBox = function () {
 	box.style.zIndex = 9;
 	box.style.opacity = 0;
 
-	let text = document.createElement('div');
+	const text = document.createElement('div');
 	text.id = 'modeText';
 	text.style.position = 'absolute';
 	text.style.left = '0px';
@@ -1217,8 +1217,8 @@ Graphics._createGameFontLoader = function () {
  * @private
  */
 Graphics._createFontLoader = function (name) {
-	let div = document.createElement('div');
-	let text = document.createTextNode('.');
+	const div = document.createElement('div');
+	const text = document.createTextNode('.');
 	div.style.fontFamily = name;
 	div.style.fontSize = '0px';
 	div.style.color = 'transparent';
@@ -1239,8 +1239,8 @@ Graphics._createFontLoader = function (name) {
  * @private
  */
 Graphics._centerElement = function (element) {
-	let width = element.width * this._realScale;
-	let height = element.height * this._realScale;
+	const width = element.width * this._realScale;
+	const height = element.height * this._realScale;
 	element.style.position = 'absolute';
 	element.style.margin = 'auto';
 	element.style.top = 0;
@@ -1257,7 +1257,7 @@ Graphics._centerElement = function (element) {
  * @private
  */
 Graphics._disableTextSelection = function () {
-	let body = document.body;
+	const body = document.body;
 	body.style.userSelect = 'none';
 	body.style.webkitUserSelect = 'none';
 	body.style.msUserSelect = 'none';
@@ -1270,8 +1270,8 @@ Graphics._disableTextSelection = function () {
  * @private
  */
 Graphics._disableContextMenu = function () {
-	let elements = document.body.getElementsByTagName('*');
-	let oncontextmenu = function () {
+	const elements = document.body.getElementsByTagName('*');
+	const oncontextmenu = function () {
 		return false;
 	};
 	for (let i = 0; i < elements.length; i++) {
@@ -1464,7 +1464,7 @@ Graphics._isFullScreen = function () {
  * @private
  */
 Graphics._requestFullScreen = function () {
-	let element = document.body;
+	const element = document.body;
 	if (element.requestFullscreen) {
 		element.requestFullscreen();
 	} else if (element.mozRequestFullScreen) {

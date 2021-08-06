@@ -117,7 +117,7 @@ Game_Battler.prototype.shiftAnimation = function () {
 };
 
 Game_Battler.prototype.startAnimation = function (animationId, mirror, delay) {
-	let data = {
+	const data = {
 		animationId: animationId,
 		mirror: mirror,
 		delay: delay
@@ -300,7 +300,7 @@ Game_Battler.prototype.makeActionTimes = function () {
 Game_Battler.prototype.makeActions = function () {
 	this.clearActions();
 	if (this.canMove()) {
-		let actionTimes = this.makeActionTimes();
+		const actionTimes = this.makeActionTimes();
 		this._actions = [];
 		for (let i = 0; i < actionTimes; i++) {
 			this._actions.push(new Game_Action(this));
@@ -336,7 +336,7 @@ Game_Battler.prototype.setLastTarget = function (target) {
 
 Game_Battler.prototype.forceAction = function (skillId, targetIndex) {
 	this.clearActions();
-	let action = new Game_Action(this, true);
+	const action = new Game_Action(this, true);
 	action.setSkill(skillId);
 	if (targetIndex === -2) {
 		action.setTarget(this._lastTargetIndex);
@@ -389,7 +389,7 @@ Game_Battler.prototype.clearTp = function () {
 };
 
 Game_Battler.prototype.chargeTpByDamage = function (damageRate) {
-	let value = Math.floor(50 * damageRate * this.tcr);
+	const value = Math.floor(50 * damageRate * this.tcr);
 	this.gainSilentTp(value);
 };
 
@@ -406,14 +406,14 @@ Game_Battler.prototype.maxSlipDamage = function () {
 };
 
 Game_Battler.prototype.regenerateMp = function () {
-	let value = Math.floor(this.mmp * this.mrg);
+	const value = Math.floor(this.mmp * this.mrg);
 	if (value !== 0) {
 		this.gainMp(value);
 	}
 };
 
 Game_Battler.prototype.regenerateTp = function () {
-	let value = Math.floor(100 * this.trg);
+	const value = Math.floor(100 * this.trg);
 	this.gainSilentTp(value);
 };
 

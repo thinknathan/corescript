@@ -79,7 +79,7 @@ Sprite_Animation.prototype.update = function () {
 
 Sprite_Animation.prototype.updateFlash = function () {
 	if (this._flashDuration > 0) {
-		let d = this._flashDuration--;
+		const d = this._flashDuration--;
 		this._flashColor[3] *= (d - 1) / d;
 		this._target.setBlendColor(this._flashColor);
 	}
@@ -87,7 +87,7 @@ Sprite_Animation.prototype.updateFlash = function () {
 
 Sprite_Animation.prototype.updateScreenFlash = function () {
 	if (this._screenFlashDuration > 0) {
-		let d = this._screenFlashDuration--;
+		const d = this._screenFlashDuration--;
 		if (this._screenFlashSprite) {
 			this._screenFlashSprite.x = -this.absoluteX();
 			this._screenFlashSprite.y = -this.absoluteY();
@@ -131,10 +131,10 @@ Sprite_Animation.prototype.isPlaying = function () {
 };
 
 Sprite_Animation.prototype.loadBitmaps = function () {
-	let name1 = this._animation.animation1Name;
-	let name2 = this._animation.animation2Name;
-	let hue1 = this._animation.animation1Hue;
-	let hue2 = this._animation.animation2Hue;
+	const name1 = this._animation.animation1Name;
+	const name2 = this._animation.animation2Name;
+	const hue1 = this._animation.animation1Hue;
+	const hue2 = this._animation.animation2Hue;
 	this._bitmap1 = ImageManager.loadAnimation(name1, hue1);
 	this._bitmap2 = ImageManager.loadAnimation(name2, hue2);
 };
@@ -164,7 +164,7 @@ Sprite_Animation.prototype.createSprites = function () {
 Sprite_Animation.prototype.createCellSprites = function () {
 	this._cellSprites = [];
 	for (let i = 0; i < 16; i++) {
-		let sprite = new Sprite();
+		const sprite = new Sprite();
 		sprite.anchor.x = 0.5;
 		sprite.anchor.y = 0.5;
 		this._cellSprites.push(sprite);
@@ -196,8 +196,8 @@ Sprite_Animation.prototype.updatePosition = function () {
 		this.x = this.parent.width / 2;
 		this.y = this.parent.height / 2;
 	} else {
-		let parent = this._target.parent;
-		let grandparent = parent ? parent.parent : null;
+		const parent = this._target.parent;
+		const grandparent = parent ? parent.parent : null;
 		this.x = this._target.x;
 		this.y = this._target.y;
 		if (this.parent === grandparent) {
@@ -214,7 +214,7 @@ Sprite_Animation.prototype.updatePosition = function () {
 
 Sprite_Animation.prototype.updateFrame = function () {
 	if (this._duration > 0) {
-		let frameIndex = this.currentFrameIndex();
+		const frameIndex = this.currentFrameIndex();
 		this.updateAllCellSprites(this._animation.frames[frameIndex]);
 		this._animation.timings.forEach(function (timing) {
 			if (timing.frame === frameIndex) {
@@ -231,7 +231,7 @@ Sprite_Animation.prototype.currentFrameIndex = function () {
 
 Sprite_Animation.prototype.updateAllCellSprites = function (frame) {
 	for (let i = 0; i < this._cellSprites.length; i++) {
-		let sprite = this._cellSprites[i];
+		const sprite = this._cellSprites[i];
 		if (i < frame.length) {
 			this.updateCellSprite(sprite, frame[i]);
 		} else {
@@ -241,11 +241,11 @@ Sprite_Animation.prototype.updateAllCellSprites = function (frame) {
 };
 
 Sprite_Animation.prototype.updateCellSprite = function (sprite, cell) {
-	let pattern = cell[0];
+	const pattern = cell[0];
 	if (pattern >= 0) {
-		let sx = pattern % 5 * 192;
-		let sy = Math.floor(pattern % 100 / 5) * 192;
-		let mirror = this._mirror;
+		const sx = pattern % 5 * 192;
+		const sy = Math.floor(pattern % 100 / 5) * 192;
+		const mirror = this._mirror;
 		sprite.bitmap = pattern < 100 ? this._bitmap1 : this._bitmap2;
 		sprite.setFrame(sx, sy, 192, 192);
 		sprite.x = cell[1];
@@ -272,7 +272,7 @@ Sprite_Animation.prototype.updateCellSprite = function (sprite, cell) {
 };
 
 Sprite_Animation.prototype.processTimingData = function (timing) {
-	let duration = timing.flashDuration * this._rate;
+	const duration = timing.flashDuration * this._rate;
 	switch (timing.flashScope) {
 	case 1:
 		this.startFlash(timing.flashColor, duration);

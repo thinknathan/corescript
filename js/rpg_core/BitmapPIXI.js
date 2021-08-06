@@ -100,8 +100,8 @@ BitmapPIXI.prototype.clear = function () {
 };
 
 BitmapPIXI.prototype.clearRect = function (x, y, width, height) {
-	let self = this;
-	let toRemove = [];
+	const self = this;
+	const toRemove = [];
 
 	this.children.forEach(function (child) {
 		if (child &&
@@ -131,7 +131,7 @@ BitmapPIXI.prototype.clearRect = function (x, y, width, height) {
 
 BitmapPIXI.prototype.drawText = function (text, x, y, maxWidth, lineHeight, align) {
 	if (text === undefined) return;
-	let alpha = this._paintOpacity / 255;
+	const alpha = this._paintOpacity / 255;
 
 	maxWidth = maxWidth || 0xffffffff;
 	// [note] Non-String values crash BitmapText updates in PIXI 5.3.3
@@ -145,7 +145,7 @@ BitmapPIXI.prototype.drawText = function (text, x, y, maxWidth, lineHeight, alig
 	y = y + lineHeight - Math.round(this.fontSize * 1.25);
 
 	// Try to updating existing text object at the same X and Y position
-	let updateExisting = this.updateExistingText(text, x, y, alpha);
+	const updateExisting = this.updateExistingText(text, x, y, alpha);
 	// If no text object exists, create a new one
 	if (!updateExisting) {
 		this.drawNewText(text, x, y, alpha, maxWidth, lineHeight, align);
@@ -153,7 +153,7 @@ BitmapPIXI.prototype.drawText = function (text, x, y, maxWidth, lineHeight, alig
 };
 
 BitmapPIXI.prototype.updateExistingText = function (text, x, y, alpha) {
-	let context = this;
+	const context = this;
 	let exitEarly = false;
 	this.textCache.forEach(function (BitmapTextInstance) {
 		if (BitmapTextInstance && BitmapTextInstance.x === x && BitmapTextInstance.y === y) {
@@ -167,7 +167,7 @@ BitmapPIXI.prototype.updateExistingText = function (text, x, y, alpha) {
 };
 
 BitmapPIXI.prototype.drawNewText = function (text, x, y, alpha, maxWidth, lineHeight, align) {
-	let style = {
+	const style = {
 		fontFamily: this.fontFace,
 		fontSize: this.fontSize,
 		fill: 0xffffff,
@@ -181,7 +181,7 @@ BitmapPIXI.prototype.drawNewText = function (text, x, y, alpha, maxWidth, lineHe
 	};
 
 	if (!PIXI.BitmapFont.available[style.fontFamily]) {
-		let bitmapOptions = {
+		const bitmapOptions = {
 			chars: [
                 [" ", "~"],
                 '\u2192',
@@ -191,14 +191,14 @@ BitmapPIXI.prototype.drawNewText = function (text, x, y, alpha, maxWidth, lineHe
 		PIXI.BitmapFont.from(style.fontFamily, style, bitmapOptions);
 	}
 
-	let pixiText = new PIXI.BitmapText(text, {
+	const pixiText = new PIXI.BitmapText(text, {
 		fontName: style.fontFamily,
 		fontSize: style.fontSize,
 		tint: PIXI.utils.string2hex(this.textColor),
 	});
 
 	if (!style.wordWrap && pixiText.width > maxWidth) {
-		let scaling = maxWidth / pixiText.width;
+		const scaling = maxWidth / pixiText.width;
 		pixiText.scale.x = scaling;
 	}
 
@@ -220,12 +220,12 @@ BitmapPIXI.prototype.drawNewText = function (text, x, y, alpha, maxWidth, lineHe
 
 BitmapPIXI.prototype.measureTextWidth = function (text) {
 	text = String(text);
-	let style = new PIXI.TextStyle({
+	const style = new PIXI.TextStyle({
 		fontFamily: this.fontFace,
 		fontSize: this.fontSize,
 		padding: this.textPadding,
 	});
-	let textMetrics = PIXI.TextMetrics.measureText(text, style);
+	const textMetrics = PIXI.TextMetrics.measureText(text, style);
 	return textMetrics.width;
 };
 
@@ -265,7 +265,7 @@ BitmapPIXI.prototype.blt = function (source, sx, sy, sw, sh, dx, dy, dw, dh) {
 	dh = dh || sh;
 	if (sx >= 0 && sy >= 0 && sw > 0 && sh > 0 && dw > 0 && dh > 0 &&
 		sx + sw <= source.width && sy + sh <= source.height) {
-		let sprite = this.createCroppedSprite(source.baseTexture, sx, sy, sw, sh);
+		const sprite = this.createCroppedSprite(source.baseTexture, sx, sy, sw, sh);
 		if (sprite) {
 			sprite.x = dx;
 			sprite.y = dy;
@@ -278,7 +278,7 @@ BitmapPIXI.prototype.blt = function (source, sx, sy, sw, sh, dx, dy, dw, dh) {
 };
 
 BitmapPIXI.prototype.fillRect = function (x, y, width, height, color) {
-	let rectangle = new PIXI.Graphics();
+	const rectangle = new PIXI.Graphics();
 	color = PIXI.utils.string2hex(color);
 	rectangle.beginFill(color);
 	rectangle.drawRect(
@@ -302,7 +302,7 @@ BitmapPIXI.prototype.gradientFillRect = function (x, y, width, height, color1, c
 };
 
 BitmapPIXI.prototype.drawCircle = function (x, y, radius, color) {
-	let circle = new PIXI.Graphics();
+	const circle = new PIXI.Graphics();
 	color = PIXI.utils.string2hex(color);
 	circle.beginFill(color);
 	circle.drawCircle(

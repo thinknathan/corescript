@@ -14,7 +14,7 @@ TilingSprite.prototype = Object.create(PIXI.TilingSprite.prototype);
 TilingSprite.prototype.constructor = TilingSprite;
 
 TilingSprite.prototype.initialize = function (bitmap) {
-	let texture = new PIXI.Texture(new PIXI.BaseTexture());
+	const texture = new PIXI.Texture(new PIXI.BaseTexture());
 	texture.CREATED_BY = this;
 	texture.CREATED_AT = Date.now();
 
@@ -164,7 +164,7 @@ TilingSprite.prototype._onBitmapLoad = function () {
  * @private
  */
 TilingSprite.prototype._refresh = function () {
-	let frame = this._frame.clone();
+	const frame = this._frame.clone();
 	if (frame.width === 0 && frame.height === 0 && this._bitmap) {
 		frame.width = this._bitmap.width;
 		frame.height = this._bitmap.height;

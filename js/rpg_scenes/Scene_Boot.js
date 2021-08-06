@@ -51,7 +51,7 @@ Scene_Boot.prototype.isGameFontLoaded = function () {
 	if (Graphics.isFontLoaded('GameFont')) {
 		return true;
 	} else if (!Graphics.canUseCssFontLoading()) {
-		let elapsed = Date.now() - this._startDate;
+		const elapsed = Date.now() - this._startDate;
 		if (elapsed >= 60000) {
 			throw new Error('Failed to load GameFont');
 		}

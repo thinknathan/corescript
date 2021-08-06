@@ -12,8 +12,8 @@ Window_BattleEnemy.prototype.constructor = Window_BattleEnemy;
 
 Window_BattleEnemy.prototype.initialize = function (x, y) {
 	this._enemies = [];
-	let width = this.windowWidth();
-	let height = this.windowHeight();
+	const width = this.windowWidth();
+	const height = this.windowHeight();
 	Window_Selectable.prototype.initialize.call(this, x, y, width, height);
 	this.refresh();
 	this.hide();
@@ -44,14 +44,14 @@ Window_BattleEnemy.prototype.enemy = function () {
 };
 
 Window_BattleEnemy.prototype.enemyIndex = function () {
-	let enemy = this.enemy();
+	const enemy = this.enemy();
 	return enemy ? enemy.index() : -1;
 };
 
 Window_BattleEnemy.prototype.drawItem = function (index) {
 	this.resetTextColor();
-	let name = this._enemies[index].name();
-	let rect = this.itemRectForText(index);
+	const name = this._enemies[index].name();
+	const rect = this.itemRectForText(index);
 	this.drawText(name, rect.x, rect.y, rect.width);
 };
 

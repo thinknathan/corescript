@@ -187,7 +187,7 @@ Game_Enemy.prototype.performCollapse = function () {
 };
 
 Game_Enemy.prototype.transform = function (enemyId) {
-	let name = this.originalName();
+	const name = this.originalName();
 	this._enemyId = enemyId;
 	if (this.originalName() !== name) {
 		this._letter = '';
@@ -200,8 +200,8 @@ Game_Enemy.prototype.transform = function (enemyId) {
 };
 
 Game_Enemy.prototype.meetsCondition = function (action) {
-	let param1 = action.conditionParam1;
-	let param2 = action.conditionParam2;
+	const param1 = action.conditionParam1;
+	const param2 = action.conditionParam2;
 	switch (action.conditionType) {
 	case 1:
 		return this.meetsTurnCondition(param1, param2);
@@ -221,7 +221,7 @@ Game_Enemy.prototype.meetsCondition = function (action) {
 };
 
 Game_Enemy.prototype.meetsTurnCondition = function (param1, param2) {
-	let n = $gameTroop.turnCount();
+	const n = $gameTroop.turnCount();
 	if (param2 === 0) {
 		return n === param1;
 	} else {
@@ -254,13 +254,13 @@ Game_Enemy.prototype.isActionValid = function (action) {
 };
 
 Game_Enemy.prototype.selectAction = function (actionList, ratingZero) {
-	let sum = actionList.reduce(function (r, a) {
+	const sum = actionList.reduce(function (r, a) {
 		return r + a.rating - ratingZero;
 	}, 0);
 	if (sum > 0) {
 		let value = Math.randomInt(sum);
 		for (let i = 0; i < actionList.length; i++) {
-			let action = actionList[i];
+			const action = actionList[i];
 			value -= action.rating - ratingZero;
 			if (value < 0) {
 				return action;
@@ -272,10 +272,10 @@ Game_Enemy.prototype.selectAction = function (actionList, ratingZero) {
 };
 
 Game_Enemy.prototype.selectAllActions = function (actionList) {
-	let ratingMax = Math.max.apply(null, actionList.map(function (a) {
+	const ratingMax = Math.max.apply(null, actionList.map(function (a) {
 		return a.rating;
 	}));
-	let ratingZero = ratingMax - 3;
+	const ratingZero = ratingMax - 3;
 	actionList = actionList.filter(function (a) {
 		return a.rating > ratingZero;
 	});
@@ -288,7 +288,7 @@ Game_Enemy.prototype.selectAllActions = function (actionList) {
 Game_Enemy.prototype.makeActions = function () {
 	Game_Battler.prototype.makeActions.call(this);
 	if (this.numActions() > 0) {
-		let actionList = this.enemy()
+		const actionList = this.enemy()
 			.actions.filter(function (a) {
 				return this.isActionValid(a);
 			}, this);

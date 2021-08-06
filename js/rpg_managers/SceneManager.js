@@ -58,7 +58,7 @@ SceneManager.initProgressWatcher = function () {
 };
 
 SceneManager.initGraphics = function () {
-	let type = this.preferableRendererType();
+	const type = this.preferableRendererType();
 	Graphics.initialize(this._screenWidth, this._screenHeight, type);
 	Graphics.boxWidth = this._boxWidth;
 	Graphics.boxHeight = this._boxHeight;
@@ -98,7 +98,7 @@ SceneManager.checkFileAccess = function () {
 };
 
 SceneManager.initAudio = function () {
-	let noAudio = Utils.isOptionValid('noaudio');
+	const noAudio = Utils.isOptionValid('noaudio');
 	if (!WebAudio.initialize(noAudio) && !noAudio) {
 		throw new Error('Your browser does not support Web Audio API.');
 	}
@@ -111,13 +111,13 @@ SceneManager.initInput = function () {
 
 SceneManager.initNwjs = function () {
 	if (Utils.isNwjs()) {
-		let gui = require('nw.gui');
-		let win = gui.Window.get();
+		const gui = require('nw.gui');
+		const win = gui.Window.get();
 		if (process.platform === 'darwin' && !win.menu) {
-			let menubar = new gui.Menu({
+			const menubar = new gui.Menu({
 				type: 'menubar'
 			});
-			let option = {
+			const option = {
 				hideEdit: true,
 				hideWindow: true
 			};
@@ -233,7 +233,7 @@ SceneManager.updateMain = function () {
 		this.changeScene();
 		this.updateScene();
 	} else {
-		let newTime = this._getTimeInMsWithoutMobileSafari();
+		const newTime = this._getTimeInMsWithoutMobileSafari();
 		if (this._currentTime === undefined) {
 			this._currentTime = newTime;
 		}

@@ -37,10 +37,10 @@ Spriteset_Battle.prototype.update = function () {
 };
 
 Spriteset_Battle.prototype.createBattleField = function () {
-	let width = Graphics.boxWidth;
-	let height = Graphics.boxHeight;
-	let x = (Graphics.width - width) / 2;
-	let y = (Graphics.height - height) / 2;
+	const width = Graphics.boxWidth;
+	const height = Graphics.boxHeight;
+	const x = (Graphics.width - width) / 2;
+	const y = (Graphics.height - height) / 2;
 	this._battleField = new Sprite();
 	this._battleField.setFrame(x, y, width, height);
 	this._battleField.x = x;
@@ -49,11 +49,11 @@ Spriteset_Battle.prototype.createBattleField = function () {
 };
 
 Spriteset_Battle.prototype.createBattleback = function () {
-	let margin = 32;
-	let x = -this._battleField.x - margin;
-	let y = -this._battleField.y - margin;
-	let width = Graphics.width + margin * 2;
-	let height = Graphics.height + margin * 2;
+	const margin = 32;
+	const x = -this._battleField.x - margin;
+	const y = -this._battleField.y - margin;
+	const width = Graphics.width + margin * 2;
+	const height = Graphics.height + margin * 2;
 	this._back1Sprite = new TilingSprite();
 	this._back2Sprite = new TilingSprite();
 	this._back1Sprite.bitmap = this.battleback1Bitmap();
@@ -72,10 +72,10 @@ Spriteset_Battle.prototype.updateBattleback = function () {
 };
 
 Spriteset_Battle.prototype.locateBattleback = function () {
-	let width = this._battleField.width;
-	let height = this._battleField.height;
-	let sprite1 = this._back1Sprite;
-	let sprite2 = this._back2Sprite;
+	const width = this._battleField.width;
+	const height = this._battleField.height;
+	const sprite1 = this._back1Sprite;
+	const sprite2 = this._back2Sprite;
 	sprite1.origin.x = sprite1.x + (sprite1.bitmap.width - width) / 2;
 	sprite2.origin.x = sprite1.y + (sprite2.bitmap.width - width) / 2;
 	if ($gameSystem.isSideView()) {
@@ -226,8 +226,8 @@ Spriteset_Battle.prototype.autotileType = function (z) {
 };
 
 Spriteset_Battle.prototype.createEnemies = function () {
-	let enemies = $gameTroop.members();
-	let sprites = [];
+	const enemies = $gameTroop.members();
+	const sprites = [];
 	for (let i = 0; i < enemies.length; i++) {
 		sprites[i] = new Sprite_Enemy(enemies[i]);
 	}
@@ -255,7 +255,7 @@ Spriteset_Battle.prototype.createActors = function () {
 };
 
 Spriteset_Battle.prototype.updateActors = function () {
-	let members = $gameParty.battleMembers();
+	const members = $gameParty.battleMembers();
 	for (let i = 0; i < this._actorSprites.length; i++) {
 		this._actorSprites[i].setBattler(members[i]);
 	}
