@@ -171,31 +171,31 @@ $rpg_windows = @(
 '.\js\rpg_windows\Window_DebugEdit.js'
 )
 Write-Host "Creating rpg_core.js from files in /js/rpg_core/"
-Remove-Item .\rpg_core.js
-$rpg_core | ForEach-Object { Get-Content -Path $_ | Add-Content -Path .\rpg_core.js }
+Remove-Item .\dist\rpg_core.js
+$rpg_core | ForEach-Object { Get-Content -Path $_ | Add-Content -Path .\dist\rpg_core.js }
 
 Write-Host "Creating rpg_managers.js from files in /js/rpg_managers/"
-Remove-Item .\rpg_managers.js
-$rpg_managers | ForEach-Object { Get-Content -Path $_ | Add-Content -Path .\rpg_managers.js }
+Remove-Item .\dist\rpg_managers.js
+$rpg_managers | ForEach-Object { Get-Content -Path $_ | Add-Content -Path .\dist\rpg_managers.js }
 
 Write-Host "Creating rpg_objects.js from files in /js/rpg_objects/"
-Remove-Item .\rpg_objects.js
-$rpg_objects | ForEach-Object { Get-Content -Path $_ | Add-Content -Path .\rpg_objects.js }
+Remove-Item .\dist\rpg_objects.js
+$rpg_objects | ForEach-Object { Get-Content -Path $_ | Add-Content -Path .\dist\rpg_objects.js }
 
 Write-Host "Creating rpg_scenes.js from files in /js/rpg_scenes/"
-Remove-Item .\rpg_scenes.js
-$rpg_scenes | ForEach-Object { Get-Content -Path $_ | Add-Content -Path .\rpg_scenes.js }
+Remove-Item .\dist\rpg_scenes.js
+$rpg_scenes | ForEach-Object { Get-Content -Path $_ | Add-Content -Path .\dist\rpg_scenes.js }
 
 Write-Host "Creating rpg_sprites.js from files in /js/rpg_sprites/"
-Remove-Item .\rpg_sprites.js
-$rpg_sprites | ForEach-Object { Get-Content -Path $_ | Add-Content -Path .\rpg_sprites.js }
+Remove-Item .\dist\rpg_sprites.js
+$rpg_sprites | ForEach-Object { Get-Content -Path $_ | Add-Content -Path .\dist\rpg_sprites.js }
 
 Write-Host "Creating rpg_scenes.js from files in /js/rpg_scenes/"
-Remove-Item .\rpg_scenes.js
-$rpg_scenes | ForEach-Object { Get-Content -Path $_ | Add-Content -Path .\rpg_scenes.js }
+Remove-Item .\dist\rpg_scenes.js
+$rpg_scenes | ForEach-Object { Get-Content -Path $_ | Add-Content -Path .\dist\rpg_scenes.js }
 
 Write-Host "Creating rpg_windows.js from files in /js/rpg_windows/"
-Remove-Item .\rpg_windows.js
-$rpg_windows | ForEach-Object { Get-Content -Path $_ | Add-Content -Path .\rpg_windows.js }
+Remove-Item .\dist\rpg_windows.js
+$rpg_windows | ForEach-Object { Get-Content -Path $_ | Add-Content -Path .\dist\rpg_windows.js }
 
 Read-Host -Prompt "Press Enter to exit"
