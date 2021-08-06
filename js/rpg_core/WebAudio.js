@@ -7,33 +7,33 @@
  * @param {String} url The url of the audio file
  */
 function WebAudio() {
-    this.initialize.apply(this, arguments);
+	this.initialize.apply(this, arguments);
 }
 
-WebAudio._standAlone = (function(top){
-    return !top.ResourceHandler;
+WebAudio._standAlone = (function (top) {
+	return !top.ResourceHandler;
 })(this);
 
-WebAudio.prototype.initialize = function(url) {
-    if (!WebAudio._initialized) {
-        WebAudio.initialize();
-    }
-    this.clear();
+WebAudio.prototype.initialize = function (url) {
+	if (!WebAudio._initialized) {
+		WebAudio.initialize();
+	}
+	this.clear();
 
-    if(!WebAudio._standAlone){
-        this._loader = ResourceHandler.createLoader(url, this._load.bind(this, url), function() {
-            this._hasError = true;
-        }.bind(this));
-    }
-    this._load(url);
-    this._url = url;
+	if (!WebAudio._standAlone) {
+		this._loader = ResourceHandler.createLoader(url, this._load.bind(this, url), function () {
+			this._hasError = true;
+		}.bind(this));
+	}
+	this._load(url);
+	this._url = url;
 };
 
-WebAudio._masterVolume   = 1;
-WebAudio._context        = null;
+WebAudio._masterVolume = 1;
+WebAudio._context = null;
 WebAudio._masterGainNode = null;
-WebAudio._initialized    = false;
-WebAudio._unlocked       = false;
+WebAudio._initialized = false;
+WebAudio._unlocked = false;
 
 /**
  * Initializes the audio system.
@@ -43,17 +43,17 @@ WebAudio._unlocked       = false;
  * @param {Boolean} noAudio Flag for the no-audio mode
  * @return {Boolean} True if the audio system is available
  */
-WebAudio.initialize = function(noAudio) {
-    if (!this._initialized) {
-        if (!noAudio) {
-            this._createContext();
-            this._detectCodecs();
-            this._createMasterGainNode();
-            this._setupEventHandlers();
-        }
-        this._initialized = true;
-    }
-    return !!this._context;
+WebAudio.initialize = function (noAudio) {
+	if (!this._initialized) {
+		if (!noAudio) {
+			this._createContext();
+			this._detectCodecs();
+			this._createMasterGainNode();
+			this._setupEventHandlers();
+		}
+		this._initialized = true;
+	}
+	return !!this._context;
 };
 
 /**
@@ -63,11 +63,11 @@ WebAudio.initialize = function(noAudio) {
  * @method canPlayOgg
  * @return {Boolean} True if the browser can play ogg files
  */
-WebAudio.canPlayOgg = function() {
-    if (!this._initialized) {
-        this.initialize();
-    }
-    return !!this._canPlayOgg;
+WebAudio.canPlayOgg = function () {
+	if (!this._initialized) {
+		this.initialize();
+	}
+	return !!this._canPlayOgg;
 };
 
 /**
@@ -77,11 +77,11 @@ WebAudio.canPlayOgg = function() {
  * @method canPlayM4a
  * @return {Boolean} True if the browser can play m4a files
  */
-WebAudio.canPlayM4a = function() {
-    if (!this._initialized) {
-        this.initialize();
-    }
-    return !!this._canPlayM4a;
+WebAudio.canPlayM4a = function () {
+	if (!this._initialized) {
+		this.initialize();
+	}
+	return !!this._canPlayM4a;
 };
 
 /**
@@ -91,11 +91,11 @@ WebAudio.canPlayM4a = function() {
  * @method setMasterVolume
  * @param {Number} value Master volume (min: 0, max: 1)
  */
-WebAudio.setMasterVolume = function(value) {
-    this._masterVolume = value;
-    if (this._masterGainNode) {
-        this._masterGainNode.gain.setValueAtTime(this._masterVolume, this._context.currentTime);
-    }
+WebAudio.setMasterVolume = function (value) {
+	this._masterVolume = value;
+	if (this._masterGainNode) {
+		this._masterGainNode.gain.setValueAtTime(this._masterVolume, this._context.currentTime);
+	}
 };
 
 /**
@@ -103,16 +103,16 @@ WebAudio.setMasterVolume = function(value) {
  * @method _createContext
  * @private
  */
-WebAudio._createContext = function() {
-    try {
-        if (typeof AudioContext !== 'undefined') {
-            this._context = new AudioContext();
-        } else if (typeof webkitAudioContext !== 'undefined') {
-            this._context = new webkitAudioContext();
-        }
-    } catch (e) {
-        this._context = null;
-    }
+WebAudio._createContext = function () {
+	try {
+		if (typeof AudioContext !== 'undefined') {
+			this._context = new AudioContext();
+		} else if (typeof webkitAudioContext !== 'undefined') {
+			this._context = new webkitAudioContext();
+		}
+	} catch (e) {
+		this._context = null;
+	}
 };
 
 /**
@@ -120,12 +120,12 @@ WebAudio._createContext = function() {
  * @method _detectCodecs
  * @private
  */
-WebAudio._detectCodecs = function() {
-    let audio = document.createElement('audio');
-    if (audio.canPlayType) {
-        this._canPlayOgg = audio.canPlayType('audio/ogg');
-        this._canPlayM4a = audio.canPlayType('audio/mp4');
-    }
+WebAudio._detectCodecs = function () {
+	let audio = document.createElement('audio');
+	if (audio.canPlayType) {
+		this._canPlayOgg = audio.canPlayType('audio/ogg');
+		this._canPlayM4a = audio.canPlayType('audio/mp4');
+	}
 };
 
 /**
@@ -133,13 +133,13 @@ WebAudio._detectCodecs = function() {
  * @method _createMasterGainNode
  * @private
  */
-WebAudio._createMasterGainNode = function() {
-    let context = WebAudio._context;
-    if (context) {
-        this._masterGainNode = context.createGain();
-        this._masterGainNode.gain.setValueAtTime(this._masterVolume, context.currentTime);
-        this._masterGainNode.connect(context.destination);
-    }
+WebAudio._createMasterGainNode = function () {
+	let context = WebAudio._context;
+	if (context) {
+		this._masterGainNode = context.createGain();
+		this._masterGainNode.gain.setValueAtTime(this._masterVolume, context.currentTime);
+		this._masterGainNode.connect(context.destination);
+	}
 };
 
 /**
@@ -147,22 +147,23 @@ WebAudio._createMasterGainNode = function() {
  * @method _setupEventHandlers
  * @private
  */
-WebAudio._setupEventHandlers = function() {
-    let resumeHandler = function() {
-        let context = WebAudio._context;
-        if (context && context.state === "suspended" && typeof context.resume === "function") {
-            context.resume().then(function() {
-                WebAudio._onTouchStart();
-            });
-        } else {
-            WebAudio._onTouchStart();
-        }
-    };
-    document.addEventListener("keydown", resumeHandler);
-    document.addEventListener("mousedown", resumeHandler);
-    document.addEventListener("touchend", resumeHandler);
-    document.addEventListener('touchstart', this._onTouchStart.bind(this));
-    document.addEventListener('visibilitychange', this._onVisibilityChange.bind(this));
+WebAudio._setupEventHandlers = function () {
+	let resumeHandler = function () {
+		let context = WebAudio._context;
+		if (context && context.state === "suspended" && typeof context.resume === "function") {
+			context.resume()
+				.then(function () {
+					WebAudio._onTouchStart();
+				});
+		} else {
+			WebAudio._onTouchStart();
+		}
+	};
+	document.addEventListener("keydown", resumeHandler);
+	document.addEventListener("mousedown", resumeHandler);
+	document.addEventListener("touchend", resumeHandler);
+	document.addEventListener('touchstart', this._onTouchStart.bind(this));
+	document.addEventListener('visibilitychange', this._onVisibilityChange.bind(this));
 };
 
 /**
@@ -170,14 +171,14 @@ WebAudio._setupEventHandlers = function() {
  * @method _onTouchStart
  * @private
  */
-WebAudio._onTouchStart = function() {
-    let context = WebAudio._context;
-    if (context && !this._unlocked) {
-        // Unlock Web Audio on iOS
-        let node = context.createBufferSource();
-        node.start(0);
-        this._unlocked = true;
-    }
+WebAudio._onTouchStart = function () {
+	let context = WebAudio._context;
+	if (context && !this._unlocked) {
+		// Unlock Web Audio on iOS
+		let node = context.createBufferSource();
+		node.start(0);
+		this._unlocked = true;
+	}
 };
 
 /**
@@ -185,12 +186,12 @@ WebAudio._onTouchStart = function() {
  * @method _onVisibilityChange
  * @private
  */
-WebAudio._onVisibilityChange = function() {
-    if (document.visibilityState === 'hidden') {
-        this._onHide();
-    } else {
-        this._onShow();
-    }
+WebAudio._onVisibilityChange = function () {
+	if (document.visibilityState === 'hidden') {
+		this._onHide();
+	} else {
+		this._onShow();
+	}
 };
 
 /**
@@ -198,10 +199,10 @@ WebAudio._onVisibilityChange = function() {
  * @method _onHide
  * @private
  */
-WebAudio._onHide = function() {
-    if (this._shouldMuteOnHide()) {
-        this._fadeOut(1);
-    }
+WebAudio._onHide = function () {
+	if (this._shouldMuteOnHide()) {
+		this._fadeOut(1);
+	}
 };
 
 /**
@@ -209,10 +210,10 @@ WebAudio._onHide = function() {
  * @method _onShow
  * @private
  */
-WebAudio._onShow = function() {
-    if (this._shouldMuteOnHide()) {
-        this._fadeIn(1);
-    }
+WebAudio._onShow = function () {
+	if (this._shouldMuteOnHide()) {
+		this._fadeIn(1);
+	}
 };
 
 /**
@@ -220,8 +221,8 @@ WebAudio._onShow = function() {
  * @method _shouldMuteOnHide
  * @private
  */
-WebAudio._shouldMuteOnHide = function() {
-    return Utils.isMobileDevice();
+WebAudio._shouldMuteOnHide = function () {
+	return Utils.isMobileDevice();
 };
 
 /**
@@ -230,13 +231,13 @@ WebAudio._shouldMuteOnHide = function() {
  * @param {Number} duration
  * @private
  */
-WebAudio._fadeIn = function(duration) {
-    if (this._masterGainNode) {
-        let gain = this._masterGainNode.gain;
-        let currentTime = WebAudio._context.currentTime;
-        gain.setValueAtTime(0, currentTime);
-        gain.linearRampToValueAtTime(this._masterVolume, currentTime + duration);
-    }
+WebAudio._fadeIn = function (duration) {
+	if (this._masterGainNode) {
+		let gain = this._masterGainNode.gain;
+		let currentTime = WebAudio._context.currentTime;
+		gain.setValueAtTime(0, currentTime);
+		gain.linearRampToValueAtTime(this._masterVolume, currentTime + duration);
+	}
 };
 
 /**
@@ -245,13 +246,13 @@ WebAudio._fadeIn = function(duration) {
  * @param {Number} duration
  * @private
  */
-WebAudio._fadeOut = function(duration) {
-    if (this._masterGainNode) {
-        let gain = this._masterGainNode.gain;
-        let currentTime = WebAudio._context.currentTime;
-        gain.setValueAtTime(this._masterVolume, currentTime);
-        gain.linearRampToValueAtTime(0, currentTime + duration);
-    }
+WebAudio._fadeOut = function (duration) {
+	if (this._masterGainNode) {
+		let gain = this._masterGainNode.gain;
+		let currentTime = WebAudio._context.currentTime;
+		gain.setValueAtTime(this._masterVolume, currentTime);
+		gain.linearRampToValueAtTime(0, currentTime + duration);
+	}
 };
 
 /**
@@ -259,25 +260,25 @@ WebAudio._fadeOut = function(duration) {
  *
  * @method clear
  */
-WebAudio.prototype.clear = function() {
-    this.stop();
-    this._buffer = null;
-    this._sourceNode = null;
-    this._gainNode = null;
-    this._pannerNode = null;
-    this._totalTime = 0;
-    this._sampleRate = 0;
-    this._loopStart = 0;
-    this._loopLength = 0;
-    this._startTime = 0;
-    this._volume = 1;
-    this._pitch = 1;
-    this._pan = 0;
-    this._endTimer = null;
-    this._loadListeners = [];
-    this._stopListeners = [];
-    this._hasError = false;
-    this._autoPlay = false;
+WebAudio.prototype.clear = function () {
+	this.stop();
+	this._buffer = null;
+	this._sourceNode = null;
+	this._gainNode = null;
+	this._pannerNode = null;
+	this._totalTime = 0;
+	this._sampleRate = 0;
+	this._loopStart = 0;
+	this._loopLength = 0;
+	this._startTime = 0;
+	this._volume = 1;
+	this._pitch = 1;
+	this._pan = 0;
+	this._endTimer = null;
+	this._loadListeners = [];
+	this._stopListeners = [];
+	this._hasError = false;
+	this._autoPlay = false;
 };
 
 /**
@@ -287,10 +288,10 @@ WebAudio.prototype.clear = function() {
  * @type String
  */
 Object.defineProperty(WebAudio.prototype, 'url', {
-    get: function() {
-        return this._url;
-    },
-    configurable: true
+	get: function () {
+		return this._url;
+	},
+	configurable: true
 });
 
 /**
@@ -300,16 +301,16 @@ Object.defineProperty(WebAudio.prototype, 'url', {
  * @type Number
  */
 Object.defineProperty(WebAudio.prototype, 'volume', {
-    get: function() {
-        return this._volume;
-    },
-    set: function(value) {
-        this._volume = value;
-        if (this._gainNode) {
-            this._gainNode.gain.setValueAtTime(this._volume, WebAudio._context.currentTime);
-        }
-    },
-    configurable: true
+	get: function () {
+		return this._volume;
+	},
+	set: function (value) {
+		this._volume = value;
+		if (this._gainNode) {
+			this._gainNode.gain.setValueAtTime(this._volume, WebAudio._context.currentTime);
+		}
+	},
+	configurable: true
 });
 
 /**
@@ -319,18 +320,18 @@ Object.defineProperty(WebAudio.prototype, 'volume', {
  * @type Number
  */
 Object.defineProperty(WebAudio.prototype, 'pitch', {
-    get: function() {
-        return this._pitch;
-    },
-    set: function(value) {
-        if (this._pitch !== value) {
-            this._pitch = value;
-            if (this.isPlaying()) {
-                this.play(this._sourceNode.loop, 0);
-            }
-        }
-    },
-    configurable: true
+	get: function () {
+		return this._pitch;
+	},
+	set: function (value) {
+		if (this._pitch !== value) {
+			this._pitch = value;
+			if (this.isPlaying()) {
+				this.play(this._sourceNode.loop, 0);
+			}
+		}
+	},
+	configurable: true
 });
 
 /**
@@ -340,14 +341,14 @@ Object.defineProperty(WebAudio.prototype, 'pitch', {
  * @type Number
  */
 Object.defineProperty(WebAudio.prototype, 'pan', {
-    get: function() {
-        return this._pan;
-    },
-    set: function(value) {
-        this._pan = value;
-        this._updatePanner();
-    },
-    configurable: true
+	get: function () {
+		return this._pan;
+	},
+	set: function (value) {
+		this._pan = value;
+		this._updatePanner();
+	},
+	configurable: true
 });
 
 /**
@@ -356,8 +357,8 @@ Object.defineProperty(WebAudio.prototype, 'pan', {
  * @method isReady
  * @return {Boolean} True if the audio data is ready to play
  */
-WebAudio.prototype.isReady = function() {
-    return !!this._buffer;
+WebAudio.prototype.isReady = function () {
+	return !!this._buffer;
 };
 
 /**
@@ -366,8 +367,8 @@ WebAudio.prototype.isReady = function() {
  * @method isError
  * @return {Boolean} True if a loading error has occurred
  */
-WebAudio.prototype.isError = function() {
-    return this._hasError;
+WebAudio.prototype.isError = function () {
+	return this._hasError;
 };
 
 /**
@@ -376,8 +377,8 @@ WebAudio.prototype.isError = function() {
  * @method isPlaying
  * @return {Boolean} True if the audio is playing
  */
-WebAudio.prototype.isPlaying = function() {
-    return !!this._sourceNode;
+WebAudio.prototype.isPlaying = function () {
+	return !!this._sourceNode;
 };
 
 /**
@@ -387,18 +388,18 @@ WebAudio.prototype.isPlaying = function() {
  * @param {Boolean} loop Whether the audio data play in a loop
  * @param {Number} offset The start position to play in seconds
  */
-WebAudio.prototype.play = function(loop, offset) {
-    if (this.isReady()) {
-        offset = offset || 0;
-        this._startPlaying(loop, offset);
-    } else if (WebAudio._context) {
-        this._autoPlay = true;
-        this.addLoadListener(function() {
-            if (this._autoPlay) {
-                this.play(loop, offset);
-            }
-        }.bind(this));
-    }
+WebAudio.prototype.play = function (loop, offset) {
+	if (this.isReady()) {
+		offset = offset || 0;
+		this._startPlaying(loop, offset);
+	} else if (WebAudio._context) {
+		this._autoPlay = true;
+		this.addLoadListener(function () {
+			if (this._autoPlay) {
+				this.play(loop, offset);
+			}
+		}.bind(this));
+	}
 };
 
 /**
@@ -406,16 +407,16 @@ WebAudio.prototype.play = function(loop, offset) {
  *
  * @method stop
  */
-WebAudio.prototype.stop = function() {
-    this._autoPlay = false;
-    this._removeEndTimer();
-    this._removeNodes();
-    if (this._stopListeners) {
-        while (this._stopListeners.length > 0) {
-            let listner = this._stopListeners.shift();
-            listner();
-        }
-    }
+WebAudio.prototype.stop = function () {
+	this._autoPlay = false;
+	this._removeEndTimer();
+	this._removeNodes();
+	if (this._stopListeners) {
+		while (this._stopListeners.length > 0) {
+			let listner = this._stopListeners.shift();
+			listner();
+		}
+	}
 };
 
 /**
@@ -424,19 +425,19 @@ WebAudio.prototype.stop = function() {
  * @method fadeIn
  * @param {Number} duration Fade-in time in seconds
  */
-WebAudio.prototype.fadeIn = function(duration) {
-    if (this.isReady()) {
-        if (this._gainNode) {
-            let gain = this._gainNode.gain;
-            let currentTime = WebAudio._context.currentTime;
-            gain.setValueAtTime(0, currentTime);
-            gain.linearRampToValueAtTime(this._volume, currentTime + duration);
-        }
-    } else if (this._autoPlay) {
-        this.addLoadListener(function() {
-            this.fadeIn(duration);
-        }.bind(this));
-    }
+WebAudio.prototype.fadeIn = function (duration) {
+	if (this.isReady()) {
+		if (this._gainNode) {
+			let gain = this._gainNode.gain;
+			let currentTime = WebAudio._context.currentTime;
+			gain.setValueAtTime(0, currentTime);
+			gain.linearRampToValueAtTime(this._volume, currentTime + duration);
+		}
+	} else if (this._autoPlay) {
+		this.addLoadListener(function () {
+			this.fadeIn(duration);
+		}.bind(this));
+	}
 };
 
 /**
@@ -445,14 +446,14 @@ WebAudio.prototype.fadeIn = function(duration) {
  * @method fadeOut
  * @param {Number} duration Fade-out time in seconds
  */
-WebAudio.prototype.fadeOut = function(duration) {
-    if (this._gainNode) {
-        let gain = this._gainNode.gain;
-        let currentTime = WebAudio._context.currentTime;
-        gain.setValueAtTime(this._volume, currentTime);
-        gain.linearRampToValueAtTime(0, currentTime + duration);
-    }
-    this._autoPlay = false;
+WebAudio.prototype.fadeOut = function (duration) {
+	if (this._gainNode) {
+		let gain = this._gainNode.gain;
+		let currentTime = WebAudio._context.currentTime;
+		gain.setValueAtTime(this._volume, currentTime);
+		gain.linearRampToValueAtTime(0, currentTime + duration);
+	}
+	this._autoPlay = false;
 };
 
 /**
@@ -460,18 +461,18 @@ WebAudio.prototype.fadeOut = function(duration) {
  *
  * @method seek
  */
-WebAudio.prototype.seek = function() {
-    if (WebAudio._context) {
-        let pos = (WebAudio._context.currentTime - this._startTime) * this._pitch;
-        if (this._loopLength > 0) {
-            while (pos >= this._loopStart + this._loopLength) {
-                pos -= this._loopLength;
-            }
-        }
-        return pos;
-    } else {
-        return 0;
-    }
+WebAudio.prototype.seek = function () {
+	if (WebAudio._context) {
+		let pos = (WebAudio._context.currentTime - this._startTime) * this._pitch;
+		if (this._loopLength > 0) {
+			while (pos >= this._loopStart + this._loopLength) {
+				pos -= this._loopLength;
+			}
+		}
+		return pos;
+	} else {
+		return 0;
+	}
 };
 
 /**
@@ -480,8 +481,8 @@ WebAudio.prototype.seek = function() {
  * @method addLoadListener
  * @param {Function} listner The callback function
  */
-WebAudio.prototype.addLoadListener = function(listner) {
-    this._loadListeners.push(listner);
+WebAudio.prototype.addLoadListener = function (listner) {
+	this._loadListeners.push(listner);
 };
 
 /**
@@ -490,8 +491,8 @@ WebAudio.prototype.addLoadListener = function(listner) {
  * @method addStopListener
  * @param {Function} listner The callback function
  */
-WebAudio.prototype.addStopListener = function(listner) {
-    this._stopListeners.push(listner);
+WebAudio.prototype.addStopListener = function (listner) {
+	this._stopListeners.push(listner);
 };
 
 /**
@@ -499,20 +500,22 @@ WebAudio.prototype.addStopListener = function(listner) {
  * @param {String} url
  * @private
  */
-WebAudio.prototype._load = function(url) {
-    if (WebAudio._context) {
-        let xhr = new XMLHttpRequest();
-        if(Decrypter.hasEncryptedAudio) url = Decrypter.extToEncryptExt(url);
-        xhr.open('GET', url);
-        xhr.responseType = 'arraybuffer';
-        xhr.onload = function() {
-            if (xhr.status < 400) {
-                this._onXhrLoad(xhr);
-            }
-        }.bind(this);
-        xhr.onerror = this._loader || function(){this._hasError = true;}.bind(this);
-        xhr.send();
-    }
+WebAudio.prototype._load = function (url) {
+	if (WebAudio._context) {
+		let xhr = new XMLHttpRequest();
+		if (Decrypter.hasEncryptedAudio) url = Decrypter.extToEncryptExt(url);
+		xhr.open('GET', url);
+		xhr.responseType = 'arraybuffer';
+		xhr.onload = function () {
+			if (xhr.status < 400) {
+				this._onXhrLoad(xhr);
+			}
+		}.bind(this);
+		xhr.onerror = this._loader || function () {
+			this._hasError = true;
+		}.bind(this);
+		xhr.send();
+	}
 };
 
 /**
@@ -520,22 +523,22 @@ WebAudio.prototype._load = function(url) {
  * @param {XMLHttpRequest} xhr
  * @private
  */
-WebAudio.prototype._onXhrLoad = function(xhr) {
-    let array = xhr.response;
-    if(Decrypter.hasEncryptedAudio) array = Decrypter.decryptArrayBuffer(array);
-    this._readLoopComments(new Uint8Array(array));
-    WebAudio._context.decodeAudioData(array, function(buffer) {
-        this._buffer = buffer;
-        this._totalTime = buffer.duration;
-        if (this._loopLength > 0 && this._sampleRate > 0) {
-            this._loopStart /= this._sampleRate;
-            this._loopLength /= this._sampleRate;
-        } else {
-            this._loopStart = 0;
-            this._loopLength = this._totalTime;
-        }
-        this._onLoad();
-    }.bind(this));
+WebAudio.prototype._onXhrLoad = function (xhr) {
+	let array = xhr.response;
+	if (Decrypter.hasEncryptedAudio) array = Decrypter.decryptArrayBuffer(array);
+	this._readLoopComments(new Uint8Array(array));
+	WebAudio._context.decodeAudioData(array, function (buffer) {
+		this._buffer = buffer;
+		this._totalTime = buffer.duration;
+		if (this._loopLength > 0 && this._sampleRate > 0) {
+			this._loopStart /= this._sampleRate;
+			this._loopLength /= this._sampleRate;
+		} else {
+			this._loopStart = 0;
+			this._loopLength = this._totalTime;
+		}
+		this._onLoad();
+	}.bind(this));
 };
 
 /**
@@ -544,109 +547,109 @@ WebAudio.prototype._onXhrLoad = function(xhr) {
  * @param {Number} offset
  * @private
  */
-WebAudio.prototype._startPlaying = function(loop, offset) {
-    if (this._loopLength > 0) {
-     while (offset >= this._loopStart + this._loopLength) {
-     offset -= this._loopLength;
-     }
-    }
-    this._removeEndTimer();
-    this._removeNodes();
-    this._createNodes();
-    this._connectNodes();
-    this._sourceNode.loop = loop;
-    this._sourceNode.start(0, offset);
-    this._startTime = WebAudio._context.currentTime - offset / this._pitch;
-    this._createEndTimer();
+WebAudio.prototype._startPlaying = function (loop, offset) {
+	if (this._loopLength > 0) {
+		while (offset >= this._loopStart + this._loopLength) {
+			offset -= this._loopLength;
+		}
+	}
+	this._removeEndTimer();
+	this._removeNodes();
+	this._createNodes();
+	this._connectNodes();
+	this._sourceNode.loop = loop;
+	this._sourceNode.start(0, offset);
+	this._startTime = WebAudio._context.currentTime - offset / this._pitch;
+	this._createEndTimer();
 };
 
 /**
  * @method _createNodes
  * @private
  */
-WebAudio.prototype._createNodes = function() {
-    let context = WebAudio._context;
-    this._sourceNode = context.createBufferSource();
-    this._sourceNode.buffer = this._buffer;
-    this._sourceNode.loopStart = this._loopStart;
-    this._sourceNode.loopEnd = this._loopStart + this._loopLength;
-    this._sourceNode.playbackRate.setValueAtTime(this._pitch, context.currentTime);
-    this._gainNode = context.createGain();
-    this._gainNode.gain.setValueAtTime(this._volume, context.currentTime);
-    this._pannerNode = context.createPanner();
-    this._pannerNode.panningModel = 'equalpower';
-    this._updatePanner();
+WebAudio.prototype._createNodes = function () {
+	let context = WebAudio._context;
+	this._sourceNode = context.createBufferSource();
+	this._sourceNode.buffer = this._buffer;
+	this._sourceNode.loopStart = this._loopStart;
+	this._sourceNode.loopEnd = this._loopStart + this._loopLength;
+	this._sourceNode.playbackRate.setValueAtTime(this._pitch, context.currentTime);
+	this._gainNode = context.createGain();
+	this._gainNode.gain.setValueAtTime(this._volume, context.currentTime);
+	this._pannerNode = context.createPanner();
+	this._pannerNode.panningModel = 'equalpower';
+	this._updatePanner();
 };
 
 /**
  * @method _connectNodes
  * @private
  */
-WebAudio.prototype._connectNodes = function() {
-    this._sourceNode.connect(this._gainNode);
-    this._gainNode.connect(this._pannerNode);
-    this._pannerNode.connect(WebAudio._masterGainNode);
+WebAudio.prototype._connectNodes = function () {
+	this._sourceNode.connect(this._gainNode);
+	this._gainNode.connect(this._pannerNode);
+	this._pannerNode.connect(WebAudio._masterGainNode);
 };
 
 /**
  * @method _removeNodes
  * @private
  */
-WebAudio.prototype._removeNodes = function() {
-    if (this._sourceNode) {
-        this._sourceNode.stop(0);
-        this._sourceNode = null;
-        this._gainNode = null;
-        this._pannerNode = null;
-    }
+WebAudio.prototype._removeNodes = function () {
+	if (this._sourceNode) {
+		this._sourceNode.stop(0);
+		this._sourceNode = null;
+		this._gainNode = null;
+		this._pannerNode = null;
+	}
 };
 
 /**
  * @method _createEndTimer
  * @private
  */
-WebAudio.prototype._createEndTimer = function() {
-    if (this._sourceNode && !this._sourceNode.loop) {
-        let endTime = this._startTime + this._totalTime / this._pitch;
-        let delay =  endTime - WebAudio._context.currentTime;
-        this._endTimer = setTimeout(function() {
-            this.stop();
-        }.bind(this), delay * 1000);
-    }
+WebAudio.prototype._createEndTimer = function () {
+	if (this._sourceNode && !this._sourceNode.loop) {
+		let endTime = this._startTime + this._totalTime / this._pitch;
+		let delay = endTime - WebAudio._context.currentTime;
+		this._endTimer = setTimeout(function () {
+			this.stop();
+		}.bind(this), delay * 1000);
+	}
 };
 
 /**
  * @method _removeEndTimer
  * @private
  */
-WebAudio.prototype._removeEndTimer = function() {
-    if (this._endTimer) {
-        clearTimeout(this._endTimer);
-        this._endTimer = null;
-    }
+WebAudio.prototype._removeEndTimer = function () {
+	if (this._endTimer) {
+		clearTimeout(this._endTimer);
+		this._endTimer = null;
+	}
 };
 
 /**
  * @method _updatePanner
  * @private
  */
-WebAudio.prototype._updatePanner = function() {
-    if (this._pannerNode) {
-        let x = this._pan;
-        let z = 1 - Math.abs(x);
-        this._pannerNode.setPosition(x, 0, z);
-    }
+WebAudio.prototype._updatePanner = function () {
+	if (this._pannerNode) {
+		let x = this._pan;
+		let z = 1 - Math.abs(x);
+		this._pannerNode.setPosition(x, 0, z);
+	}
 };
 
 /**
  * @method _onLoad
  * @private
  */
-WebAudio.prototype._onLoad = function() {
-    while (this._loadListeners.length > 0) {
-        let listner = this._loadListeners.shift();
-        listner();
-    }
+WebAudio.prototype._onLoad = function () {
+	while (this._loadListeners.length > 0) {
+		let listner = this._loadListeners.shift();
+		listner();
+	}
 };
 
 /**
@@ -654,9 +657,9 @@ WebAudio.prototype._onLoad = function() {
  * @param {Uint8Array} array
  * @private
  */
-WebAudio.prototype._readLoopComments = function(array) {
-    this._readOgg(array);
-    this._readMp4(array);
+WebAudio.prototype._readLoopComments = function (array) {
+	this._readOgg(array);
+	this._readMp4(array);
 };
 
 /**
@@ -664,43 +667,43 @@ WebAudio.prototype._readLoopComments = function(array) {
  * @param {Uint8Array} array
  * @private
  */
-WebAudio.prototype._readOgg = function(array) {
-    let index = 0;
-    while (index < array.length) {
-        if (this._readFourCharacters(array, index) === 'OggS') {
-            index += 26;
-            let vorbisHeaderFound = false;
-            let numSegments = array[index++];
-            let segments = [];
-            for (let i = 0; i < numSegments; i++) {
-                segments.push(array[index++]);
-            }
-            for (let i = 0; i < numSegments; i++) {
-                if (this._readFourCharacters(array, index + 1) === 'vorb') {
-                    let headerType = array[index];
-                    if (headerType === 1) {
-                        this._sampleRate = this._readLittleEndian(array, index + 12);
-                    } else if (headerType === 3) {
-                        let size = 0;
-                        for (; i < numSegments; i++) {
-                            size += segments[i];
-                            if (segments[i] < 255) {
-                                break;
-                            }
-                        }
-                        this._readMetaData(array, index, size);
-                    }
-                    vorbisHeaderFound = true;
-                }
-                index += segments[i];
-            }
-            if (!vorbisHeaderFound) {
-                break;
-            }
-        } else {
-            break;
-        }
-    }
+WebAudio.prototype._readOgg = function (array) {
+	let index = 0;
+	while (index < array.length) {
+		if (this._readFourCharacters(array, index) === 'OggS') {
+			index += 26;
+			let vorbisHeaderFound = false;
+			let numSegments = array[index++];
+			let segments = [];
+			for (let i = 0; i < numSegments; i++) {
+				segments.push(array[index++]);
+			}
+			for (let i = 0; i < numSegments; i++) {
+				if (this._readFourCharacters(array, index + 1) === 'vorb') {
+					let headerType = array[index];
+					if (headerType === 1) {
+						this._sampleRate = this._readLittleEndian(array, index + 12);
+					} else if (headerType === 3) {
+						let size = 0;
+						for (; i < numSegments; i++) {
+							size += segments[i];
+							if (segments[i] < 255) {
+								break;
+							}
+						}
+						this._readMetaData(array, index, size);
+					}
+					vorbisHeaderFound = true;
+				}
+				index += segments[i];
+			}
+			if (!vorbisHeaderFound) {
+				break;
+			}
+		} else {
+			break;
+		}
+	}
 };
 
 /**
@@ -708,28 +711,28 @@ WebAudio.prototype._readOgg = function(array) {
  * @param {Uint8Array} array
  * @private
  */
-WebAudio.prototype._readMp4 = function(array) {
-    if (this._readFourCharacters(array, 4) === 'ftyp') {
-        let index = 0;
-        while (index < array.length) {
-            let size = this._readBigEndian(array, index);
-            let name = this._readFourCharacters(array, index + 4);
-            if (name === 'moov') {
-                index += 8;
-            } else {
-                if (name === 'mvhd') {
-                    this._sampleRate = this._readBigEndian(array, index + 20);
-                }
-                if (name === 'udta' || name === 'meta') {
-                    this._readMetaData(array, index, size);
-                }
-                index += size;
-                if (size <= 1) {
-                    break;
-                }
-            }
-        }
-    }
+WebAudio.prototype._readMp4 = function (array) {
+	if (this._readFourCharacters(array, 4) === 'ftyp') {
+		let index = 0;
+		while (index < array.length) {
+			let size = this._readBigEndian(array, index);
+			let name = this._readFourCharacters(array, index + 4);
+			if (name === 'moov') {
+				index += 8;
+			} else {
+				if (name === 'mvhd') {
+					this._sampleRate = this._readBigEndian(array, index + 20);
+				}
+				if (name === 'udta' || name === 'meta') {
+					this._readMetaData(array, index, size);
+				}
+				index += size;
+				if (size <= 1) {
+					break;
+				}
+			}
+		}
+	}
 };
 
 /**
@@ -739,33 +742,33 @@ WebAudio.prototype._readMp4 = function(array) {
  * @param {Number} size
  * @private
  */
-WebAudio.prototype._readMetaData = function(array, index, size) {
-    for (let i = index; i < index + size - 10; i++) {
-        if (this._readFourCharacters(array, i) === 'LOOP') {
-            let text = '';
-            while (array[i] > 0) {
-                text += String.fromCharCode(array[i++]);
-            }
-            if (text.match(/LOOPSTART=([0-9]+)/)) {
-                this._loopStart = parseInt(RegExp.$1);
-            }
-            if (text.match(/LOOPLENGTH=([0-9]+)/)) {
-                this._loopLength = parseInt(RegExp.$1);
-            }
-            if (text == 'LOOPSTART' || text == 'LOOPLENGTH') {
-                let text2 = '';
-                i += 16;
-                while (array[i] > 0) {
-                    text2 += String.fromCharCode(array[i++]);
-                }
-                if (text == 'LOOPSTART') {
-                    this._loopStart = parseInt(text2);
-                } else {
-                    this._loopLength = parseInt(text2);
-                }
-            }
-        }
-    }
+WebAudio.prototype._readMetaData = function (array, index, size) {
+	for (let i = index; i < index + size - 10; i++) {
+		if (this._readFourCharacters(array, i) === 'LOOP') {
+			let text = '';
+			while (array[i] > 0) {
+				text += String.fromCharCode(array[i++]);
+			}
+			if (text.match(/LOOPSTART=([0-9]+)/)) {
+				this._loopStart = parseInt(RegExp.$1);
+			}
+			if (text.match(/LOOPLENGTH=([0-9]+)/)) {
+				this._loopLength = parseInt(RegExp.$1);
+			}
+			if (text == 'LOOPSTART' || text == 'LOOPLENGTH') {
+				let text2 = '';
+				i += 16;
+				while (array[i] > 0) {
+					text2 += String.fromCharCode(array[i++]);
+				}
+				if (text == 'LOOPSTART') {
+					this._loopStart = parseInt(text2);
+				} else {
+					this._loopLength = parseInt(text2);
+				}
+			}
+		}
+	}
 };
 
 /**
@@ -774,9 +777,9 @@ WebAudio.prototype._readMetaData = function(array, index, size) {
  * @param {Number} index
  * @private
  */
-WebAudio.prototype._readLittleEndian = function(array, index) {
-    return (array[index + 3] * 0x1000000 + array[index + 2] * 0x10000 +
-            array[index + 1] * 0x100 + array[index + 0]);
+WebAudio.prototype._readLittleEndian = function (array, index) {
+	return (array[index + 3] * 0x1000000 + array[index + 2] * 0x10000 +
+		array[index + 1] * 0x100 + array[index + 0]);
 };
 
 /**
@@ -785,9 +788,9 @@ WebAudio.prototype._readLittleEndian = function(array, index) {
  * @param {Number} index
  * @private
  */
-WebAudio.prototype._readBigEndian = function(array, index) {
-    return (array[index + 0] * 0x1000000 + array[index + 1] * 0x10000 +
-            array[index + 2] * 0x100 + array[index + 3]);
+WebAudio.prototype._readBigEndian = function (array, index) {
+	return (array[index + 0] * 0x1000000 + array[index + 1] * 0x10000 +
+		array[index + 2] * 0x100 + array[index + 3]);
 };
 
 /**
@@ -796,10 +799,10 @@ WebAudio.prototype._readBigEndian = function(array, index) {
  * @param {Number} index
  * @private
  */
-WebAudio.prototype._readFourCharacters = function(array, index) {
-    let string = '';
-    for (let i = 0; i < 4; i++) {
-        string += String.fromCharCode(array[index + i]);
-    }
-    return string;
+WebAudio.prototype._readFourCharacters = function (array, index) {
+	let string = '';
+	for (let i = 0; i < 4; i++) {
+		string += String.fromCharCode(array[index + i]);
+	}
+	return string;
 };

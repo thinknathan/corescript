@@ -6,15 +6,15 @@
  * @constructor
  */
 function ToneSprite() {
-    this.initialize.apply(this, arguments);
+	this.initialize.apply(this, arguments);
 }
 
 ToneSprite.prototype = Object.create(PIXI.Container.prototype);
 ToneSprite.prototype.constructor = ToneSprite;
 
-ToneSprite.prototype.initialize = function() {
-    PIXI.Container.call(this);
-    this.clear();
+ToneSprite.prototype.initialize = function () {
+	PIXI.Container.call(this);
+	this.clear();
 };
 
 /**
@@ -22,11 +22,11 @@ ToneSprite.prototype.initialize = function() {
  *
  * @method reset
  */
-ToneSprite.prototype.clear = function() {
-    this._red = 0;
-    this._green = 0;
-    this._blue = 0;
-    this._gray = 0;
+ToneSprite.prototype.clear = function () {
+	this._red = 0;
+	this._green = 0;
+	this._blue = 0;
+	this._gray = 0;
 };
 
 /**
@@ -38,11 +38,15 @@ ToneSprite.prototype.clear = function() {
  * @param {Number} b The blue strength in the range (-255, 255)
  * @param {Number} gray The grayscale level in the range (0, 255)
  */
-ToneSprite.prototype.setTone = function(r, g, b, gray) {
-    this._red = Math.round(r || 0).clamp(-255, 255);
-    this._green = Math.round(g || 0).clamp(-255, 255);
-    this._blue = Math.round(b || 0).clamp(-255, 255);
-    this._gray = Math.round(gray || 0).clamp(0, 255);
+ToneSprite.prototype.setTone = function (r, g, b, gray) {
+	this._red = Math.round(r || 0)
+		.clamp(-255, 255);
+	this._green = Math.round(g || 0)
+		.clamp(-255, 255);
+	this._blue = Math.round(b || 0)
+		.clamp(-255, 255);
+	this._gray = Math.round(gray || 0)
+		.clamp(0, 255);
 };
 
 /**
@@ -50,48 +54,48 @@ ToneSprite.prototype.setTone = function(r, g, b, gray) {
  * @param {Object} renderSession
  * @private
  */
-ToneSprite.prototype._renderCanvas = function(renderer) {
-    if (this.visible) {
-        let context = renderer.context;
-        let t = this.worldTransform;
-        let r = renderer.resolution;
-        let width = Graphics.width;
-        let height = Graphics.height;
-        context.save();
-        context.setTransform(t.a, t.b, t.c, t.d, t.tx * r, t.ty * r);
-        if (Graphics.canUseSaturationBlend() && this._gray > 0) {
-            context.globalCompositeOperation = 'saturation';
-            context.globalAlpha = this._gray / 255;
-            context.fillStyle = '#ffffff';
-            context.fillRect(0, 0, width, height);
-        }
-        context.globalAlpha = 1;
-        let r1 = Math.max(0, this._red);
-        let g1 = Math.max(0, this._green);
-        let b1 = Math.max(0, this._blue);
-        if (r1 || g1 || b1) {
-            context.globalCompositeOperation = 'lighter';
-            context.fillStyle = Utils.rgbToCssColor(r1, g1, b1);
-            context.fillRect(0, 0, width, height);
-        }
-        if (Graphics.canUseDifferenceBlend()) {
-            let r2 = Math.max(0, -this._red);
-            let g2 = Math.max(0, -this._green);
-            let b2 = Math.max(0, -this._blue);
-            if (r2 || g2 || b2) {
-                context.globalCompositeOperation = 'difference';
-                context.fillStyle = '#ffffff';
-                context.fillRect(0, 0, width, height);
-                context.globalCompositeOperation = 'lighter';
-                context.fillStyle = Utils.rgbToCssColor(r2, g2, b2);
-                context.fillRect(0, 0, width, height);
-                context.globalCompositeOperation = 'difference';
-                context.fillStyle = '#ffffff';
-                context.fillRect(0, 0, width, height);
-            }
-        }
-        context.restore();
-    }
+ToneSprite.prototype._renderCanvas = function (renderer) {
+	if (this.visible) {
+		let context = renderer.context;
+		let t = this.worldTransform;
+		let r = renderer.resolution;
+		let width = Graphics.width;
+		let height = Graphics.height;
+		context.save();
+		context.setTransform(t.a, t.b, t.c, t.d, t.tx * r, t.ty * r);
+		if (Graphics.canUseSaturationBlend() && this._gray > 0) {
+			context.globalCompositeOperation = 'saturation';
+			context.globalAlpha = this._gray / 255;
+			context.fillStyle = '#ffffff';
+			context.fillRect(0, 0, width, height);
+		}
+		context.globalAlpha = 1;
+		let r1 = Math.max(0, this._red);
+		let g1 = Math.max(0, this._green);
+		let b1 = Math.max(0, this._blue);
+		if (r1 || g1 || b1) {
+			context.globalCompositeOperation = 'lighter';
+			context.fillStyle = Utils.rgbToCssColor(r1, g1, b1);
+			context.fillRect(0, 0, width, height);
+		}
+		if (Graphics.canUseDifferenceBlend()) {
+			let r2 = Math.max(0, -this._red);
+			let g2 = Math.max(0, -this._green);
+			let b2 = Math.max(0, -this._blue);
+			if (r2 || g2 || b2) {
+				context.globalCompositeOperation = 'difference';
+				context.fillStyle = '#ffffff';
+				context.fillRect(0, 0, width, height);
+				context.globalCompositeOperation = 'lighter';
+				context.fillStyle = Utils.rgbToCssColor(r2, g2, b2);
+				context.fillRect(0, 0, width, height);
+				context.globalCompositeOperation = 'difference';
+				context.fillStyle = '#ffffff';
+				context.fillRect(0, 0, width, height);
+			}
+		}
+		context.restore();
+	}
 };
 
 /**
@@ -99,6 +103,6 @@ ToneSprite.prototype._renderCanvas = function(renderer) {
  * @param {Object} renderSession
  * @private
  */
-ToneSprite.prototype._render = function(renderer) {
-    // Not supported
+ToneSprite.prototype._render = function (renderer) {
+	// Not supported
 };
