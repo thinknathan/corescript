@@ -5,7 +5,7 @@
  * @class Input
  */
 function Input() {
-    throw new Error('This is a static class');
+	throw new Error('This is a static class');
 }
 
 /**
@@ -14,10 +14,10 @@ function Input() {
  * @static
  * @method initialize
  */
-Input.initialize = function() {
-    this.clear();
-    this._wrapNwjsAlert();
-    this._setupEventHandlers();
+Input.initialize = function () {
+	this.clear();
+	this._wrapNwjsAlert();
+	this._setupEventHandlers();
 };
 
 /**
@@ -46,30 +46,30 @@ Input.keyRepeatInterval = 6;
  * @type Object
  */
 Input.keyMapper = {
-    9: 'tab',       // tab
-    13: 'ok',       // enter
-    16: 'shift',    // shift
-    17: 'control',  // control
-    18: 'control',  // alt
-    27: 'escape',   // escape
-    32: 'ok',       // space
-    33: 'pageup',   // pageup
-    34: 'pagedown', // pagedown
-    37: 'left',     // left arrow
-    38: 'up',       // up arrow
-    39: 'right',    // right arrow
-    40: 'down',     // down arrow
-    45: 'escape',   // insert
-    81: 'pageup',   // Q
-    87: 'pagedown', // W
-    88: 'escape',   // X
-    90: 'ok',       // Z
-    96: 'escape',   // numpad 0
-    98: 'down',     // numpad 2
-    100: 'left',    // numpad 4
-    102: 'right',   // numpad 6
-    104: 'up',      // numpad 8
-    120: 'debug'    // F9
+	9: 'tab', // tab
+	13: 'ok', // enter
+	16: 'shift', // shift
+	17: 'control', // control
+	18: 'control', // alt
+	27: 'escape', // escape
+	32: 'ok', // space
+	33: 'pageup', // pageup
+	34: 'pagedown', // pagedown
+	37: 'left', // left arrow
+	38: 'up', // up arrow
+	39: 'right', // right arrow
+	40: 'down', // down arrow
+	45: 'escape', // insert
+	81: 'pageup', // Q
+	87: 'pagedown', // W
+	88: 'escape', // X
+	90: 'ok', // Z
+	96: 'escape', // numpad 0
+	98: 'down', // numpad 2
+	100: 'left', // numpad 4
+	102: 'right', // numpad 6
+	104: 'up', // numpad 8
+	120: 'debug' // F9
 };
 
 /**
@@ -80,16 +80,16 @@ Input.keyMapper = {
  * @type Object
  */
 Input.gamepadMapper = {
-    0: 'ok',        // A
-    1: 'cancel',    // B
-    2: 'shift',     // X
-    3: 'menu',      // Y
-    4: 'pageup',    // LB
-    5: 'pagedown',  // RB
-    12: 'up',       // D-pad up
-    13: 'down',     // D-pad down
-    14: 'left',     // D-pad left
-    15: 'right',    // D-pad right
+	0: 'ok', // A
+	1: 'cancel', // B
+	2: 'shift', // X
+	3: 'menu', // Y
+	4: 'pageup', // LB
+	5: 'pagedown', // RB
+	12: 'up', // D-pad up
+	13: 'down', // D-pad down
+	14: 'left', // D-pad left
+	15: 'right', // D-pad right
 };
 
 /**
@@ -98,16 +98,16 @@ Input.gamepadMapper = {
  * @static
  * @method clear
  */
-Input.clear = function() {
-    this._currentState = {};
-    this._previousState = {};
-    this._gamepadStates = [];
-    this._latestButton = null;
-    this._pressedTime = 0;
-    this._dir4 = 0;
-    this._dir8 = 0;
-    this._preferredAxis = '';
-    this._date = 0;
+Input.clear = function () {
+	this._currentState = {};
+	this._previousState = {};
+	this._gamepadStates = [];
+	this._latestButton = null;
+	this._pressedTime = 0;
+	this._dir4 = 0;
+	this._dir8 = 0;
+	this._preferredAxis = '';
+	this._date = 0;
 };
 
 /**
@@ -116,22 +116,22 @@ Input.clear = function() {
  * @static
  * @method update
  */
-Input.update = function() {
-    this._pollGamepads();
-    if (this._currentState[this._latestButton]) {
-        this._pressedTime++;
-    } else {
-        this._latestButton = null;
-    }
-    for (let name in this._currentState) {
-        if (this._currentState[name] && !this._previousState[name]) {
-            this._latestButton = name;
-            this._pressedTime = 0;
-            this._date = Date.now();
-        }
-        this._previousState[name] = this._currentState[name];
-    }
-    this._updateDirection();
+Input.update = function () {
+	this._pollGamepads();
+	if (this._currentState[this._latestButton]) {
+		this._pressedTime++;
+	} else {
+		this._latestButton = null;
+	}
+	for (let name in this._currentState) {
+		if (this._currentState[name] && !this._previousState[name]) {
+			this._latestButton = name;
+			this._pressedTime = 0;
+			this._date = Date.now();
+		}
+		this._previousState[name] = this._currentState[name];
+	}
+	this._updateDirection();
 };
 
 /**
@@ -142,12 +142,12 @@ Input.update = function() {
  * @param {String} keyName The mapped name of the key
  * @return {Boolean} True if the key is pressed
  */
-Input.isPressed = function(keyName) {
-    if (this._isEscapeCompatible(keyName) && this.isPressed('escape')) {
-        return true;
-    } else {
-        return !!this._currentState[keyName];
-    }
+Input.isPressed = function (keyName) {
+	if (this._isEscapeCompatible(keyName) && this.isPressed('escape')) {
+		return true;
+	} else {
+		return !!this._currentState[keyName];
+	}
 };
 
 /**
@@ -158,12 +158,12 @@ Input.isPressed = function(keyName) {
  * @param {String} keyName The mapped name of the key
  * @return {Boolean} True if the key is triggered
  */
-Input.isTriggered = function(keyName) {
-    if (this._isEscapeCompatible(keyName) && this.isTriggered('escape')) {
-        return true;
-    } else {
-        return this._latestButton === keyName && this._pressedTime === 0;
-    }
+Input.isTriggered = function (keyName) {
+	if (this._isEscapeCompatible(keyName) && this.isTriggered('escape')) {
+		return true;
+	} else {
+		return this._latestButton === keyName && this._pressedTime === 0;
+	}
 };
 
 /**
@@ -174,15 +174,15 @@ Input.isTriggered = function(keyName) {
  * @param {String} keyName The mapped name of the key
  * @return {Boolean} True if the key is repeated
  */
-Input.isRepeated = function(keyName) {
-    if (this._isEscapeCompatible(keyName) && this.isRepeated('escape')) {
-        return true;
-    } else {
-        return (this._latestButton === keyName &&
-                (this._pressedTime === 0 ||
-                 (this._pressedTime >= this.keyRepeatWait &&
-                  this._pressedTime % this.keyRepeatInterval === 0)));
-    }
+Input.isRepeated = function (keyName) {
+	if (this._isEscapeCompatible(keyName) && this.isRepeated('escape')) {
+		return true;
+	} else {
+		return (this._latestButton === keyName &&
+			(this._pressedTime === 0 ||
+				(this._pressedTime >= this.keyRepeatWait &&
+					this._pressedTime % this.keyRepeatInterval === 0)));
+	}
 };
 
 /**
@@ -193,13 +193,13 @@ Input.isRepeated = function(keyName) {
  * @param {String} keyName The mapped name of the key
  * @return {Boolean} True if the key is long-pressed
  */
-Input.isLongPressed = function(keyName) {
-    if (this._isEscapeCompatible(keyName) && this.isLongPressed('escape')) {
-        return true;
-    } else {
-        return (this._latestButton === keyName &&
-                this._pressedTime >= this.keyRepeatWait);
-    }
+Input.isLongPressed = function (keyName) {
+	if (this._isEscapeCompatible(keyName) && this.isLongPressed('escape')) {
+		return true;
+	} else {
+		return (this._latestButton === keyName &&
+			this._pressedTime >= this.keyRepeatWait);
+	}
 };
 
 /**
@@ -210,10 +210,10 @@ Input.isLongPressed = function(keyName) {
  * @type Number
  */
 Object.defineProperty(Input, 'dir4', {
-    get: function() {
-        return this._dir4;
-    },
-    configurable: true
+	get: function () {
+		return this._dir4;
+	},
+	configurable: true
 });
 
 /**
@@ -224,10 +224,10 @@ Object.defineProperty(Input, 'dir4', {
  * @type Number
  */
 Object.defineProperty(Input, 'dir8', {
-    get: function() {
-        return this._dir8;
-    },
-    configurable: true
+	get: function () {
+		return this._dir8;
+	},
+	configurable: true
 });
 
 /**
@@ -238,10 +238,10 @@ Object.defineProperty(Input, 'dir8', {
  * @type Number
  */
 Object.defineProperty(Input, 'date', {
-    get: function() {
-        return this._date;
-    },
-    configurable: true
+	get: function () {
+		return this._date;
+	},
+	configurable: true
 });
 
 /**
@@ -249,17 +249,17 @@ Object.defineProperty(Input, 'date', {
  * @method _wrapNwjsAlert
  * @private
  */
-Input._wrapNwjsAlert = function() {
-    if (Utils.isNwjs()) {
-        let _alert = window.alert;
-        window.alert = function() {
-            let gui = require('nw.gui');
-            let win = gui.Window.get();
-            _alert.apply(this, arguments);
-            win.focus();
-            Input.clear();
-        };
-    }
+Input._wrapNwjsAlert = function () {
+	if (Utils.isNwjs()) {
+		let _alert = window.alert;
+		window.alert = function () {
+			let gui = require('nw.gui');
+			let win = gui.Window.get();
+			_alert.apply(this, arguments);
+			win.focus();
+			Input.clear();
+		};
+	}
 };
 
 /**
@@ -267,10 +267,10 @@ Input._wrapNwjsAlert = function() {
  * @method _setupEventHandlers
  * @private
  */
-Input._setupEventHandlers = function() {
-    document.addEventListener('keydown', this._onKeyDown.bind(this));
-    document.addEventListener('keyup', this._onKeyUp.bind(this));
-    window.addEventListener('blur', this._onLostFocus.bind(this));
+Input._setupEventHandlers = function () {
+	document.addEventListener('keydown', this._onKeyDown.bind(this));
+	document.addEventListener('keyup', this._onKeyUp.bind(this));
+	window.addEventListener('blur', this._onLostFocus.bind(this));
 };
 
 /**
@@ -279,19 +279,19 @@ Input._setupEventHandlers = function() {
  * @param {KeyboardEvent} event
  * @private
  */
-Input._onKeyDown = function(event) {
-    if (this._shouldPreventDefault(event.keyCode)) {
-        event.preventDefault();
-    }
-    if (event.keyCode === 144) {    // Numlock
-        this.clear();
-    }
-    let buttonName = this.keyMapper[event.keyCode];
-    if (ResourceHandler.exists() && buttonName === 'ok') {
-        ResourceHandler.retry();
-    } else if (buttonName) {
-        this._currentState[buttonName] = true;
-    }
+Input._onKeyDown = function (event) {
+	if (this._shouldPreventDefault(event.keyCode)) {
+		event.preventDefault();
+	}
+	if (event.keyCode === 144) { // Numlock
+		this.clear();
+	}
+	let buttonName = this.keyMapper[event.keyCode];
+	if (ResourceHandler.exists() && buttonName === 'ok') {
+		ResourceHandler.retry();
+	} else if (buttonName) {
+		this._currentState[buttonName] = true;
+	}
 };
 
 /**
@@ -300,18 +300,18 @@ Input._onKeyDown = function(event) {
  * @param {Number} keyCode
  * @private
  */
-Input._shouldPreventDefault = function(keyCode) {
-    switch (keyCode) {
-    case 8:     // backspace
-    case 33:    // pageup
-    case 34:    // pagedown
-    case 37:    // left arrow
-    case 38:    // up arrow
-    case 39:    // right arrow
-    case 40:    // down arrow
-        return true;
-    }
-    return false;
+Input._shouldPreventDefault = function (keyCode) {
+	switch (keyCode) {
+	case 8: // backspace
+	case 33: // pageup
+	case 34: // pagedown
+	case 37: // left arrow
+	case 38: // up arrow
+	case 39: // right arrow
+	case 40: // down arrow
+		return true;
+	}
+	return false;
 };
 
 /**
@@ -320,14 +320,14 @@ Input._shouldPreventDefault = function(keyCode) {
  * @param {KeyboardEvent} event
  * @private
  */
-Input._onKeyUp = function(event) {
-    let buttonName = this.keyMapper[event.keyCode];
-    if (buttonName) {
-        this._currentState[buttonName] = false;
-    }
-    if (event.keyCode === 0) {  // For QtWebEngine on OS X
-        this.clear();
-    }
+Input._onKeyUp = function (event) {
+	let buttonName = this.keyMapper[event.keyCode];
+	if (buttonName) {
+		this._currentState[buttonName] = false;
+	}
+	if (event.keyCode === 0) { // For QtWebEngine on OS X
+		this.clear();
+	}
 };
 
 /**
@@ -335,8 +335,8 @@ Input._onKeyUp = function(event) {
  * @method _onLostFocus
  * @private
  */
-Input._onLostFocus = function() {
-    this.clear();
+Input._onLostFocus = function () {
+	this.clear();
 };
 
 /**
@@ -344,18 +344,18 @@ Input._onLostFocus = function() {
  * @method _pollGamepads
  * @private
  */
-Input._pollGamepads = function() {
-    if (navigator.getGamepads) {
-        let gamepads = navigator.getGamepads();
-        if (gamepads) {
-            for (let i = 0; i < gamepads.length; i++) {
-                let gamepad = gamepads[i];
-                if (gamepad && gamepad.connected) {
-                    this._updateGamepadState(gamepad);
-                }
-            }
-        }
-    }
+Input._pollGamepads = function () {
+	if (navigator.getGamepads) {
+		let gamepads = navigator.getGamepads();
+		if (gamepads) {
+			for (let i = 0; i < gamepads.length; i++) {
+				let gamepad = gamepads[i];
+				if (gamepad && gamepad.connected) {
+					this._updateGamepadState(gamepad);
+				}
+			}
+		}
+	}
 };
 
 /**
@@ -365,38 +365,38 @@ Input._pollGamepads = function() {
  * @param {Number} index
  * @private
  */
-Input._updateGamepadState = function(gamepad) {
-    let lastState = this._gamepadStates[gamepad.index] || [];
-    let newState = [];
-    let buttons = gamepad.buttons;
-    let axes = gamepad.axes;
-    let threshold = 0.5;
-    newState[12] = false;
-    newState[13] = false;
-    newState[14] = false;
-    newState[15] = false;
-    for (let i = 0; i < buttons.length; i++) {
-        newState[i] = buttons[i].pressed;
-    }
-    if (axes[1] < -threshold) {
-        newState[12] = true;    // up
-    } else if (axes[1] > threshold) {
-        newState[13] = true;    // down
-    }
-    if (axes[0] < -threshold) {
-        newState[14] = true;    // left
-    } else if (axes[0] > threshold) {
-        newState[15] = true;    // right
-    }
-    for (let j = 0; j < newState.length; j++) {
-        if (newState[j] !== lastState[j]) {
-            let buttonName = this.gamepadMapper[j];
-            if (buttonName) {
-                this._currentState[buttonName] = newState[j];
-            }
-        }
-    }
-    this._gamepadStates[gamepad.index] = newState;
+Input._updateGamepadState = function (gamepad) {
+	let lastState = this._gamepadStates[gamepad.index] || [];
+	let newState = [];
+	let buttons = gamepad.buttons;
+	let axes = gamepad.axes;
+	let threshold = 0.5;
+	newState[12] = false;
+	newState[13] = false;
+	newState[14] = false;
+	newState[15] = false;
+	for (let i = 0; i < buttons.length; i++) {
+		newState[i] = buttons[i].pressed;
+	}
+	if (axes[1] < -threshold) {
+		newState[12] = true; // up
+	} else if (axes[1] > threshold) {
+		newState[13] = true; // down
+	}
+	if (axes[0] < -threshold) {
+		newState[14] = true; // left
+	} else if (axes[0] > threshold) {
+		newState[15] = true; // right
+	}
+	for (let j = 0; j < newState.length; j++) {
+		if (newState[j] !== lastState[j]) {
+			let buttonName = this.gamepadMapper[j];
+			if (buttonName) {
+				this._currentState[buttonName] = newState[j];
+			}
+		}
+	}
+	this._gamepadStates[gamepad.index] = newState;
 };
 
 /**
@@ -404,25 +404,25 @@ Input._updateGamepadState = function(gamepad) {
  * @method _updateDirection
  * @private
  */
-Input._updateDirection = function() {
-    let x = this._signX();
-    let y = this._signY();
+Input._updateDirection = function () {
+	let x = this._signX();
+	let y = this._signY();
 
-    this._dir8 = this._makeNumpadDirection(x, y);
+	this._dir8 = this._makeNumpadDirection(x, y);
 
-    if (x !== 0 && y !== 0) {
-        if (this._preferredAxis === 'x') {
-            y = 0;
-        } else {
-            x = 0;
-        }
-    } else if (x !== 0) {
-        this._preferredAxis = 'y';
-    } else if (y !== 0) {
-        this._preferredAxis = 'x';
-    }
+	if (x !== 0 && y !== 0) {
+		if (this._preferredAxis === 'x') {
+			y = 0;
+		} else {
+			x = 0;
+		}
+	} else if (x !== 0) {
+		this._preferredAxis = 'y';
+	} else if (y !== 0) {
+		this._preferredAxis = 'x';
+	}
 
-    this._dir4 = this._makeNumpadDirection(x, y);
+	this._dir4 = this._makeNumpadDirection(x, y);
 };
 
 /**
@@ -430,16 +430,16 @@ Input._updateDirection = function() {
  * @method _signX
  * @private
  */
-Input._signX = function() {
-    let x = 0;
+Input._signX = function () {
+	let x = 0;
 
-    if (this.isPressed('left')) {
-        x--;
-    }
-    if (this.isPressed('right')) {
-        x++;
-    }
-    return x;
+	if (this.isPressed('left')) {
+		x--;
+	}
+	if (this.isPressed('right')) {
+		x++;
+	}
+	return x;
 };
 
 /**
@@ -447,16 +447,16 @@ Input._signX = function() {
  * @method _signY
  * @private
  */
-Input._signY = function() {
-    let y = 0;
+Input._signY = function () {
+	let y = 0;
 
-    if (this.isPressed('up')) {
-        y--;
-    }
-    if (this.isPressed('down')) {
-        y++;
-    }
-    return y;
+	if (this.isPressed('up')) {
+		y--;
+	}
+	if (this.isPressed('down')) {
+		y++;
+	}
+	return y;
 };
 
 /**
@@ -467,11 +467,11 @@ Input._signY = function() {
  * @return {Number}
  * @private
  */
-Input._makeNumpadDirection = function(x, y) {
-    if (x !== 0 || y !== 0) {
-        return  5 - y * 3 + x;
-    }
-    return 0;
+Input._makeNumpadDirection = function (x, y) {
+	if (x !== 0 || y !== 0) {
+		return 5 - y * 3 + x;
+	}
+	return 0;
 };
 
 /**
@@ -481,6 +481,6 @@ Input._makeNumpadDirection = function(x, y) {
  * @return {Boolean}
  * @private
  */
-Input._isEscapeCompatible = function(keyName) {
-    return keyName === 'cancel' || keyName === 'menu';
+Input._isEscapeCompatible = function (keyName) {
+	return keyName === 'cancel' || keyName === 'menu';
 };

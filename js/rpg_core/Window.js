@@ -6,22 +6,22 @@
  */
 
 function WindowSkinCache() {
-    throw new Error('This is a static class');
+	throw new Error('This is a static class');
 }
 
 WindowSkinCache._cache = {};
 
 WindowSkinCache.setItem = function (name, resource, type) {
-    if (!WindowSkinCache._cache[name]) {
-        WindowSkinCache._cache[name] = {};
-    }
-    WindowSkinCache._cache[name][type] = resource;
+	if (!WindowSkinCache._cache[name]) {
+		WindowSkinCache._cache[name] = {};
+	}
+	WindowSkinCache._cache[name][type] = resource;
 };
 
 WindowSkinCache.getItem = function (name, type) {
-    if (!WindowSkinCache._cache[name]) return false;
-    if (!WindowSkinCache._cache[name][type]) return false;
-    return WindowSkinCache._cache[name][type];
+	if (!WindowSkinCache._cache[name]) return false;
+	if (!WindowSkinCache._cache[name][type]) return false;
+	return WindowSkinCache._cache[name][type];
 };
 
 //-----------------------------------------------------------------------------
@@ -32,76 +32,76 @@ WindowSkinCache.getItem = function (name, type) {
  * @constructor
  */
 function Window() {
-    this.initialize.apply(this, arguments);
+	this.initialize.apply(this, arguments);
 }
 
 Window.prototype = Object.create(PIXI.Container.prototype);
 Window.prototype.constructor = Window;
 
 Window.prototype.initialize = function () {
-    PIXI.Container.call(this);
+	PIXI.Container.call(this);
 
-    this._isWindow = true;
-    this._windowskin = null;
-    this._width = 0;
-    this._height = 0;
-    this._cursorRect = new Rectangle();
-    this._openness = 255;
-    this._animationCount = 0;
+	this._isWindow = true;
+	this._windowskin = null;
+	this._width = 0;
+	this._height = 0;
+	this._cursorRect = new Rectangle();
+	this._openness = 255;
+	this._animationCount = 0;
 
-    this._padding = 18;
-    this._margin = 4;
-    this._colorTone = [0, 0, 0];
+	this._padding = 18;
+	this._margin = 4;
+	this._colorTone = [0, 0, 0];
 
-    this._windowSpriteContainer = null;
-    this._windowBackSprite = null;
-    this._windowCursorSprite = null;
-    this._windowFrameSprite = null;
-    this._windowContentsSprite = null;
-    this._windowArrowSprites = [];
-    this._windowPauseSignSprite = null;
+	this._windowSpriteContainer = null;
+	this._windowBackSprite = null;
+	this._windowCursorSprite = null;
+	this._windowFrameSprite = null;
+	this._windowContentsSprite = null;
+	this._windowArrowSprites = [];
+	this._windowPauseSignSprite = null;
 
-    this._createAllParts();
+	this._createAllParts();
 
-    /**
-     * The origin point of the window for scrolling.
-     *
-     * @property origin
-     * @type Point
-     */
-    this.origin = new Point();
+	/**
+	 * The origin point of the window for scrolling.
+	 *
+	 * @property origin
+	 * @type Point
+	 */
+	this.origin = new Point();
 
-    /**
-     * The active state for the window.
-     *
-     * @property active
-     * @type Boolean
-     */
-    this.active = true;
+	/**
+	 * The active state for the window.
+	 *
+	 * @property active
+	 * @type Boolean
+	 */
+	this.active = true;
 
-    /**
-     * The visibility of the down scroll arrow.
-     *
-     * @property downArrowVisible
-     * @type Boolean
-     */
-    this.downArrowVisible = false;
+	/**
+	 * The visibility of the down scroll arrow.
+	 *
+	 * @property downArrowVisible
+	 * @type Boolean
+	 */
+	this.downArrowVisible = false;
 
-    /**
-     * The visibility of the up scroll arrow.
-     *
-     * @property upArrowVisible
-     * @type Boolean
-     */
-    this.upArrowVisible = false;
+	/**
+	 * The visibility of the up scroll arrow.
+	 *
+	 * @property upArrowVisible
+	 * @type Boolean
+	 */
+	this.upArrowVisible = false;
 
-    /**
-     * The visibility of the pause sign.
-     *
-     * @property pause
-     * @type Boolean
-     */
-    this.pause = false;
+	/**
+	 * The visibility of the pause sign.
+	 *
+	 * @property pause
+	 * @type Boolean
+	 */
+	this.pause = false;
 };
 
 /**
@@ -111,16 +111,16 @@ Window.prototype.initialize = function () {
  * @type Bitmap
  */
 Object.defineProperty(Window.prototype, 'windowskin', {
-    get: function () {
-        return this._windowskin;
-    },
-    set: function (value) {
-        if (this._windowskin !== value) {
-            this._windowskin = value;
-            this._windowskin.addLoadListener(this._onWindowskinLoad.bind(this));
-        }
-    },
-    configurable: true
+	get: function () {
+		return this._windowskin;
+	},
+	set: function (value) {
+		if (this._windowskin !== value) {
+			this._windowskin = value;
+			this._windowskin.addLoadListener(this._onWindowskinLoad.bind(this));
+		}
+	},
+	configurable: true
 });
 
 /**
@@ -130,17 +130,17 @@ Object.defineProperty(Window.prototype, 'windowskin', {
  * @type Bitmap
  */
 Object.defineProperty(Window.prototype, 'contents', {
-    get: function () {
-        return this._windowContentsSprite.children[0];
-    },
-    set: function (value) {
-        let oldContents = this._windowContentsSprite.children[0];
-        if (oldContents) {
-            this._windowContentsSprite.removeChild(oldContents);
-        }
-        this._windowContentsSprite.addChild(value);
-    },
-    configurable: true
+	get: function () {
+		return this._windowContentsSprite.children[0];
+	},
+	set: function (value) {
+		let oldContents = this._windowContentsSprite.children[0];
+		if (oldContents) {
+			this._windowContentsSprite.removeChild(oldContents);
+		}
+		this._windowContentsSprite.addChild(value);
+	},
+	configurable: true
 });
 
 /**
@@ -150,14 +150,14 @@ Object.defineProperty(Window.prototype, 'contents', {
  * @type Number
  */
 Object.defineProperty(Window.prototype, 'width', {
-    get: function () {
-        return this._width;
-    },
-    set: function (value) {
-        this._width = value;
-        this._refreshAllParts();
-    },
-    configurable: true
+	get: function () {
+		return this._width;
+	},
+	set: function (value) {
+		this._width = value;
+		this._refreshAllParts();
+	},
+	configurable: true
 });
 
 /**
@@ -167,14 +167,14 @@ Object.defineProperty(Window.prototype, 'width', {
  * @type Number
  */
 Object.defineProperty(Window.prototype, 'height', {
-    get: function () {
-        return this._height;
-    },
-    set: function (value) {
-        this._height = value;
-        this._refreshAllParts();
-    },
-    configurable: true
+	get: function () {
+		return this._height;
+	},
+	set: function (value) {
+		this._height = value;
+		this._refreshAllParts();
+	},
+	configurable: true
 });
 
 /**
@@ -184,14 +184,14 @@ Object.defineProperty(Window.prototype, 'height', {
  * @type Number
  */
 Object.defineProperty(Window.prototype, 'padding', {
-    get: function () {
-        return this._padding;
-    },
-    set: function (value) {
-        this._padding = value;
-        this._refreshAllParts();
-    },
-    configurable: true
+	get: function () {
+		return this._padding;
+	},
+	set: function (value) {
+		this._padding = value;
+		this._refreshAllParts();
+	},
+	configurable: true
 });
 
 /**
@@ -201,14 +201,14 @@ Object.defineProperty(Window.prototype, 'padding', {
  * @type Number
  */
 Object.defineProperty(Window.prototype, 'margin', {
-    get: function () {
-        return this._margin;
-    },
-    set: function (value) {
-        this._margin = value;
-        this._refreshAllParts();
-    },
-    configurable: true
+	get: function () {
+		return this._margin;
+	},
+	set: function (value) {
+		this._margin = value;
+		this._refreshAllParts();
+	},
+	configurable: true
 });
 
 /**
@@ -218,13 +218,13 @@ Object.defineProperty(Window.prototype, 'margin', {
  * @type Number
  */
 Object.defineProperty(Window.prototype, 'opacity', {
-    get: function () {
-        return this._windowSpriteContainer.alpha * 255;
-    },
-    set: function (value) {
-        this._windowSpriteContainer.alpha = value.clamp(0, 255) / 255;
-    },
-    configurable: true
+	get: function () {
+		return this._windowSpriteContainer.alpha * 255;
+	},
+	set: function (value) {
+		this._windowSpriteContainer.alpha = value.clamp(0, 255) / 255;
+	},
+	configurable: true
 });
 
 /**
@@ -234,13 +234,13 @@ Object.defineProperty(Window.prototype, 'opacity', {
  * @type Number
  */
 Object.defineProperty(Window.prototype, 'backOpacity', {
-    get: function () {
-        return this._windowBackSprite.alpha * 255;
-    },
-    set: function (value) {
-        this._windowBackSprite.alpha = value.clamp(0, 255) / 255;
-    },
-    configurable: true
+	get: function () {
+		return this._windowBackSprite.alpha * 255;
+	},
+	set: function (value) {
+		this._windowBackSprite.alpha = value.clamp(0, 255) / 255;
+	},
+	configurable: true
 });
 
 /**
@@ -250,13 +250,13 @@ Object.defineProperty(Window.prototype, 'backOpacity', {
  * @type Number
  */
 Object.defineProperty(Window.prototype, 'contentsOpacity', {
-    get: function () {
-        return this._windowContentsSprite.alpha * 255;
-    },
-    set: function (value) {
-        this._windowContentsSprite.alpha = value.clamp(0, 255) / 255;
-    },
-    configurable: true
+	get: function () {
+		return this._windowContentsSprite.alpha * 255;
+	},
+	set: function (value) {
+		this._windowContentsSprite.alpha = value.clamp(0, 255) / 255;
+	},
+	configurable: true
 });
 
 /**
@@ -266,17 +266,17 @@ Object.defineProperty(Window.prototype, 'contentsOpacity', {
  * @type Number
  */
 Object.defineProperty(Window.prototype, 'openness', {
-    get: function () {
-        return this._openness;
-    },
-    set: function (value) {
-        if (this._openness !== value) {
-            this._openness = value.clamp(0, 255);
-            this._windowSpriteContainer.scale.y = this._openness / 255;
-            this._windowSpriteContainer.y = this.height / 2 * (1 - this._openness / 255);
-        }
-    },
-    configurable: true
+	get: function () {
+		return this._openness;
+	},
+	set: function (value) {
+		if (this._openness !== value) {
+			this._openness = value.clamp(0, 255);
+			this._windowSpriteContainer.scale.y = this._openness / 255;
+			this._windowSpriteContainer.y = this.height / 2 * (1 - this._openness / 255);
+		}
+	},
+	configurable: true
 });
 
 /**
@@ -285,14 +285,14 @@ Object.defineProperty(Window.prototype, 'openness', {
  * @method update
  */
 Window.prototype.update = function () {
-    if (this.active) {
-        this._animationCount++;
-    }
-    this.children.forEach(function (child) {
-        if (child.update) {
-            child.update();
-        }
-    });
+	if (this.active) {
+		this._animationCount++;
+	}
+	this.children.forEach(function (child) {
+		if (child.update) {
+			child.update();
+		}
+	});
 };
 
 /**
@@ -305,13 +305,13 @@ Window.prototype.update = function () {
  * @param {Number} height The height of the window
  */
 Window.prototype.move = function (x, y, width, height) {
-    this.x = x || 0;
-    this.y = y || 0;
-    if (this._width !== width || this._height !== height) {
-        this._width = width || 0;
-        this._height = height || 0;
-        this._refreshAllParts();
-    }
+	this.x = x || 0;
+	this.y = y || 0;
+	if (this._width !== width || this._height !== height) {
+		this._width = width || 0;
+		this._height = height || 0;
+		this._refreshAllParts();
+	}
 };
 
 /**
@@ -320,7 +320,7 @@ Window.prototype.move = function (x, y, width, height) {
  * @method isOpen
  */
 Window.prototype.isOpen = function () {
-    return this._openness >= 255;
+	return this._openness >= 255;
 };
 
 /**
@@ -329,7 +329,7 @@ Window.prototype.isOpen = function () {
  * @method isClosed
  */
 Window.prototype.isClosed = function () {
-    return this._openness <= 0;
+	return this._openness <= 0;
 };
 
 /**
@@ -342,18 +342,18 @@ Window.prototype.isClosed = function () {
  * @param {Number} height The height of the cursor
  */
 Window.prototype.setCursorRect = function (x, y, width, height) {
-    let cx = Math.floor(x || 0);
-    let cy = Math.floor(y || 0);
-    let cw = Math.floor(width || 0);
-    let ch = Math.floor(height || 0);
-    let rect = this._cursorRect;
-    if (rect.x !== cx || rect.y !== cy || rect.width !== cw || rect.height !== ch) {
-        this._cursorRect.x = cx;
-        this._cursorRect.y = cy;
-        this._cursorRect.width = cw;
-        this._cursorRect.height = ch;
-        this._refreshCursor();
-    }
+	let cx = Math.floor(x || 0);
+	let cy = Math.floor(y || 0);
+	let cw = Math.floor(width || 0);
+	let ch = Math.floor(height || 0);
+	let rect = this._cursorRect;
+	if (rect.x !== cx || rect.y !== cy || rect.width !== cw || rect.height !== ch) {
+		this._cursorRect.x = cx;
+		this._cursorRect.y = cy;
+		this._cursorRect.width = cw;
+		this._cursorRect.height = ch;
+		this._refreshCursor();
+	}
 };
 
 /**
@@ -365,17 +365,17 @@ Window.prototype.setCursorRect = function (x, y, width, height) {
  * @param {Number} b The blue value in the range (-255, 255)
  */
 Window.prototype.setTone = function (r, g, b) {
-    let tone = this._colorTone;
-    r = r / 255;
-    g = g / 255;
-    b = b / 255;
-    if (r < 0) r = 0;
-    if (g < 0) g = 0;
-    if (b < 0) b = 0;
-    if (r !== tone[0] || g !== tone[1] || b !== tone[2]) {
-        this._colorTone = [r, g, b];
-        this._refreshBack();
-    }
+	let tone = this._colorTone;
+	r = r / 255;
+	g = g / 255;
+	b = b / 255;
+	if (r < 0) r = 0;
+	if (g < 0) g = 0;
+	if (b < 0) b = 0;
+	if (r !== tone[0] || g !== tone[1] || b !== tone[2]) {
+		this._colorTone = [r, g, b];
+		this._refreshBack();
+	}
 };
 
 /**
@@ -386,8 +386,8 @@ Window.prototype.setTone = function (r, g, b) {
  * @return {Object} The child that was added
  */
 Window.prototype.addChildToBack = function (child) {
-    let containerIndex = this.children.indexOf(this._windowSpriteContainer);
-    return this.addChildAt(child, containerIndex + 1);
+	let containerIndex = this.children.indexOf(this._windowSpriteContainer);
+	return this.addChildAt(child, containerIndex + 1);
 };
 
 /**
@@ -395,11 +395,11 @@ Window.prototype.addChildToBack = function (child) {
  * @private
  */
 Window.prototype.updateTransform = function () {
-    this._updateCursor();
-    this._updateArrows();
-    this._updatePauseSign();
-    this._updateContents();
-    PIXI.Container.prototype.updateTransform.call(this);
+	this._updateCursor();
+	this._updateArrows();
+	this._updatePauseSign();
+	this._updateContents();
+	PIXI.Container.prototype.updateTransform.call(this);
 };
 
 /**
@@ -407,23 +407,23 @@ Window.prototype.updateTransform = function () {
  * @private
  */
 Window.prototype._createAllParts = function () {
-    this._windowSpriteContainer = new PIXI.Container();
-    this._windowBackSprite = new BitmapPIXI();
-    this._windowCursorSprite = new BitmapPIXI();
-    this._windowFrameSprite = new PIXI.Container();
-    this._windowContentsSprite = new Sprite();
-    this._downArrowSprite = new Sprite();
-    this._upArrowSprite = new Sprite();
-    this._windowPauseSignSprite = new Sprite();
-    this._windowBackSprite.alpha = 192 / 255;
-    this.addChild(this._windowSpriteContainer);
-    this._windowSpriteContainer.addChild(this._windowBackSprite);
-    this._windowSpriteContainer.addChild(this._windowFrameSprite);
-    this.addChild(this._windowCursorSprite);
-    this.addChild(this._windowContentsSprite);
-    this.addChild(this._downArrowSprite);
-    this.addChild(this._upArrowSprite);
-    this.addChild(this._windowPauseSignSprite);
+	this._windowSpriteContainer = new PIXI.Container();
+	this._windowBackSprite = new BitmapPIXI();
+	this._windowCursorSprite = new BitmapPIXI();
+	this._windowFrameSprite = new PIXI.Container();
+	this._windowContentsSprite = new Sprite();
+	this._downArrowSprite = new Sprite();
+	this._upArrowSprite = new Sprite();
+	this._windowPauseSignSprite = new Sprite();
+	this._windowBackSprite.alpha = 192 / 255;
+	this.addChild(this._windowSpriteContainer);
+	this._windowSpriteContainer.addChild(this._windowBackSprite);
+	this._windowSpriteContainer.addChild(this._windowFrameSprite);
+	this.addChild(this._windowCursorSprite);
+	this.addChild(this._windowContentsSprite);
+	this.addChild(this._downArrowSprite);
+	this.addChild(this._upArrowSprite);
+	this.addChild(this._windowPauseSignSprite);
 };
 
 /**
@@ -431,7 +431,7 @@ Window.prototype._createAllParts = function () {
  * @private
  */
 Window.prototype._onWindowskinLoad = function () {
-    this._refreshAllParts();
+	this._refreshAllParts();
 };
 
 /**
@@ -439,12 +439,12 @@ Window.prototype._onWindowskinLoad = function () {
  * @private
  */
 Window.prototype._refreshAllParts = function () {
-    this._refreshBack();
-    this._refreshFrame();
-    this._refreshCursor();
-    this._refreshContents();
-    this._refreshArrows();
-    this._refreshPauseSign();
+	this._refreshBack();
+	this._refreshFrame();
+	this._refreshCursor();
+	this._refreshContents();
+	this._refreshArrows();
+	this._refreshPauseSign();
 };
 
 /**
@@ -452,32 +452,32 @@ Window.prototype._refreshAllParts = function () {
  * @private
  */
 Window.prototype._refreshBack = function () {
-    let m = this._margin;
-    let w = this._width - m * 2;
-    let h = this._height - m * 2;
-    let tone = PIXI.utils.rgb2hex(this._colorTone);
+	let m = this._margin;
+	let w = this._width - m * 2;
+	let h = this._height - m * 2;
+	let tone = PIXI.utils.rgb2hex(this._colorTone);
 
-    if (w > 0 && h > 0 && this._windowskin && !this._windowBackSprite._setupComplete) {
-        let p = 96;
-        this._windowBackSprite.blt(this._windowskin, 0, 0, p, p, 0, 0, w, h);
-        this._windowBackSprite.addChild(
-            this._windowBackSprite.createTilingSprite(this._windowskin.baseTexture, 0, p, p, p, w, h)
-        );
+	if (w > 0 && h > 0 && this._windowskin && !this._windowBackSprite._setupComplete) {
+		let p = 96;
+		this._windowBackSprite.blt(this._windowskin, 0, 0, p, p, 0, 0, w, h);
+		this._windowBackSprite.addChild(
+			this._windowBackSprite.createTilingSprite(this._windowskin.baseTexture, 0, p, p, p, w, h)
+		);
 
-        this._windowBackSprite._setupComplete = true;
-    }
+		this._windowBackSprite._setupComplete = true;
+	}
 
-    this._windowBackSprite.width = w;
-    this._windowBackSprite.height = h;
-    this._windowBackSprite.x = m;
-    this._windowBackSprite.y = m;
-    this._windowBackSprite.children.forEach(function (child) {
-        if (child) {
-            child.width = w;
-            child.height = h;
-            child.tint = tone;
-        }
-    });
+	this._windowBackSprite.width = w;
+	this._windowBackSprite.height = h;
+	this._windowBackSprite.x = m;
+	this._windowBackSprite.y = m;
+	this._windowBackSprite.children.forEach(function (child) {
+		if (child) {
+			child.width = w;
+			child.height = h;
+			child.tint = tone;
+		}
+	});
 };
 
 
@@ -486,47 +486,47 @@ Window.prototype._refreshBack = function () {
  * @private
  */
 Window.prototype._refreshFrame = function () {
-    let w = this._width;
-    let h = this._height;
-    let m = 24;
+	let w = this._width;
+	let h = this._height;
+	let m = 24;
 
-    if (w > 0 && h > 0 && this._windowskin && !this._windowFrameSprite._setupComplete) {
-        let texture;
-        let cachedFrame = WindowSkinCache.getItem(this._windowskin._url, 'frame');
-        if (cachedFrame) {
-            texture = cachedFrame;
-        } else {
-            let container = new BitmapPIXI();
-            let skin = this._windowskin;
-            let p = 96;
-            let q = 96;
-            container.blt(skin, p + m, 0 + 0, p - m * 2, m, m, 0, w - m * 2, m);
-            container.blt(skin, p + m, 0 + q - m, p - m * 2, m, m, h - m, w - m * 2, m);
-            container.blt(skin, p + 0, 0 + m, m, p - m * 2, 0, m, m, h - m * 2);
-            container.blt(skin, p + q - m, 0 + m, m, p - m * 2, w - m, m, m, h - m * 2);
-            container.blt(skin, p + 0, 0 + 0, m, m, 0, 0, m, m);
-            container.blt(skin, p + q - m, 0 + 0, m, m, w - m, 0, m, m);
-            container.blt(skin, p + 0, 0 + q - m, m, m, 0, h - m, m, m);
-            container.blt(skin, p + q - m, 0 + q - m, m, m, w - m, h - m, m, m);
-            texture = Graphics._renderer.generateTexture(container);
-            texture.CREATED_BY = this;
-            texture.CREATED_AT = Date.now();
-            container.destroy({
-                children: true,
-                texture: true,
-            });
-            WindowSkinCache.setItem(this._windowskin._url, texture, 'frame');
-        }
+	if (w > 0 && h > 0 && this._windowskin && !this._windowFrameSprite._setupComplete) {
+		let texture;
+		let cachedFrame = WindowSkinCache.getItem(this._windowskin._url, 'frame');
+		if (cachedFrame) {
+			texture = cachedFrame;
+		} else {
+			let container = new BitmapPIXI();
+			let skin = this._windowskin;
+			let p = 96;
+			let q = 96;
+			container.blt(skin, p + m, 0 + 0, p - m * 2, m, m, 0, w - m * 2, m);
+			container.blt(skin, p + m, 0 + q - m, p - m * 2, m, m, h - m, w - m * 2, m);
+			container.blt(skin, p + 0, 0 + m, m, p - m * 2, 0, m, m, h - m * 2);
+			container.blt(skin, p + q - m, 0 + m, m, p - m * 2, w - m, m, m, h - m * 2);
+			container.blt(skin, p + 0, 0 + 0, m, m, 0, 0, m, m);
+			container.blt(skin, p + q - m, 0 + 0, m, m, w - m, 0, m, m);
+			container.blt(skin, p + 0, 0 + q - m, m, m, 0, h - m, m, m);
+			container.blt(skin, p + q - m, 0 + q - m, m, m, w - m, h - m, m, m);
+			texture = Graphics._renderer.generateTexture(container);
+			texture.CREATED_BY = this;
+			texture.CREATED_AT = Date.now();
+			container.destroy({
+				children: true,
+				texture: true,
+			});
+			WindowSkinCache.setItem(this._windowskin._url, texture, 'frame');
+		}
 
-        this._windowFramePlane = new PIXI.NineSlicePlane(texture, 12, 12, 12, 12);
-        this._windowFrameSprite.addChild(this._windowFramePlane);
-        this._windowFrameSprite._setupComplete = true;
-    }
+		this._windowFramePlane = new PIXI.NineSlicePlane(texture, 12, 12, 12, 12);
+		this._windowFrameSprite.addChild(this._windowFramePlane);
+		this._windowFrameSprite._setupComplete = true;
+	}
 
-    if (this._windowFrameSprite._setupComplete) {
-        this._windowFramePlane.width = w;
-        this._windowFramePlane.height = h;
-    }
+	if (this._windowFrameSprite._setupComplete) {
+		this._windowFramePlane.width = w;
+		this._windowFramePlane.height = h;
+	}
 };
 
 /**
@@ -534,28 +534,28 @@ Window.prototype._refreshFrame = function () {
  * @private
  */
 Window.prototype._refreshCursor = function () {
-    let pad = this._padding;
-    let x = this._cursorRect.x + pad - this.origin.x;
-    let y = this._cursorRect.y + pad - this.origin.y;
-    let w = this._cursorRect.width;
-    let h = this._cursorRect.height;
+	let pad = this._padding;
+	let x = this._cursorRect.x + pad - this.origin.x;
+	let y = this._cursorRect.y + pad - this.origin.y;
+	let w = this._cursorRect.width;
+	let h = this._cursorRect.height;
 
-    if (w > 0 && h > 0 && this._windowskin && !this._windowCursorSprite._setupComplete) {
-        let p = 96;
-        let q = 48;
-        this._windowCursorPlane = this._windowCursorSprite.create9Slice(this._windowskin.baseTexture, p, p, q, q, 12, 12, 12, 12);
-        this._windowCursorSprite.addChild(
-            this._windowCursorPlane
-        );
-        this._windowCursorSprite._setupComplete = true;
-    }
+	if (w > 0 && h > 0 && this._windowskin && !this._windowCursorSprite._setupComplete) {
+		let p = 96;
+		let q = 48;
+		this._windowCursorPlane = this._windowCursorSprite.create9Slice(this._windowskin.baseTexture, p, p, q, q, 12, 12, 12, 12);
+		this._windowCursorSprite.addChild(
+			this._windowCursorPlane
+		);
+		this._windowCursorSprite._setupComplete = true;
+	}
 
-    if (this._windowCursorPlane) {
-        this._windowCursorPlane.x = x;
-        this._windowCursorPlane.y = y;
-        this._windowCursorPlane.width = w;
-        this._windowCursorPlane.height = h;
-    }
+	if (this._windowCursorPlane) {
+		this._windowCursorPlane.x = x;
+		this._windowCursorPlane.y = y;
+		this._windowCursorPlane.width = w;
+		this._windowCursorPlane.height = h;
+	}
 };
 
 /**
@@ -563,8 +563,8 @@ Window.prototype._refreshCursor = function () {
  * @private
  */
 Window.prototype._refreshContents = function () {
-    this._windowContentsSprite.move(this.padding, this.padding);
-    if (this._windowContentsSprite.children.length) this._windowContentsSprite.children[0].clear();
+	this._windowContentsSprite.move(this.padding, this.padding);
+	if (this._windowContentsSprite.children.length) this._windowContentsSprite.children[0].clear();
 };
 
 /**
@@ -572,22 +572,22 @@ Window.prototype._refreshContents = function () {
  * @private
  */
 Window.prototype._refreshArrows = function () {
-    let w = this._width;
-    let h = this._height;
-    let p = 24;
-    let q = p / 2;
-    let sx = 96 + p;
-    let sy = 0 + p;
-    this._downArrowSprite.bitmap = this._windowskin;
-    this._downArrowSprite.anchor.x = 0.5;
-    this._downArrowSprite.anchor.y = 0.5;
-    this._downArrowSprite.setFrame(sx + q, sy + q + p, p, q);
-    this._downArrowSprite.move(w / 2, h - q);
-    this._upArrowSprite.bitmap = this._windowskin;
-    this._upArrowSprite.anchor.x = 0.5;
-    this._upArrowSprite.anchor.y = 0.5;
-    this._upArrowSprite.setFrame(sx + q, sy, p, q);
-    this._upArrowSprite.move(w / 2, q);
+	let w = this._width;
+	let h = this._height;
+	let p = 24;
+	let q = p / 2;
+	let sx = 96 + p;
+	let sy = 0 + p;
+	this._downArrowSprite.bitmap = this._windowskin;
+	this._downArrowSprite.anchor.x = 0.5;
+	this._downArrowSprite.anchor.y = 0.5;
+	this._downArrowSprite.setFrame(sx + q, sy + q + p, p, q);
+	this._downArrowSprite.move(w / 2, h - q);
+	this._upArrowSprite.bitmap = this._windowskin;
+	this._upArrowSprite.anchor.x = 0.5;
+	this._upArrowSprite.anchor.y = 0.5;
+	this._upArrowSprite.setFrame(sx + q, sy, p, q);
+	this._upArrowSprite.move(w / 2, q);
 };
 
 /**
@@ -595,15 +595,15 @@ Window.prototype._refreshArrows = function () {
  * @private
  */
 Window.prototype._refreshPauseSign = function () {
-    let sx = 144;
-    let sy = 96;
-    let p = 24;
-    this._windowPauseSignSprite.bitmap = this._windowskin;
-    this._windowPauseSignSprite.anchor.x = 0.5;
-    this._windowPauseSignSprite.anchor.y = 1;
-    this._windowPauseSignSprite.move(this._width / 2, this._height);
-    this._windowPauseSignSprite.setFrame(sx, sy, p, p);
-    this._windowPauseSignSprite.alpha = 0;
+	let sx = 144;
+	let sy = 96;
+	let p = 24;
+	this._windowPauseSignSprite.bitmap = this._windowskin;
+	this._windowPauseSignSprite.anchor.x = 0.5;
+	this._windowPauseSignSprite.anchor.y = 1;
+	this._windowPauseSignSprite.move(this._width / 2, this._height);
+	this._windowPauseSignSprite.setFrame(sx, sy, p, p);
+	this._windowPauseSignSprite.alpha = 0;
 };
 
 /**
@@ -611,17 +611,17 @@ Window.prototype._refreshPauseSign = function () {
  * @private
  */
 Window.prototype._updateCursor = function () {
-    let blinkCount = this._animationCount % 40;
-    let cursorOpacity = this.contentsOpacity;
-    if (this.active) {
-        if (blinkCount < 20) {
-            cursorOpacity -= blinkCount * 8;
-        } else {
-            cursorOpacity -= (40 - blinkCount) * 8;
-        }
-    }
-    this._windowCursorSprite.alpha = cursorOpacity / 255;
-    this._windowCursorSprite.visible = this.isOpen();
+	let blinkCount = this._animationCount % 40;
+	let cursorOpacity = this.contentsOpacity;
+	if (this.active) {
+		if (blinkCount < 20) {
+			cursorOpacity -= blinkCount * 8;
+		} else {
+			cursorOpacity -= (40 - blinkCount) * 8;
+		}
+	}
+	this._windowCursorSprite.alpha = cursorOpacity / 255;
+	this._windowCursorSprite.visible = this.isOpen();
 };
 
 /**
@@ -629,14 +629,14 @@ Window.prototype._updateCursor = function () {
  * @private
  */
 Window.prototype._updateContents = function () {
-    let w = this._width - this._padding * 2;
-    let h = this._height - this._padding * 2;
-    if (w > 0 && h > 0) {
-        this._windowContentsSprite.setFrame(this.origin.x, this.origin.y, w, h);
-        this._windowContentsSprite.visible = this.isOpen();
-    } else {
-        this._windowContentsSprite.visible = false;
-    }
+	let w = this._width - this._padding * 2;
+	let h = this._height - this._padding * 2;
+	if (w > 0 && h > 0) {
+		this._windowContentsSprite.setFrame(this.origin.x, this.origin.y, w, h);
+		this._windowContentsSprite.visible = this.isOpen();
+	} else {
+		this._windowContentsSprite.visible = false;
+	}
 };
 
 /**
@@ -644,8 +644,8 @@ Window.prototype._updateContents = function () {
  * @private
  */
 Window.prototype._updateArrows = function () {
-    this._downArrowSprite.visible = this.isOpen() && this.downArrowVisible;
-    this._upArrowSprite.visible = this.isOpen() && this.upArrowVisible;
+	this._downArrowSprite.visible = this.isOpen() && this.downArrowVisible;
+	this._upArrowSprite.visible = this.isOpen() && this.upArrowVisible;
 };
 
 /**
@@ -653,19 +653,19 @@ Window.prototype._updateArrows = function () {
  * @private
  */
 Window.prototype._updatePauseSign = function () {
-    let sprite = this._windowPauseSignSprite;
-    let x = Math.floor(this._animationCount / 16) % 2;
-    let y = Math.floor(this._animationCount / 16 / 2) % 2;
-    let sx = 144;
-    let sy = 96;
-    let p = 24;
-    if (!this.pause) {
-        sprite.alpha = 0;
-    } else if (sprite.alpha < 1) {
-        sprite.alpha = Math.min(sprite.alpha + 0.1, 1);
-    }
-    sprite.setFrame(sx + x * p, sy + y * p, p, p);
-    sprite.visible = this.isOpen();
+	let sprite = this._windowPauseSignSprite;
+	let x = Math.floor(this._animationCount / 16) % 2;
+	let y = Math.floor(this._animationCount / 16 / 2) % 2;
+	let sx = 144;
+	let sy = 96;
+	let p = 24;
+	if (!this.pause) {
+		sprite.alpha = 0;
+	} else if (sprite.alpha < 1) {
+		sprite.alpha = Math.min(sprite.alpha + 0.1, 1);
+	}
+	sprite.setFrame(sx + x * p, sy + y * p, p, p);
+	sprite.visible = this.isOpen();
 };
 
 // The important members from Pixi.js
