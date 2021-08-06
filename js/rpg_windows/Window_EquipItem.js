@@ -56,7 +56,7 @@ Window_EquipItem.prototype.setStatusWindow = function (statusWindow) {
 Window_EquipItem.prototype.updateHelp = function () {
 	Window_ItemList.prototype.updateHelp.call(this);
 	if (this._actor && this._statusWindow) {
-		let actor = JsonEx.makeDeepCopy(this._actor);
+		const actor = JsonEx.makeDeepCopy(this._actor);
 		actor.forceChangeEquip(this._slotId, this.item());
 		this._statusWindow.setTempActor(actor);
 	}

@@ -83,7 +83,7 @@ Window_Base.prototype.fittingHeight = function (numLines) {
 };
 
 Window_Base.prototype.updateTone = function () {
-	let tone = $gameSystem.windowTone();
+	const tone = $gameSystem.windowTone();
 	this.setTone(tone[0], tone[1], tone[2]);
 };
 
@@ -172,8 +172,8 @@ Window_Base.prototype.deactivate = function () {
 };
 
 Window_Base.prototype.textColor = function (n) {
-	let px = 96 + (n % 8) * 12 + 6;
-	let py = 144 + Math.floor(n / 8) * 12 + 6;
+	const px = 96 + (n % 8) * 12 + 6;
+	const py = 144 + Math.floor(n / 8) * 12 + 6;
 	return this.windowskin.getPixel(px, py);
 };
 
@@ -263,7 +263,7 @@ Window_Base.prototype.textWidth = function (text) {
 
 Window_Base.prototype.drawTextEx = function (text, x, y) {
 	if (text) {
-		let textState = {
+		const textState = {
 			index: 0,
 			x: x,
 			y: y,
@@ -301,12 +301,12 @@ Window_Base.prototype.convertEscapeCharacters = function (text) {
 };
 
 Window_Base.prototype.actorName = function (n) {
-	let actor = n >= 1 ? $gameActors.actor(n) : null;
+	const actor = n >= 1 ? $gameActors.actor(n) : null;
 	return actor ? actor.name() : '';
 };
 
 Window_Base.prototype.partyMemberName = function (n) {
-	let actor = n >= 1 ? $gameParty.members()[n - 1] : null;
+	const actor = n >= 1 ? $gameParty.members()[n - 1] : null;
 	return actor ? actor.name() : '';
 };
 
@@ -328,8 +328,8 @@ Window_Base.prototype.processCharacter = function (textState) {
 };
 
 Window_Base.prototype.processNormalCharacter = function (textState) {
-	let c = textState.text[textState.index++];
-	let w = this.textWidth(c);
+	const c = textState.text[textState.index++];
+	const w = this.textWidth(c);
 	this.contents.drawText(c, textState.x, textState.y, w * 2, textState.height);
 	textState.x += w;
 };
@@ -347,8 +347,8 @@ Window_Base.prototype.processNewPage = function (textState) {
 
 Window_Base.prototype.obtainEscapeCode = function (textState) {
 	textState.index++;
-	let regExp = /^[\$\.\|\^!><\{\}\\]|^[A-Z]+/i;
-	let arr = regExp.exec(textState.text.slice(textState.index));
+	const regExp = /^[\$\.\|\^!><\{\}\\]|^[A-Z]+/i;
+	const arr = regExp.exec(textState.text.slice(textState.index));
 	if (arr) {
 		textState.index += arr[0].length;
 		return arr[0].toUpperCase();
@@ -358,7 +358,7 @@ Window_Base.prototype.obtainEscapeCode = function (textState) {
 };
 
 Window_Base.prototype.obtainEscapeParam = function (textState) {
-	let arr = /^\[\d+\]/.exec(textState.text.slice(textState.index));
+	const arr = /^\[\d+\]/.exec(textState.text.slice(textState.index));
 	if (arr) {
 		textState.index += arr[0].length;
 		return parseInt(arr[0].slice(1));
@@ -402,17 +402,17 @@ Window_Base.prototype.makeFontSmaller = function () {
 };
 
 Window_Base.prototype.calcTextHeight = function (textState, all) {
-	let lastFontSize = this.contents.fontSize;
+	const lastFontSize = this.contents.fontSize;
 	let textHeight = 0;
-	let lines = textState.text.slice(textState.index)
+	const lines = textState.text.slice(textState.index)
 		.split('\n');
-	let maxLines = all ? lines.length : 1;
+	const maxLines = all ? lines.length : 1;
 
 	for (let i = 0; i < maxLines; i++) {
 		let maxFontSize = this.contents.fontSize;
-		let regExp = /\x1b[\{\}]/g;
+		const regExp = /\x1b[\{\}]/g;
 		for (;;) {
-			let array = regExp.exec(lines[i]);
+			const array = regExp.exec(lines[i]);
 			if (array) {
 				if (array[0] === '\x1b{') {
 					this.makeFontBigger();
@@ -435,43 +435,43 @@ Window_Base.prototype.calcTextHeight = function (textState, all) {
 };
 
 Window_Base.prototype.drawIcon = function (iconIndex, x, y) {
-	let bitmap = ImageManager.loadSystem('IconSet');
-	let pw = Window_Base._iconWidth;
-	let ph = Window_Base._iconHeight;
-	let sx = iconIndex % 16 * pw;
-	let sy = Math.floor(iconIndex / 16) * ph;
+	const bitmap = ImageManager.loadSystem('IconSet');
+	const pw = Window_Base._iconWidth;
+	const ph = Window_Base._iconHeight;
+	const sx = iconIndex % 16 * pw;
+	const sy = Math.floor(iconIndex / 16) * ph;
 	this.contents.blt(bitmap, sx, sy, pw, ph, x, y);
 };
 
 Window_Base.prototype.drawFace = function (faceName, faceIndex, x, y, width, height) {
 	width = width || Window_Base._faceWidth;
 	height = height || Window_Base._faceHeight;
-	let bitmap = ImageManager.loadFace(faceName);
-	let pw = Window_Base._faceWidth;
-	let ph = Window_Base._faceHeight;
-	let sw = Math.min(width, pw);
-	let sh = Math.min(height, ph);
-	let dx = Math.floor(x + Math.max(width - pw, 0) / 2);
-	let dy = Math.floor(y + Math.max(height - ph, 0) / 2);
-	let sx = faceIndex % 4 * pw + (pw - sw) / 2;
-	let sy = Math.floor(faceIndex / 4) * ph + (ph - sh) / 2;
+	const bitmap = ImageManager.loadFace(faceName);
+	const pw = Window_Base._faceWidth;
+	const ph = Window_Base._faceHeight;
+	const sw = Math.min(width, pw);
+	const sh = Math.min(height, ph);
+	const dx = Math.floor(x + Math.max(width - pw, 0) / 2);
+	const dy = Math.floor(y + Math.max(height - ph, 0) / 2);
+	const sx = faceIndex % 4 * pw + (pw - sw) / 2;
+	const sy = Math.floor(faceIndex / 4) * ph + (ph - sh) / 2;
 	this.contents.blt(bitmap, sx, sy, sw, sh, dx, dy);
 };
 
 Window_Base.prototype.drawCharacter = function (characterName, characterIndex, x, y) {
-	let bitmap = ImageManager.loadCharacter(characterName);
-	let big = ImageManager.isBigCharacter(characterName);
-	let pw = bitmap.width / (big ? 3 : 12);
-	let ph = bitmap.height / (big ? 4 : 8);
-	let n = big ? 0 : characterIndex;
-	let sx = (n % 4 * 3 + 1) * pw;
-	let sy = (Math.floor(n / 4) * 4) * ph;
+	const bitmap = ImageManager.loadCharacter(characterName);
+	const big = ImageManager.isBigCharacter(characterName);
+	const pw = bitmap.width / (big ? 3 : 12);
+	const ph = bitmap.height / (big ? 4 : 8);
+	const n = big ? 0 : characterIndex;
+	const sx = (n % 4 * 3 + 1) * pw;
+	const sy = (Math.floor(n / 4) * 4) * ph;
 	this.contents.blt(bitmap, sx, sy, pw, ph, x - pw / 2, y - ph);
 };
 
 Window_Base.prototype.drawGauge = function (x, y, width, rate, color1, color2) {
-	let fillW = Math.floor(width * rate);
-	let gaugeY = y + this.lineHeight() - 8;
+	const fillW = Math.floor(width * rate);
+	const gaugeY = y + this.lineHeight() - 8;
 	this.contents.fillRect(x, gaugeY, width, 6, this.gaugeBackColor());
 	this.contents.gradientFillRect(x, gaugeY, fillW, 6, color1, color2);
 };
@@ -530,7 +530,7 @@ Window_Base.prototype.drawActorLevel = function (actor, x, y) {
 
 Window_Base.prototype.drawActorIcons = function (actor, x, y, width) {
 	width = width || 144;
-	let icons = actor.allIcons()
+	const icons = actor.allIcons()
 		.slice(0, Math.floor(width / Window_Base._iconWidth));
 	for (let i = 0; i < icons.length; i++) {
 		this.drawIcon(icons[i], x + Window_Base._iconWidth * i, y + 2);
@@ -539,12 +539,12 @@ Window_Base.prototype.drawActorIcons = function (actor, x, y, width) {
 
 Window_Base.prototype.drawCurrentAndMax = function (current, max, x, y,
 	width, color1, color2) {
-	let labelWidth = this.textWidth('HP');
-	let valueWidth = this.textWidth('0000');
-	let slashWidth = this.textWidth('/');
-	let x1 = x + width - valueWidth;
-	let x2 = x1 - slashWidth;
-	let x3 = x2 - valueWidth;
+	const labelWidth = this.textWidth('HP');
+	const valueWidth = this.textWidth('0000');
+	const slashWidth = this.textWidth('/');
+	const x1 = x + width - valueWidth;
+	const x2 = x1 - slashWidth;
+	const x3 = x2 - valueWidth;
 	if (x3 >= x + labelWidth) {
 		this.changeTextColor(color1);
 		this.drawText(current, x3, y, valueWidth, 'right');
@@ -559,8 +559,8 @@ Window_Base.prototype.drawCurrentAndMax = function (current, max, x, y,
 
 Window_Base.prototype.drawActorHp = function (actor, x, y, width) {
 	width = width || 186;
-	let color1 = this.hpGaugeColor1();
-	let color2 = this.hpGaugeColor2();
+	const color1 = this.hpGaugeColor1();
+	const color2 = this.hpGaugeColor2();
 	this.drawGauge(x, y, width, actor.hpRate(), color1, color2);
 	this.changeTextColor(this.systemColor());
 	this.drawText(TextManager.hpA, x, y, 44);
@@ -570,8 +570,8 @@ Window_Base.prototype.drawActorHp = function (actor, x, y, width) {
 
 Window_Base.prototype.drawActorMp = function (actor, x, y, width) {
 	width = width || 186;
-	let color1 = this.mpGaugeColor1();
-	let color2 = this.mpGaugeColor2();
+	const color1 = this.mpGaugeColor1();
+	const color2 = this.mpGaugeColor2();
 	this.drawGauge(x, y, width, actor.mpRate(), color1, color2);
 	this.changeTextColor(this.systemColor());
 	this.drawText(TextManager.mpA, x, y, 44);
@@ -581,8 +581,8 @@ Window_Base.prototype.drawActorMp = function (actor, x, y, width) {
 
 Window_Base.prototype.drawActorTp = function (actor, x, y, width) {
 	width = width || 96;
-	let color1 = this.tpGaugeColor1();
-	let color2 = this.tpGaugeColor2();
+	const color1 = this.tpGaugeColor1();
+	const color2 = this.tpGaugeColor2();
 	this.drawGauge(x, y, width, actor.tpRate(), color1, color2);
 	this.changeTextColor(this.systemColor());
 	this.drawText(TextManager.tpA, x, y, 44);
@@ -591,9 +591,9 @@ Window_Base.prototype.drawActorTp = function (actor, x, y, width) {
 };
 
 Window_Base.prototype.drawActorSimpleStatus = function (actor, x, y, width) {
-	let lineHeight = this.lineHeight();
-	let x2 = x + 180;
-	let width2 = Math.min(200, width - 180 - this.textPadding());
+	const lineHeight = this.lineHeight();
+	const x2 = x + 180;
+	const width2 = Math.min(200, width - 180 - this.textPadding());
 	this.drawActorName(actor, x, y);
 	this.drawActorLevel(actor, x, y + lineHeight * 1);
 	this.drawActorIcons(actor, x, y + lineHeight * 2);
@@ -605,7 +605,7 @@ Window_Base.prototype.drawActorSimpleStatus = function (actor, x, y, width) {
 Window_Base.prototype.drawItemName = function (item, x, y, width) {
 	width = width || 312;
 	if (item) {
-		let iconBoxWidth = Window_Base._iconWidth + 4;
+		const iconBoxWidth = Window_Base._iconWidth + 4;
 		this.resetTextColor();
 		this.drawIcon(item.iconIndex, x + 2, y + 2);
 		this.drawText(item.name, x + iconBoxWidth, y, width - iconBoxWidth);
@@ -613,7 +613,7 @@ Window_Base.prototype.drawItemName = function (item, x, y, width) {
 };
 
 Window_Base.prototype.drawCurrencyValue = function (value, unit, x, y, width) {
-	let unitWidth = Math.min(80, this.textWidth(unit));
+	const unitWidth = Math.min(80, this.textWidth(unit));
 	this.resetTextColor();
 	this.drawText(value, x, y, width - unitWidth - 6, 'right');
 	this.changeTextColor(this.systemColor());
@@ -649,7 +649,7 @@ Window_Base.prototype.showBackgroundDimmer = function () {
 		this._dimmerSprite.bitmap = new Bitmap(0, 0);
 		this.addChildToBack(this._dimmerSprite);
 	}
-	let bitmap = this._dimmerSprite.bitmap;
+	const bitmap = this._dimmerSprite.bitmap;
 	if (bitmap.width !== this.width || bitmap.height !== this.height) {
 		this.refreshDimmerBitmap();
 	}
@@ -671,12 +671,12 @@ Window_Base.prototype.updateBackgroundDimmer = function () {
 
 Window_Base.prototype.refreshDimmerBitmap = function () {
 	if (this._dimmerSprite) {
-		let bitmap = this._dimmerSprite.bitmap;
-		let w = this.width;
-		let h = this.height;
-		let m = this.padding;
-		let c1 = this.dimColor1();
-		let c2 = this.dimColor2();
+		const bitmap = this._dimmerSprite.bitmap;
+		const w = this.width;
+		const h = this.height;
+		const m = this.padding;
+		const c1 = this.dimColor1();
+		const c2 = this.dimColor2();
 		bitmap.resize(w, h);
 		bitmap.gradientFillRect(0, 0, w, m, c2, c1, true);
 		bitmap.fillRect(0, m, w, h - m * 2, c1);

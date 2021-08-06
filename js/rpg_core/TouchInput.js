@@ -246,7 +246,7 @@ Object.defineProperty(TouchInput, 'date', {
  * @private
  */
 TouchInput._setupEventHandlers = function () {
-	let isSupportPassive = Utils.isSupportPassiveEvent();
+	const isSupportPassive = Utils.isSupportPassiveEvent();
 	document.addEventListener('mousedown', this._onMouseDown.bind(this));
 	document.addEventListener('mousemove', this._onMouseMove.bind(this));
 	document.addEventListener('mouseup', this._onMouseUp.bind(this));
@@ -288,8 +288,8 @@ TouchInput._onMouseDown = function (event) {
  * @private
  */
 TouchInput._onLeftButtonDown = function (event) {
-	let x = Graphics.pageToCanvasX(event.pageX);
-	let y = Graphics.pageToCanvasY(event.pageY);
+	const x = Graphics.pageToCanvasX(event.pageX);
+	const y = Graphics.pageToCanvasY(event.pageY);
 	if (Graphics.isInsideCanvas(x, y)) {
 		this._mousePressed = true;
 		this._pressedTime = 0;
@@ -312,8 +312,8 @@ TouchInput._onMiddleButtonDown = function (event) {};
  * @private
  */
 TouchInput._onRightButtonDown = function (event) {
-	let x = Graphics.pageToCanvasX(event.pageX);
-	let y = Graphics.pageToCanvasY(event.pageY);
+	const x = Graphics.pageToCanvasX(event.pageX);
+	const y = Graphics.pageToCanvasY(event.pageY);
 	if (Graphics.isInsideCanvas(x, y)) {
 		this._onCancel(x, y);
 	}
@@ -327,8 +327,8 @@ TouchInput._onRightButtonDown = function (event) {
  */
 TouchInput._onMouseMove = function (event) {
 	if (this._mousePressed) {
-		let x = Graphics.pageToCanvasX(event.pageX);
-		let y = Graphics.pageToCanvasY(event.pageY);
+		const x = Graphics.pageToCanvasX(event.pageX);
+		const y = Graphics.pageToCanvasY(event.pageY);
 		this._onMove(x, y);
 	}
 };
@@ -341,8 +341,8 @@ TouchInput._onMouseMove = function (event) {
  */
 TouchInput._onMouseUp = function (event) {
 	if (event.button === 0) {
-		let x = Graphics.pageToCanvasX(event.pageX);
-		let y = Graphics.pageToCanvasY(event.pageY);
+		const x = Graphics.pageToCanvasX(event.pageX);
+		const y = Graphics.pageToCanvasY(event.pageY);
 		this._mousePressed = false;
 		this._onRelease(x, y);
 	}
@@ -368,9 +368,9 @@ TouchInput._onWheel = function (event) {
  */
 TouchInput._onTouchStart = function (event) {
 	for (let i = 0; i < event.changedTouches.length; i++) {
-		let touch = event.changedTouches[i];
-		let x = Graphics.pageToCanvasX(touch.pageX);
-		let y = Graphics.pageToCanvasY(touch.pageY);
+		const touch = event.changedTouches[i];
+		const x = Graphics.pageToCanvasX(touch.pageX);
+		const y = Graphics.pageToCanvasY(touch.pageY);
 		if (Graphics.isInsideCanvas(x, y)) {
 			this._screenPressed = true;
 			this._pressedTime = 0;
@@ -395,9 +395,9 @@ TouchInput._onTouchStart = function (event) {
  */
 TouchInput._onTouchMove = function (event) {
 	for (let i = 0; i < event.changedTouches.length; i++) {
-		let touch = event.changedTouches[i];
-		let x = Graphics.pageToCanvasX(touch.pageX);
-		let y = Graphics.pageToCanvasY(touch.pageY);
+		const touch = event.changedTouches[i];
+		const x = Graphics.pageToCanvasX(touch.pageX);
+		const y = Graphics.pageToCanvasY(touch.pageY);
 		this._onMove(x, y);
 	}
 };
@@ -410,9 +410,9 @@ TouchInput._onTouchMove = function (event) {
  */
 TouchInput._onTouchEnd = function (event) {
 	for (let i = 0; i < event.changedTouches.length; i++) {
-		let touch = event.changedTouches[i];
-		let x = Graphics.pageToCanvasX(touch.pageX);
-		let y = Graphics.pageToCanvasY(touch.pageY);
+		const touch = event.changedTouches[i];
+		const x = Graphics.pageToCanvasX(touch.pageX);
+		const y = Graphics.pageToCanvasY(touch.pageY);
 		this._screenPressed = false;
 		this._onRelease(x, y);
 	}
@@ -436,8 +436,8 @@ TouchInput._onTouchCancel = function (event) {
  */
 TouchInput._onPointerDown = function (event) {
 	if (event.pointerType === 'touch' && !event.isPrimary) {
-		let x = Graphics.pageToCanvasX(event.pageX);
-		let y = Graphics.pageToCanvasY(event.pageY);
+		const x = Graphics.pageToCanvasX(event.pageX);
+		const y = Graphics.pageToCanvasY(event.pageY);
 		if (Graphics.isInsideCanvas(x, y)) {
 			// For Microsoft Edge
 			this._onCancel(x, y);

@@ -39,7 +39,7 @@ Window_MenuCommand.prototype.makeCommandList = function () {
 };
 
 Window_MenuCommand.prototype.addMainCommands = function () {
-	let enabled = this.areMainCommandsEnabled();
+	const enabled = this.areMainCommandsEnabled();
 	if (this.needsCommand('item')) {
 		this.addCommand(TextManager.item, 'item', enabled);
 	}
@@ -56,7 +56,7 @@ Window_MenuCommand.prototype.addMainCommands = function () {
 
 Window_MenuCommand.prototype.addFormationCommand = function () {
 	if (this.needsCommand('formation')) {
-		let enabled = this.isFormationEnabled();
+		const enabled = this.isFormationEnabled();
 		this.addCommand(TextManager.formation, 'formation', enabled);
 	}
 };
@@ -65,25 +65,25 @@ Window_MenuCommand.prototype.addOriginalCommands = function () {};
 
 Window_MenuCommand.prototype.addOptionsCommand = function () {
 	if (this.needsCommand('options')) {
-		let enabled = this.isOptionsEnabled();
+		const enabled = this.isOptionsEnabled();
 		this.addCommand(TextManager.options, 'options', enabled);
 	}
 };
 
 Window_MenuCommand.prototype.addSaveCommand = function () {
 	if (this.needsCommand('save')) {
-		let enabled = this.isSaveEnabled();
+		const enabled = this.isSaveEnabled();
 		this.addCommand(TextManager.save, 'save', enabled);
 	}
 };
 
 Window_MenuCommand.prototype.addGameEndCommand = function () {
-	let enabled = this.isGameEndEnabled();
+	const enabled = this.isGameEndEnabled();
 	this.addCommand(TextManager.gameEnd, 'gameEnd', enabled);
 };
 
 Window_MenuCommand.prototype.needsCommand = function (name) {
-	let flags = $dataSystem.menuCommands;
+	const flags = $dataSystem.menuCommands;
 	if (flags) {
 		switch (name) {
 		case 'item':

@@ -75,8 +75,8 @@ ImageManager.loadTitle2 = function (filename, hue) {
 
 ImageManager.loadBitmap = function (folder, filename, hue, smooth) {
 	if (filename) {
-		let path = folder + encodeURIComponent(filename) + '.png';
-		let bitmap = this.loadNormalBitmap(path, hue || 0);
+		const path = folder + encodeURIComponent(filename) + '.png';
+		const bitmap = this.loadNormalBitmap(path, hue || 0);
 		bitmap.smooth = false;
 		return bitmap;
 	} else {
@@ -96,7 +96,7 @@ ImageManager.loadEmptyBitmap = function () {
 };
 
 ImageManager.loadNormalBitmap = function (path, hue) {
-	let key = this._generateCacheKey(path, hue);
+	const key = this._generateCacheKey(path, hue);
 	let bitmap = this._imageCache.get(key);
 	if (!bitmap) {
 		bitmap = Bitmap.load(path);
@@ -122,12 +122,12 @@ ImageManager.isReady = function () {
 };
 
 ImageManager.isObjectCharacter = function (filename) {
-	let sign = filename.match(/^[\!\$]+/);
+	const sign = filename.match(/^[\!\$]+/);
 	return sign && sign[0].contains('!');
 };
 
 ImageManager.isBigCharacter = function (filename) {
-	let sign = filename.match(/^[\!\$]+/);
+	const sign = filename.match(/^[\!\$]+/);
 	return sign && sign[0].contains('$');
 };
 
@@ -194,8 +194,8 @@ ImageManager.reserveTitle2 = function (filename, hue, reservationId) {
 
 ImageManager.reserveBitmap = function (folder, filename, hue, smooth, reservationId) {
 	if (filename) {
-		let path = folder + encodeURIComponent(filename) + '.png';
-		let bitmap = this.reserveNormalBitmap(path, hue || 0, reservationId || this._defaultReservationId);
+		const path = folder + encodeURIComponent(filename) + '.png';
+		const bitmap = this.reserveNormalBitmap(path, hue || 0, reservationId || this._defaultReservationId);
 		bitmap.smooth = false;
 		return bitmap;
 	} else {
@@ -204,7 +204,7 @@ ImageManager.reserveBitmap = function (folder, filename, hue, smooth, reservatio
 };
 
 ImageManager.reserveNormalBitmap = function (path, hue, reservationId) {
-	let bitmap = this.loadNormalBitmap(path, hue);
+	const bitmap = this.loadNormalBitmap(path, hue);
 	this._imageCache.reserve(this._generateCacheKey(path, hue), bitmap, reservationId);
 
 	return bitmap;
@@ -277,8 +277,8 @@ ImageManager.requestTitle2 = function (filename, hue) {
 
 ImageManager.requestBitmap = function (folder, filename, hue, smooth) {
 	if (filename) {
-		let path = folder + encodeURIComponent(filename) + '.png';
-		let bitmap = this.requestNormalBitmap(path, hue || 0);
+		const path = folder + encodeURIComponent(filename) + '.png';
+		const bitmap = this.requestNormalBitmap(path, hue || 0);
 		bitmap.smooth = false;
 		return bitmap;
 	} else {
@@ -287,7 +287,7 @@ ImageManager.requestBitmap = function (folder, filename, hue, smooth) {
 };
 
 ImageManager.requestNormalBitmap = function (path, hue) {
-	let key = this._generateCacheKey(path, hue);
+	const key = this._generateCacheKey(path, hue);
 	let bitmap = this._imageCache.get(key);
 	if (!bitmap) {
 		bitmap = Bitmap.request(path);

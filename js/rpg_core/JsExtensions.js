@@ -40,7 +40,7 @@ Number.prototype.mod = function (n) {
  * @return {String} A formatted string
  */
 String.prototype.format = function () {
-	let args = arguments;
+	const args = arguments;
 	return this.replace(/%([0-9]+)/g, function (s, n) {
 		return args[Number(n) - 1];
 	});

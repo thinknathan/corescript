@@ -56,8 +56,8 @@ Bitmap.prototype._createCanvas = function (width, height) {
 	this.__canvas.height = Math.max(height || 0, 1);
 
 	if (this._image) {
-		let w = Math.max(this._image.width || 0, 1);
-		let h = Math.max(this._image.height || 0, 1);
+		const w = Math.max(this._image.width || 0, 1);
+		const h = Math.max(this._image.height || 0, 1);
 		this.__canvas.width = w;
 		this.__canvas.height = h;
 		this._createBaseTexture(this._canvas);
@@ -116,7 +116,7 @@ Object.defineProperties(Bitmap.prototype, {
 });
 
 Bitmap.prototype._renewCanvas = function () {
-	let newImage = this._image;
+	const newImage = this._image;
 	if (newImage && this.__canvas && (this.__canvas.width < newImage.width || this.__canvas.height < newImage.height)) {
 		this._createCanvas();
 	}
@@ -199,7 +199,7 @@ Bitmap.prototype.initialize = function (width, height) {
  * @return Bitmap
  */
 Bitmap.load = function (url) {
-	let bitmap = Object.create(Bitmap.prototype);
+	const bitmap = Object.create(Bitmap.prototype);
 	bitmap._defer = true;
 	bitmap.initialize();
 
@@ -218,11 +218,11 @@ Bitmap.load = function (url) {
  * @return Bitmap
  */
 Bitmap.snap = function (stage) {
-	let width = Graphics.width;
-	let height = Graphics.height;
-	let bitmap = new Bitmap(width, height);
-	let context = bitmap._context;
-	let renderTexture = PIXI.RenderTexture.create(width, height);
+	const width = Graphics.width;
+	const height = Graphics.height;
+	const bitmap = new Bitmap(width, height);
+	const context = bitmap._context;
+	const renderTexture = PIXI.RenderTexture.create(width, height);
 	if (stage) {
 		Graphics._renderer.render(stage, renderTexture);
 		stage.worldTransform.identity();
@@ -485,7 +485,7 @@ Bitmap.prototype.bltImage = function (source, sx, sy, sw, sh, dx, dy, dw, dh) {
  * @return {String} The pixel color (hex format)
  */
 Bitmap.prototype.getPixel = function (x, y) {
-	let data = this._context.getImageData(x, y, 1, 1)
+	const data = this._context.getImageData(x, y, 1, 1)
 		.data;
 	let result = '#';
 	for (let i = 0; i < 3; i++) {
@@ -504,7 +504,7 @@ Bitmap.prototype.getPixel = function (x, y) {
  * @return {String} The alpha value
  */
 Bitmap.prototype.getAlphaPixel = function (x, y) {
-	let data = this._context.getImageData(x, y, 1, 1)
+	const data = this._context.getImageData(x, y, 1, 1)
 		.data;
 	return data[3];
 };
@@ -543,7 +543,7 @@ Bitmap.prototype.clear = function () {
  * @param {String} color The color of the rectangle in CSS format
  */
 Bitmap.prototype.fillRect = function (x, y, width, height, color) {
-	let context = this._context;
+	const context = this._context;
 	context.save();
 	context.fillStyle = color;
 	context.fillRect(x, y, width, height);
@@ -575,7 +575,7 @@ Bitmap.prototype.fillAll = function (color) {
  */
 Bitmap.prototype.gradientFillRect = function (x, y, width, height, color1,
 	color2, vertical) {
-	let context = this._context;
+	const context = this._context;
 	let grad;
 	if (vertical) {
 		grad = context.createLinearGradient(x, y, x, y + height);
@@ -601,7 +601,7 @@ Bitmap.prototype.gradientFillRect = function (x, y, width, height, color1,
  * @param {String} color The color of the circle in CSS format
  */
 Bitmap.prototype.drawCircle = function (x, y, radius, color) {
-	let context = this._context;
+	const context = this._context;
 	context.save();
 	context.fillStyle = color;
 	context.beginPath();
@@ -633,9 +633,9 @@ Bitmap.prototype.drawText = function (text, x, y, maxWidth, lineHeight, align) {
 		}
 		*/
 		let tx = x;
-		let ty = y + lineHeight - Math.round((lineHeight - this.fontSize * 0.7) / 2);
-		let context = this._context;
-		let alpha = context.globalAlpha;
+		const ty = y + lineHeight - Math.round((lineHeight - this.fontSize * 0.7) / 2);
+		const context = this._context;
+		const alpha = context.globalAlpha;
 		maxWidth = maxWidth || 0xffffffff;
 		if (align === 'center') {
 			tx += maxWidth / 2;
@@ -669,8 +669,8 @@ Bitmap.prototype.drawText = function (text, x, y, maxWidth, lineHeight, align) {
  */
 Bitmap.prototype.drawSmallText = function (text, x, y, maxWidth, lineHeight, align) {
 	/*
-	let minFontSize = Bitmap.minFontSize;
-	let bitmap = Bitmap.drawSmallTextBitmap;
+	const minFontSize = Bitmap.minFontSize;
+	const bitmap = Bitmap.drawSmallTextBitmap;
 	bitmap.fontFace = this.fontFace;
 	bitmap.fontSize = minFontSize;
 	bitmap.fontItalic = this.fontItalic;
@@ -678,14 +678,14 @@ Bitmap.prototype.drawSmallText = function (text, x, y, maxWidth, lineHeight, ali
 	bitmap.outlineColor = this.outlineColor;
 	bitmap.outlineWidth = this.outlineWidth * minFontSize / this.fontSize;
 	maxWidth = maxWidth || 816;
-	let height = this.fontSize * 1.5;
-	let scaledMaxWidth = maxWidth * minFontSize / this.fontSize;
-	let scaledMaxWidthWithOutline = scaledMaxWidth + bitmap.outlineWidth * 2;
-	let scaledHeight = height * minFontSize / this.fontSize;
-	let scaledHeightWithOutline = scaledHeight + bitmap.outlineWidth * 2;
+	const height = this.fontSize * 1.5;
+	const scaledMaxWidth = maxWidth * minFontSize / this.fontSize;
+	const scaledMaxWidthWithOutline = scaledMaxWidth + bitmap.outlineWidth * 2;
+	const scaledHeight = height * minFontSize / this.fontSize;
+	const scaledHeightWithOutline = scaledHeight + bitmap.outlineWidth * 2;
 
-	let bitmapWidth = bitmap.width;
-	let bitmapHeight = bitmap.height;
+	const bitmapWidth = bitmap.width;
+	const bitmapHeight = bitmap.height;
 	while (scaledMaxWidthWithOutline > bitmapWidth) bitmapWidth *= 2;
 	while (scaledHeightWithOutline > bitmapHeight) bitmapHeight *= 2;
 	if (bitmap.width !== bitmapWidth || bitmap.height !== bitmapHeight) bitmap.resize(bitmapWidth, bitmapHeight);
@@ -705,10 +705,10 @@ Bitmap.prototype.drawSmallText = function (text, x, y, maxWidth, lineHeight, ali
  * @return {Number} The width of the text in pixels
  */
 Bitmap.prototype.measureTextWidth = function (text) {
-	let context = this._context;
+	const context = this._context;
 	context.save();
 	context.font = this._makeFontNameText();
-	let width = context.measureText(text)
+	const width = context.measureText(text)
 		.width;
 	context.restore();
 	return width;
@@ -724,9 +724,9 @@ Bitmap.prototype.measureTextWidth = function (text) {
  */
 Bitmap.prototype.adjustTone = function (r, g, b) {
 	if ((r || g || b) && this.width > 0 && this.height > 0) {
-		let context = this._context;
-		let imageData = context.getImageData(0, 0, this.width, this.height);
-		let pixels = imageData.data;
+		const context = this._context;
+		const imageData = context.getImageData(0, 0, this.width, this.height);
+		const pixels = imageData.data;
 		for (let i = 0; i < pixels.length; i += 4) {
 			pixels[i + 0] += r;
 			pixels[i + 1] += g;
@@ -745,12 +745,12 @@ Bitmap.prototype.adjustTone = function (r, g, b) {
  */
 Bitmap.prototype.rotateHue = function (offset) {
 	function rgbToHsl(r, g, b) {
-		let cmin = Math.min(r, g, b);
-		let cmax = Math.max(r, g, b);
+		const cmin = Math.min(r, g, b);
+		const cmax = Math.max(r, g, b);
 		let h = 0;
 		let s = 0;
-		let l = (cmin + cmax) / 2;
-		let delta = cmax - cmin;
+		const l = (cmin + cmax) / 2;
+		const delta = cmax - cmin;
 
 		if (delta > 0) {
 			if (r === cmax) {
@@ -766,11 +766,11 @@ Bitmap.prototype.rotateHue = function (offset) {
 	}
 
 	function hslToRgb(h, s, l) {
-		let c = (255 - Math.abs(2 * l - 255)) * s;
-		let x = c * (1 - Math.abs((h / 60) % 2 - 1));
-		let m = l - c / 2;
-		let cm = c + m;
-		let xm = x + m;
+		const c = (255 - Math.abs(2 * l - 255)) * s;
+		const x = c * (1 - Math.abs((h / 60) % 2 - 1));
+		const m = l - c / 2;
+		const cm = c + m;
+		const xm = x + m;
 
 		if (h < 60) {
 			return [cm, xm, m];
@@ -789,15 +789,15 @@ Bitmap.prototype.rotateHue = function (offset) {
 
 	if (offset && this.width > 0 && this.height > 0) {
 		offset = ((offset % 360) + 360) % 360;
-		let context = this._context;
-		let imageData = context.getImageData(0, 0, this.width, this.height);
-		let pixels = imageData.data;
+		const context = this._context;
+		const imageData = context.getImageData(0, 0, this.width, this.height);
+		const pixels = imageData.data;
 		for (let i = 0; i < pixels.length; i += 4) {
-			let hsl = rgbToHsl(pixels[i + 0], pixels[i + 1], pixels[i + 2]);
-			let h = (hsl[0] + offset) % 360;
-			let s = hsl[1];
-			let l = hsl[2];
-			let rgb = hslToRgb(h, s, l);
+			const hsl = rgbToHsl(pixels[i + 0], pixels[i + 1], pixels[i + 2]);
+			const h = (hsl[0] + offset) % 360;
+			const s = hsl[1];
+			const l = hsl[2];
+			const rgb = hslToRgb(h, s, l);
 			pixels[i + 0] = rgb[0];
 			pixels[i + 1] = rgb[1];
 			pixels[i + 2] = rgb[2];
@@ -815,12 +815,12 @@ Bitmap.prototype.rotateHue = function (offset) {
  */
 Bitmap.prototype.blur = function () {
 	for (let i = 0; i < 2; i++) {
-		let w = this.width;
-		let h = this.height;
-		let canvas = this._canvas;
-		let context = this._context;
-		let tempCanvas = document.createElement('canvas');
-		let tempContext = tempCanvas.getContext('2d');
+		const w = this.width;
+		const h = this.height;
+		const canvas = this._canvas;
+		const context = this._context;
+		const tempCanvas = document.createElement('canvas');
+		const tempContext = tempCanvas.getContext('2d');
 		console.warn('Blur on canvas is slow.');
 		tempCanvas.width = w + 2;
 		tempCanvas.height = h + 2;
@@ -876,7 +876,7 @@ Bitmap.prototype._makeFontNameText = function () {
  * @private
  */
 Bitmap.prototype._drawTextOutline = function (text, tx, ty, maxWidth) {
-	let context = this._context;
+	const context = this._context;
 	context.strokeStyle = this.outlineColor;
 	context.lineWidth = this.outlineWidth;
 	context.lineJoin = 'round';
@@ -892,7 +892,7 @@ Bitmap.prototype._drawTextOutline = function (text, tx, ty, maxWidth) {
  * @private
  */
 Bitmap.prototype._drawTextBody = function (text, tx, ty, maxWidth) {
-	let context = this._context;
+	const context = this._context;
 	context.fillStyle = this.textColor;
 	context.fillText(text, tx, ty, maxWidth);
 };
@@ -967,7 +967,7 @@ Bitmap.prototype.decode = function () {
  */
 Bitmap.prototype._callLoadListeners = function () {
 	while (this._loadListeners.length > 0) {
-		let listener = this._loadListeners.shift();
+		const listener = this._loadListeners.shift();
 		listener(this);
 	}
 };
@@ -997,7 +997,7 @@ Bitmap.prototype._setDirty = function () {
 Bitmap.prototype.checkDirty = function () {
 	if (this._dirty) {
 		this._baseTexture.update();
-		let baseTexture = this._baseTexture;
+		const baseTexture = this._baseTexture;
 		setTimeout(function () {
 			baseTexture.update();
 		}, 0);
@@ -1006,7 +1006,7 @@ Bitmap.prototype.checkDirty = function () {
 };
 
 Bitmap.request = function (url) {
-	let bitmap = Object.create(Bitmap.prototype);
+	const bitmap = Object.create(Bitmap.prototype);
 	bitmap._defer = true;
 	bitmap.initialize();
 

@@ -30,9 +30,9 @@ Scene_Equip.prototype.createStatusWindow = function () {
 };
 
 Scene_Equip.prototype.createCommandWindow = function () {
-	let wx = this._statusWindow.width;
-	let wy = this._helpWindow.height;
-	let ww = Graphics.boxWidth - this._statusWindow.width;
+	const wx = this._statusWindow.width;
+	const wy = this._helpWindow.height;
+	const ww = Graphics.boxWidth - this._statusWindow.width;
 	this._commandWindow = new Window_EquipCommand(wx, wy, ww);
 	this._commandWindow.setHelpWindow(this._helpWindow);
 	this._commandWindow.setHandler('equip', this.commandEquip.bind(this));
@@ -45,10 +45,10 @@ Scene_Equip.prototype.createCommandWindow = function () {
 };
 
 Scene_Equip.prototype.createSlotWindow = function () {
-	let wx = this._statusWindow.width;
-	let wy = this._commandWindow.y + this._commandWindow.height;
-	let ww = Graphics.boxWidth - this._statusWindow.width;
-	let wh = this._statusWindow.height - this._commandWindow.height;
+	const wx = this._statusWindow.width;
+	const wy = this._commandWindow.y + this._commandWindow.height;
+	const ww = Graphics.boxWidth - this._statusWindow.width;
+	const wh = this._statusWindow.height - this._commandWindow.height;
 	this._slotWindow = new Window_EquipSlot(wx, wy, ww, wh);
 	this._slotWindow.setHelpWindow(this._helpWindow);
 	this._slotWindow.setStatusWindow(this._statusWindow);
@@ -58,10 +58,10 @@ Scene_Equip.prototype.createSlotWindow = function () {
 };
 
 Scene_Equip.prototype.createItemWindow = function () {
-	let wx = 0;
-	let wy = this._statusWindow.y + this._statusWindow.height;
-	let ww = Graphics.boxWidth;
-	let wh = Graphics.boxHeight - wy;
+	const wx = 0;
+	const wy = this._statusWindow.y + this._statusWindow.height;
+	const ww = Graphics.boxWidth;
+	const wh = Graphics.boxHeight - wy;
 	this._itemWindow = new Window_EquipItem(wx, wy, ww, wh);
 	this._itemWindow.setHelpWindow(this._helpWindow);
 	this._itemWindow.setStatusWindow(this._statusWindow);
@@ -72,7 +72,7 @@ Scene_Equip.prototype.createItemWindow = function () {
 };
 
 Scene_Equip.prototype.refreshActor = function () {
-	let actor = this.actor();
+	const actor = this.actor();
 	this._statusWindow.setActor(actor);
 	this._slotWindow.setActor(actor);
 	this._itemWindow.setActor(actor);

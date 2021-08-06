@@ -74,7 +74,7 @@ ShaderTilemap.prototype.refresh = function () {
  * @method updateBitmaps
  */
 ShaderTilemap.prototype.refreshTileset = function () {
-	let bitmaps = this.bitmaps.map(function (x) {
+	const bitmaps = this.bitmaps.map(function (x) {
 		return x._baseTexture ? new PIXI.Texture(x._baseTexture) : x;
 	});
 	this.lowerLayer.setBitmaps(bitmaps);
@@ -86,10 +86,10 @@ ShaderTilemap.prototype.refreshTileset = function () {
  * @private
  */
 ShaderTilemap.prototype.updateTransform = function () {
-	let ox = Math.floor(this.origin.x);
-	let oy = Math.floor(this.origin.y);
-	let startX = Math.floor((ox - this._margin) / this._tileWidth);
-	let startY = Math.floor((oy - this._margin) / this._tileHeight);
+	const ox = Math.floor(this.origin.x);
+	const oy = Math.floor(this.origin.y);
+	const startX = Math.floor((ox - this._margin) / this._tileWidth);
+	const startY = Math.floor((oy - this._margin) / this._tileHeight);
 	this._updateLayerPositions(startX, startY);
 	if (this._needsRepaint ||
 		this._lastStartX !== startX || this._lastStartY !== startY) {
@@ -127,8 +127,8 @@ ShaderTilemap.prototype._createLayers = function () {
  * @private
  */
 ShaderTilemap.prototype._updateLayerPositions = function (startX, startY) {
-	let ox = Math.floor(this.origin.x);
-	let oy = Math.floor(this.origin.y);
+	const ox = Math.floor(this.origin.x);
+	const oy = Math.floor(this.origin.y);
 	this.lowerZLayer.position.x = startX * this._tileWidth - ox;
 	this.lowerZLayer.position.y = startY * this._tileHeight - oy;
 	this.upperZLayer.position.x = startX * this._tileWidth - ox;
@@ -144,8 +144,8 @@ ShaderTilemap.prototype._updateLayerPositions = function (startX, startY) {
 ShaderTilemap.prototype._paintAllTiles = function (startX, startY) {
 	this.lowerZLayer.clear();
 	this.upperZLayer.clear();
-	let tileCols = Math.ceil(this._width / this._tileWidth) + 1;
-	let tileRows = Math.ceil(this._height / this._tileHeight) + 1;
+	const tileCols = Math.ceil(this._width / this._tileWidth) + 1;
+	const tileRows = Math.ceil(this._height / this._tileHeight) + 1;
 	for (let y = 0; y < tileRows; y++) {
 		for (let x = 0; x < tileCols; x++) {
 			this._paintTiles(startX, startY, x, y);
@@ -162,18 +162,18 @@ ShaderTilemap.prototype._paintAllTiles = function (startX, startY) {
  * @private
  */
 ShaderTilemap.prototype._paintTiles = function (startX, startY, x, y) {
-	let mx = startX + x;
-	let my = startY + y;
-	let dx = x * this._tileWidth,
+	const mx = startX + x;
+	const my = startY + y;
+	const dx = x * this._tileWidth,
 		dy = y * this._tileHeight;
-	let tileId0 = this._readMapData(mx, my, 0);
-	let tileId1 = this._readMapData(mx, my, 1);
-	let tileId2 = this._readMapData(mx, my, 2);
-	let tileId3 = this._readMapData(mx, my, 3);
-	let shadowBits = this._readMapData(mx, my, 4);
-	let upperTileId1 = this._readMapData(mx, my - 1, 1);
-	let lowerLayer = this.lowerLayer.children[0];
-	let upperLayer = this.upperLayer.children[0];
+	const tileId0 = this._readMapData(mx, my, 0);
+	const tileId1 = this._readMapData(mx, my, 1);
+	const tileId2 = this._readMapData(mx, my, 2);
+	const tileId3 = this._readMapData(mx, my, 3);
+	const shadowBits = this._readMapData(mx, my, 4);
+	const upperTileId1 = this._readMapData(mx, my - 1, 1);
+	const lowerLayer = this.lowerLayer.children[0];
+	const upperLayer = this.upperLayer.children[0];
 
 	if (this._isHigherTile(tileId0)) {
 		this._drawTile(upperLayer, tileId0, dx, dy);
@@ -245,10 +245,10 @@ ShaderTilemap.prototype._drawNormalTile = function (layer, tileId, dx, dy) {
 		setNumber = 5 + Math.floor(tileId / 256);
 	}
 
-	let w = this._tileWidth;
-	let h = this._tileHeight;
-	let sx = (Math.floor(tileId / 128) % 2 * 8 + tileId % 8) * w;
-	let sy = (Math.floor(tileId % 256 / 8) % 16) * h;
+	const w = this._tileWidth;
+	const h = this._tileHeight;
+	const sx = (Math.floor(tileId / 128) % 2 * 8 + tileId % 8) * w;
+	const sy = (Math.floor(tileId % 256 / 8) % 16) * h;
 
 	layer.addRect(setNumber, sx, sy, dx, dy, w, h);
 };
@@ -263,10 +263,10 @@ ShaderTilemap.prototype._drawNormalTile = function (layer, tileId, dx, dy) {
  */
 ShaderTilemap.prototype._drawAutotile = function (layer, tileId, dx, dy) {
 	let autotileTable = Tilemap.FLOOR_AUTOTILE_TABLE;
-	let kind = Tilemap.getAutotileKind(tileId);
-	let shape = Tilemap.getAutotileShape(tileId);
-	let tx = kind % 8;
-	let ty = Math.floor(kind / 8);
+	const kind = Tilemap.getAutotileKind(tileId);
+	const shape = Tilemap.getAutotileShape(tileId);
+	const tx = kind % 8;
+	const ty = Math.floor(kind / 8);
 	let bx = 0;
 	let by = 0;
 	let setNumber = 0;
@@ -318,25 +318,25 @@ ShaderTilemap.prototype._drawAutotile = function (layer, tileId, dx, dy) {
 		}
 	}
 
-	let table = autotileTable[shape];
-	let w1 = this._tileWidth / 2;
-	let h1 = this._tileHeight / 2;
+	const table = autotileTable[shape];
+	const w1 = this._tileWidth / 2;
+	const h1 = this._tileHeight / 2;
 	for (let i = 0; i < 4; i++) {
-		let qsx = table[i][0];
-		let qsy = table[i][1];
-		let sx1 = (bx * 2 + qsx) * w1;
-		let sy1 = (by * 2 + qsy) * h1;
-		let dx1 = dx + (i % 2) * w1;
-		let dy1 = dy + Math.floor(i / 2) * h1;
+		const qsx = table[i][0];
+		const qsy = table[i][1];
+		const sx1 = (bx * 2 + qsx) * w1;
+		const sy1 = (by * 2 + qsy) * h1;
+		const dx1 = dx + (i % 2) * w1;
+		const dy1 = dy + Math.floor(i / 2) * h1;
 		if (isTable && (qsy === 1 || qsy === 5)) {
 			let qsx2 = qsx;
-			let qsy2 = 3;
+			const qsy2 = 3;
 			if (qsy === 1) {
 				//qsx2 = [0, 3, 2, 1][qsx];
 				qsx2 = (4 - qsx) % 4;
 			}
-			let sx2 = (bx * 2 + qsx2) * w1;
-			let sy2 = (by * 2 + qsy2) * h1;
+			const sx2 = (bx * 2 + qsx2) * w1;
+			const sy2 = (by * 2 + qsy2) * h1;
 			layer.addRect(setNumber, sx2, sy2, dx1, dy1, w1, h1, animX, animY);
 			layer.addRect(setNumber, sx1, sy1, dx1, dy1 + h1 / 2, w1, h1 / 2, animX, animY);
 		} else {
@@ -355,24 +355,24 @@ ShaderTilemap.prototype._drawAutotile = function (layer, tileId, dx, dy) {
  */
 ShaderTilemap.prototype._drawTableEdge = function (layer, tileId, dx, dy) {
 	if (Tilemap.isTileA2(tileId)) {
-		let autotileTable = Tilemap.FLOOR_AUTOTILE_TABLE;
-		let kind = Tilemap.getAutotileKind(tileId);
-		let shape = Tilemap.getAutotileShape(tileId);
-		let tx = kind % 8;
-		let ty = Math.floor(kind / 8);
-		let setNumber = 1;
-		let bx = tx * 2;
-		let by = (ty - 2) * 3;
-		let table = autotileTable[shape];
-		let w1 = this._tileWidth / 2;
-		let h1 = this._tileHeight / 2;
+		const autotileTable = Tilemap.FLOOR_AUTOTILE_TABLE;
+		const kind = Tilemap.getAutotileKind(tileId);
+		const shape = Tilemap.getAutotileShape(tileId);
+		const tx = kind % 8;
+		const ty = Math.floor(kind / 8);
+		const setNumber = 1;
+		const bx = tx * 2;
+		const by = (ty - 2) * 3;
+		const table = autotileTable[shape];
+		const w1 = this._tileWidth / 2;
+		const h1 = this._tileHeight / 2;
 		for (let i = 0; i < 2; i++) {
-			let qsx = table[2 + i][0];
-			let qsy = table[2 + i][1];
-			let sx1 = (bx * 2 + qsx) * w1;
-			let sy1 = (by * 2 + qsy) * h1 + h1 / 2;
-			let dx1 = dx + (i % 2) * w1;
-			let dy1 = dy + Math.floor(i / 2) * h1;
+			const qsx = table[2 + i][0];
+			const qsy = table[2 + i][1];
+			const sx1 = (bx * 2 + qsx) * w1;
+			const sy1 = (by * 2 + qsy) * h1 + h1 / 2;
+			const dx1 = dx + (i % 2) * w1;
+			const dy1 = dy + Math.floor(i / 2) * h1;
 			layer.addRect(setNumber, sx1, sy1, dx1, dy1, w1, h1 / 2);
 		}
 	}
@@ -387,12 +387,12 @@ ShaderTilemap.prototype._drawTableEdge = function (layer, tileId, dx, dy) {
  */
 ShaderTilemap.prototype._drawShadow = function (layer, shadowBits, dx, dy) {
 	if (shadowBits & 0x0f) {
-		let w1 = this._tileWidth / 2;
-		let h1 = this._tileHeight / 2;
+		const w1 = this._tileWidth / 2;
+		const h1 = this._tileHeight / 2;
 		for (let i = 0; i < 4; i++) {
 			if (shadowBits & (1 << i)) {
-				let dx1 = dx + (i % 2) * w1;
-				let dy1 = dy + Math.floor(i / 2) * h1;
+				const dx1 = dx + (i % 2) * w1;
+				const dy1 = dy + Math.floor(i / 2) * h1;
 				layer.addRect(-1, 0, 0, dx1, dy1, w1, h1);
 			}
 		}

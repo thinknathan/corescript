@@ -134,9 +134,9 @@ Utils.isAndroidChrome = function () {
  * @return {Boolean} True if the browser can read files in the game folder
  */
 Utils.canReadGameFiles = function () {
-	let scripts = document.getElementsByTagName('script');
-	let lastScript = scripts[scripts.length - 1];
-	let xhr = new XMLHttpRequest();
+	const scripts = document.getElementsByTagName('script');
+	const lastScript = scripts[scripts.length - 1];
+	const xhr = new XMLHttpRequest();
 	try {
 		xhr.open('GET', lastScript.src);
 		xhr.overrideMimeType('text/javascript');
@@ -184,7 +184,7 @@ Utils.isSupportPassiveEvent = function () {
 	// test support passive event
 	// https://github.com/WICG/EventListenerOptions/blob/gh-pages/explainer.md#feature-detection
 	let passive = false;
-	let options = Object.defineProperty({}, "passive", {
+	const options = Object.defineProperty({}, "passive", {
 		get: function () {
 			passive = true;
 		}

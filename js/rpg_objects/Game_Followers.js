@@ -64,7 +64,7 @@ Game_Followers.prototype.update = function () {
 
 Game_Followers.prototype.updateMove = function () {
 	for (let i = this._data.length - 1; i >= 0; i--) {
-		let precedingCharacter = (i > 0 ? this._data[i - 1] : $gamePlayer);
+		const precedingCharacter = (i > 0 ? this._data[i - 1] : $gamePlayer);
 		this._data[i].chaseCharacter(precedingCharacter);
 	}
 };
@@ -72,9 +72,9 @@ Game_Followers.prototype.updateMove = function () {
 Game_Followers.prototype.jumpAll = function () {
 	if ($gamePlayer.isJumping()) {
 		for (let i = 0; i < this._data.length; i++) {
-			let follower = this._data[i];
-			let sx = $gamePlayer.deltaXFrom(follower.x);
-			let sy = $gamePlayer.deltaYFrom(follower.y);
+			const follower = this._data[i];
+			const sx = $gamePlayer.deltaXFrom(follower.x);
+			const sy = $gamePlayer.deltaYFrom(follower.y);
 			follower.jump(sx, sy);
 		}
 	}

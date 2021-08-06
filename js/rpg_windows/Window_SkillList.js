@@ -79,15 +79,15 @@ Window_SkillList.prototype.selectLast = function () {
 	} else {
 		skill = this._actor.lastMenuSkill();
 	}
-	let index = this._data.indexOf(skill);
+	const index = this._data.indexOf(skill);
 	this.select(index >= 0 ? index : 0);
 };
 
 Window_SkillList.prototype.drawItem = function (index) {
-	let skill = this._data[index];
+	const skill = this._data[index];
 	if (skill) {
-		let costWidth = this.costWidth();
-		let rect = this.itemRect(index);
+		const costWidth = this.costWidth();
+		const rect = this.itemRect(index);
 		rect.width -= this.textPadding();
 		this.changePaintOpacity(this.isEnabled(skill));
 		this.drawItemName(skill, rect.x, rect.y, rect.width - costWidth);

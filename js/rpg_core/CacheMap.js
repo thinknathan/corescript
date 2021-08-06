@@ -17,14 +17,14 @@ function CacheMap(manager) {
  * checks ttl of all elements and removes dead ones
  */
 CacheMap.prototype.checkTTL = function () {
-	let cache = this._inner;
+	const cache = this._inner;
 	let temp = this._lastRemovedEntries;
 	if (!temp) {
 		temp = [];
 		this._lastRemovedEntries = temp;
 	}
 	for (let key in cache) {
-		let entry = cache[key];
+		const entry = cache[key];
 		if (!entry.isStillAlive()) {
 			temp.push(entry);
 		}
@@ -41,7 +41,7 @@ CacheMap.prototype.checkTTL = function () {
  * @returns {*|null}
  */
 CacheMap.prototype.getItem = function (key) {
-	let entry = this._inner[key];
+	const entry = this._inner[key];
 	if (entry) {
 		return entry.item;
 	}
@@ -49,7 +49,7 @@ CacheMap.prototype.getItem = function (key) {
 };
 
 CacheMap.prototype.clear = function () {
-	let keys = Object.keys(this._inner);
+	const keys = Object.keys(this._inner);
 	for (let i = 0; i < keys.length; i++) {
 		this._inner[keys[i]].free();
 	}

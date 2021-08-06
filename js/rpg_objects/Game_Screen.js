@@ -67,7 +67,7 @@ Game_Screen.prototype.weatherPower = function () {
 };
 
 Game_Screen.prototype.picture = function (pictureId) {
-	let realPictureId = this.realPictureId(pictureId);
+	const realPictureId = this.realPictureId(pictureId);
 	return this._pictures[realPictureId];
 };
 
@@ -197,7 +197,7 @@ Game_Screen.prototype.update = function () {
 
 Game_Screen.prototype.updateFadeOut = function () {
 	if (this._fadeOutDuration > 0) {
-		let d = this._fadeOutDuration;
+		const d = this._fadeOutDuration;
 		this._brightness = (this._brightness * (d - 1)) / d;
 		this._fadeOutDuration--;
 	}
@@ -205,7 +205,7 @@ Game_Screen.prototype.updateFadeOut = function () {
 
 Game_Screen.prototype.updateFadeIn = function () {
 	if (this._fadeInDuration > 0) {
-		let d = this._fadeInDuration;
+		const d = this._fadeInDuration;
 		this._brightness = (this._brightness * (d - 1) + 255) / d;
 		this._fadeInDuration--;
 	}
@@ -213,7 +213,7 @@ Game_Screen.prototype.updateFadeIn = function () {
 
 Game_Screen.prototype.updateTone = function () {
 	if (this._toneDuration > 0) {
-		let d = this._toneDuration;
+		const d = this._toneDuration;
 		for (let i = 0; i < 4; i++) {
 			this._tone[i] = (this._tone[i] * (d - 1) + this._toneTarget[i]) / d;
 		}
@@ -223,7 +223,7 @@ Game_Screen.prototype.updateTone = function () {
 
 Game_Screen.prototype.updateFlash = function () {
 	if (this._flashDuration > 0) {
-		let d = this._flashDuration;
+		const d = this._flashDuration;
 		this._flashColor[3] *= (d - 1) / d;
 		this._flashDuration--;
 	}
@@ -231,7 +231,7 @@ Game_Screen.prototype.updateFlash = function () {
 
 Game_Screen.prototype.updateShake = function () {
 	if (this._shakeDuration > 0 || this._shake !== 0) {
-		let delta = (this._shakePower * this._shakeSpeed * this._shakeDirection) / 10;
+		const delta = (this._shakePower * this._shakeSpeed * this._shakeDirection) / 10;
 		if (this._shakeDuration <= 1 && this._shake * (this._shake + delta) < 0) {
 			this._shake = 0;
 		} else {
@@ -249,8 +249,8 @@ Game_Screen.prototype.updateShake = function () {
 
 Game_Screen.prototype.updateZoom = function () {
 	if (this._zoomDuration > 0) {
-		let d = this._zoomDuration;
-		let t = this._zoomScaleTarget;
+		const d = this._zoomDuration;
+		const t = this._zoomScaleTarget;
 		this._zoomScale = (this._zoomScale * (d - 1) + t) / d;
 		this._zoomDuration--;
 	}
@@ -258,8 +258,8 @@ Game_Screen.prototype.updateZoom = function () {
 
 Game_Screen.prototype.updateWeather = function () {
 	if (this._weatherDuration > 0) {
-		let d = this._weatherDuration;
-		let t = this._weatherPowerTarget;
+		const d = this._weatherDuration;
+		const t = this._weatherPowerTarget;
 		this._weatherPower = (this._weatherPower * (d - 1) + t) / d;
 		this._weatherDuration--;
 		if (this._weatherDuration === 0 && this._weatherPowerTarget === 0) {
@@ -282,35 +282,35 @@ Game_Screen.prototype.startFlashForDamage = function () {
 
 Game_Screen.prototype.showPicture = function (pictureId, name, origin, x, y,
 	scaleX, scaleY, opacity, blendMode) {
-	let realPictureId = this.realPictureId(pictureId);
-	let picture = new Game_Picture();
+	const realPictureId = this.realPictureId(pictureId);
+	const picture = new Game_Picture();
 	picture.show(name, origin, x, y, scaleX, scaleY, opacity, blendMode);
 	this._pictures[realPictureId] = picture;
 };
 
 Game_Screen.prototype.movePicture = function (pictureId, origin, x, y, scaleX,
 	scaleY, opacity, blendMode, duration) {
-	let picture = this.picture(pictureId);
+	const picture = this.picture(pictureId);
 	if (picture) {
 		picture.move(origin, x, y, scaleX, scaleY, opacity, blendMode, duration);
 	}
 };
 
 Game_Screen.prototype.rotatePicture = function (pictureId, speed) {
-	let picture = this.picture(pictureId);
+	const picture = this.picture(pictureId);
 	if (picture) {
 		picture.rotate(speed);
 	}
 };
 
 Game_Screen.prototype.tintPicture = function (pictureId, tone, duration) {
-	let picture = this.picture(pictureId);
+	const picture = this.picture(pictureId);
 	if (picture) {
 		picture.tint(tone, duration);
 	}
 };
 
 Game_Screen.prototype.erasePicture = function (pictureId) {
-	let realPictureId = this.realPictureId(pictureId);
+	const realPictureId = this.realPictureId(pictureId);
 	this._pictures[realPictureId] = null;
 };

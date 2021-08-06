@@ -118,9 +118,9 @@ ScreenSprite.prototype.setColor = function (r, g, b) {
 		this._blue = b;
 		this._colorText = Utils.rgbToCssColor(r, g, b);
 
-		let graphics = this._graphics;
+		const graphics = this._graphics;
 		graphics.clear();
-		let intColor = (r << 16) | (g << 8) | b;
+		const intColor = (r << 16) | (g << 8) | b;
 		graphics.beginFill(intColor, 1);
 		//whole screen with zoom. BWAHAHAHAHA
 		graphics.drawRect(-Graphics.width * 5, -Graphics.height * 5, Graphics.width * 10, Graphics.height * 10);

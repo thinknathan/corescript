@@ -134,7 +134,7 @@ Object.defineProperty(Window.prototype, 'contents', {
 		return this._windowContentsSprite.children[0];
 	},
 	set: function (value) {
-		let oldContents = this._windowContentsSprite.children[0];
+		const oldContents = this._windowContentsSprite.children[0];
 		if (oldContents) {
 			this._windowContentsSprite.removeChild(oldContents);
 		}
@@ -342,11 +342,11 @@ Window.prototype.isClosed = function () {
  * @param {Number} height The height of the cursor
  */
 Window.prototype.setCursorRect = function (x, y, width, height) {
-	let cx = Math.floor(x || 0);
-	let cy = Math.floor(y || 0);
-	let cw = Math.floor(width || 0);
-	let ch = Math.floor(height || 0);
-	let rect = this._cursorRect;
+	const cx = Math.floor(x || 0);
+	const cy = Math.floor(y || 0);
+	const cw = Math.floor(width || 0);
+	const ch = Math.floor(height || 0);
+	const rect = this._cursorRect;
 	if (rect.x !== cx || rect.y !== cy || rect.width !== cw || rect.height !== ch) {
 		this._cursorRect.x = cx;
 		this._cursorRect.y = cy;
@@ -365,7 +365,7 @@ Window.prototype.setCursorRect = function (x, y, width, height) {
  * @param {Number} b The blue value in the range (-255, 255)
  */
 Window.prototype.setTone = function (r, g, b) {
-	let tone = this._colorTone;
+	const tone = this._colorTone;
 	r = r / 255;
 	g = g / 255;
 	b = b / 255;
@@ -386,7 +386,7 @@ Window.prototype.setTone = function (r, g, b) {
  * @return {Object} The child that was added
  */
 Window.prototype.addChildToBack = function (child) {
-	let containerIndex = this.children.indexOf(this._windowSpriteContainer);
+	const containerIndex = this.children.indexOf(this._windowSpriteContainer);
 	return this.addChildAt(child, containerIndex + 1);
 };
 
@@ -452,13 +452,13 @@ Window.prototype._refreshAllParts = function () {
  * @private
  */
 Window.prototype._refreshBack = function () {
-	let m = this._margin;
-	let w = this._width - m * 2;
-	let h = this._height - m * 2;
-	let tone = PIXI.utils.rgb2hex(this._colorTone);
+	const m = this._margin;
+	const w = this._width - m * 2;
+	const h = this._height - m * 2;
+	const tone = PIXI.utils.rgb2hex(this._colorTone);
 
 	if (w > 0 && h > 0 && this._windowskin && !this._windowBackSprite._setupComplete) {
-		let p = 96;
+		const p = 96;
 		this._windowBackSprite.blt(this._windowskin, 0, 0, p, p, 0, 0, w, h);
 		this._windowBackSprite.addChild(
 			this._windowBackSprite.createTilingSprite(this._windowskin.baseTexture, 0, p, p, p, w, h)
@@ -486,20 +486,20 @@ Window.prototype._refreshBack = function () {
  * @private
  */
 Window.prototype._refreshFrame = function () {
-	let w = this._width;
-	let h = this._height;
-	let m = 24;
+	const w = this._width;
+	const h = this._height;
+	const m = 24;
 
 	if (w > 0 && h > 0 && this._windowskin && !this._windowFrameSprite._setupComplete) {
 		let texture;
-		let cachedFrame = WindowSkinCache.getItem(this._windowskin._url, 'frame');
+		const cachedFrame = WindowSkinCache.getItem(this._windowskin._url, 'frame');
 		if (cachedFrame) {
 			texture = cachedFrame;
 		} else {
-			let container = new BitmapPIXI();
-			let skin = this._windowskin;
-			let p = 96;
-			let q = 96;
+			const container = new BitmapPIXI();
+			const skin = this._windowskin;
+			const p = 96;
+			const q = 96;
 			container.blt(skin, p + m, 0 + 0, p - m * 2, m, m, 0, w - m * 2, m);
 			container.blt(skin, p + m, 0 + q - m, p - m * 2, m, m, h - m, w - m * 2, m);
 			container.blt(skin, p + 0, 0 + m, m, p - m * 2, 0, m, m, h - m * 2);
@@ -534,15 +534,15 @@ Window.prototype._refreshFrame = function () {
  * @private
  */
 Window.prototype._refreshCursor = function () {
-	let pad = this._padding;
-	let x = this._cursorRect.x + pad - this.origin.x;
-	let y = this._cursorRect.y + pad - this.origin.y;
-	let w = this._cursorRect.width;
-	let h = this._cursorRect.height;
+	const pad = this._padding;
+	const x = this._cursorRect.x + pad - this.origin.x;
+	const y = this._cursorRect.y + pad - this.origin.y;
+	const w = this._cursorRect.width;
+	const h = this._cursorRect.height;
 
 	if (w > 0 && h > 0 && this._windowskin && !this._windowCursorSprite._setupComplete) {
-		let p = 96;
-		let q = 48;
+		const p = 96;
+		const q = 48;
 		this._windowCursorPlane = this._windowCursorSprite.create9Slice(this._windowskin.baseTexture, p, p, q, q, 12, 12, 12, 12);
 		this._windowCursorSprite.addChild(
 			this._windowCursorPlane
@@ -572,12 +572,12 @@ Window.prototype._refreshContents = function () {
  * @private
  */
 Window.prototype._refreshArrows = function () {
-	let w = this._width;
-	let h = this._height;
-	let p = 24;
-	let q = p / 2;
-	let sx = 96 + p;
-	let sy = 0 + p;
+	const w = this._width;
+	const h = this._height;
+	const p = 24;
+	const q = p / 2;
+	const sx = 96 + p;
+	const sy = 0 + p;
 	this._downArrowSprite.bitmap = this._windowskin;
 	this._downArrowSprite.anchor.x = 0.5;
 	this._downArrowSprite.anchor.y = 0.5;
@@ -595,9 +595,9 @@ Window.prototype._refreshArrows = function () {
  * @private
  */
 Window.prototype._refreshPauseSign = function () {
-	let sx = 144;
-	let sy = 96;
-	let p = 24;
+	const sx = 144;
+	const sy = 96;
+	const p = 24;
 	this._windowPauseSignSprite.bitmap = this._windowskin;
 	this._windowPauseSignSprite.anchor.x = 0.5;
 	this._windowPauseSignSprite.anchor.y = 1;
@@ -611,7 +611,7 @@ Window.prototype._refreshPauseSign = function () {
  * @private
  */
 Window.prototype._updateCursor = function () {
-	let blinkCount = this._animationCount % 40;
+	const blinkCount = this._animationCount % 40;
 	let cursorOpacity = this.contentsOpacity;
 	if (this.active) {
 		if (blinkCount < 20) {
@@ -629,8 +629,8 @@ Window.prototype._updateCursor = function () {
  * @private
  */
 Window.prototype._updateContents = function () {
-	let w = this._width - this._padding * 2;
-	let h = this._height - this._padding * 2;
+	const w = this._width - this._padding * 2;
+	const h = this._height - this._padding * 2;
 	if (w > 0 && h > 0) {
 		this._windowContentsSprite.setFrame(this.origin.x, this.origin.y, w, h);
 		this._windowContentsSprite.visible = this.isOpen();
@@ -653,12 +653,12 @@ Window.prototype._updateArrows = function () {
  * @private
  */
 Window.prototype._updatePauseSign = function () {
-	let sprite = this._windowPauseSignSprite;
-	let x = Math.floor(this._animationCount / 16) % 2;
-	let y = Math.floor(this._animationCount / 16 / 2) % 2;
-	let sx = 144;
-	let sy = 96;
-	let p = 24;
+	const sprite = this._windowPauseSignSprite;
+	const x = Math.floor(this._animationCount / 16) % 2;
+	const y = Math.floor(this._animationCount / 16 / 2) % 2;
+	const sx = 144;
+	const sy = 96;
+	const p = 24;
 	if (!this.pause) {
 		sprite.alpha = 0;
 	} else if (sprite.alpha < 1) {

@@ -35,8 +35,8 @@ Window_NumberInput.prototype.start = function () {
 };
 
 Window_NumberInput.prototype.updatePlacement = function () {
-	let messageY = this._messageWindow.y;
-	let spacing = 8;
+	const messageY = this._messageWindow.y;
+	const spacing = 8;
 	this.width = this.windowWidth();
 	this.height = this.windowHeight();
 	this.x = (Graphics.boxWidth - this.width) / 2;
@@ -72,14 +72,14 @@ Window_NumberInput.prototype.itemWidth = function () {
 };
 
 Window_NumberInput.prototype.createButtons = function () {
-	let bitmap = ImageManager.loadSystem('ButtonSet');
-	let buttonWidth = 48;
-	let buttonHeight = 48;
+	const bitmap = ImageManager.loadSystem('ButtonSet');
+	const buttonWidth = 48;
+	const buttonHeight = 48;
 	this._buttons = [];
 	for (let i = 0; i < 3; i++) {
-		let button = new Sprite_Button();
-		let x = buttonWidth * [1, 2, 4][i];
-		let w = buttonWidth * (i === 2 ? 2 : 1);
+		const button = new Sprite_Button();
+		const x = buttonWidth * [1, 2, 4][i];
+		const w = buttonWidth * (i === 2 ? 2 : 1);
 		button.bitmap = bitmap;
 		button.setColdFrame(x, 0, w, buttonHeight);
 		button.setHotFrame(x, buttonHeight, w, buttonHeight);
@@ -93,15 +93,15 @@ Window_NumberInput.prototype.createButtons = function () {
 };
 
 Window_NumberInput.prototype.placeButtons = function () {
-	let numButtons = this._buttons.length;
-	let spacing = 16;
+	const numButtons = this._buttons.length;
+	const spacing = 16;
 	let totalWidth = -spacing;
 	for (let i = 0; i < numButtons; i++) {
 		totalWidth += this._buttons[i].width + spacing;
 	}
 	let x = (this.width - totalWidth) / 2;
 	for (let j = 0; j < numButtons; j++) {
-		let button = this._buttons[j];
+		const button = this._buttons[j];
 		button.x = x;
 		button.y = this.buttonY();
 		x += button.width + spacing;
@@ -129,7 +129,7 @@ Window_NumberInput.prototype.hideButtons = function () {
 };
 
 Window_NumberInput.prototype.buttonY = function () {
-	let spacing = 8;
+	const spacing = 8;
 	if (this._messageWindow.y >= Graphics.boxHeight / 2) {
 		return 0 - this._buttons[0].height - spacing;
 	} else {
@@ -153,8 +153,8 @@ Window_NumberInput.prototype.processDigitChange = function () {
 };
 
 Window_NumberInput.prototype.changeDigit = function (up) {
-	let index = this.index();
-	let place = Math.pow(10, this._maxDigits - 1 - index);
+	const index = this.index();
+	const place = Math.pow(10, this._maxDigits - 1 - index);
 	let n = Math.floor(this._number / place) % 10;
 	this._number -= n * place;
 	if (up) {
@@ -193,10 +193,10 @@ Window_NumberInput.prototype.processOk = function () {
 };
 
 Window_NumberInput.prototype.drawItem = function (index) {
-	let rect = this.itemRect(index);
-	let align = 'center';
-	let s = this._number.padZero(this._maxDigits);
-	let c = s.slice(index, index + 1);
+	const rect = this.itemRect(index);
+	const align = 'center';
+	const s = this._number.padZero(this._maxDigits);
+	const c = s.slice(index, index + 1);
 	this.resetTextColor();
 	this.drawText(c, rect.x, rect.y, rect.width, align);
 };

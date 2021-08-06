@@ -61,13 +61,13 @@ Scene_ItemBase.prototype.onActorCancel = function () {
 	this.hideSubWindow(this._actorWindow);
 };
 Scene_ItemBase.prototype.action = function () {
-	let action = new Game_Action(this.user());
+	const action = new Game_Action(this.user());
 	action.setItemObject(this.item());
 	return action;
 };
 
 Scene_ItemBase.prototype.determineItem = function () {
-	let action = this.action();
+	const action = this.action();
 	if (action.isForFriend()) {
 		this.showSubWindow(this._actorWindow);
 		this._actorWindow.selectForItem(this.item());
@@ -93,7 +93,7 @@ Scene_ItemBase.prototype.activateItemWindow = function () {
 };
 
 Scene_ItemBase.prototype.itemTargetActors = function () {
-	let action = this.action();
+	const action = this.action();
 	if (!action.isForFriend()) {
 		return [];
 	} else if (action.isForAll()) {
@@ -104,7 +104,7 @@ Scene_ItemBase.prototype.itemTargetActors = function () {
 };
 
 Scene_ItemBase.prototype.canUse = function () {
-	let user = this.user();
+	const user = this.user();
 	if (user) {
 		return user.canUse(this.item()) && this.isItemEffectsValid();
 	}
@@ -112,7 +112,7 @@ Scene_ItemBase.prototype.canUse = function () {
 };
 
 Scene_ItemBase.prototype.isItemEffectsValid = function () {
-	let action = this.action();
+	const action = this.action();
 	return this.itemTargetActors()
 		.some(function (target) {
 			return action.testApply(target);
@@ -120,10 +120,10 @@ Scene_ItemBase.prototype.isItemEffectsValid = function () {
 };
 
 Scene_ItemBase.prototype.applyItem = function () {
-	let action = this.action();
-	let targets = this.itemTargetActors();
+	const action = this.action();
+	const targets = this.itemTargetActors();
 	targets.forEach(function (battler) {
-		let repeats = action.numRepeats();
+		const repeats = action.numRepeats();
 		for (let i = 0; i < repeats; i++) {
 			action.apply(battler);
 		}

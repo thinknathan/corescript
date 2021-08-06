@@ -37,16 +37,16 @@ Sprite_Timer.prototype.updateBitmap = function () {
 };
 
 Sprite_Timer.prototype.redraw = function () {
-	let text = this.timerText();
-	let width = this.bitmap.width;
-	let height = this.bitmap.height;
+	const text = this.timerText();
+	const width = this.bitmap.width;
+	const height = this.bitmap.height;
 	this.bitmap.clear();
 	this.bitmap.drawText(text, 0, 0, width, height, 'center');
 };
 
 Sprite_Timer.prototype.timerText = function () {
-	let min = Math.floor(this._seconds / 60) % 60;
-	let sec = this._seconds % 60;
+	const min = Math.floor(this._seconds / 60) % 60;
+	const sec = this._seconds % 60;
 	return min.padZero(2) + ':' + sec.padZero(2);
 };
 

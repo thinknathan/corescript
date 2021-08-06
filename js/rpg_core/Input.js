@@ -251,10 +251,10 @@ Object.defineProperty(Input, 'date', {
  */
 Input._wrapNwjsAlert = function () {
 	if (Utils.isNwjs()) {
-		let _alert = window.alert;
+		const _alert = window.alert;
 		window.alert = function () {
-			let gui = require('nw.gui');
-			let win = gui.Window.get();
+			const gui = require('nw.gui');
+			const win = gui.Window.get();
 			_alert.apply(this, arguments);
 			win.focus();
 			Input.clear();
@@ -286,7 +286,7 @@ Input._onKeyDown = function (event) {
 	if (event.keyCode === 144) { // Numlock
 		this.clear();
 	}
-	let buttonName = this.keyMapper[event.keyCode];
+	const buttonName = this.keyMapper[event.keyCode];
 	if (ResourceHandler.exists() && buttonName === 'ok') {
 		ResourceHandler.retry();
 	} else if (buttonName) {
@@ -321,7 +321,7 @@ Input._shouldPreventDefault = function (keyCode) {
  * @private
  */
 Input._onKeyUp = function (event) {
-	let buttonName = this.keyMapper[event.keyCode];
+	const buttonName = this.keyMapper[event.keyCode];
 	if (buttonName) {
 		this._currentState[buttonName] = false;
 	}
@@ -346,10 +346,10 @@ Input._onLostFocus = function () {
  */
 Input._pollGamepads = function () {
 	if (navigator.getGamepads) {
-		let gamepads = navigator.getGamepads();
+		const gamepads = navigator.getGamepads();
 		if (gamepads) {
 			for (let i = 0; i < gamepads.length; i++) {
-				let gamepad = gamepads[i];
+				const gamepad = gamepads[i];
 				if (gamepad && gamepad.connected) {
 					this._updateGamepadState(gamepad);
 				}
@@ -366,11 +366,11 @@ Input._pollGamepads = function () {
  * @private
  */
 Input._updateGamepadState = function (gamepad) {
-	let lastState = this._gamepadStates[gamepad.index] || [];
-	let newState = [];
-	let buttons = gamepad.buttons;
-	let axes = gamepad.axes;
-	let threshold = 0.5;
+	const lastState = this._gamepadStates[gamepad.index] || [];
+	const newState = [];
+	const buttons = gamepad.buttons;
+	const axes = gamepad.axes;
+	const threshold = 0.5;
 	newState[12] = false;
 	newState[13] = false;
 	newState[14] = false;
@@ -390,7 +390,7 @@ Input._updateGamepadState = function (gamepad) {
 	}
 	for (let j = 0; j < newState.length; j++) {
 		if (newState[j] !== lastState[j]) {
-			let buttonName = this.gamepadMapper[j];
+			const buttonName = this.gamepadMapper[j];
 			if (buttonName) {
 				this._currentState[buttonName] = newState[j];
 			}

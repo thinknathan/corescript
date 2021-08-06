@@ -54,7 +54,7 @@ Sprite_Weapon.prototype.updatePattern = function () {
 };
 
 Sprite_Weapon.prototype.loadBitmap = function () {
-	let pageId = Math.floor((this._weaponImageId - 1) / 12) + 1;
+	const pageId = Math.floor((this._weaponImageId - 1) / 12) + 1;
 	if (pageId >= 1) {
 		this.bitmap = ImageManager.loadSystem('Weapons' + pageId);
 	} else {
@@ -64,11 +64,11 @@ Sprite_Weapon.prototype.loadBitmap = function () {
 
 Sprite_Weapon.prototype.updateFrame = function () {
 	if (this._weaponImageId > 0) {
-		let index = (this._weaponImageId - 1) % 12;
-		let w = 96;
-		let h = 64;
-		let sx = (Math.floor(index / 6) * 3 + this._pattern) * w;
-		let sy = Math.floor(index % 6) * h;
+		const index = (this._weaponImageId - 1) % 12;
+		const w = 96;
+		const h = 64;
+		const sx = (Math.floor(index / 6) * 3 + this._pattern) * w;
+		const sy = Math.floor(index % 6) * h;
 		this.setFrame(sx, sy, w, h);
 	} else {
 		this.setFrame(0, 0, 0, 0);

@@ -162,8 +162,8 @@ Game_CharacterBase.prototype.reverseDir = function (d) {
 };
 
 Game_CharacterBase.prototype.canPass = function (x, y, d) {
-	let x2 = $gameMap.roundXWithDirection(x, d);
-	let y2 = $gameMap.roundYWithDirection(y, d);
+	const x2 = $gameMap.roundXWithDirection(x, d);
+	const y2 = $gameMap.roundYWithDirection(y, d);
 	if (!$gameMap.isValid(x2, y2)) {
 		return false;
 	}
@@ -180,8 +180,8 @@ Game_CharacterBase.prototype.canPass = function (x, y, d) {
 };
 
 Game_CharacterBase.prototype.canPassDiagonally = function (x, y, horz, vert) {
-	let x2 = $gameMap.roundXWithDirection(x, horz);
-	let y2 = $gameMap.roundYWithDirection(y, vert);
+	const x2 = $gameMap.roundXWithDirection(x, horz);
+	const y2 = $gameMap.roundYWithDirection(y, vert);
 	if (this.canPass(x, y, vert) && this.canPass(x, y2, horz)) {
 		return true;
 	}
@@ -192,9 +192,9 @@ Game_CharacterBase.prototype.canPassDiagonally = function (x, y, horz, vert) {
 };
 
 Game_CharacterBase.prototype.isMapPassable = function (x, y, d) {
-	let x2 = $gameMap.roundXWithDirection(x, d);
-	let y2 = $gameMap.roundYWithDirection(y, d);
-	let d2 = this.reverseDir(d);
+	const x2 = $gameMap.roundXWithDirection(x, d);
+	const y2 = $gameMap.roundYWithDirection(y, d);
+	const d2 = this.reverseDir(d);
 	return $gameMap.isPassable(x, y, d) && $gameMap.isPassable(x2, y2, d2);
 };
 
@@ -203,7 +203,7 @@ Game_CharacterBase.prototype.isCollidedWithCharacters = function (x, y) {
 };
 
 Game_CharacterBase.prototype.isCollidedWithEvents = function (x, y) {
-	let events = $gameMap.eventsXyNt(x, y);
+	const events = $gameMap.eventsXyNt(x, y);
 	return events.some(function (event) {
 		return event.isNormalPriority();
 	});
@@ -268,12 +268,12 @@ Game_CharacterBase.prototype.scrolledY = function () {
 };
 
 Game_CharacterBase.prototype.screenX = function () {
-	let tw = $gameMap.tileWidth();
+	const tw = $gameMap.tileWidth();
 	return Math.round(this.scrolledX() * tw + tw / 2);
 };
 
 Game_CharacterBase.prototype.screenY = function () {
-	let th = $gameMap.tileHeight();
+	const th = $gameMap.tileHeight();
 	return Math.round(this.scrolledY() * th + th -
 		this.shiftY() - this.jumpHeight());
 };
@@ -283,12 +283,12 @@ Game_CharacterBase.prototype.screenZ = function () {
 };
 
 Game_CharacterBase.prototype.isNearTheScreen = function () {
-	let gw = Graphics.width;
-	let gh = Graphics.height;
-	let tw = $gameMap.tileWidth();
-	let th = $gameMap.tileHeight();
-	let px = this.scrolledX() * tw + tw / 2 - gw / 2;
-	let py = this.scrolledY() * th + th / 2 - gh / 2;
+	const gw = Graphics.width;
+	const gh = Graphics.height;
+	const tw = $gameMap.tileWidth();
+	const th = $gameMap.tileHeight();
+	const px = this.scrolledX() * tw + tw / 2 - gw / 2;
+	const py = this.scrolledY() * th + th / 2 - gh / 2;
 	return px >= -gw && px <= gw && py >= -gh && py <= gh;
 };
 
@@ -447,8 +447,8 @@ Game_CharacterBase.prototype.setTileImage = function (tileId) {
 };
 
 Game_CharacterBase.prototype.checkEventTriggerTouchFront = function (d) {
-	let x2 = $gameMap.roundXWithDirection(this._x, d);
-	let y2 = $gameMap.roundYWithDirection(this._y, d);
+	const x2 = $gameMap.roundXWithDirection(this._x, d);
+	const y2 = $gameMap.roundYWithDirection(this._y, d);
 	this.checkEventTriggerTouch(x2, y2);
 };
 
@@ -508,7 +508,7 @@ Game_CharacterBase.prototype.jump = function (xPlus, yPlus) {
 	}
 	this._x += xPlus;
 	this._y += yPlus;
-	let distance = Math.round(Math.sqrt(xPlus * xPlus + yPlus * yPlus));
+	const distance = Math.round(Math.sqrt(xPlus * xPlus + yPlus * yPlus));
 	this._jumpPeak = 10 + distance - this._moveSpeed;
 	this._jumpCount = this._jumpPeak * 2;
 	this.resetStopCount();

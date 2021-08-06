@@ -42,19 +42,19 @@ StorageManager.remove = function (savefileId) {
 StorageManager.backup = function (savefileId) {
 	if (this.exists(savefileId)) {
 		if (this.isLocalMode()) {
-			let data = this.loadFromLocalFile(savefileId);
-			let compressed = LZString.compressToBase64(data);
-			let fs = require('fs');
-			let dirPath = this.localFileDirectoryPath();
-			let filePath = this.localFilePath(savefileId) + ".bak";
+			const data = this.loadFromLocalFile(savefileId);
+			const compressed = LZString.compressToBase64(data);
+			const fs = require('fs');
+			const dirPath = this.localFileDirectoryPath();
+			const filePath = this.localFilePath(savefileId) + ".bak";
 			if (!fs.existsSync(dirPath)) {
 				fs.mkdirSync(dirPath);
 			}
 			fs.writeFileSync(filePath, compressed);
 		} else {
-			let data = this.loadFromWebStorage(savefileId);
-			let compressed = LZString.compressToBase64(data);
-			let key = this.webStorageKey(savefileId) + "bak";
+			const data = this.loadFromWebStorage(savefileId);
+			const compressed = LZString.compressToBase64(data);
+			const key = this.webStorageKey(savefileId) + "bak";
 			localStorage.setItem(key, compressed);
 		}
 	}
@@ -71,11 +71,11 @@ StorageManager.backupExists = function (savefileId) {
 StorageManager.cleanBackup = function (savefileId) {
 	if (this.backupExists(savefileId)) {
 		if (this.isLocalMode()) {
-			let fs = require('fs');
-			let filePath = this.localFilePath(savefileId);
+			const fs = require('fs');
+			const filePath = this.localFilePath(savefileId);
 			fs.unlinkSync(filePath + ".bak");
 		} else {
-			let key = this.webStorageKey(savefileId);
+			const key = this.webStorageKey(savefileId);
 			localStorage.removeItem(key + "bak");
 		}
 	}
@@ -84,20 +84,20 @@ StorageManager.cleanBackup = function (savefileId) {
 StorageManager.restoreBackup = function (savefileId) {
 	if (this.backupExists(savefileId)) {
 		if (this.isLocalMode()) {
-			let data = this.loadFromLocalBackupFile(savefileId);
-			let compressed = LZString.compressToBase64(data);
-			let fs = require('fs');
-			let dirPath = this.localFileDirectoryPath();
-			let filePath = this.localFilePath(savefileId);
+			const data = this.loadFromLocalBackupFile(savefileId);
+			const compressed = LZString.compressToBase64(data);
+			const fs = require('fs');
+			const dirPath = this.localFileDirectoryPath();
+			const filePath = this.localFilePath(savefileId);
 			if (!fs.existsSync(dirPath)) {
 				fs.mkdirSync(dirPath);
 			}
 			fs.writeFileSync(filePath, compressed);
 			fs.unlinkSync(filePath + ".bak");
 		} else {
-			let data = this.loadFromWebStorageBackup(savefileId);
-			let compressed = LZString.compressToBase64(data);
-			let key = this.webStorageKey(savefileId);
+			const data = this.loadFromWebStorageBackup(savefileId);
+			const compressed = LZString.compressToBase64(data);
+			const key = this.webStorageKey(savefileId);
 			localStorage.setItem(key, compressed);
 			localStorage.removeItem(key + "bak");
 		}
@@ -109,10 +109,10 @@ StorageManager.isLocalMode = function () {
 };
 
 StorageManager.saveToLocalFile = function (savefileId, json) {
-	let data = LZString.compressToBase64(json);
-	let fs = require('fs');
-	let dirPath = this.localFileDirectoryPath();
-	let filePath = this.localFilePath(savefileId);
+	const data = LZString.compressToBase64(json);
+	const fs = require('fs');
+	const dirPath = this.localFileDirectoryPath();
+	const filePath = this.localFilePath(savefileId);
 	if (!fs.existsSync(dirPath)) {
 		fs.mkdirSync(dirPath);
 	}
@@ -121,8 +121,8 @@ StorageManager.saveToLocalFile = function (savefileId, json) {
 
 StorageManager.loadFromLocalFile = function (savefileId) {
 	let data = null;
-	let fs = require('fs');
-	let filePath = this.localFilePath(savefileId);
+	const fs = require('fs');
+	const filePath = this.localFilePath(savefileId);
 	if (fs.existsSync(filePath)) {
 		data = fs.readFileSync(filePath, {
 			encoding: 'utf8'
@@ -133,8 +133,8 @@ StorageManager.loadFromLocalFile = function (savefileId) {
 
 StorageManager.loadFromLocalBackupFile = function (savefileId) {
 	let data = null;
-	let fs = require('fs');
-	let filePath = this.localFilePath(savefileId) + ".bak";
+	const fs = require('fs');
+	const filePath = this.localFilePath(savefileId) + ".bak";
 	if (fs.existsSync(filePath)) {
 		data = fs.readFileSync(filePath, {
 			encoding: 'utf8'
@@ -144,60 +144,60 @@ StorageManager.loadFromLocalBackupFile = function (savefileId) {
 };
 
 StorageManager.localFileBackupExists = function (savefileId) {
-	let fs = require('fs');
+	const fs = require('fs');
 	return fs.existsSync(this.localFilePath(savefileId) + ".bak");
 };
 
 StorageManager.localFileExists = function (savefileId) {
-	let fs = require('fs');
+	const fs = require('fs');
 	return fs.existsSync(this.localFilePath(savefileId));
 };
 
 StorageManager.removeLocalFile = function (savefileId) {
-	let fs = require('fs');
-	let filePath = this.localFilePath(savefileId);
+	const fs = require('fs');
+	const filePath = this.localFilePath(savefileId);
 	if (fs.existsSync(filePath)) {
 		fs.unlinkSync(filePath);
 	}
 };
 
 StorageManager.saveToWebStorage = function (savefileId, json) {
-	let key = this.webStorageKey(savefileId);
-	let data = LZString.compressToBase64(json);
+	const key = this.webStorageKey(savefileId);
+	const data = LZString.compressToBase64(json);
 	localStorage.setItem(key, data);
 };
 
 StorageManager.loadFromWebStorage = function (savefileId) {
-	let key = this.webStorageKey(savefileId);
-	let data = localStorage.getItem(key);
+	const key = this.webStorageKey(savefileId);
+	const data = localStorage.getItem(key);
 	return LZString.decompressFromBase64(data);
 };
 
 StorageManager.loadFromWebStorageBackup = function (savefileId) {
-	let key = this.webStorageKey(savefileId) + "bak";
-	let data = localStorage.getItem(key);
+	const key = this.webStorageKey(savefileId) + "bak";
+	const data = localStorage.getItem(key);
 	return LZString.decompressFromBase64(data);
 };
 
 StorageManager.webStorageBackupExists = function (savefileId) {
-	let key = this.webStorageKey(savefileId) + "bak";
+	const key = this.webStorageKey(savefileId) + "bak";
 	return !!localStorage.getItem(key);
 };
 
 StorageManager.webStorageExists = function (savefileId) {
-	let key = this.webStorageKey(savefileId);
+	const key = this.webStorageKey(savefileId);
 	return !!localStorage.getItem(key);
 };
 
 StorageManager.removeWebStorage = function (savefileId) {
-	let key = this.webStorageKey(savefileId);
+	const key = this.webStorageKey(savefileId);
 	localStorage.removeItem(key);
 };
 
 StorageManager.localFileDirectoryPath = function () {
-	let path = require('path');
+	const path = require('path');
 
-	let base = path.dirname(process.mainModule.filename);
+	const base = path.dirname(process.mainModule.filename);
 	if (this.canMakeWwwSaveDirectory()) {
 		return path.join(base, 'save/');
 	} else {
@@ -206,7 +206,7 @@ StorageManager.localFileDirectoryPath = function () {
 };
 
 StorageManager.localFilePath = function (savefileId) {
-	let name;
+	let name = '';
 	if (savefileId < 0) {
 		name = 'config.rpgsave';
 	} else if (savefileId === 0) {
@@ -230,10 +230,10 @@ StorageManager.webStorageKey = function (savefileId) {
 // Enigma Virtual Box cannot make www/save directory
 StorageManager.canMakeWwwSaveDirectory = function () {
 	if (this._canMakeWwwSaveDirectory === undefined) {
-		let fs = require('fs');
-		let path = require('path');
-		let base = path.dirname(process.mainModule.filename);
-		let testPath = path.join(base, 'testDirectory/');
+		const fs = require('fs');
+		const path = require('path');
+		const base = path.dirname(process.mainModule.filename);
+		const testPath = path.join(base, 'testDirectory/');
 		try {
 			fs.mkdirSync(testPath);
 			fs.rmdirSync(testPath);

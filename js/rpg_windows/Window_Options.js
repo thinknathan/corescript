@@ -46,9 +46,9 @@ Window_Options.prototype.addVolumeOptions = function () {
 };
 
 Window_Options.prototype.drawItem = function (index) {
-	let rect = this.itemRectForText(index);
-	let statusWidth = this.statusWidth();
-	let titleWidth = rect.width - statusWidth;
+	const rect = this.itemRectForText(index);
+	const statusWidth = this.statusWidth();
+	const titleWidth = rect.width - statusWidth;
 	this.resetTextColor();
 	this.changePaintOpacity(this.isCommandEnabled(index));
 	this.drawText(this.commandName(index), rect.x, rect.y, titleWidth, 'left');
@@ -60,8 +60,8 @@ Window_Options.prototype.statusWidth = function () {
 };
 
 Window_Options.prototype.statusText = function (index) {
-	let symbol = this.commandSymbol(index);
-	let value = this.getConfigValue(symbol);
+	const symbol = this.commandSymbol(index);
+	const value = this.getConfigValue(symbol);
 	if (this.isVolumeSymbol(symbol)) {
 		return this.volumeStatusText(value);
 	} else {
@@ -82,8 +82,8 @@ Window_Options.prototype.volumeStatusText = function (value) {
 };
 
 Window_Options.prototype.processOk = function () {
-	let index = this.index();
-	let symbol = this.commandSymbol(index);
+	const index = this.index();
+	const symbol = this.commandSymbol(index);
 	let value = this.getConfigValue(symbol);
 	if (this.isVolumeSymbol(symbol)) {
 		value += this.volumeOffset();
@@ -98,8 +98,8 @@ Window_Options.prototype.processOk = function () {
 };
 
 Window_Options.prototype.cursorRight = function (wrap) {
-	let index = this.index();
-	let symbol = this.commandSymbol(index);
+	const index = this.index();
+	const symbol = this.commandSymbol(index);
 	let value = this.getConfigValue(symbol);
 	if (this.isVolumeSymbol(symbol)) {
 		value += this.volumeOffset();
@@ -111,8 +111,8 @@ Window_Options.prototype.cursorRight = function (wrap) {
 };
 
 Window_Options.prototype.cursorLeft = function (wrap) {
-	let index = this.index();
-	let symbol = this.commandSymbol(index);
+	const index = this.index();
+	const symbol = this.commandSymbol(index);
 	let value = this.getConfigValue(symbol);
 	if (this.isVolumeSymbol(symbol)) {
 		value -= this.volumeOffset();
@@ -128,7 +128,7 @@ Window_Options.prototype.volumeOffset = function () {
 };
 
 Window_Options.prototype.changeValue = function (symbol, value) {
-	let lastValue = this.getConfigValue(symbol);
+	const lastValue = this.getConfigValue(symbol);
 	if (lastValue !== value) {
 		this.setConfigValue(symbol, value);
 		this.redrawItem(this.findSymbol(symbol));

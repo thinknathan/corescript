@@ -104,8 +104,8 @@ Scene_Menu.prototype.onPersonalCancel = function () {
 };
 
 Scene_Menu.prototype.onFormationOk = function () {
-	let index = this._statusWindow.index();
-	let pendingIndex = this._statusWindow.pendingIndex();
+	const index = this._statusWindow.index();
+	const pendingIndex = this._statusWindow.pendingIndex();
 	if (pendingIndex >= 0) {
 		$gameParty.swapOrder(index, pendingIndex);
 		this._statusWindow.setPendingIndex(-1);

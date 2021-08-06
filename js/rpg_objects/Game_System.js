@@ -186,9 +186,9 @@ Game_System.prototype.playtime = function () {
 };
 
 Game_System.prototype.playtimeText = function () {
-	let hour = Math.floor(this.playtime() / 60 / 60);
-	let min = Math.floor(this.playtime() / 60) % 60;
-	let sec = this.playtime() % 60;
+	const hour = Math.floor(this.playtime() / 60 / 60);
+	const min = Math.floor(this.playtime() / 60) % 60;
+	const sec = this.playtime() % 60;
 	return hour.padZero(2) + ':' + min.padZero(2) + ':' + sec.padZero(2);
 };
 

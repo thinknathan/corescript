@@ -13,8 +13,8 @@ Window_Command.prototype.constructor = Window_Command;
 Window_Command.prototype.initialize = function (x, y) {
 	this.clearCommandList();
 	this.makeCommandList();
-	let width = this.windowWidth();
-	let height = this.windowHeight();
+	const width = this.windowWidth();
+	const height = this.windowHeight();
 	Window_Selectable.prototype.initialize.call(this, x, y, width, height);
 	this.refresh();
 	this.select(0);
@@ -99,7 +99,7 @@ Window_Command.prototype.findSymbol = function (symbol) {
 };
 
 Window_Command.prototype.selectSymbol = function (symbol) {
-	let index = this.findSymbol(symbol);
+	const index = this.findSymbol(symbol);
 	if (index >= 0) {
 		this.select(index);
 	} else {
@@ -117,7 +117,7 @@ Window_Command.prototype.findExt = function (ext) {
 };
 
 Window_Command.prototype.selectExt = function (ext) {
-	let index = this.findExt(ext);
+	const index = this.findExt(ext);
 	if (index >= 0) {
 		this.select(index);
 	} else {
@@ -126,8 +126,8 @@ Window_Command.prototype.selectExt = function (ext) {
 };
 
 Window_Command.prototype.drawItem = function (index) {
-	let rect = this.itemRectForText(index);
-	let align = this.itemTextAlign();
+	const rect = this.itemRectForText(index);
+	const align = this.itemTextAlign();
 	this.resetTextColor();
 	this.changePaintOpacity(this.isCommandEnabled(index));
 	this.drawText(this.commandName(index), rect.x, rect.y, rect.width, align);
@@ -142,7 +142,7 @@ Window_Command.prototype.isOkEnabled = function () {
 };
 
 Window_Command.prototype.callOkHandler = function () {
-	let symbol = this.currentSymbol();
+	const symbol = this.currentSymbol();
 	if (this.isHandled(symbol)) {
 		this.callHandler(symbol);
 	} else if (this.isHandled('ok')) {

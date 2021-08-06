@@ -66,7 +66,7 @@ Game_Vehicle.prototype.vehicle = function () {
 };
 
 Game_Vehicle.prototype.loadSystemSettings = function () {
-	let vehicle = this.vehicle();
+	const vehicle = this.vehicle();
 	this._mapId = vehicle.startMapId;
 	this.setPosition(vehicle.startX, vehicle.startY);
 	this.setImage(vehicle.characterName, vehicle.characterIndex);
@@ -104,8 +104,8 @@ Game_Vehicle.prototype.pos = function (x, y) {
 };
 
 Game_Vehicle.prototype.isMapPassable = function (x, y, d) {
-	let x2 = $gameMap.roundXWithDirection(x, d);
-	let y2 = $gameMap.roundYWithDirection(y, d);
+	const x2 = $gameMap.roundXWithDirection(x, d);
+	const y2 = $gameMap.roundYWithDirection(y, d);
 	if (this.isBoat()) {
 		return $gameMap.isBoatPassable(x2, y2);
 	} else if (this.isShip()) {
@@ -219,8 +219,8 @@ Game_Vehicle.prototype.isLandOk = function (x, y, d) {
 			return false;
 		}
 	} else {
-		let x2 = $gameMap.roundXWithDirection(x, d);
-		let y2 = $gameMap.roundYWithDirection(y, d);
+		const x2 = $gameMap.roundXWithDirection(x, d);
+		const y2 = $gameMap.roundYWithDirection(y, d);
 		if (!$gameMap.isValid(x2, y2)) {
 			return false;
 		}

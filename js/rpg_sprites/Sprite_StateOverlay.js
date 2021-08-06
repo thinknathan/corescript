@@ -58,10 +58,10 @@ Sprite_StateOverlay.prototype.updatePattern = function () {
 
 Sprite_StateOverlay.prototype.updateFrame = function () {
 	if (this._overlayIndex > 0) {
-		let w = 96;
-		let h = 96;
-		let sx = this._pattern * w;
-		let sy = (this._overlayIndex - 1) * h;
+		const w = 96;
+		const h = 96;
+		const sx = this._pattern * w;
+		const sy = (this._overlayIndex - 1) * h;
 		this.setFrame(sx, sy, w, h);
 	} else {
 		this.setFrame(0, 0, 0, 0);

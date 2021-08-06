@@ -48,8 +48,8 @@ Sprite_Enemy.prototype.update = function () {
 
 Sprite_Enemy.prototype.updateBitmap = function () {
 	Sprite_Battler.prototype.updateBitmap.call(this);
-	let name = this._enemy.battlerName();
-	let hue = this._enemy.battlerHue();
+	const name = this._enemy.battlerName();
+	const hue = this._enemy.battlerHue();
 	if (this._battlerName !== name || this._battlerHue !== hue) {
 		this._battlerName = name;
 		this._battlerHue = hue;
@@ -212,7 +212,7 @@ Sprite_Enemy.prototype.revertToNormal = function () {
 };
 
 Sprite_Enemy.prototype.updateWhiten = function () {
-	let alpha = 128 - (16 - this._effectDuration) * 10;
+	const alpha = 128 - (16 - this._effectDuration) * 10;
 	this.setBlendColor([255, 255, 255, alpha]);
 };
 

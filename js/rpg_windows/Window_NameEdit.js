@@ -11,10 +11,10 @@ Window_NameEdit.prototype = Object.create(Window_Base.prototype);
 Window_NameEdit.prototype.constructor = Window_NameEdit;
 
 Window_NameEdit.prototype.initialize = function (actor, maxLength) {
-	let width = this.windowWidth();
-	let height = this.windowHeight();
-	let x = (Graphics.boxWidth - width) / 2;
-	let y = (Graphics.boxHeight - (height + this.fittingHeight(9) + 8)) / 2;
+	const width = this.windowWidth();
+	const height = this.windowHeight();
+	const x = (Graphics.boxWidth - width) / 2;
+	const y = (Graphics.boxHeight - (height + this.fittingHeight(9) + 8)) / 2;
 	Window_Base.prototype.initialize.call(this, x, y, width, height);
 	this._actor = actor;
 	this._name = actor.name()
@@ -73,13 +73,13 @@ Window_NameEdit.prototype.faceWidth = function () {
 };
 
 Window_NameEdit.prototype.charWidth = function () {
-	let text = $gameSystem.isJapanese() ? '\uff21' : 'A';
+	const text = $gameSystem.isJapanese() ? '\uff21' : 'A';
 	return this.textWidth(text);
 };
 
 Window_NameEdit.prototype.left = function () {
-	let nameCenter = (this.contentsWidth() + this.faceWidth()) / 2;
-	let nameWidth = (this._maxLength + 1) * this.charWidth();
+	const nameCenter = (this.contentsWidth() + this.faceWidth()) / 2;
+	const nameWidth = (this._maxLength + 1) * this.charWidth();
 	return Math.min(nameCenter - nameWidth / 2, this.contentsWidth() - nameWidth);
 };
 
@@ -93,7 +93,7 @@ Window_NameEdit.prototype.itemRect = function (index) {
 };
 
 Window_NameEdit.prototype.underlineRect = function (index) {
-	let rect = this.itemRect(index);
+	const rect = this.itemRect(index);
 	rect.x++;
 	rect.y += rect.height - 4;
 	rect.width -= 2;
@@ -106,15 +106,15 @@ Window_NameEdit.prototype.underlineColor = function () {
 };
 
 Window_NameEdit.prototype.drawUnderline = function (index) {
-	let rect = this.underlineRect(index);
-	let color = this.underlineColor();
+	const rect = this.underlineRect(index);
+	const color = this.underlineColor();
 	this.contents.paintOpacity = 48;
 	this.contents.fillRect(rect.x, rect.y, rect.width, rect.height, color);
 	this.contents.paintOpacity = 255;
 };
 
 Window_NameEdit.prototype.drawChar = function (index) {
-	let rect = this.itemRect(index);
+	const rect = this.itemRect(index);
 	this.resetTextColor();
 	this.drawText(this._name[index] || '', rect.x, rect.y);
 };
@@ -128,6 +128,6 @@ Window_NameEdit.prototype.refresh = function () {
 	for (let j = 0; j < this._name.length; j++) {
 		this.drawChar(j);
 	}
-	let rect = this.itemRect(this._index);
+	const rect = this.itemRect(this._index);
 	this.setCursorRect(rect.x, rect.y, rect.width, rect.height);
 };

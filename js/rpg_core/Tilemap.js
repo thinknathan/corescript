@@ -224,10 +224,10 @@ Tilemap.prototype.refreshTileset = function () {
  * @private
  */
 Tilemap.prototype.updateTransform = function () {
-	let ox = Math.floor(this.origin.x);
-	let oy = Math.floor(this.origin.y);
-	let startX = Math.floor((ox - this._margin) / this._tileWidth);
-	let startY = Math.floor((oy - this._margin) / this._tileHeight);
+	const ox = Math.floor(this.origin.x);
+	const oy = Math.floor(this.origin.y);
+	const startX = Math.floor((ox - this._margin) / this._tileWidth);
+	const startY = Math.floor((oy - this._margin) / this._tileHeight);
 	this._updateLayerPositions(startX, startY);
 	if (this._needsRepaint || this._lastAnimationFrame !== this.animationFrame ||
 		this._lastStartX !== startX || this._lastStartY !== startY) {
@@ -247,13 +247,13 @@ Tilemap.prototype.updateTransform = function () {
  * @private
  */
 Tilemap.prototype._createLayers = function () {
-	let width = this._width;
-	let height = this._height;
-	let margin = this._margin;
-	let tileCols = Math.ceil(width / this._tileWidth) + 1;
-	let tileRows = Math.ceil(height / this._tileHeight) + 1;
-	let layerWidth = tileCols * this._tileWidth;
-	let layerHeight = tileRows * this._tileHeight;
+	const width = this._width;
+	const height = this._height;
+	const margin = this._margin;
+	const tileCols = Math.ceil(width / this._tileWidth) + 1;
+	const tileRows = Math.ceil(height / this._tileHeight) + 1;
+	const layerWidth = tileCols * this._tileWidth;
+	const layerHeight = tileRows * this._tileHeight;
 	this._lowerBitmap = new Bitmap(layerWidth, layerHeight);
 	this._upperBitmap = new Bitmap(layerWidth, layerHeight);
 	this._layerWidth = layerWidth;
@@ -297,17 +297,17 @@ Tilemap.prototype._createLayers = function () {
  * @private
  */
 Tilemap.prototype._updateLayerPositions = function (startX, startY) {
-	let m = this._margin;
-	let ox = Math.floor(this.origin.x);
-	let oy = Math.floor(this.origin.y);
-	let x2 = (ox - m)
+	const m = this._margin;
+	const ox = Math.floor(this.origin.x);
+	const oy = Math.floor(this.origin.y);
+	const x2 = (ox - m)
 		.mod(this._layerWidth);
-	let y2 = (oy - m)
+	const y2 = (oy - m)
 		.mod(this._layerHeight);
-	let w1 = this._layerWidth - x2;
-	let h1 = this._layerHeight - y2;
-	let w2 = this._width - w1;
-	let h2 = this._height - h1;
+	const w1 = this._layerWidth - x2;
+	const h1 = this._layerHeight - y2;
+	const w2 = this._width - w1;
+	const h2 = this._height - h1;
 
 	for (let i = 0; i < 2; i++) {
 		let children;
@@ -334,8 +334,8 @@ Tilemap.prototype._updateLayerPositions = function (startX, startY) {
  * @private
  */
 Tilemap.prototype._paintAllTiles = function (startX, startY) {
-	let tileCols = Math.ceil(this._width / this._tileWidth) + 1;
-	let tileRows = Math.ceil(this._height / this._tileHeight) + 1;
+	const tileCols = Math.ceil(this._width / this._tileWidth) + 1;
+	const tileRows = Math.ceil(this._height / this._tileHeight) + 1;
 	for (let y = 0; y < tileRows; y++) {
 		for (let x = 0; x < tileCols; x++) {
 			this._paintTiles(startX, startY, x, y);
@@ -352,23 +352,23 @@ Tilemap.prototype._paintAllTiles = function (startX, startY) {
  * @private
  */
 Tilemap.prototype._paintTiles = function (startX, startY, x, y) {
-	let tableEdgeVirtualId = 10000;
-	let mx = startX + x;
-	let my = startY + y;
-	let dx = (mx * this._tileWidth)
+	const tableEdgeVirtualId = 10000;
+	const mx = startX + x;
+	const my = startY + y;
+	const dx = (mx * this._tileWidth)
 		.mod(this._layerWidth);
-	let dy = (my * this._tileHeight)
+	const dy = (my * this._tileHeight)
 		.mod(this._layerHeight);
-	let lx = dx / this._tileWidth;
-	let ly = dy / this._tileHeight;
-	let tileId0 = this._readMapData(mx, my, 0);
-	let tileId1 = this._readMapData(mx, my, 1);
-	let tileId2 = this._readMapData(mx, my, 2);
-	let tileId3 = this._readMapData(mx, my, 3);
-	let shadowBits = this._readMapData(mx, my, 4);
-	let upperTileId1 = this._readMapData(mx, my - 1, 1);
-	let lowerTiles = [];
-	let upperTiles = [];
+	const lx = dx / this._tileWidth;
+	const ly = dy / this._tileHeight;
+	const tileId0 = this._readMapData(mx, my, 0);
+	const tileId1 = this._readMapData(mx, my, 1);
+	const tileId2 = this._readMapData(mx, my, 2);
+	const tileId3 = this._readMapData(mx, my, 3);
+	const shadowBits = this._readMapData(mx, my, 4);
+	const upperTileId1 = this._readMapData(mx, my - 1, 1);
+	const lowerTiles = [];
+	const upperTiles = [];
 
 	if (this._isHigherTile(tileId0)) {
 		upperTiles.push(tileId0);
@@ -405,12 +405,12 @@ Tilemap.prototype._paintTiles = function (startX, startY, x, y) {
 		}
 	}
 
-	let lastLowerTiles = this._readLastTiles(0, lx, ly);
+	const lastLowerTiles = this._readLastTiles(0, lx, ly);
 	if (!lowerTiles.equals(lastLowerTiles) ||
 		(Tilemap.isTileA1(tileId0) && this._frameUpdated)) {
 		this._lowerBitmap.clearRect(dx, dy, this._tileWidth, this._tileHeight);
 		for (let i = 0; i < lowerTiles.length; i++) {
-			let lowerTileId = lowerTiles[i];
+			const lowerTileId = lowerTiles[i];
 			if (lowerTileId < 0) {
 				this._drawShadow(this._lowerBitmap, shadowBits, dx, dy);
 			} else if (lowerTileId >= tableEdgeVirtualId) {
@@ -422,7 +422,7 @@ Tilemap.prototype._paintTiles = function (startX, startY, x, y) {
 		this._writeLastTiles(0, lx, ly, lowerTiles);
 	}
 
-	let lastUpperTiles = this._readLastTiles(1, lx, ly);
+	const lastUpperTiles = this._readLastTiles(1, lx, ly);
 	if (!upperTiles.equals(lastUpperTiles)) {
 		this._upperBitmap.clearRect(dx, dy, this._tileWidth, this._tileHeight);
 		for (let j = 0; j < upperTiles.length; j++) {
@@ -440,11 +440,11 @@ Tilemap.prototype._paintTiles = function (startX, startY, x, y) {
  * @private
  */
 Tilemap.prototype._readLastTiles = function (i, x, y) {
-	let array1 = this._lastTiles[i];
+	const array1 = this._lastTiles[i];
 	if (array1) {
-		let array2 = array1[y];
+		const array2 = array1[y];
 		if (array2) {
-			let tiles = array2[x];
+			const tiles = array2[x];
 			if (tiles) {
 				return tiles;
 			}
@@ -508,12 +508,12 @@ Tilemap.prototype._drawNormalTile = function (bitmap, tileId, dx, dy) {
 		setNumber = 5 + Math.floor(tileId / 256);
 	}
 
-	let w = this._tileWidth;
-	let h = this._tileHeight;
-	let sx = (Math.floor(tileId / 128) % 2 * 8 + tileId % 8) * w;
-	let sy = (Math.floor(tileId % 256 / 8) % 16) * h;
+	const w = this._tileWidth;
+	const h = this._tileHeight;
+	const sx = (Math.floor(tileId / 128) % 2 * 8 + tileId % 8) * w;
+	const sy = (Math.floor(tileId % 256 / 8) % 16) * h;
 
-	let source = this.bitmaps[setNumber];
+	const source = this.bitmaps[setNumber];
 	if (source) {
 		bitmap.bltImage(source, sx, sy, w, h, dx, dy, w, h);
 	}
@@ -529,17 +529,17 @@ Tilemap.prototype._drawNormalTile = function (bitmap, tileId, dx, dy) {
  */
 Tilemap.prototype._drawAutotile = function (bitmap, tileId, dx, dy) {
 	let autotileTable = Tilemap.FLOOR_AUTOTILE_TABLE;
-	let kind = Tilemap.getAutotileKind(tileId);
-	let shape = Tilemap.getAutotileShape(tileId);
-	let tx = kind % 8;
-	let ty = Math.floor(kind / 8);
+	const kind = Tilemap.getAutotileKind(tileId);
+	const shape = Tilemap.getAutotileShape(tileId);
+	const tx = kind % 8;
+	const ty = Math.floor(kind / 8);
 	let bx = 0;
 	let by = 0;
 	let setNumber = 0;
 	let isTable = false;
 
 	if (Tilemap.isTileA1(tileId)) {
-		let waterSurfaceIndex = [0, 1, 2, 1][this.animationFrame % 4];
+		const waterSurfaceIndex = [0, 1, 2, 1][this.animationFrame % 4];
 		setNumber = 0;
 		if (kind === 0) {
 			bx = waterSurfaceIndex * 2;
@@ -583,18 +583,18 @@ Tilemap.prototype._drawAutotile = function (bitmap, tileId, dx, dy) {
 		}
 	}
 
-	let table = autotileTable[shape];
-	let source = this.bitmaps[setNumber];
+	const table = autotileTable[shape];
+	const source = this.bitmaps[setNumber];
 
 	if (table && source) {
-		let w1 = this._tileWidth / 2;
-		let h1 = this._tileHeight / 2;
+		const w1 = this._tileWidth / 2;
+		const h1 = this._tileHeight / 2;
 		for (let i = 0; i < 4; i++) {
-			let qsx = table[i][0];
-			let qsy = table[i][1];
-			let sx1 = (bx * 2 + qsx) * w1;
-			let sy1 = (by * 2 + qsy) * h1;
-			let dx1 = dx + (i % 2) * w1;
+			const qsx = table[i][0];
+			const qsy = table[i][1];
+			const sx1 = (bx * 2 + qsx) * w1;
+			const sy1 = (by * 2 + qsy) * h1;
+			const dx1 = dx + (i % 2) * w1;
 			let dy1 = dy + Math.floor(i / 2) * h1;
 			if (isTable && (qsy === 1 || qsy === 5)) {
 				let qsx2 = qsx;
@@ -602,8 +602,8 @@ Tilemap.prototype._drawAutotile = function (bitmap, tileId, dx, dy) {
 				if (qsy === 1) {
 					qsx2 = [0, 3, 2, 1][qsx];
 				}
-				let sx2 = (bx * 2 + qsx2) * w1;
-				let sy2 = (by * 2 + qsy2) * h1;
+				const sx2 = (bx * 2 + qsx2) * w1;
+				const sy2 = (by * 2 + qsy2) * h1;
 				bitmap.bltImage(source, sx2, sy2, w1, h1, dx1, dy1, w1, h1);
 				dy1 += h1 / 2;
 				bitmap.bltImage(source, sx1, sy1, w1, h1 / 2, dx1, dy1, w1, h1 / 2);
@@ -624,27 +624,27 @@ Tilemap.prototype._drawAutotile = function (bitmap, tileId, dx, dy) {
  */
 Tilemap.prototype._drawTableEdge = function (bitmap, tileId, dx, dy) {
 	if (Tilemap.isTileA2(tileId)) {
-		let autotileTable = Tilemap.FLOOR_AUTOTILE_TABLE;
-		let kind = Tilemap.getAutotileKind(tileId);
-		let shape = Tilemap.getAutotileShape(tileId);
-		let tx = kind % 8;
-		let ty = Math.floor(kind / 8);
-		let setNumber = 1;
-		let bx = tx * 2;
-		let by = (ty - 2) * 3;
-		let table = autotileTable[shape];
+		const autotileTable = Tilemap.FLOOR_AUTOTILE_TABLE;
+		const kind = Tilemap.getAutotileKind(tileId);
+		const shape = Tilemap.getAutotileShape(tileId);
+		const tx = kind % 8;
+		const ty = Math.floor(kind / 8);
+		const setNumber = 1;
+		const bx = tx * 2;
+		const by = (ty - 2) * 3;
+		const table = autotileTable[shape];
 
 		if (table) {
-			let source = this.bitmaps[setNumber];
-			let w1 = this._tileWidth / 2;
-			let h1 = this._tileHeight / 2;
+			const source = this.bitmaps[setNumber];
+			const w1 = this._tileWidth / 2;
+			const h1 = this._tileHeight / 2;
 			for (let i = 0; i < 2; i++) {
-				let qsx = table[2 + i][0];
-				let qsy = table[2 + i][1];
-				let sx1 = (bx * 2 + qsx) * w1;
-				let sy1 = (by * 2 + qsy) * h1 + h1 / 2;
-				let dx1 = dx + (i % 2) * w1;
-				let dy1 = dy + Math.floor(i / 2) * h1;
+				const qsx = table[2 + i][0];
+				const qsy = table[2 + i][1];
+				const sx1 = (bx * 2 + qsx) * w1;
+				const sy1 = (by * 2 + qsy) * h1 + h1 / 2;
+				const dx1 = dx + (i % 2) * w1;
+				const dy1 = dy + Math.floor(i / 2) * h1;
 				bitmap.bltImage(source, sx1, sy1, w1, h1 / 2, dx1, dy1, w1, h1 / 2);
 			}
 		}
@@ -661,13 +661,13 @@ Tilemap.prototype._drawTableEdge = function (bitmap, tileId, dx, dy) {
  */
 Tilemap.prototype._drawShadow = function (bitmap, shadowBits, dx, dy) {
 	if (shadowBits & 0x0f) {
-		let w1 = this._tileWidth / 2;
-		let h1 = this._tileHeight / 2;
-		let color = 'rgba(0,0,0,0.5)';
+		const w1 = this._tileWidth / 2;
+		const h1 = this._tileHeight / 2;
+		const color = 'rgba(0,0,0,0.5)';
 		for (let i = 0; i < 4; i++) {
 			if (shadowBits & (1 << i)) {
-				let dx1 = dx + (i % 2) * w1;
-				let dy1 = dy + Math.floor(i / 2) * h1;
+				const dx1 = dx + (i % 2) * w1;
+				const dy1 = dy + Math.floor(i / 2) * h1;
 				bitmap.fillRect(dx1, dy1, w1, h1, color);
 			}
 		}
@@ -684,8 +684,8 @@ Tilemap.prototype._drawShadow = function (bitmap, shadowBits, dx, dy) {
  */
 Tilemap.prototype._readMapData = function (x, y, z) {
 	if (this._mapData) {
-		let width = this._mapWidth;
-		let height = this._mapHeight;
+		const width = this._mapWidth;
+		const height = this._mapHeight;
 		if (this.horizontalWrap) {
 			x = x.mod(width);
 		}

@@ -61,10 +61,10 @@ Game_Troop.prototype.setup = function (troopId) {
 	this.troop()
 		.members.forEach(function (member) {
 			if ($dataEnemies[member.enemyId]) {
-				let enemyId = member.enemyId;
-				let x = member.x;
-				let y = member.y;
-				let enemy = new Game_Enemy(enemyId, x, y);
+				const enemyId = member.enemyId;
+				const x = member.x;
+				const y = member.y;
+				const enemy = new Game_Enemy(enemyId, x, y);
 				if (member.hidden) {
 					enemy.hide();
 				}
@@ -75,19 +75,19 @@ Game_Troop.prototype.setup = function (troopId) {
 };
 
 Game_Troop.prototype.makeUniqueNames = function () {
-	let table = this.letterTable();
+	const table = this.letterTable();
 	this.members()
 		.forEach(function (enemy) {
 			if (enemy.isAlive() && enemy.isLetterEmpty()) {
-				let name = enemy.originalName();
-				let n = this._namesCount[name] || 0;
+				const name = enemy.originalName();
+				const n = this._namesCount[name] || 0;
 				enemy.setLetter(table[n % table.length]);
 				this._namesCount[name] = n + 1;
 			}
 		}, this);
 	this.members()
 		.forEach(function (enemy) {
-			let name = enemy.originalName();
+			const name = enemy.originalName();
 			if (this._namesCount[name] >= 2) {
 				enemy.setPlural(true);
 			}
@@ -100,10 +100,10 @@ Game_Troop.prototype.letterTable = function () {
 };
 
 Game_Troop.prototype.enemyNames = function () {
-	let names = [];
+	const names = [];
 	this.members()
 		.forEach(function (enemy) {
-			let name = enemy.originalName();
+			const name = enemy.originalName();
 			if (enemy.isAlive() && !names.contains(name)) {
 				names.push(name);
 			}
@@ -112,7 +112,7 @@ Game_Troop.prototype.enemyNames = function () {
 };
 
 Game_Troop.prototype.meetsConditions = function (page) {
-	let c = page.conditions;
+	const c = page.conditions;
 	if (!c.turnEnding && !c.turnValid && !c.enemyValid &&
 		!c.actorValid && !c.switchValid) {
 		return false; // Conditions not set
@@ -123,9 +123,9 @@ Game_Troop.prototype.meetsConditions = function (page) {
 		}
 	}
 	if (c.turnValid) {
-		let n = this._turnCount;
-		let a = c.turnA;
-		let b = c.turnB;
+		const n = this._turnCount;
+		const a = c.turnA;
+		const b = c.turnB;
 		if ((b === 0 && n !== a)) {
 			return false;
 		}
@@ -134,13 +134,13 @@ Game_Troop.prototype.meetsConditions = function (page) {
 		}
 	}
 	if (c.enemyValid) {
-		let enemy = $gameTroop.members()[c.enemyIndex];
+		const enemy = $gameTroop.members()[c.enemyIndex];
 		if (!enemy || enemy.hpRate() * 100 > c.enemyHp) {
 			return false;
 		}
 	}
 	if (c.actorValid) {
-		let actor = $gameActors.actor(c.actorId);
+		const actor = $gameActors.actor(c.actorId);
 		if (!actor || actor.hpRate() * 100 > c.actorHp) {
 			return false;
 		}
@@ -158,10 +158,10 @@ Game_Troop.prototype.setupBattleEvent = function () {
 		if (this._interpreter.setupReservedCommonEvent()) {
 			return;
 		}
-		let pages = this.troop()
+		const pages = this.troop()
 			.pages;
 		for (let i = 0; i < pages.length; i++) {
-			let page = pages[i];
+			const page = pages[i];
 			if (this.meetsConditions(page) && !this._eventFlags[i]) {
 				this._interpreter.setup(page.list);
 				this._interpreter.setEventInfo({
@@ -179,10 +179,10 @@ Game_Troop.prototype.setupBattleEvent = function () {
 };
 
 Game_Troop.prototype.increaseTurn = function () {
-	let pages = this.troop()
+	const pages = this.troop()
 		.pages;
 	for (let i = 0; i < pages.length; i++) {
-		let page = pages[i];
+		const page = pages[i];
 		if (page.span === 1) {
 			this._eventFlags[i] = false;
 		}
