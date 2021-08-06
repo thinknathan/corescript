@@ -1117,6 +1117,8 @@ Graphics._createRenderer = function() {
         view: this._canvas,
         width: this._width,
         height: this._height,
+        resolution: window.devicePixelRatio,
+        powerPreference: "high-performance",
     };
     try {
         switch (this._rendererType) {
