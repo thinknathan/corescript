@@ -17,8 +17,6 @@ Sprite.voidFilter = new PIXI.filters.AlphaFilter();
 
 Sprite.prototype.initialize = function (bitmap) {
 	const texture = new PIXI.Texture(new PIXI.BaseTexture());
-	texture.CREATED_BY = this;
-	texture.CREATED_AT = Date.now();
 
 	PIXI.Sprite.call(this, texture);
 

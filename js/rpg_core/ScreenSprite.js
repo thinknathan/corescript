@@ -16,8 +16,6 @@ ScreenSprite.prototype.initialize = function () {
 	PIXI.Container.call(this);
 
 	this._graphics = new PIXI.Graphics();
-	this._graphics.CREATED_BY = this;
-	this._graphics.CREATED_AT = Date.now();
 
 	this.addChild(this._graphics);
 	this.opacity = 0;

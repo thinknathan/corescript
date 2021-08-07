@@ -74,8 +74,6 @@ Bitmap.prototype._createBaseTexture = function (source) {
 	this.__baseTexture.mipmap = false;
 	this.__baseTexture.width = source.width;
 	this.__baseTexture.height = source.height;
-	this.__baseTexture.CREATED_BY = this;
-	this.__baseTexture.CREATED_AT = Date.now();
 	this._baseTexture.scaleMode = PIXI.SCALE_MODES.NEAREST;
 };
 
