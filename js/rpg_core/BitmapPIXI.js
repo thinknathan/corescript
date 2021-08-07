@@ -191,12 +191,14 @@ BitmapPIXI.prototype.drawText = function (text, x, y, maxWidth, lineHeight, alig
 BitmapPIXI.prototype._updateExistingText = function (text, x, y, alpha) {
 	const context = this;
 	let exitEarly = false;
-	this.textCache.forEach(function (BitmapTextInstance) {
-		if (BitmapTextInstance && BitmapTextInstance.x === x && BitmapTextInstance.y === y) {
-			exitEarly = true;
-			if (BitmapTextInstance.text !== text) BitmapTextInstance.text = text;
-			if (BitmapTextInstance.alpha !== alpha) BitmapTextInstance.alpha = alpha;
-			context.addChild(BitmapTextInstance);
+	this.textCache.forEach(function (bitmapTextInstance) {
+		if (bitmapTextInstance.x === x && bitmapTextInstance.y === y) {
+			if (bitmapTextInstance._tint === PIXI.utils.string2hex(context.textColor)) {
+				if (bitmapTextInstance.text !== text) bitmapTextInstance.text = text;
+				if (bitmapTextInstance.alpha !== alpha) bitmapTextInstance.alpha = alpha;
+				context.addChild(bitmapTextInstance);
+				exitEarly = true;
+			}
 		}
 	});
 	return exitEarly;
