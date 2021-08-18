@@ -11,6 +11,13 @@
 			PIXI.settings.RENDER_OPTIONS.autoDensity = true;
 			PIXI.settings.RESOLUTION = window.devicePixelRatio;
 		}
+		if (Utils.isMobileSafari()) {
+			PIXI.settings.PRECISION_FRAGMENT = PIXI.PRECISION.HIGH;
+			PIXI.settings.PRECISION_VERTEX = PIXI.PRECISION.HIGH;
+		} else {
+			PIXI.settings.PRECISION_FRAGMENT = PIXI.PRECISION.MEDIUM;
+			PIXI.settings.PRECISION_VERTEX = PIXI.PRECISION.MEDIUM;
+		}
 		SceneManager.run(Scene_Boot);
 	};
 
