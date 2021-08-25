@@ -62,7 +62,7 @@ Bitmap.prototype._createCanvas = function (width, height) {
 		this.__canvas.height = h;
 		this._createBaseTexture(this._canvas);
 
-		console.warn('Drawing non-PIXI texture to canvas.', this._image);
+		console.info('[Bitmap._createCanvas] Drawing %o to canvas is slow.', this._image);
 		this.__context.drawImage(this._image, 0, 0);
 	}
 
@@ -438,7 +438,7 @@ Bitmap.prototype.resize = function (width, height) {
  * @param {Number} [dh=sh] The height to draw the image in the destination
  */
 Bitmap.prototype.blt = function (source, sx, sy, sw, sh, dx, dy, dw, dh) {
-	console.warn('Bitmap.blt is slow.', source);
+	console.info('[Bitmap.blt] Canvas block transfer is slow.');
 	dw = dw || sw;
 	dh = dh || sh;
 	if (sx >= 0 && sy >= 0 && sw > 0 && sh > 0 && dw > 0 && dh > 0 &&
@@ -760,7 +760,7 @@ Bitmap.prototype.rotateHue = function (offset) {
 			pixels[i + 1] = rgb[1];
 			pixels[i + 2] = rgb[2];
 		}
-		console.warn('Rotate hue on canvas is slow.');
+		console.info('[Bitmap.rotateHue] Rotate hue on canvas is slow.');
 		context.putImageData(imageData, 0, 0);
 		this._setDirty();
 	}
@@ -779,7 +779,7 @@ Bitmap.prototype.blur = function () {
 		const context = this._context;
 		const tempCanvas = document.createElement('canvas');
 		const tempContext = tempCanvas.getContext('2d');
-		console.warn('Blur on canvas is slow.');
+		console.info('[Bitmap.blur] Blur on canvas is slow.');
 		tempCanvas.width = w + 2;
 		tempCanvas.height = h + 2;
 		tempContext.drawImage(canvas, 0, 0, w, h, 1, 1, w, h);

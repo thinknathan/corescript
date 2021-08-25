@@ -416,7 +416,7 @@ DataManager.lastAccessedSavefileId = function () {
 DataManager.saveGameWithoutRescue = function (savefileId) {
 	const json = JsonEx.stringify(this.makeSaveContents());
 	if (json.length >= 200000) {
-		console.warn('Save data too big!');
+		console.warn('[DataManager.saveGameWithoutRescue] Save data length %i is larger than suggested 200000.', json.length);
 	}
 	StorageManager.save(savefileId, json);
 	this._lastAccessedId = savefileId;
