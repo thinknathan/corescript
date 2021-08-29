@@ -160,6 +160,10 @@ BitmapPIXI.prototype.clearRect = function (x, y, width, height) {
  */
 BitmapPIXI.prototype.drawText = function (text, x, y, maxWidth, lineHeight, align) {
 	if (text === undefined) return;
+  x = Math.floor(x);
+  y = Math.floor(y);
+  maxWidth = Math.floor(maxWidth);
+  lineHeight = Math.floor(lineHeight);
 	const alpha = this._paintOpacity / 255;
 
 	maxWidth = maxWidth || 0xffffffff;
@@ -340,6 +344,14 @@ BitmapPIXI.prototype.createCroppedSprite = function (source, x, y, w, h) {
 BitmapPIXI.prototype.blt = function (source, sx, sy, sw, sh, dx, dy, dw, dh) {
 	dw = dw || sw;
 	dh = dh || sh;
+	sx = Math.floor(sx);
+	sy = Math.floor(sy);
+	sw = Math.floor(sw);
+	sh = Math.floor(sh);
+	dx = Math.floor(dx);
+	dy = Math.floor(dy);
+	dw = Math.floor(dw);
+	dh = Math.floor(dh);
 	if (sx >= 0 && sy >= 0 && sw > 0 && sh > 0 && dw > 0 && dh > 0 &&
 		sx + sw <= source.width && sy + sh <= source.height) {
 		const sprite = this.createCroppedSprite(source.baseTexture, sx, sy, sw, sh);
@@ -365,6 +377,10 @@ BitmapPIXI.prototype.blt = function (source, sx, sy, sw, sh, dx, dy, dw, dh) {
  * @param {String} color The color of the rectangle in CSS format
  */
 BitmapPIXI.prototype.fillRect = function (x, y, width, height, color) {
+	x = Math.floor(x);
+	y = Math.floor(y);
+	width = Math.floor(width);
+	height = Math.floor(height);
 	const rectangle = new PIXI.Graphics();
 	color = PIXI.utils.string2hex(color);
 	rectangle.beginFill(color);
@@ -410,6 +426,8 @@ BitmapPIXI.prototype.gradientFillRect = function (x, y, width, height, color1, c
  * @param {String} color The color of the circle in CSS format
  */
 BitmapPIXI.prototype.drawCircle = function (x, y, radius, color) {
+	x = Math.floor(x);
+	y = Math.floor(y);
 	const circle = new PIXI.Graphics();
 	color = PIXI.utils.string2hex(color);
 	circle.beginFill(color);

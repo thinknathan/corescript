@@ -305,11 +305,11 @@ Window.prototype.update = function () {
  * @param {Number} height The height of the window
  */
 Window.prototype.move = function (x, y, width, height) {
-	this.x = x || 0;
-	this.y = y || 0;
+	this.x = Math.floor(x || 0);
+	this.y = Math.floor(y || 0);
 	if (this._width !== width || this._height !== height) {
-		this._width = width || 0;
-		this._height = height || 0;
+		this._width = Math.floor(width || 0);
+		this._height = Math.floor(height || 0);
 		this._refreshAllParts();
 	}
 };
