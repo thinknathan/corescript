@@ -160,10 +160,10 @@ BitmapPIXI.prototype.clearRect = function (x, y, width, height) {
  */
 BitmapPIXI.prototype.drawText = function (text, x, y, maxWidth, lineHeight, align) {
 	if (text === undefined) return;
-  x = Math.floor(x);
-  y = Math.floor(y);
-  maxWidth = Math.floor(maxWidth);
-  lineHeight = Math.floor(lineHeight);
+	x = Math.floor(x);
+	y = Math.floor(y);
+	maxWidth = Math.floor(maxWidth);
+	lineHeight = Math.floor(lineHeight);
 	const alpha = this._paintOpacity / 255;
 
 	maxWidth = maxWidth || 0xffffffff;
@@ -197,12 +197,12 @@ BitmapPIXI.prototype._updateExistingText = function (text, x, y, alpha) {
 	let exitEarly = false;
 	this.textCache.forEach(function (bitmapTextInstance) {
 		if (bitmapTextInstance.x === x && bitmapTextInstance.y === y) {
-			if (bitmapTextInstance._tint === PIXI.utils.string2hex(context.textColor)) {
-				if (bitmapTextInstance.text !== text) bitmapTextInstance.text = text;
-				if (bitmapTextInstance.alpha !== alpha) bitmapTextInstance.alpha = alpha;
-				context.addChild(bitmapTextInstance);
-				exitEarly = true;
-			}
+			const newTint = PIXI.utils.string2hex(context.textColor);
+			if (bitmapTextInstance._tint !== newTint) bitmapTextInstance.tint = newTint;
+			if (bitmapTextInstance.text !== text) bitmapTextInstance.text = text;
+			if (bitmapTextInstance.alpha !== alpha) bitmapTextInstance.alpha = alpha;
+			context.addChild(bitmapTextInstance);
+			exitEarly = true;
 		}
 	});
 	return exitEarly;
@@ -242,7 +242,6 @@ BitmapPIXI.prototype._drawNewText = function (text, x, y, alpha, maxWidth, lineH
 	const pixiText = new PIXI.BitmapText(text, {
 		fontName: style.fontFamily,
 		fontSize: style.fontSize,
-		tint: PIXI.utils.string2hex(this.textColor),
 	});
 
 	if (!style.wordWrap && pixiText.width > maxWidth) {
@@ -259,6 +258,7 @@ BitmapPIXI.prototype._drawNewText = function (text, x, y, alpha, maxWidth, lineH
 	if (pixiText) {
 		pixiText.x = x;
 		pixiText.y = y;
+		pixiText.tint = PIXI.utils.string2hex(this.textColor);
 		pixiText.alpha = alpha;
 		pixiText.isBitmapText = true;
 		this.textCache.push(pixiText);
