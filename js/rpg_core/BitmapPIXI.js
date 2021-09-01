@@ -362,6 +362,7 @@ BitmapPIXI.prototype.blt = function (source, sx, sy, sw, sh, dx, dy, dw, dh) {
 			sprite.height = dh;
 			sprite.alpha = this._paintOpacity / 255;
 			this.addChild(sprite);
+			return sprite;
 		}
 	}
 };
