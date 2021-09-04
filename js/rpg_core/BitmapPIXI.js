@@ -160,22 +160,22 @@ BitmapPIXI.prototype.clearRect = function (x, y, width, height) {
  */
 BitmapPIXI.prototype.drawText = function (text, x, y, maxWidth, lineHeight, align) {
 	if (text === undefined) return;
-	x = Math.floor(x);
-	y = Math.floor(y);
-	maxWidth = Math.floor(maxWidth);
-	lineHeight = Math.floor(lineHeight);
 	const alpha = this._paintOpacity / 255;
-
-	maxWidth = maxWidth || 0xffffffff;
+	maxWidth = Math.floor(maxWidth) || 0xffffffff;
+	lineHeight = Math.floor(lineHeight);
 	// [note] Non-String values crash BitmapText updates in PIXI 5.3.3
 	// since they use {text}.replace
 	text = String(text);
+
 	if (align === 'center') {
 		x = x + (maxWidth / 2);
 	} else if (align === 'right') {
 		x = x + maxWidth;
 	}
-	y = y + lineHeight - Math.round(this.fontSize * 1.25);
+	y = y + lineHeight - this.fontSize * 1.25;
+
+	x = Math.floor(x);
+	y = Math.floor(y);
 
 	// Try to updating existing text object at the same X and Y position
 	const updateExisting = this._updateExistingText(text, x, y, alpha);
@@ -193,19 +193,18 @@ BitmapPIXI.prototype.drawText = function (text, x, y, maxWidth, lineHeight, alig
  * @private
  */
 BitmapPIXI.prototype._updateExistingText = function (text, x, y, alpha) {
-	const context = this;
-	let exitEarly = false;
-	this.textCache.forEach(function (bitmapTextInstance) {
+	for (let i = 0; i < this.textCache.length; i++) {
+		const bitmapTextInstance = this.textCache[i];
 		if (bitmapTextInstance.x === x && bitmapTextInstance.y === y) {
-			const newTint = PIXI.utils.string2hex(context.textColor);
+			const newTint = PIXI.utils.string2hex(this.textColor);
 			if (bitmapTextInstance._tint !== newTint) bitmapTextInstance.tint = newTint;
 			if (bitmapTextInstance.text !== text) bitmapTextInstance.text = text;
 			if (bitmapTextInstance.alpha !== alpha) bitmapTextInstance.alpha = alpha;
-			context.addChild(bitmapTextInstance);
-			exitEarly = true;
+			this.addChild(bitmapTextInstance);
+			return true;
 		}
-	});
-	return exitEarly;
+	}
+	return false;
 };
 
 /**
@@ -245,8 +244,7 @@ BitmapPIXI.prototype._drawNewText = function (text, x, y, alpha, maxWidth, lineH
 	});
 
 	if (!style.wordWrap && pixiText.width > maxWidth) {
-		const scaling = maxWidth / pixiText.width;
-		pixiText.scale.x = scaling;
+		pixiText.scale.x = maxWidth / pixiText.width;
 	}
 
 	if (align === 'center') {

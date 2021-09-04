@@ -640,13 +640,12 @@ Bitmap.prototype.drawText = function (text, x, y, maxWidth, lineHeight, align) {
 	if (text !== undefined) {
 		x = Math.floor(x);
 		y = Math.floor(y);
-		maxWidth = Math.floor(maxWidth);
+		maxWidth = Math.floor(maxWidth) || 0xffffffff;
 		lineHeight = Math.floor(lineHeight);
 		let tx = x;
 		const ty = y + lineHeight - Math.round((lineHeight - this.fontSize * 0.7) / 2);
 		const context = this._context;
 		const alpha = context.globalAlpha;
-		maxWidth = maxWidth || 0xffffffff;
 		if (align === 'center') {
 			tx += maxWidth / 2;
 		}
@@ -721,6 +720,7 @@ Bitmap.prototype.adjustTone = function (r, g, b) {
  */
 Bitmap.prototype.rotateHue = function (offset) {
 	if (!offset) return;
+
 	function rgbToHsl(r, g, b) {
 		const cmin = Math.min(r, g, b);
 		const cmax = Math.max(r, g, b);
