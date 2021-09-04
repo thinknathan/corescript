@@ -720,6 +720,7 @@ Bitmap.prototype.adjustTone = function (r, g, b) {
  * @param {Number} offset The hue offset in 360 degrees
  */
 Bitmap.prototype.rotateHue = function (offset) {
+	if (!offset) return;
 	function rgbToHsl(r, g, b) {
 		const cmin = Math.min(r, g, b);
 		const cmax = Math.max(r, g, b);
