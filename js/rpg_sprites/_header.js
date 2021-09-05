@@ -5,3 +5,4 @@
 // @license https://github.com/thinknathan/corescript/blob/master/LICENSE
 // @credit https://github.com/thinknathan/corescript/blob/master/CONTRIBUTORS.md
 //=============================================================================
+"use strict";
