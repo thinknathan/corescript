@@ -67,12 +67,22 @@ Object.defineProperty(BitmapPIXI.prototype, 'width', {
 	get: function () {
 		return this._width;
 	},
+	set: function (value) {
+		if (this._width !== value) {
+			this._width = value;
+		}
+	},
 	configurable: true
 });
 
 Object.defineProperty(BitmapPIXI.prototype, 'height', {
 	get: function () {
 		return this._height;
+	},
+	set: function (value) {
+		if (this._height !== value) {
+			this._height = value;
+		}
 	},
 	configurable: true
 });
