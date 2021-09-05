@@ -228,14 +228,7 @@ BitmapPIXI.prototype._drawNewText = function (text, x, y, alpha, maxWidth, lineH
 	};
 
 	if (!PIXI.BitmapFont.available[style.fontFamily]) {
-		const bitmapOptions = {
-			chars: [
-                [" ", "~"],
-                '\u2192',
-                '’',
-            ]
-		};
-		PIXI.BitmapFont.from(style.fontFamily, style, bitmapOptions);
+		this._makeBitmapFont(style);
 	}
 
 	const pixiText = new PIXI.BitmapText(text, {
@@ -262,6 +255,23 @@ BitmapPIXI.prototype._drawNewText = function (text, x, y, alpha, maxWidth, lineH
 		this.textCache.push(pixiText);
 		this.addChild(pixiText);
 	}
+};
+
+/**
+ * Creates a bitmap font.
+ *
+ * @method _makeBitmapFont
+ * @private
+ */
+BitmapPIXI.prototype._makeBitmapFont = function (style) {
+	const bitmapOptions = {
+		chars: [
+                [" ", "~"],
+                '\u2192',
+                '’',
+            ]
+	};
+	PIXI.BitmapFont.from(style.fontFamily, style, bitmapOptions);
 };
 
 /**
