@@ -5,7 +5,7 @@
 
 This fork introduces opinionated changes and is not necessarily a drop-in replacement for the default RPG Maker MV scripts.
 
-- Updated to use PIXI v5 and PIXI-Tilemap v2.1.3
+- Updated to use PIXI v6 and PIXI-Tilemap v2.1.4
 - Uses PIXI equivalents whenever possible instead of the Bitmap object
 - Uses PIXI.BitmapText for fast, memory-efficient text
 - Allows windows to overlap each other

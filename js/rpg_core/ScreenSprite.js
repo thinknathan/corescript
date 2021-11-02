@@ -16,8 +16,6 @@ ScreenSprite.prototype.initialize = function () {
 	PIXI.Container.call(this);
 
 	this._graphics = new PIXI.Graphics();
-	this._graphics.CREATED_BY = this;
-	this._graphics.CREATED_AT = Date.now();
 
 	this.addChild(this._graphics);
 	this.opacity = 0;
@@ -122,7 +120,6 @@ ScreenSprite.prototype.setColor = function (r, g, b) {
 		graphics.clear();
 		const intColor = (r << 16) | (g << 8) | b;
 		graphics.beginFill(intColor, 1);
-		//whole screen with zoom. BWAHAHAHAHA
 		graphics.drawRect(-Graphics.width * 5, -Graphics.height * 5, Graphics.width * 10, Graphics.height * 10);
 	}
 };

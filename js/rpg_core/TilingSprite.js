@@ -15,8 +15,6 @@ TilingSprite.prototype.constructor = TilingSprite;
 
 TilingSprite.prototype.initialize = function (bitmap) {
 	const texture = new PIXI.Texture(new PIXI.BaseTexture());
-	texture.CREATED_BY = this;
-	texture.CREATED_AT = Date.now();
 
 	PIXI.TilingSprite.call(this, texture);
 

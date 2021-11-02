@@ -62,7 +62,7 @@ Bitmap.prototype._createCanvas = function (width, height) {
 		this.__canvas.height = h;
 		this._createBaseTexture(this._canvas);
 
-		console.warn('Drawing non-PIXI texture to canvas.', this._image);
+		console.info('[Bitmap._createCanvas] Drawing %o to canvas is slow.', this._image);
 		this.__context.drawImage(this._image, 0, 0);
 	}
 
@@ -74,8 +74,6 @@ Bitmap.prototype._createBaseTexture = function (source) {
 	this.__baseTexture.mipmap = false;
 	this.__baseTexture.width = source.width;
 	this.__baseTexture.height = source.height;
-	this.__baseTexture.CREATED_BY = this;
-	this.__baseTexture.CREATED_AT = Date.now();
 	this._baseTexture.scaleMode = PIXI.SCALE_MODES.NEAREST;
 };
 
@@ -440,9 +438,17 @@ Bitmap.prototype.resize = function (width, height) {
  * @param {Number} [dh=sh] The height to draw the image in the destination
  */
 Bitmap.prototype.blt = function (source, sx, sy, sw, sh, dx, dy, dw, dh) {
-	console.warn('Bitmap.blt is slow.', source);
+	console.info('[Bitmap.blt] Canvas block transfer is slow.');
 	dw = dw || sw;
 	dh = dh || sh;
+	sx = Math.floor(sx);
+	sy = Math.floor(sy);
+	sw = Math.floor(sw);
+	sh = Math.floor(sh);
+	dx = Math.floor(dx);
+	dy = Math.floor(dy);
+	dw = Math.floor(dw);
+	dh = Math.floor(dh);
 	if (sx >= 0 && sy >= 0 && sw > 0 && sh > 0 && dw > 0 && dh > 0 &&
 		sx + sw <= source.width && sy + sh <= source.height) {
 		this._context.globalCompositeOperation = 'source-over';
@@ -543,6 +549,10 @@ Bitmap.prototype.clear = function () {
  * @param {String} color The color of the rectangle in CSS format
  */
 Bitmap.prototype.fillRect = function (x, y, width, height, color) {
+	x = Math.floor(x);
+	y = Math.floor(y);
+	width = Math.floor(width);
+	height = Math.floor(height);
 	const context = this._context;
 	context.save();
 	context.fillStyle = color;
@@ -601,6 +611,8 @@ Bitmap.prototype.gradientFillRect = function (x, y, width, height, color1,
  * @param {String} color The color of the circle in CSS format
  */
 Bitmap.prototype.drawCircle = function (x, y, radius, color) {
+	x = Math.floor(x);
+	y = Math.floor(y);
 	const context = this._context;
 	context.save();
 	context.fillStyle = color;
@@ -626,17 +638,14 @@ Bitmap.prototype.drawText = function (text, x, y, maxWidth, lineHeight, align) {
 	// Note: Firefox has a bug with textBaseline: Bug 737852
 	//       So we use 'alphabetic' here.
 	if (text !== undefined) {
-		/*
-		if (this.fontSize < Bitmap.minFontSize) {
-		    this.drawSmallText(text, x, y, maxWidth, lineHeight, align);
-		    return;
-		}
-		*/
+		x = Math.floor(x);
+		y = Math.floor(y);
+		maxWidth = Math.floor(maxWidth) || 0xffffffff;
+		lineHeight = Math.floor(lineHeight);
 		let tx = x;
 		const ty = y + lineHeight - Math.round((lineHeight - this.fontSize * 0.7) / 2);
 		const context = this._context;
 		const alpha = context.globalAlpha;
-		maxWidth = maxWidth || 0xffffffff;
 		if (align === 'center') {
 			tx += maxWidth / 2;
 		}
@@ -657,45 +666,11 @@ Bitmap.prototype.drawText = function (text, x, y, maxWidth, lineHeight, align) {
 };
 
 /**
- * Draws the small text big once and resize it because modern broswers are poor at drawing small text.
+ * Deprecated function.
  *
  * @method drawSmallText
- * @param {String} text The text that will be drawn
- * @param {Number} x The x coordinate for the left of the text
- * @param {Number} y The y coordinate for the top of the text
- * @param {Number} maxWidth The maximum allowed width of the text
- * @param {Number} lineHeight The height of the text line
- * @param {String} align The alignment of the text
  */
-Bitmap.prototype.drawSmallText = function (text, x, y, maxWidth, lineHeight, align) {
-	/*
-	const minFontSize = Bitmap.minFontSize;
-	const bitmap = Bitmap.drawSmallTextBitmap;
-	bitmap.fontFace = this.fontFace;
-	bitmap.fontSize = minFontSize;
-	bitmap.fontItalic = this.fontItalic;
-	bitmap.textColor = this.textColor;
-	bitmap.outlineColor = this.outlineColor;
-	bitmap.outlineWidth = this.outlineWidth * minFontSize / this.fontSize;
-	maxWidth = maxWidth || 816;
-	const height = this.fontSize * 1.5;
-	const scaledMaxWidth = maxWidth * minFontSize / this.fontSize;
-	const scaledMaxWidthWithOutline = scaledMaxWidth + bitmap.outlineWidth * 2;
-	const scaledHeight = height * minFontSize / this.fontSize;
-	const scaledHeightWithOutline = scaledHeight + bitmap.outlineWidth * 2;
-
-	const bitmapWidth = bitmap.width;
-	const bitmapHeight = bitmap.height;
-	while (scaledMaxWidthWithOutline > bitmapWidth) bitmapWidth *= 2;
-	while (scaledHeightWithOutline > bitmapHeight) bitmapHeight *= 2;
-	if (bitmap.width !== bitmapWidth || bitmap.height !== bitmapHeight) bitmap.resize(bitmapWidth, bitmapHeight);
-
-	bitmap.drawText(text, bitmap.outlineWidth, bitmap.outlineWidth, scaledMaxWidth, minFontSize, align);
-	this.blt(bitmap, 0, 0, scaledMaxWidthWithOutline, scaledHeightWithOutline,
-	    x - this.outlineWidth, y - this.outlineWidth + (lineHeight - this.fontSize) / 2, maxWidth + this.outlineWidth * 2, height + this.outlineWidth * 2);
-	bitmap.clear();
-	*/
-};
+Bitmap.prototype.drawSmallText = function (text, x, y, maxWidth, lineHeight, align) {};
 
 /**
  * Returns the width of the specified text.
@@ -744,6 +719,8 @@ Bitmap.prototype.adjustTone = function (r, g, b) {
  * @param {Number} offset The hue offset in 360 degrees
  */
 Bitmap.prototype.rotateHue = function (offset) {
+	if (!offset) return;
+
 	function rgbToHsl(r, g, b) {
 		const cmin = Math.min(r, g, b);
 		const cmax = Math.max(r, g, b);
@@ -802,7 +779,7 @@ Bitmap.prototype.rotateHue = function (offset) {
 			pixels[i + 1] = rgb[1];
 			pixels[i + 2] = rgb[2];
 		}
-		console.warn('Rotate hue on canvas is slow.');
+		console.info('[Bitmap.rotateHue] Rotate hue on canvas is slow.');
 		context.putImageData(imageData, 0, 0);
 		this._setDirty();
 	}
@@ -821,7 +798,7 @@ Bitmap.prototype.blur = function () {
 		const context = this._context;
 		const tempCanvas = document.createElement('canvas');
 		const tempContext = tempCanvas.getContext('2d');
-		console.warn('Blur on canvas is slow.');
+		console.info('[Bitmap.blur] Blur on canvas is slow.');
 		tempCanvas.width = w + 2;
 		tempCanvas.height = h + 2;
 		tempContext.drawImage(canvas, 0, 0, w, h, 1, 1, w, h);
@@ -1057,6 +1034,3 @@ Bitmap.prototype.startRequest = function () {
 		this._requestImage(this._url);
 	}
 };
-
-//Bitmap.minFontSize = 21;
-//Bitmap.drawSmallTextBitmap = new Bitmap(1632, Bitmap.minFontSize);

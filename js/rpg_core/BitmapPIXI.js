@@ -34,8 +34,13 @@ BitmapPIXI.prototype.initialize = function (width, height) {
 	this.on('removed', this.onRemoveAsAChild);
 };
 
+/**
+ * Make sure the text cache is emptied and all children are destroyed
+ *
+ * @method _onRemoveAsAChild
+ * @private
+ */
 BitmapPIXI.prototype.onRemoveAsAChild = function () {
-	// Make sure the text cache is emptied and all children are destroyed
 	this.textCache = [];
 	for (let i = this.children.length - 1; i >= 0; i--) {
 		this.children[i].destroy({
@@ -62,6 +67,11 @@ Object.defineProperty(BitmapPIXI.prototype, 'width', {
 	get: function () {
 		return this._width;
 	},
+	set: function (value) {
+		if (this._width !== value) {
+			this._width = value;
+		}
+	},
 	configurable: true
 });
 
@@ -69,13 +79,21 @@ Object.defineProperty(BitmapPIXI.prototype, 'height', {
 	get: function () {
 		return this._height;
 	},
+	set: function (value) {
+		if (this._height !== value) {
+			this._height = value;
+		}
+	},
 	configurable: true
 });
 
-
-
-
-
+/**
+ * Resizes the bitmap.
+ *
+ * @method resize
+ * @param {Number} width The new width of the bitmap
+ * @param {Number} height The new height of the bitmap
+ */
 BitmapPIXI.prototype.resize = function (width, height) {
 	width = Math.max(width || 0, 1);
 	height = Math.max(height || 0, 1);
@@ -83,6 +101,11 @@ BitmapPIXI.prototype.resize = function (width, height) {
 	this._height = height;
 };
 
+/**
+ * Clear text and destroy children.
+ *
+ * @method clear
+ */
 BitmapPIXI.prototype.clear = function () {
 	for (let i = this.children.length - 1; i >= 0; i--) {
 
@@ -99,6 +122,15 @@ BitmapPIXI.prototype.clear = function () {
 	}
 };
 
+/**
+ * Clear text and destroy children in a given area.
+ *
+ * @method clearRect
+ * @param {Number} x Horizontal coordinate of area to clear
+ * @param {Number} y Vertical coordinate of area to clear
+ * @param {Number} width The width of area to clear
+ * @param {Number} height The height of area to clear
+ */
 BitmapPIXI.prototype.clearRect = function (x, y, width, height) {
 	const self = this;
 	const toRemove = [];
@@ -125,48 +157,73 @@ BitmapPIXI.prototype.clearRect = function (x, y, width, height) {
 	});
 };
 
-
-
-
-
+/**
+ * Draws PIXI BitmapText.
+ *
+ * @method drawText
+ * @param {String} text The text that will be drawn
+ * @param {Number} x The x coordinate for the left of the text
+ * @param {Number} y The y coordinate for the top of the text
+ * @param {Number} maxWidth The maximum allowed width of the text
+ * @param {Number} lineHeight The height of the text line
+ * @param {String} align The alignment of the text
+ */
 BitmapPIXI.prototype.drawText = function (text, x, y, maxWidth, lineHeight, align) {
 	if (text === undefined) return;
 	const alpha = this._paintOpacity / 255;
-
-	maxWidth = maxWidth || 0xffffffff;
+	maxWidth = Math.floor(maxWidth) || 0xffffffff;
+	lineHeight = Math.floor(lineHeight);
 	// [note] Non-String values crash BitmapText updates in PIXI 5.3.3
 	// since they use {text}.replace
 	text = String(text);
+
 	if (align === 'center') {
 		x = x + (maxWidth / 2);
 	} else if (align === 'right') {
 		x = x + maxWidth;
 	}
-	y = y + lineHeight - Math.round(this.fontSize * 1.25);
+	y = y + lineHeight - this.fontSize * 1.25;
+
+	x = Math.floor(x);
+	y = Math.floor(y);
 
 	// Try to updating existing text object at the same X and Y position
-	const updateExisting = this.updateExistingText(text, x, y, alpha);
+	const updateExisting = this._updateExistingText(text, x, y, alpha);
 	// If no text object exists, create a new one
 	if (!updateExisting) {
-		this.drawNewText(text, x, y, alpha, maxWidth, lineHeight, align);
+		this._drawNewText(text, x, y, alpha, maxWidth, lineHeight, align);
 	}
 };
 
-BitmapPIXI.prototype.updateExistingText = function (text, x, y, alpha) {
-	const context = this;
-	let exitEarly = false;
-	this.textCache.forEach(function (BitmapTextInstance) {
-		if (BitmapTextInstance && BitmapTextInstance.x === x && BitmapTextInstance.y === y) {
-			exitEarly = true;
-			if (BitmapTextInstance.text !== text) BitmapTextInstance.text = text;
-			if (BitmapTextInstance.alpha !== alpha) BitmapTextInstance.alpha = alpha;
-			context.addChild(BitmapTextInstance);
+/**
+ * Updates instance of PIXI BitmapText.
+ *
+ * @method _updateExistingText
+ * @return {Boolean} Returns true if update was successful
+ * @private
+ */
+BitmapPIXI.prototype._updateExistingText = function (text, x, y, alpha) {
+	for (let i = 0; i < this.textCache.length; i++) {
+		const bitmapTextInstance = this.textCache[i];
+		if (bitmapTextInstance.x === x && bitmapTextInstance.y === y) {
+			const newTint = PIXI.utils.string2hex(this.textColor);
+			if (bitmapTextInstance._tint !== newTint) bitmapTextInstance.tint = newTint;
+			if (bitmapTextInstance.text !== text) bitmapTextInstance.text = text;
+			if (bitmapTextInstance.alpha !== alpha) bitmapTextInstance.alpha = alpha;
+			this.addChild(bitmapTextInstance);
+			return true;
 		}
-	});
-	return exitEarly;
+	}
+	return false;
 };
 
-BitmapPIXI.prototype.drawNewText = function (text, x, y, alpha, maxWidth, lineHeight, align) {
+/**
+ * Creates instances of PIXI BitmapText.
+ *
+ * @method _drawNewText
+ * @private
+ */
+BitmapPIXI.prototype._drawNewText = function (text, x, y, alpha, maxWidth, lineHeight, align) {
 	const style = {
 		fontFamily: this.fontFace,
 		fontSize: this.fontSize,
@@ -181,25 +238,16 @@ BitmapPIXI.prototype.drawNewText = function (text, x, y, alpha, maxWidth, lineHe
 	};
 
 	if (!PIXI.BitmapFont.available[style.fontFamily]) {
-		const bitmapOptions = {
-			chars: [
-                [" ", "~"],
-                '\u2192',
-                '’',
-            ]
-		};
-		PIXI.BitmapFont.from(style.fontFamily, style, bitmapOptions);
+		this._makeBitmapFont(style);
 	}
 
 	const pixiText = new PIXI.BitmapText(text, {
 		fontName: style.fontFamily,
 		fontSize: style.fontSize,
-		tint: PIXI.utils.string2hex(this.textColor),
 	});
 
 	if (!style.wordWrap && pixiText.width > maxWidth) {
-		const scaling = maxWidth / pixiText.width;
-		pixiText.scale.x = scaling;
+		pixiText.scale.x = maxWidth / pixiText.width;
 	}
 
 	if (align === 'center') {
@@ -211,6 +259,7 @@ BitmapPIXI.prototype.drawNewText = function (text, x, y, alpha, maxWidth, lineHe
 	if (pixiText) {
 		pixiText.x = x;
 		pixiText.y = y;
+		pixiText.tint = PIXI.utils.string2hex(this.textColor);
 		pixiText.alpha = alpha;
 		pixiText.isBitmapText = true;
 		this.textCache.push(pixiText);
@@ -218,6 +267,30 @@ BitmapPIXI.prototype.drawNewText = function (text, x, y, alpha, maxWidth, lineHe
 	}
 };
 
+/**
+ * Creates a bitmap font.
+ *
+ * @method _makeBitmapFont
+ * @private
+ */
+BitmapPIXI.prototype._makeBitmapFont = function (style) {
+	const bitmapOptions = {
+		chars: [
+                [" ", "~"],
+                '\u2192',
+                '’',
+            ]
+	};
+	PIXI.BitmapFont.from(style.fontFamily, style, bitmapOptions);
+};
+
+/**
+ * Returns the width of the specified text.
+ *
+ * @method measureTextWidth
+ * @param {String} text The text to be measured
+ * @return {Number} The width of the text in pixels
+ */
 BitmapPIXI.prototype.measureTextWidth = function (text) {
 	text = String(text);
 	const style = new PIXI.TextStyle({
@@ -229,10 +302,11 @@ BitmapPIXI.prototype.measureTextWidth = function (text) {
 	return textMetrics.width;
 };
 
-
-
-
-
+/**
+ * Creates a nine slice plane.
+ *
+ * @method create9Slice
+ */
 BitmapPIXI.prototype.create9Slice = function (source, x, y, w, h, tl, tr, br, bl) {
 	return new PIXI.NineSlicePlane(
 		new PIXI.Texture(
@@ -242,6 +316,11 @@ BitmapPIXI.prototype.create9Slice = function (source, x, y, w, h, tl, tr, br, bl
 	);
 };
 
+/**
+ * Creates a tiling sprite.
+ *
+ * @method createTilingSprite
+ */
 BitmapPIXI.prototype.createTilingSprite = function (source, x, y, w, h, tileWidth, tileHeight) {
 	return new PIXI.TilingSprite(
 		new PIXI.Texture(
@@ -251,6 +330,11 @@ BitmapPIXI.prototype.createTilingSprite = function (source, x, y, w, h, tileWidt
 	);
 };
 
+/**
+ * Creates a sprite by cropping a texture.
+ *
+ * @method createCroppedSprite
+ */
 BitmapPIXI.prototype.createCroppedSprite = function (source, x, y, w, h) {
 	return new PIXI.Sprite(
 		new PIXI.Texture(
@@ -260,9 +344,32 @@ BitmapPIXI.prototype.createCroppedSprite = function (source, x, y, w, h) {
 	);
 };
 
+/**
+ * Equivalent to a block transfer.
+ * Create a sprite and adds it as a child.
+ *
+ * @method blt
+ * @param {Bitmap} source The bitmap to draw
+ * @param {Number} sx The x coordinate in the source
+ * @param {Number} sy The y coordinate in the source
+ * @param {Number} sw The width of the source image
+ * @param {Number} sh The height of the source image
+ * @param {Number} dx The x coordinate in the destination
+ * @param {Number} dy The y coordinate in the destination
+ * @param {Number} [dw=sw] The width to draw the image in the destination
+ * @param {Number} [dh=sh] The height to draw the image in the destination
+ */
 BitmapPIXI.prototype.blt = function (source, sx, sy, sw, sh, dx, dy, dw, dh) {
 	dw = dw || sw;
 	dh = dh || sh;
+	sx = Math.floor(sx);
+	sy = Math.floor(sy);
+	sw = Math.floor(sw);
+	sh = Math.floor(sh);
+	dx = Math.floor(dx);
+	dy = Math.floor(dy);
+	dw = Math.floor(dw);
+	dh = Math.floor(dh);
 	if (sx >= 0 && sy >= 0 && sw > 0 && sh > 0 && dw > 0 && dh > 0 &&
 		sx + sw <= source.width && sy + sh <= source.height) {
 		const sprite = this.createCroppedSprite(source.baseTexture, sx, sy, sw, sh);
@@ -273,11 +380,26 @@ BitmapPIXI.prototype.blt = function (source, sx, sy, sw, sh, dx, dy, dw, dh) {
 			sprite.height = dh;
 			sprite.alpha = this._paintOpacity / 255;
 			this.addChild(sprite);
+			return sprite;
 		}
 	}
 };
 
+/**
+ * Fills the specified rectangle.
+ *
+ * @method fillRect
+ * @param {Number} x The x coordinate for the upper-left corner
+ * @param {Number} y The y coordinate for the upper-left corner
+ * @param {Number} width The width of the rectangle to fill
+ * @param {Number} height The height of the rectangle to fill
+ * @param {String} color The color of the rectangle in CSS format
+ */
 BitmapPIXI.prototype.fillRect = function (x, y, width, height, color) {
+	x = Math.floor(x);
+	y = Math.floor(y);
+	width = Math.floor(width);
+	height = Math.floor(height);
 	const rectangle = new PIXI.Graphics();
 	color = PIXI.utils.string2hex(color);
 	rectangle.beginFill(color);
@@ -297,11 +419,34 @@ BitmapPIXI.prototype.fillRect = function (x, y, width, height, color) {
 	return rectangle;
 };
 
+/**
+ * Ignores the 2nd colour and returns a solid-colour rectangle.
+ *
+ * @method gradientFillRect
+ * @param {Number} x The x coordinate for the upper-left corner
+ * @param {Number} y The y coordinate for the upper-left corner
+ * @param {Number} width The width of the rectangle to fill
+ * @param {Number} height The height of the rectangle to fill
+ * @param {String} color1 The gradient starting color
+ * @param {String} color2 The gradient ending color
+ * @param {Boolean} vertical Wether the gradient should be draw as vertical or not
+ */
 BitmapPIXI.prototype.gradientFillRect = function (x, y, width, height, color1, color2, vertical) {
 	return this.fillRect(x, y, width, height, color1);
 };
 
+/**
+ * Draw a shape in the shape of a circle
+ *
+ * @method drawCircle
+ * @param {Number} x The x coordinate based on the circle center
+ * @param {Number} y The y coordinate based on the circle center
+ * @param {Number} radius The radius of the circle
+ * @param {String} color The color of the circle in CSS format
+ */
 BitmapPIXI.prototype.drawCircle = function (x, y, radius, color) {
+	x = Math.floor(x);
+	y = Math.floor(y);
 	const circle = new PIXI.Graphics();
 	color = PIXI.utils.string2hex(color);
 	circle.beginFill(color);

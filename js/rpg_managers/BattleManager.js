@@ -525,7 +525,7 @@ BattleManager.processVictory = function () {
 BattleManager.processEscape = function () {
 	$gameParty.performEscape();
 	SoundManager.playEscape();
-	const success = this._preemptive ? true : (Math.random() < this._escapeRatio);
+	const success = this.processEscapeFormula();
 	if (success) {
 		this.displayEscapeSuccessMessage();
 		this._escaped = true;
@@ -537,6 +537,10 @@ BattleManager.processEscape = function () {
 		this.startTurn();
 	}
 	return success;
+};
+
+BattleManager.processEscapeFormula = function () {
+	return this._preemptive ? true : (Math.random() < this._escapeRatio);
 };
 
 BattleManager.processAbort = function () {

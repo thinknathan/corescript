@@ -305,11 +305,11 @@ Window.prototype.update = function () {
  * @param {Number} height The height of the window
  */
 Window.prototype.move = function (x, y, width, height) {
-	this.x = x || 0;
-	this.y = y || 0;
+	this.x = Math.floor(x || 0);
+	this.y = Math.floor(y || 0);
 	if (this._width !== width || this._height !== height) {
-		this._width = width || 0;
-		this._height = height || 0;
+		this._width = Math.floor(width || 0);
+		this._height = Math.floor(height || 0);
 		this._refreshAllParts();
 	}
 };
@@ -509,8 +509,6 @@ Window.prototype._refreshFrame = function () {
 			container.blt(skin, p + 0, 0 + q - m, m, m, 0, h - m, m, m);
 			container.blt(skin, p + q - m, 0 + q - m, m, m, w - m, h - m, m, m);
 			texture = Graphics._renderer.generateTexture(container);
-			texture.CREATED_BY = this;
-			texture.CREATED_AT = Date.now();
 			container.destroy({
 				children: true,
 				texture: true,

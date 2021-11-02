@@ -70,3 +70,4 @@ todo.md
 corescript/**/*
 corescript.zip
 package-lock.json
+.pre-commit-config.yaml
