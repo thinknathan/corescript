@@ -1009,13 +1009,18 @@ Bitmap.snap = function (stage) {
 	const height = Graphics.height;
 	const bitmap = new Bitmap(width, height);
 	const context = bitmap._context;
-	const renderTexture = PIXI.RenderTexture.create(width, height);
+	const renderTexture = PIXI.RenderTexture.create({
+		width: width,
+		height: height
+	});
 	if (stage) {
-		Graphics._renderer.render(stage, renderTexture);
+		Graphics._renderer.render(stage, {
+			renderTexture: renderTexture
+		});
 		stage.worldTransform.identity();
 		let canvas = null;
 		if (Graphics.isWebGL()) {
-			canvas = Graphics._renderer.extract.canvas(renderTexture);
+			canvas = Graphics._renderer.plugins.extract.canvas(renderTexture);
 		} else {
 			canvas = renderTexture.baseTexture._canvasRenderTarget.canvas;
 		}
