@@ -2097,29 +2097,37 @@ SceneManager.updateInputData = function () {
 };
 
 SceneManager.updateMain = function () {
-	if (Utils.isMobileSafari()) {
-		this.changeScene();
-		this.updateScene();
-	} else {
-		const newTime = this._getTimeInMsWithoutMobileSafari();
-		if (this._currentTime === undefined) {
-			this._currentTime = newTime;
-		}
-		let fTime = (newTime - this._currentTime) / 1000;
-		if (fTime > 0.25) {
-			fTime = 0.25;
-		}
-		this._currentTime = newTime;
-		this._accumulator += fTime;
-		while (this._accumulator >= this._deltaTime) {
-			this.updateInputData();
+	if (Utils.isHighFps()) {
+		if (Utils.isMobileSafari()) {
 			this.changeScene();
 			this.updateScene();
-			this._accumulator -= this._deltaTime;
+		} else {
+			const newTime = this._getTimeInMsWithoutMobileSafari();
+			if (this._currentTime === undefined) {
+				this._currentTime = newTime;
+			}
+			let fTime = (newTime - this._currentTime) / 1000;
+			if (fTime > 0.25) {
+				fTime = 0.25;
+			}
+			this._currentTime = newTime;
+			this._accumulator += fTime;
+			while (this._accumulator >= this._deltaTime) {
+				this.updateInputData();
+				this.changeScene();
+				this.updateScene();
+				this._accumulator -= this._deltaTime;
+			}
 		}
+		this.renderScene();
+		this.requestUpdate();
+	} else {
+		this.updateInputData();
+		this.changeScene();
+		this.updateScene();
+		this.renderScene();
+		this.requestUpdate();
 	}
-	this.renderScene();
-	this.requestUpdate();
 };
 
 SceneManager.updateManagers = function () {

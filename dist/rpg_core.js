@@ -270,6 +270,71 @@ Utils.isNwjs = function () {
 	return result;
 };
 
+Utils._highFps = false;
+/**
+ * Checks whether refresh rate > 60hz.
+ *
+ * @static
+ * @method isHighFps
+ * @return {Boolean} True if refresh rate >= 66hz
+ */
+Utils.isHighFps = function () {
+	if (Utils._fpsChecked) {
+		return Utils._highFps;
+	} else {
+		return Utils.getFps() >= 66;
+	}
+};
+
+Utils._fps = 60;
+Utils._fpsIsBusyCounting = false;
+Utils._fpsChecked = false;
+/**
+ * Returns estimated monitor refresh rate.
+ *
+ * @static
+ * @method getFps
+ * @return {Number} Refresh rate
+ * @credit Adapted from Adam Sassano on Stack Overflow
+ * @license CC BY-SA 4.0
+ */
+Utils.getFps = function () {
+	if (Utils._fpsChecked || Utils._fpsIsBusyCounting) {
+		return Utils._fps;
+	} else {
+		let previousTimestamp = 0;
+		let count = 0;
+		let rate = 0;
+
+		// Count refresh rate for 180 frames
+		const rafLoop = timestamp => {
+			if (count <= 180) {
+				count++;
+				let interval = timestamp - previousTimestamp;
+				rate += 1000 / interval;
+				previousTimestamp = timestamp;
+				requestAnimationFrame(rafLoop);
+			} else {
+				if (Utils._fps !== Infinity) {
+					Utils._fps = rate / count;
+					if (Utils._fps >= 66) {
+						Utils._highFps = true;
+					}
+				}
+				Utils._fpsChecked = true;
+				Utils._fpsIsBusyCounting = false;
+			}
+		};
+
+		requestAnimationFrame(timestamp => {
+			previousTimestamp = timestamp;
+			requestAnimationFrame(rafLoop);
+		});
+		Utils._fpsIsBusyCounting = true;
+		return Utils._fps;
+	}
+};
+
 Utils._mobileDevice = null;
 /**
  * Checks whether the platform is a mobile device.
