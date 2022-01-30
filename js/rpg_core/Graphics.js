@@ -488,6 +488,9 @@ Graphics.setShowErrorDetail = function (showErrorDetail) {
  */
 Graphics.showFps = function () {
 	if (this._fpsMeter) {
+		if (!this._fpsMeter.extensions.pixi) {
+			this._fpsMeter.enableExtension('pixi', [PIXI, this._app]);
+		}
 		document.body.appendChild(this._fpsMeter.dom);
 		this._fpsMeter.show(true);
 	}
@@ -1145,7 +1148,6 @@ Graphics._createFPSMeter = function () {
 		this._fpsMeter = new GameStats({
 			autoPlace: false,
 		});
-		this._fpsMeter.enableExtension('pixi', [PIXI, this._app]);
 		this._fpsMeter.show(false);
 		this._fpsMeter.dom.style.zIndex = 1;
 	} else {
