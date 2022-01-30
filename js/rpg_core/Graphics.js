@@ -41,7 +41,6 @@ Graphics.initialize = function (width, height, type) {
 	this._upperCanvas = null;
 	this._renderer = null;
 	this._fpsMeter = null;
-	this._fpsApp = null;
 	this._modeBox = null;
 	this._skipCount = 0;
 	this._maxSkip = 3;
@@ -54,6 +53,7 @@ Graphics.initialize = function (width, height, type) {
 	this._canUseDifferenceBlend = false;
 	this._canUseSaturationBlend = false;
 	this._hiddenCanvas = null;
+	this._app = null;
 
 	this._testCanvasBlendModes();
 	this._modifyExistingElements();
@@ -65,7 +65,6 @@ Graphics.initialize = function (width, height, type) {
 	this._setupCssFontLoading();
 	this._setupProgress();
 };
-
 
 Graphics._setupCssFontLoading = function () {
 	if (Graphics._cssFontLoading) {
@@ -81,6 +80,34 @@ Graphics._setupCssFontLoading = function () {
 Graphics.canUseCssFontLoading = function () {
 	return !!this._cssFontLoading;
 };
+
+/**
+ * Expose access to PIXI.Application object.
+ *
+ * @readonly
+ * @type PIXI.Application
+ * @name Graphics.app
+ */
+Object.defineProperty(Graphics, "app", {
+	get: function () {
+		return this._app;
+	},
+	configurable: true
+});
+
+/**
+ * Shim for old plugins looking for renderer.
+ *
+ * @readonly
+ * @type PIXI.Renderer
+ * @name Graphics._renderer
+ */
+Object.defineProperty(Graphics, "_renderer", {
+	get: function () {
+		return this._app.renderer;
+	},
+	configurable: true
+});
 
 /**
  * The total frame count of the game screen.
@@ -155,23 +182,7 @@ Graphics.tickEnd = function () {};
  * @param {Stage} stage The stage object to be rendered
  */
 Graphics.render = function (stage) {
-	if (this._skipCount <= 0) {
-		const startTime = Date.now();
-		if (stage) {
-			this._renderer.render(stage);
-			//if (this._renderer.gl && this._renderer.gl.flush) {
-			//    this._renderer.gl.flush();
-			//}
-		}
-		const endTime = Date.now();
-		const elapsed = endTime - startTime;
-		this._skipCount = Math.min(Math.floor(elapsed / 15), this._maxSkip);
-		this._rendered = true;
-	} else {
-		this._skipCount--;
-		this._rendered = false;
-	}
-	this.frameCount++;
+	if (stage) this._app.stage = stage;
 };
 
 /**
@@ -477,18 +488,7 @@ Graphics.setShowErrorDetail = function (showErrorDetail) {
  */
 Graphics.showFps = function () {
 	if (this._fpsMeter) {
-		if (!this._fpsApp) {
-			this._fpsApp = new PIXI.Application({
-				width: 120,
-				height: 50,
-				transparent: true,
-				sharedTicker: true
-			});
-			this._fpsApp.view.style.position = "relative";
-			this._fpsApp.view.style.zIndex = "4";
-			document.body.appendChild(this._fpsApp.view);
-		}
-		this._fpsApp.stage.addChild(this._fpsMeter);
+		this._fpsMeter.dom.style.display = 'block';
 	}
 };
 
@@ -499,8 +499,8 @@ Graphics.showFps = function () {
  * @method hideFps
  */
 Graphics.hideFps = function () {
-	if (this._fpsMeter && this._fpsApp) {
-		this._fpsApp.stage.removeChild(this._fpsMeter);
+	if (this._fpsMeter) {
+		this._fpsMeter.dom.style.display = 'none';
 	}
 };
 
@@ -783,6 +783,7 @@ Graphics._createAllElements = function () {
 	this._createVideo();
 	this._createUpperCanvas();
 	this._createRenderer();
+	this._createPixiApp();
 	this._createFPSMeter();
 	this._createModeBox();
 	this._createGameFontLoader();
@@ -1119,31 +1120,7 @@ Graphics._paintUpperCanvas = function () {
  * @method _createRenderer
  * @private
  */
-Graphics._createRenderer = function () {
-	const options = {
-		view: this._canvas,
-		width: this._width,
-		height: this._height,
-		resolution: window.devicePixelRatio,
-		powerPreference: "high-performance",
-	};
-	try {
-		switch (this._rendererType) {
-		case 'canvas':
-			this._renderer = new PIXI.CanvasRenderer(options);
-			break;
-		case 'webgl':
-			this._renderer = new PIXI.Renderer(options);
-			break;
-		default:
-			this._renderer = PIXI.autoDetectRenderer(options);
-			break;
-		}
-
-	} catch (e) {
-		this._renderer = null;
-	}
-};
+Graphics._createRenderer = function () {};
 
 /**
  * @static
@@ -1151,8 +1128,8 @@ Graphics._createRenderer = function () {
  * @private
  */
 Graphics._updateRenderer = function () {
-	if (this._renderer) {
-		this._renderer.resize(this._width, this._height);
+	if (this._app) {
+		this._app.renderer.resize(this._width, this._height);
 	}
 };
 
@@ -1162,7 +1139,13 @@ Graphics._updateRenderer = function () {
  * @private
  */
 Graphics._createFPSMeter = function () {
-	this._fpsMeter = new PixiFps();
+	if (typeof GameStats == 'function') {
+		this._fpsMeter = new GameStats();
+		this._fpsMeter.dom.style.zIndex = 1;
+		this._fpsMeter.enableExtension('pixi', [PIXI, this._app])
+	} else {
+		console.warn('GameStats is not a function. Is gamestats.js installed?');
+	}
 };
 
 /**
@@ -1490,5 +1473,43 @@ Graphics._cancelFullScreen = function () {
 		document.webkitCancelFullScreen();
 	} else if (document.msExitFullscreen) {
 		document.msExitFullscreen();
+	}
+};
+
+/**
+ * @static
+ * @method _onTick
+ * @param {Number} delta
+ * @private
+ */
+Graphics._onTick = function (delta) {
+	if (this._fpsMeter) this._fpsMeter.begin();
+	if (this._app.stage) {
+		this._app.render();
+	}
+	if (this._fpsMeter) this._fpsMeter.end();
+};
+
+/**
+ * @static
+ * @method _createPixiApp
+ * @private
+ */
+Graphics._createPixiApp = function () {
+	const options = {
+		view: this._canvas,
+		width: this._width,
+		height: this._height,
+		resolution: window.devicePixelRatio,
+		powerPreference: "high-performance",
+		autoStart: true,
+	};
+	try {
+		this._app = new PIXI.Application(options);
+		this._app.ticker.remove(this._app.render, this._app);
+		this._app.ticker.add(this._onTick, this);
+	} catch (e) {
+		this._app = null;
+		console.error(e);
 	}
 };
