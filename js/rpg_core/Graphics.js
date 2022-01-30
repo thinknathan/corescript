@@ -488,7 +488,8 @@ Graphics.setShowErrorDetail = function (showErrorDetail) {
  */
 Graphics.showFps = function () {
 	if (this._fpsMeter) {
-		this._fpsMeter.dom.style.display = 'block';
+		document.body.appendChild(this._fpsMeter.dom);
+		this._fpsMeter.show(true);
 	}
 };
 
@@ -500,7 +501,8 @@ Graphics.showFps = function () {
  */
 Graphics.hideFps = function () {
 	if (this._fpsMeter) {
-		this._fpsMeter.dom.style.display = 'none';
+		document.body.removeChild(this._fpsMeter.dom);
+		this._fpsMeter.show(false);
 	}
 };
 
@@ -1140,9 +1142,12 @@ Graphics._updateRenderer = function () {
  */
 Graphics._createFPSMeter = function () {
 	if (typeof GameStats == 'function') {
-		this._fpsMeter = new GameStats();
+		this._fpsMeter = new GameStats({
+			autoPlace: false,
+		});
+		this._fpsMeter.enableExtension('pixi', [PIXI, this._app]);
+		this._fpsMeter.show(false);
 		this._fpsMeter.dom.style.zIndex = 1;
-		this._fpsMeter.enableExtension('pixi', [PIXI, this._app])
 	} else {
 		console.warn('GameStats is not a function. Is gamestats.js installed?');
 	}
@@ -1483,11 +1488,11 @@ Graphics._cancelFullScreen = function () {
  * @private
  */
 Graphics._onTick = function (delta) {
-	if (this._fpsMeter) this._fpsMeter.begin();
+	if (this._fpsMeter && this._fpsMeter.shown) this._fpsMeter.begin();
 	if (this._app.stage) {
 		this._app.render();
 	}
-	if (this._fpsMeter) this._fpsMeter.end();
+	if (this._fpsMeter && this._fpsMeter.shown) this._fpsMeter.end();
 };
 
 /**
