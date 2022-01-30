@@ -2335,7 +2335,6 @@ Graphics.initialize = function (width, height, type) {
 	this._videoUnlocked = false;
 	this._videoLoading = false;
 	this._upperCanvas = null;
-	this._renderer = null;
 	this._fpsMeter = null;
 	this._modeBox = null;
 	this._skipCount = 0;
