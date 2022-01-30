@@ -9531,7 +9531,7 @@ JsonEx._getConstructorName = function (value) {
  * @private
  */
 JsonEx._resetPrototype = function (value, prototype) {
-	if (Object.setPrototypeOf !== undefined) {
+	if (Object.setPrototypeOf !== undefined && typeof(prototype) == 'object') {
 		Object.setPrototypeOf(value, prototype);
 	} else if ('__proto__' in value) {
 		value.__proto__ = prototype;
