@@ -23,12 +23,8 @@ jobs:
         run: |
           terser dist/rpg_core.js --compress ecma=2018,drop_console=true,keep_classnames=true,keep_fnames=true,keep_infinity=true,passes=2,reduce_funcs=false,unsafe_math=true,unsafe_methods=true,unsafe_proto=true,unused=false --format ecma=2018,semicolons=false,wrap_iife=true --output dist/rpg_core.min.js
           terser dist/rpg_managers.js --compress ecma=2018,drop_console=true,keep_classnames=true,keep_fnames=true,keep_infinity=true,passes=2,reduce_funcs=false,unsafe_math=true,unsafe_methods=true,unsafe_proto=true,unused=false --format ecma=2018,semicolons=false,wrap_iife=true --output dist/rpg_managers.min.js
-          terser dist/
-rpg_objects.js --compress ecma=2018,drop_console=true,keep_classnames=true,keep_fnames=true,keep_infinity=true,passes=2,reduce_funcs=false,unsafe_math=true,unsafe_methods=true,unsafe_proto=true,unused=false --format ecma=2018,semicolons=false,wrap_iife=true --output dist/
-rpg_objects.min.js
-          terser dist/
-rpg_scenes.js --compress ecma=2018,drop_console=true,keep_classnames=true,keep_fnames=true,keep_infinity=true,passes=2,reduce_funcs=false,unsafe_math=true,unsafe_methods=true,unsafe_proto=true,unused=false --format ecma=2018,semicolons=false,wrap_iife=true --output dist/
-rpg_scenes.min.js
+          terser dist/rpg_objects.js --compress ecma=2018,drop_console=true,keep_classnames=true,keep_fnames=true,keep_infinity=true,passes=2,reduce_funcs=false,unsafe_math=true,unsafe_methods=true,unsafe_proto=true,unused=false --format ecma=2018,semicolons=false,wrap_iife=true --output dist/rpg_objects.min.js
+          terser dist/rpg_scenes.js --compress ecma=2018,drop_console=true,keep_classnames=true,keep_fnames=true,keep_infinity=true,passes=2,reduce_funcs=false,unsafe_math=true,unsafe_methods=true,unsafe_proto=true,unused=false --format ecma=2018,semicolons=false,wrap_iife=true --output dist/rpg_scenes.min.js
           terser dist/rpg_sprites.js --compress ecma=2018,drop_console=true,keep_classnames=true,keep_fnames=true,keep_infinity=true,passes=2,reduce_funcs=false,unsafe_math=true,unsafe_methods=true,unsafe_proto=true,unused=false --format ecma=2018,semicolons=false,wrap_iife=true --output dist/rpg_sprites.min.js
           terser dist/rpg_windows.js --compress ecma=2018,drop_console=true,keep_classnames=true,keep_fnames=true,keep_infinity=true,passes=2,reduce_funcs=false,unsafe_math=true,unsafe_methods=true,unsafe_proto=true,unused=false --format ecma=2018,semicolons=false,wrap_iife=true --output dist/rpg_windows.min.js
 
