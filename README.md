@@ -115,22 +115,6 @@ The core script is finally output to mainly 6 files.
 
 In addition, a plugin list is defined in *plugins.js*, and *main.js* launches the game.
 
-## Inheritance style
-
-```js
-// In JavaScript this function is constructor
-function Derived() {
-    this.initialize.apply(this, arguments); // Delegate to initialize()
-}
-
-Derived.prototype = Object.create(Base.prototype); // Derived inherits from Base
-Derived.prototype.constructor = Derived;
-
-Derived.prototype.initialize = function () {
-    Base.prototype.initialize.call(this); // This makes super.initialize() sense
-};
-```
-
 ## Global variables
 Variables named `$dataXxx` are read from JSON in the *data* folder.
 These files are changed by the editor, but they are immutable during play.
