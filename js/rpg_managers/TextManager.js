@@ -3,25 +3,36 @@
 //
 // The static class that handles terms and messages.
 
-function TextManager() {
-	throw new Error('This is a static class');
+class TextManager {
+	constructor() {
+		throw new Error('This is a static class');
+	}
+
+	static basic(basicId) {
+		return $dataSystem.terms.basic[basicId] || '';
+	}
+
+	static param(paramId) {
+		return $dataSystem.terms.params[paramId] || '';
+	}
+
+	static command(commandId) {
+		return $dataSystem.terms.commands[commandId] || '';
+	}
+
+	static message(messageId) {
+		return $dataSystem.terms.messages[messageId] || '';
+	}
+
+	static getter(method, param) {
+		return ({
+			get() {
+				return this[method](param);
+			},
+			configurable: true
+		});
+	}
 }
-
-TextManager.basic = basicId => $dataSystem.terms.basic[basicId] || '';
-
-TextManager.param = paramId => $dataSystem.terms.params[paramId] || '';
-
-TextManager.command = commandId => $dataSystem.terms.commands[commandId] || '';
-
-TextManager.message = messageId => $dataSystem.terms.messages[messageId] || '';
-
-TextManager.getter = (method, param) => ({
-	get() {
-		return this[method](param);
-	},
-
-	configurable: true
-});
 
 Object.defineProperty(TextManager, 'currencyUnit', {
 	get() {

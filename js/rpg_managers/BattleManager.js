@@ -626,41 +626,47 @@ class BattleManager {
 			$gameParty.gainItem(item, 1);
 		});
 	}
+
+	static ratePreemptive() {
+		return $gameParty.ratePreemptive($gameTroop.agility());
+	}
+
+	static rateSurprise() {
+		return $gameParty.rateSurprise($gameTroop.agility());
+	}
+
+	static playBattleBgm() {
+		AudioManager.playBgm($gameSystem.battleBgm());
+		AudioManager.stopBgs();
+	}
+
+	static playVictoryMe() {
+		AudioManager.playMe($gameSystem.victoryMe());
+	}
+
+	static playDefeatMe() {
+		AudioManager.playMe($gameSystem.defeatMe());
+	}
+
+	static allBattleMembers() {
+		return $gameParty.members()
+			.concat($gameTroop.members());
+	}
+
+	static displayVictoryMessage() {
+		$gameMessage.add(TextManager.victory.format($gameParty.name()));
+	}
+
+	static displayDefeatMessage() {
+		$gameMessage.add(TextManager.defeat.format($gameParty.name()));
+	}
+
+	static displayEscapeSuccessMessage() {
+		$gameMessage.add(TextManager.escapeStart.format($gameParty.name()));
+	}
+
+	static displayEscapeFailureMessage() {
+		$gameMessage.add(TextManager.escapeStart.format($gameParty.name()));
+		$gameMessage.add(`\\.${TextManager.escapeFailure}`);
+	}
 }
-
-BattleManager.ratePreemptive = () => $gameParty.ratePreemptive($gameTroop.agility());
-
-BattleManager.rateSurprise = () => $gameParty.rateSurprise($gameTroop.agility());
-
-BattleManager.playBattleBgm = () => {
-	AudioManager.playBgm($gameSystem.battleBgm());
-	AudioManager.stopBgs();
-};
-
-BattleManager.playVictoryMe = () => {
-	AudioManager.playMe($gameSystem.victoryMe());
-};
-
-BattleManager.playDefeatMe = () => {
-	AudioManager.playMe($gameSystem.defeatMe());
-};
-
-BattleManager.allBattleMembers = () => $gameParty.members()
-	.concat($gameTroop.members());
-
-BattleManager.displayVictoryMessage = () => {
-	$gameMessage.add(TextManager.victory.format($gameParty.name()));
-};
-
-BattleManager.displayDefeatMessage = () => {
-	$gameMessage.add(TextManager.defeat.format($gameParty.name()));
-};
-
-BattleManager.displayEscapeSuccessMessage = () => {
-	$gameMessage.add(TextManager.escapeStart.format($gameParty.name()));
-};
-
-BattleManager.displayEscapeFailureMessage = () => {
-	$gameMessage.add(TextManager.escapeStart.format($gameParty.name()));
-	$gameMessage.add(`\\.${TextManager.escapeFailure}`);
-};

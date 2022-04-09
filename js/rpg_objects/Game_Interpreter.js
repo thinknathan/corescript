@@ -1829,162 +1829,162 @@ class Game_Interpreter {
 	pluginCommand(command, args) {
 		// to be overridden by plugins
 	}
-}
 
-Game_Interpreter.requestImagesByPluginCommand = (command, args) => {};
+	requestImagesByPluginCommand(command, args) {}
 
-Game_Interpreter.requestImagesForCommand = ({
-	parameters,
-	code
-}) => {
-	const params = parameters;
-	switch (code) {
-		// Show Text
-	case 101:
-		ImageManager.requestFace(params[0]);
-		break;
+	requestImagesForCommand({
+		parameters,
+		code
+	}) {
+		const params = parameters;
+		switch (code) {
+			// Show Text
+		case 101:
+			ImageManager.requestFace(params[0]);
+			break;
 
-		// Change Party Member
-	case 129:
-		const actor = $gameActors.actor(params[0]);
-		if (actor && params[1] === 0) {
-			const name = actor.characterName();
-			ImageManager.requestCharacter(name);
-		}
-		break;
+			// Change Party Member
+		case 129:
+			const actor = $gameActors.actor(params[0]);
+			if (actor && params[1] === 0) {
+				const name = actor.characterName();
+				ImageManager.requestCharacter(name);
+			}
+			break;
 
-		// Set Movement Route
-	case 205:
-		if (params[1]) {
-			params[1].list.forEach(({
-				parameters,
-				code
-			}) => {
-				const params = parameters;
-				if (code === Game_Character.ROUTE_CHANGE_IMAGE) {
-					ImageManager.requestCharacter(params[0]);
-				}
-			});
-		}
-		break;
-
-		// Show Animation, Show Battle Animation
-	case 212:
-	case 337:
-		if (params[1]) {
-			const animation = $dataAnimations[params[1]];
-			const name1 = animation.animation1Name;
-			const name2 = animation.animation2Name;
-			const hue1 = animation.animation1Hue;
-			const hue2 = animation.animation2Hue;
-			ImageManager.requestAnimation(name1, hue1);
-			ImageManager.requestAnimation(name2, hue2);
-		}
-		break;
-
-		// Change Player Followers
-	case 216:
-		if (params[0] === 0) {
-			$gamePlayer.followers()
-				.forEach(follower => {
-					const name = follower.characterName();
-					ImageManager.requestCharacter(name);
+			// Set Movement Route
+		case 205:
+			if (params[1]) {
+				params[1].list.forEach(({
+					parameters,
+					code
+				}) => {
+					const params = parameters;
+					if (code === Game_Character.ROUTE_CHANGE_IMAGE) {
+						ImageManager.requestCharacter(params[0]);
+					}
 				});
-		}
-		break;
+			}
+			break;
 
-		// Show Picture
-	case 231:
-		ImageManager.requestPicture(params[1]);
-		break;
+			// Show Animation, Show Battle Animation
+		case 212:
+		case 337:
+			if (params[1]) {
+				const animation = $dataAnimations[params[1]];
+				const name1 = animation.animation1Name;
+				const name2 = animation.animation2Name;
+				const hue1 = animation.animation1Hue;
+				const hue2 = animation.animation2Hue;
+				ImageManager.requestAnimation(name1, hue1);
+				ImageManager.requestAnimation(name2, hue2);
+			}
+			break;
 
-		// Change Tileset
-	case 282:
-		const tileset = $dataTilesets[params[0]];
-		tileset.tilesetNames.forEach(tilesetName => {
-			ImageManager.requestTileset(tilesetName);
-		});
-		break;
+			// Change Player Followers
+		case 216:
+			if (params[0] === 0) {
+				$gamePlayer.followers()
+					.forEach(follower => {
+						const name = follower.characterName();
+						ImageManager.requestCharacter(name);
+					});
+			}
+			break;
 
-		// Change Battle Back
-	case 283:
-		if ($gameParty.inBattle()) {
-			ImageManager.requestBattleback1(params[0]);
-			ImageManager.requestBattleback2(params[1]);
-		}
-		break;
+			// Show Picture
+		case 231:
+			ImageManager.requestPicture(params[1]);
+			break;
 
-		// Change Parallax
-	case 284:
-		if (!$gameParty.inBattle()) {
-			ImageManager.requestParallax(params[0]);
-		}
-		break;
+			// Change Tileset
+		case 282:
+			const tileset = $dataTilesets[params[0]];
+			tileset.tilesetNames.forEach(tilesetName => {
+				ImageManager.requestTileset(tilesetName);
+			});
+			break;
 
-		// Change Actor Images
-	case 322:
-		ImageManager.requestCharacter(params[1]);
-		ImageManager.requestFace(params[3]);
-		ImageManager.requestSvActor(params[5]);
-		break;
+			// Change Battle Back
+		case 283:
+			if ($gameParty.inBattle()) {
+				ImageManager.requestBattleback1(params[0]);
+				ImageManager.requestBattleback2(params[1]);
+			}
+			break;
 
-		// Change Vehicle Image
-	case 323:
-		const vehicle = $gameMap.vehicle(params[0]);
-		if (vehicle) {
+			// Change Parallax
+		case 284:
+			if (!$gameParty.inBattle()) {
+				ImageManager.requestParallax(params[0]);
+			}
+			break;
+
+			// Change Actor Images
+		case 322:
 			ImageManager.requestCharacter(params[1]);
-		}
-		break;
+			ImageManager.requestFace(params[3]);
+			ImageManager.requestSvActor(params[5]);
+			break;
 
-		// Enemy Transform
-	case 336:
-		const enemy = $dataEnemies[params[1]];
-		const name = enemy.battlerName;
-		const hue = enemy.battlerHue;
-		if ($gameSystem.isSideView()) {
-			ImageManager.requestSvEnemy(name, hue);
-		} else {
-			ImageManager.requestEnemy(name, hue);
-		}
-		break;
-		// Plugin Command
-	case 356:
-		const args = params[0].split(" ");
-		const commandName = args.shift();
-		Game_Interpreter.requestImagesByPluginCommand(commandName, args);
-		break;
+			// Change Vehicle Image
+		case 323:
+			const vehicle = $gameMap.vehicle(params[0]);
+			if (vehicle) {
+				ImageManager.requestCharacter(params[1]);
+			}
+			break;
 
-	}
-};
+			// Enemy Transform
+		case 336:
+			const enemy = $dataEnemies[params[1]];
+			const name = enemy.battlerName;
+			const hue = enemy.battlerHue;
+			if ($gameSystem.isSideView()) {
+				ImageManager.requestSvEnemy(name, hue);
+			} else {
+				ImageManager.requestEnemy(name, hue);
+			}
+			break;
+			// Plugin Command
+		case 356:
+			const args = params[0].split(" ");
+			const commandName = args.shift();
+			Game_Interpreter.requestImagesByPluginCommand(commandName, args);
+			break;
 
-Game_Interpreter.requestImagesByChildEvent = ({
-	parameters
-}, commonList) => {
-	const params = parameters;
-	const commonEvent = $dataCommonEvents[params[0]];
-	if (commonEvent) {
-		if (!commonList) {
-			commonList = [];
-		}
-		if (!commonList.contains(params[0])) {
-			commonList.push(params[0]);
-			Game_Interpreter.requestImages(commonEvent.list, commonList);
 		}
 	}
-};
 
-Game_Interpreter.requestImages = (list, commonList) => {
-	if (!list) {
-		return;
-	}
-	const len = list.length;
-	for (let i = 0; i < len; i += 1) {
-		const command = list[i];
-		// Common Event
-		if (command.code === 117) {
-			Game_Interpreter.requestImagesByChildEvent(command, commonList);
-		} else {
-			Game_Interpreter.requestImagesForCommand(command);
+	requestImagesByChildEvent({
+		parameters
+	}, commonList) {
+		const params = parameters;
+		const commonEvent = $dataCommonEvents[params[0]];
+		if (commonEvent) {
+			if (!commonList) {
+				commonList = [];
+			}
+			if (!commonList.contains(params[0])) {
+				commonList.push(params[0]);
+				Game_Interpreter.requestImages(commonEvent.list, commonList);
+			}
 		}
 	}
-};
+
+	requestImages(list, commonList) {
+		if (!list) {
+			return;
+		}
+		const len = list.length;
+		for (let i = 0; i < len; i += 1) {
+			const command = list[i];
+			// Common Event
+			if (command.code === 117) {
+				Game_Interpreter.requestImagesByChildEvent(command, commonList);
+			} else {
+				Game_Interpreter.requestImagesForCommand(command);
+			}
+		}
+	}
+}

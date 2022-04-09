@@ -327,6 +327,44 @@ class AudioManager {
 	static _callCreationHook(audio) {
 		if (this._creationHook) this._creationHook(audio);
 	}
+
+	static audioFileExt() {
+		if (WebAudio.canPlayOgg() && !Utils.isMobileDevice()) {
+			return '.ogg';
+		} else {
+			return '.m4a';
+		}
+	}
+
+	static shouldUseHtml5Audio() {
+		// The only case where we wanted html5audio was android/ no encrypt
+		// Atsuma-ru asked to force webaudio there too, so just return false for ALL
+		// return Utils.isAndroidChrome() && !Decrypter.hasEncryptedAudio;
+		return false;
+	}
+
+	static checkWebAudioError(webAudio) {
+		if (webAudio && webAudio.isError()) {
+			throw new Error(`Failed to load: ${webAudio.url}`);
+		}
+	}
+
+	static makeEmptyAudioObject() {
+		return ({
+			name: '',
+			volume: 0,
+			pitch: 0
+		});
+	}
+
+	static updateBufferParameters(buffer, configVolume, audio) {
+		if (buffer && audio) {
+			buffer.volume = configVolume * (audio.volume || 0) / 10000;
+			buffer.pitch = (audio.pitch || 0) / 100;
+			buffer.pan = (audio.pan || 0) / 100;
+		}
+	};
+
 }
 
 AudioManager._masterVolume = 1; // (min: 0, max: 1)
@@ -399,35 +437,3 @@ Object.defineProperty(AudioManager, 'seVolume', {
 	},
 	configurable: true
 });
-
-AudioManager.makeEmptyAudioObject = () => ({
-	name: '',
-	volume: 0,
-	pitch: 0
-});
-
-AudioManager.updateBufferParameters = (buffer, configVolume, audio) => {
-	if (buffer && audio) {
-		buffer.volume = configVolume * (audio.volume || 0) / 10000;
-		buffer.pitch = (audio.pitch || 0) / 100;
-		buffer.pan = (audio.pan || 0) / 100;
-	}
-};
-
-AudioManager.audioFileExt = () => {
-	if (WebAudio.canPlayOgg() && !Utils.isMobileDevice()) {
-		return '.ogg';
-	} else {
-		return '.m4a';
-	}
-};
-
-AudioManager.shouldUseHtml5Audio = () => // The only case where we wanted html5audio was android/ no encrypt
-	// Atsuma-ru asked to force webaudio there too, so just return false for ALL    // return Utils.isAndroidChrome() && !Decrypter.hasEncryptedAudio;
-	false;
-
-AudioManager.checkWebAudioError = webAudio => {
-	if (webAudio && webAudio.isError()) {
-		throw new Error(`Failed to load: ${webAudio.url}`);
-	}
-};

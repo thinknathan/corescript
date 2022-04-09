@@ -71,17 +71,17 @@ class Scene_Boot extends Scene_Base {
 			throw new Error('Player\'s starting position is not set');
 		}
 	}
-}
 
-Scene_Boot.loadSystemImages = () => {
-	ImageManager.reserveSystem('IconSet');
-	ImageManager.reserveSystem('Balloon');
-	ImageManager.reserveSystem('Shadow1');
-	ImageManager.reserveSystem('Shadow2');
-	ImageManager.reserveSystem('Damage');
-	ImageManager.reserveSystem('States');
-	ImageManager.reserveSystem('Weapons1');
-	ImageManager.reserveSystem('Weapons2');
-	ImageManager.reserveSystem('Weapons3');
-	ImageManager.reserveSystem('ButtonSet');
-};
+	loadSystemImages() {
+		ImageManager.reserveSystem('IconSet');
+		ImageManager.reserveSystem('Balloon');
+		ImageManager.reserveSystem('Shadow1');
+		ImageManager.reserveSystem('Shadow2');
+		ImageManager.reserveSystem('Damage');
+		ImageManager.reserveSystem('States');
+		ImageManager.reserveSystem('Weapons1');
+		ImageManager.reserveSystem('Weapons2');
+		ImageManager.reserveSystem('Weapons3');
+		ImageManager.reserveSystem('ButtonSet');
+	}
+}

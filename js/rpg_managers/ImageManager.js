@@ -295,6 +295,24 @@ class ImageManager {
 	static _callCreationHook(bitmap) {
 		if (this._creationHook) this._creationHook(bitmap);
 	}
+
+	static isObjectCharacter(filename) {
+		const sign = filename.match(/^[\!\$]+/);
+		return sign && sign[0].contains('!');
+	};
+
+	static isBigCharacter(filename) {
+		const sign = filename.match(/^[\!\$]+/);
+		return sign && sign[0].contains('$');
+	};
+
+	static isZeroParallax(filename) {
+		return filename.charAt(0) === '!';
+	}
+
+	static _generateCacheKey(path, hue) {
+		return `${path}:${hue}`;
+	}
 }
 
 ImageManager.cache = new CacheMap(ImageManager);
@@ -302,17 +320,3 @@ ImageManager.cache = new CacheMap(ImageManager);
 ImageManager._imageCache = new ImageCache();
 ImageManager._requestQueue = new RequestQueue();
 ImageManager._systemReservationId = Utils.generateRuntimeId();
-
-ImageManager._generateCacheKey = (path, hue) => `${path}:${hue}`;
-
-ImageManager.isObjectCharacter = filename => {
-	const sign = filename.match(/^[\!\$]+/);
-	return sign && sign[0].contains('!');
-};
-
-ImageManager.isBigCharacter = filename => {
-	const sign = filename.match(/^[\!\$]+/);
-	return sign && sign[0].contains('$');
-};
-
-ImageManager.isZeroParallax = filename => filename.charAt(0) === '!';

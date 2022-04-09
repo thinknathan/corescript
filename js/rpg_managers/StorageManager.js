@@ -231,16 +231,18 @@ class StorageManager {
 		}
 		return this._canMakeWwwSaveDirectory;
 	}
-}
 
-StorageManager.isLocalMode = () => Utils.isNwjs();
-
-StorageManager.webStorageKey = savefileId => {
-	if (savefileId < 0) {
-		return 'RPG Config';
-	} else if (savefileId === 0) {
-		return 'RPG Global';
-	} else {
-		return 'RPG File%1'.format(savefileId);
+	static isLocalMode() {
+		return Utils.isNwjs();
 	}
-};
+
+	static webStorageKey(savefileId) {
+		if (savefileId < 0) {
+			return 'RPG Config';
+		} else if (savefileId === 0) {
+			return 'RPG Global';
+		} else {
+			return 'RPG File%1'.format(savefileId);
+		}
+	}
+}

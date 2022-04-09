@@ -110,16 +110,16 @@ class SoundManager {
 	static playUseSkill() {
 		this.playSystemSound(23);
 	}
+
+	static loadSystemSound(n) {
+		if ($dataSystem) {
+			AudioManager.loadStaticSe($dataSystem.sounds[n]);
+		}
+	}
+
+	static playSystemSound(n) {
+		if ($dataSystem) {
+			AudioManager.playStaticSe($dataSystem.sounds[n]);
+		}
+	}
 }
-
-SoundManager.loadSystemSound = n => {
-	if ($dataSystem) {
-		AudioManager.loadStaticSe($dataSystem.sounds[n]);
-	}
-};
-
-SoundManager.playSystemSound = n => {
-	if ($dataSystem) {
-		AudioManager.playStaticSe($dataSystem.sounds[n]);
-	}
-};

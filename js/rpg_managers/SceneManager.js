@@ -269,13 +269,136 @@ class SceneManager {
 			this._accumulator = 0;
 		}
 	}
-}
 
-/*
- * Gets the current time in ms without on iOS Safari.
- * @private
- */
-SceneManager._getTimeInMsWithoutMobileSafari = () => performance.now();
+	/*
+	 * Gets the current time in ms without on iOS Safari.
+	 * @private
+	 */
+	static _getTimeInMsWithoutMobileSafari() {
+		return performance.now();
+	}
+
+	static initProgressWatcher() {
+		ProgressWatcher.initialize();
+	}
+
+	static preferableRendererType() {
+		if (Utils.isOptionValid('canvas')) {
+			return 'canvas';
+		} else if (Utils.isOptionValid('webgl')) {
+			return 'webgl';
+		} else {
+			return 'auto';
+		}
+	}
+
+	static shouldUseCanvasRenderer() {
+		return Utils.isMobileDevice();
+	}
+
+	static checkWebGL() {
+		if (!Graphics.hasWebGL()) {
+			throw new Error('Your browser does not support WebGL.');
+		}
+	}
+
+	static checkFileAccess() {
+		if (!Utils.canReadGameFiles()) {
+			throw new Error('Your browser does not allow to read local files.');
+		}
+	}
+
+	static initAudio() {
+		const noAudio = Utils.isOptionValid('noaudio');
+		if (!WebAudio.initialize(noAudio) && !noAudio) {
+			throw new Error('Your browser does not support Web Audio API.');
+		}
+	}
+
+	static initInput() {
+		Input.initialize();
+		TouchInput.initialize();
+	}
+
+	static initNwjs() {
+		if (Utils.isNwjs()) {
+			const gui = require('nw.gui');
+			const win = gui.Window.get();
+			if (process.platform === 'darwin' && !win.menu) {
+				const menubar = new gui.Menu({
+					type: 'menubar'
+				});
+				const option = {
+					hideEdit: true,
+					hideWindow: true
+				};
+				menubar.createMacBuiltin('Game', option);
+				win.menu = menubar;
+			}
+		}
+	}
+
+	static checkPluginErrors() {
+		PluginManager.checkErrors();
+	}
+
+	static terminate() {
+		window.close();
+	}
+
+	static onKeyDown({
+		ctrlKey,
+		altKey,
+		keyCode
+	}) {
+		if (!ctrlKey && !altKey) {
+			switch (keyCode) {
+			case 116: // F5
+				if (Utils.isNwjs()) {
+					location.reload();
+				}
+				break;
+			case 119: // F8
+				if (Utils.isNwjs() && Utils.isOptionValid('test')) {
+					require('nw.gui')
+						.Window.get()
+						.showDevTools();
+				}
+				break;
+			}
+		}
+	}
+
+	static tickStart() {
+		Graphics.tickStart();
+	}
+
+	static tickEnd() {
+		Graphics.tickEnd();
+	}
+
+	static updateInputData() {
+		Input.update();
+		TouchInput.update();
+	}
+
+	static updateManagers() {
+		ImageManager.update();
+	}
+
+	static onSceneCreate() {
+		Graphics.startLoading();
+	}
+
+	static onSceneStart() {
+		Graphics.callGC();
+		Graphics.endLoading();
+	}
+
+	static onSceneLoading() {
+		Graphics.updateLoading();
+	}
+}
 
 SceneManager._scene = null;
 SceneManager._nextScene = null;
@@ -293,122 +416,3 @@ SceneManager._deltaTime = 1.0 / 60.0;
 if (!Utils.isMobileSafari()) SceneManager._currentTime = SceneManager._getTimeInMsWithoutMobileSafari();
 SceneManager._accumulator = 0.0;
 SceneManager._frameCount = 0;
-
-SceneManager.initProgressWatcher = () => {
-	ProgressWatcher.initialize();
-};
-
-SceneManager.preferableRendererType = () => {
-	if (Utils.isOptionValid('canvas')) {
-		return 'canvas';
-	} else if (Utils.isOptionValid('webgl')) {
-		return 'webgl';
-	} else {
-		return 'auto';
-	}
-};
-
-SceneManager.shouldUseCanvasRenderer = () => Utils.isMobileDevice();
-
-SceneManager.checkWebGL = () => {
-	if (!Graphics.hasWebGL()) {
-		throw new Error('Your browser does not support WebGL.');
-	}
-};
-
-SceneManager.checkFileAccess = () => {
-	if (!Utils.canReadGameFiles()) {
-		throw new Error('Your browser does not allow to read local files.');
-	}
-};
-
-SceneManager.initAudio = () => {
-	const noAudio = Utils.isOptionValid('noaudio');
-	if (!WebAudio.initialize(noAudio) && !noAudio) {
-		throw new Error('Your browser does not support Web Audio API.');
-	}
-};
-
-SceneManager.initInput = () => {
-	Input.initialize();
-	TouchInput.initialize();
-};
-
-SceneManager.initNwjs = () => {
-	if (Utils.isNwjs()) {
-		const gui = require('nw.gui');
-		const win = gui.Window.get();
-		if (process.platform === 'darwin' && !win.menu) {
-			const menubar = new gui.Menu({
-				type: 'menubar'
-			});
-			const option = {
-				hideEdit: true,
-				hideWindow: true
-			};
-			menubar.createMacBuiltin('Game', option);
-			win.menu = menubar;
-		}
-	}
-};
-
-SceneManager.checkPluginErrors = () => {
-	PluginManager.checkErrors();
-};
-
-SceneManager.terminate = () => {
-	window.close();
-};
-
-SceneManager.onKeyDown = ({
-	ctrlKey,
-	altKey,
-	keyCode
-}) => {
-	if (!ctrlKey && !altKey) {
-		switch (keyCode) {
-		case 116: // F5
-			if (Utils.isNwjs()) {
-				location.reload();
-			}
-			break;
-		case 119: // F8
-			if (Utils.isNwjs() && Utils.isOptionValid('test')) {
-				require('nw.gui')
-					.Window.get()
-					.showDevTools();
-			}
-			break;
-		}
-	}
-};
-
-SceneManager.tickStart = () => {
-	Graphics.tickStart();
-};
-
-SceneManager.tickEnd = () => {
-	Graphics.tickEnd();
-};
-
-SceneManager.updateInputData = () => {
-	Input.update();
-	TouchInput.update();
-};
-
-SceneManager.updateManagers = () => {
-	ImageManager.update();
-};
-
-SceneManager.onSceneCreate = () => {
-	Graphics.startLoading();
-};
-
-SceneManager.onSceneStart = () => {
-	Graphics.callGC();
-	Graphics.endLoading();
-};
-
-SceneManager.onSceneLoading = () => {
-	Graphics.updateLoading();
-};

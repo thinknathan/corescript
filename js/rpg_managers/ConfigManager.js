@@ -45,6 +45,20 @@ class ConfigManager {
 		this.meVolume = this.readVolume(config, 'meVolume');
 		this.seVolume = this.readVolume(config, 'seVolume');
 	}
+
+	static readFlag(config, name) {
+		return !!config[name];
+	}
+
+	static readVolume(config, name) {
+		const value = config[name];
+		if (value !== undefined) {
+			return Number(value)
+				.clamp(0, 100);
+		} else {
+			return 100;
+		}
+	}
 }
 
 ConfigManager.alwaysDash = false;
@@ -89,15 +103,3 @@ Object.defineProperty(ConfigManager, 'seVolume', {
 	},
 	configurable: true
 });
-
-ConfigManager.readFlag = (config, name) => !!config[name];
-
-ConfigManager.readVolume = (config, name) => {
-	const value = config[name];
-	if (value !== undefined) {
-		return Number(value)
-			.clamp(0, 100);
-	} else {
-		return 100;
-	}
-};
