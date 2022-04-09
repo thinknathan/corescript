@@ -3,38 +3,38 @@
 //
 // The window for selecting whether to fight or escape on the battle screen.
 
-function Window_PartyCommand() {
-	this.initialize.apply(this, arguments);
+class Window_PartyCommand extends Window_Command {
+	constructor(...args) {
+		super(...args);
+		this.initialize(...args);
+	}
+
+	initialize() {
+		const y = Graphics.boxHeight - this.windowHeight();
+		super.initialize(0, y);
+		this.openness = 0;
+		this.deactivate();
+	}
+
+	windowWidth() {
+		return 192;
+	}
+
+	numVisibleRows() {
+		return 4;
+	}
+
+	makeCommandList() {
+		this.addCommand(TextManager.fight, 'fight');
+		this.addCommand(TextManager.escape, 'escape', BattleManager.canEscape());
+	}
+
+	setup() {
+		this.clearCommandList();
+		this.makeCommandList();
+		this.refresh();
+		this.select(0);
+		this.activate();
+		this.open();
+	}
 }
-
-Window_PartyCommand.prototype = Object.create(Window_Command.prototype);
-Window_PartyCommand.prototype.constructor = Window_PartyCommand;
-
-Window_PartyCommand.prototype.initialize = function () {
-	const y = Graphics.boxHeight - this.windowHeight();
-	Window_Command.prototype.initialize.call(this, 0, y);
-	this.openness = 0;
-	this.deactivate();
-};
-
-Window_PartyCommand.prototype.windowWidth = function () {
-	return 192;
-};
-
-Window_PartyCommand.prototype.numVisibleRows = function () {
-	return 4;
-};
-
-Window_PartyCommand.prototype.makeCommandList = function () {
-	this.addCommand(TextManager.fight, 'fight');
-	this.addCommand(TextManager.escape, 'escape', BattleManager.canEscape());
-};
-
-Window_PartyCommand.prototype.setup = function () {
-	this.clearCommandList();
-	this.makeCommandList();
-	this.refresh();
-	this.select(0);
-	this.activate();
-	this.open();
-};

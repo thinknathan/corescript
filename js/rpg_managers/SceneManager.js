@@ -3,17 +3,279 @@
 //
 // The static class that manages scene transitions.
 
-function SceneManager() {
-	throw new Error('This is a static class');
+class SceneManager {
+	constructor() {
+		throw new Error('This is a static class');
+	}
+
+	static run(sceneClass) {
+		try {
+			this.initialize();
+			this.goto(sceneClass);
+			this.requestUpdate();
+		} catch (e) {
+			this.catchException(e);
+		}
+	}
+
+	static initialize() {
+		this.initProgressWatcher();
+		this.initGraphics();
+		this.checkFileAccess();
+		this.initAudio();
+		this.initInput();
+		this.initNwjs();
+		this.checkPluginErrors();
+		this.setupErrorHandlers();
+	}
+
+	static initGraphics() {
+		const type = this.preferableRendererType();
+		Graphics.initialize(this._screenWidth, this._screenHeight, type);
+		Graphics.boxWidth = this._boxWidth;
+		Graphics.boxHeight = this._boxHeight;
+		Graphics.setLoadingImage('img/system/Loading.png');
+		if (Utils.isOptionValid('showfps')) {
+			Graphics.showFps();
+		}
+		if (type === 'webgl') {
+			this.checkWebGL();
+		}
+	}
+
+	static setupErrorHandlers() {
+		window.addEventListener('error', this.onError.bind(this));
+		document.addEventListener('keydown', this.onKeyDown.bind(this));
+	}
+
+	static frameCount() {
+		return this._frameCount;
+	}
+
+	static setFrameCount(frameCount) {
+		this._frameCount = frameCount;
+	}
+
+	static resetFrameCount() {
+		this._frameCount = 0;
+	}
+
+	static requestUpdate() {
+		if (!this._stopped) {
+			requestAnimationFrame(this.update.bind(this));
+		}
+	}
+
+	static update() {
+		try {
+			this.tickStart();
+			if (Utils.isMobileSafari()) {
+				this.updateInputData();
+			}
+			this.updateManagers();
+			this.updateMain();
+			this.tickEnd();
+		} catch (e) {
+			this.catchException(e);
+		}
+	}
+
+	static onError({
+		message,
+		filename,
+		lineno
+	}) {
+		console.error(message);
+		if (filename || lineno) {
+			console.error(filename, lineno);
+			try {
+				this.stop();
+				Graphics.printError('Error', message);
+				AudioManager.stopAll();
+			} catch (e2) {}
+		}
+	}
+
+	static catchException(e) {
+		if (e instanceof Error) {
+			Graphics.printError(e.name, e.message);
+			Graphics.printErrorDetail(e);
+			console.error(e.stack);
+		} else {
+			Graphics.printError('UnknownError', e);
+		}
+		AudioManager.stopAll();
+		this.stop();
+	}
+
+	static updateMain() {
+		if (Utils.isHighFps()) {
+			if (Utils.isMobileSafari()) {
+				this.changeScene();
+				this.updateScene();
+			} else {
+				const newTime = this._getTimeInMsWithoutMobileSafari();
+				if (this._currentTime === undefined) {
+					this._currentTime = newTime;
+				}
+				let fTime = (newTime - this._currentTime) / 1000;
+				if (fTime > 0.25) {
+					fTime = 0.25;
+				}
+				this._currentTime = newTime;
+				this._accumulator += fTime;
+				while (this._accumulator >= this._deltaTime) {
+					this.updateInputData();
+					this.changeScene();
+					this.updateScene();
+					this._accumulator -= this._deltaTime;
+				}
+			}
+			this.renderScene();
+			this.requestUpdate();
+		} else {
+			this.updateInputData();
+			this.changeScene();
+			this.updateScene();
+			this.renderScene();
+			this.requestUpdate();
+		}
+	}
+
+	static changeScene() {
+		if (this.isSceneChanging() && !this.isCurrentSceneBusy()) {
+			if (this._scene) {
+				this._scene.terminate();
+				this._scene.detachReservation();
+				this._previousClass = this._scene.constructor;
+			}
+			this._scene = this._nextScene;
+			if (this._scene) {
+				this._scene.attachReservation();
+				this._scene.create();
+				this._nextScene = null;
+				this._sceneStarted = false;
+				this.onSceneCreate();
+			}
+			if (this._exiting) {
+				this.terminate();
+			}
+		}
+	}
+
+	static updateScene() {
+		if (this._scene) {
+			if (!this._sceneStarted && this._scene.isReady()) {
+				this._scene.start();
+				this._sceneStarted = true;
+				this.onSceneStart();
+			}
+			if (this.isCurrentSceneStarted()) {
+				this.updateFrameCount();
+				this._scene.update();
+			}
+		}
+	}
+
+	static renderScene() {
+		if (this.isCurrentSceneStarted()) {
+			Graphics.render(this._scene);
+		} else if (this._scene) {
+			this.onSceneLoading();
+		}
+	}
+
+	static updateFrameCount() {
+		this._frameCount++;
+	}
+
+	static isSceneChanging() {
+		return this._exiting || !!this._nextScene;
+	}
+
+	static isCurrentSceneBusy() {
+		return this._scene && this._scene.isBusy();
+	}
+
+	static isCurrentSceneStarted() {
+		return this._scene && this._sceneStarted;
+	}
+
+	static isNextScene(sceneClass) {
+		return this._nextScene && this._nextScene.constructor === sceneClass;
+	}
+
+	static isPreviousScene(sceneClass) {
+		return this._previousClass === sceneClass;
+	}
+
+	static goto(sceneClass) {
+		if (sceneClass) {
+			this._nextScene = new sceneClass();
+		}
+		if (this._scene) {
+			this._scene.stop();
+		}
+	}
+
+	static push(sceneClass) {
+		this._stack.push(this._scene.constructor);
+		this.goto(sceneClass);
+	}
+
+	static pop() {
+		if (this._stack.length > 0) {
+			this.goto(this._stack.pop());
+		} else {
+			this.exit();
+		}
+	}
+
+	static exit() {
+		this.goto(null);
+		this._exiting = true;
+	}
+
+	static clearStack() {
+		this._stack = [];
+	}
+
+	static stop() {
+		this._stopped = true;
+	}
+
+	static prepareNextScene(...args) {
+		this._nextScene.prepare(...args);
+	}
+
+	static snap() {
+		return Bitmap.snap(this._scene);
+	}
+
+	static snapForBackground() {
+		this._backgroundBitmap = this.snap();
+		this._backgroundBitmap.blur();
+	}
+
+	static backgroundBitmap() {
+		return this._backgroundBitmap;
+	}
+
+	static resume() {
+		this._stopped = false;
+		this.requestUpdate();
+		if (!Utils.isMobileSafari()) {
+			this._currentTime = this._getTimeInMsWithoutMobileSafari();
+			this._accumulator = 0;
+		}
+	}
 }
 
 /*
  * Gets the current time in ms without on iOS Safari.
  * @private
  */
-SceneManager._getTimeInMsWithoutMobileSafari = function () {
-	return performance.now();
-};
+SceneManager._getTimeInMsWithoutMobileSafari = () => performance.now();
 
 SceneManager._scene = null;
 SceneManager._nextScene = null;
@@ -32,46 +294,11 @@ if (!Utils.isMobileSafari()) SceneManager._currentTime = SceneManager._getTimeIn
 SceneManager._accumulator = 0.0;
 SceneManager._frameCount = 0;
 
-SceneManager.run = function (sceneClass) {
-	try {
-		this.initialize();
-		this.goto(sceneClass);
-		this.requestUpdate();
-	} catch (e) {
-		this.catchException(e);
-	}
-};
-
-SceneManager.initialize = function () {
-	this.initProgressWatcher();
-	this.initGraphics();
-	this.checkFileAccess();
-	this.initAudio();
-	this.initInput();
-	this.initNwjs();
-	this.checkPluginErrors();
-	this.setupErrorHandlers();
-};
-
-SceneManager.initProgressWatcher = function () {
+SceneManager.initProgressWatcher = () => {
 	ProgressWatcher.initialize();
 };
 
-SceneManager.initGraphics = function () {
-	const type = this.preferableRendererType();
-	Graphics.initialize(this._screenWidth, this._screenHeight, type);
-	Graphics.boxWidth = this._boxWidth;
-	Graphics.boxHeight = this._boxHeight;
-	Graphics.setLoadingImage('img/system/Loading.png');
-	if (Utils.isOptionValid('showfps')) {
-		Graphics.showFps();
-	}
-	if (type === 'webgl') {
-		this.checkWebGL();
-	}
-};
-
-SceneManager.preferableRendererType = function () {
+SceneManager.preferableRendererType = () => {
 	if (Utils.isOptionValid('canvas')) {
 		return 'canvas';
 	} else if (Utils.isOptionValid('webgl')) {
@@ -81,35 +308,33 @@ SceneManager.preferableRendererType = function () {
 	}
 };
 
-SceneManager.shouldUseCanvasRenderer = function () {
-	return Utils.isMobileDevice();
-};
+SceneManager.shouldUseCanvasRenderer = () => Utils.isMobileDevice();
 
-SceneManager.checkWebGL = function () {
+SceneManager.checkWebGL = () => {
 	if (!Graphics.hasWebGL()) {
 		throw new Error('Your browser does not support WebGL.');
 	}
 };
 
-SceneManager.checkFileAccess = function () {
+SceneManager.checkFileAccess = () => {
 	if (!Utils.canReadGameFiles()) {
 		throw new Error('Your browser does not allow to read local files.');
 	}
 };
 
-SceneManager.initAudio = function () {
+SceneManager.initAudio = () => {
 	const noAudio = Utils.isOptionValid('noaudio');
 	if (!WebAudio.initialize(noAudio) && !noAudio) {
 		throw new Error('Your browser does not support Web Audio API.');
 	}
 };
 
-SceneManager.initInput = function () {
+SceneManager.initInput = () => {
 	Input.initialize();
 	TouchInput.initialize();
 };
 
-SceneManager.initNwjs = function () {
+SceneManager.initNwjs = () => {
 	if (Utils.isNwjs()) {
 		const gui = require('nw.gui');
 		const win = gui.Window.get();
@@ -127,66 +352,21 @@ SceneManager.initNwjs = function () {
 	}
 };
 
-SceneManager.checkPluginErrors = function () {
+SceneManager.checkPluginErrors = () => {
 	PluginManager.checkErrors();
 };
 
-SceneManager.setupErrorHandlers = function () {
-	window.addEventListener('error', this.onError.bind(this));
-	document.addEventListener('keydown', this.onKeyDown.bind(this));
-};
-
-SceneManager.frameCount = function () {
-	return this._frameCount;
-};
-
-SceneManager.setFrameCount = function (frameCount) {
-	this._frameCount = frameCount;
-};
-
-SceneManager.resetFrameCount = function () {
-	this._frameCount = 0;
-};
-
-SceneManager.requestUpdate = function () {
-	if (!this._stopped) {
-		requestAnimationFrame(this.update.bind(this));
-	}
-};
-
-SceneManager.update = function () {
-	try {
-		this.tickStart();
-		if (Utils.isMobileSafari()) {
-			this.updateInputData();
-		}
-		this.updateManagers();
-		this.updateMain();
-		this.tickEnd();
-	} catch (e) {
-		this.catchException(e);
-	}
-};
-
-SceneManager.terminate = function () {
+SceneManager.terminate = () => {
 	window.close();
 };
 
-SceneManager.onError = function (e) {
-	console.error(e.message);
-	if (e.filename || e.lineno) {
-		console.error(e.filename, e.lineno);
-		try {
-			this.stop();
-			Graphics.printError('Error', e.message);
-			AudioManager.stopAll();
-		} catch (e2) {}
-	}
-};
-
-SceneManager.onKeyDown = function (event) {
-	if (!event.ctrlKey && !event.altKey) {
-		switch (event.keyCode) {
+SceneManager.onKeyDown = ({
+	ctrlKey,
+	altKey,
+	keyCode
+}) => {
+	if (!ctrlKey && !altKey) {
+		switch (keyCode) {
 		case 116: // F5
 			if (Utils.isNwjs()) {
 				location.reload();
@@ -203,206 +383,32 @@ SceneManager.onKeyDown = function (event) {
 	}
 };
 
-SceneManager.catchException = function (e) {
-	if (e instanceof Error) {
-		Graphics.printError(e.name, e.message);
-		Graphics.printErrorDetail(e);
-		console.error(e.stack);
-	} else {
-		Graphics.printError('UnknownError', e);
-	}
-	AudioManager.stopAll();
-	this.stop();
-};
-
-SceneManager.tickStart = function () {
+SceneManager.tickStart = () => {
 	Graphics.tickStart();
 };
 
-SceneManager.tickEnd = function () {
+SceneManager.tickEnd = () => {
 	Graphics.tickEnd();
 };
 
-SceneManager.updateInputData = function () {
+SceneManager.updateInputData = () => {
 	Input.update();
 	TouchInput.update();
 };
 
-SceneManager.updateMain = function () {
-	if (Utils.isHighFps()) {
-		if (Utils.isMobileSafari()) {
-			this.changeScene();
-			this.updateScene();
-		} else {
-			const newTime = this._getTimeInMsWithoutMobileSafari();
-			if (this._currentTime === undefined) {
-				this._currentTime = newTime;
-			}
-			let fTime = (newTime - this._currentTime) / 1000;
-			if (fTime > 0.25) {
-				fTime = 0.25;
-			}
-			this._currentTime = newTime;
-			this._accumulator += fTime;
-			while (this._accumulator >= this._deltaTime) {
-				this.updateInputData();
-				this.changeScene();
-				this.updateScene();
-				this._accumulator -= this._deltaTime;
-			}
-		}
-		this.renderScene();
-		this.requestUpdate();
-	} else {
-		this.updateInputData();
-		this.changeScene();
-		this.updateScene();
-		this.renderScene();
-		this.requestUpdate();
-	}
-};
-
-SceneManager.updateManagers = function () {
+SceneManager.updateManagers = () => {
 	ImageManager.update();
 };
 
-SceneManager.changeScene = function () {
-	if (this.isSceneChanging() && !this.isCurrentSceneBusy()) {
-		if (this._scene) {
-			this._scene.terminate();
-			this._scene.detachReservation();
-			this._previousClass = this._scene.constructor;
-		}
-		this._scene = this._nextScene;
-		if (this._scene) {
-			this._scene.attachReservation();
-			this._scene.create();
-			this._nextScene = null;
-			this._sceneStarted = false;
-			this.onSceneCreate();
-		}
-		if (this._exiting) {
-			this.terminate();
-		}
-	}
-};
-
-SceneManager.updateScene = function () {
-	if (this._scene) {
-		if (!this._sceneStarted && this._scene.isReady()) {
-			this._scene.start();
-			this._sceneStarted = true;
-			this.onSceneStart();
-		}
-		if (this.isCurrentSceneStarted()) {
-			this.updateFrameCount();
-			this._scene.update();
-		}
-	}
-};
-
-SceneManager.renderScene = function () {
-	if (this.isCurrentSceneStarted()) {
-		Graphics.render(this._scene);
-	} else if (this._scene) {
-		this.onSceneLoading();
-	}
-};
-
-SceneManager.updateFrameCount = function () {
-	this._frameCount++;
-};
-
-SceneManager.onSceneCreate = function () {
+SceneManager.onSceneCreate = () => {
 	Graphics.startLoading();
 };
 
-SceneManager.onSceneStart = function () {
+SceneManager.onSceneStart = () => {
 	Graphics.callGC();
 	Graphics.endLoading();
 };
 
-SceneManager.onSceneLoading = function () {
+SceneManager.onSceneLoading = () => {
 	Graphics.updateLoading();
-};
-
-SceneManager.isSceneChanging = function () {
-	return this._exiting || !!this._nextScene;
-};
-
-SceneManager.isCurrentSceneBusy = function () {
-	return this._scene && this._scene.isBusy();
-};
-
-SceneManager.isCurrentSceneStarted = function () {
-	return this._scene && this._sceneStarted;
-};
-
-SceneManager.isNextScene = function (sceneClass) {
-	return this._nextScene && this._nextScene.constructor === sceneClass;
-};
-
-SceneManager.isPreviousScene = function (sceneClass) {
-	return this._previousClass === sceneClass;
-};
-
-SceneManager.goto = function (sceneClass) {
-	if (sceneClass) {
-		this._nextScene = new sceneClass();
-	}
-	if (this._scene) {
-		this._scene.stop();
-	}
-};
-
-SceneManager.push = function (sceneClass) {
-	this._stack.push(this._scene.constructor);
-	this.goto(sceneClass);
-};
-
-SceneManager.pop = function () {
-	if (this._stack.length > 0) {
-		this.goto(this._stack.pop());
-	} else {
-		this.exit();
-	}
-};
-
-SceneManager.exit = function () {
-	this.goto(null);
-	this._exiting = true;
-};
-
-SceneManager.clearStack = function () {
-	this._stack = [];
-};
-
-SceneManager.stop = function () {
-	this._stopped = true;
-};
-
-SceneManager.prepareNextScene = function () {
-	this._nextScene.prepare.apply(this._nextScene, arguments);
-};
-
-SceneManager.snap = function () {
-	return Bitmap.snap(this._scene);
-};
-
-SceneManager.snapForBackground = function () {
-	this._backgroundBitmap = this.snap();
-	this._backgroundBitmap.blur();
-};
-
-SceneManager.backgroundBitmap = function () {
-	return this._backgroundBitmap;
-};
-
-SceneManager.resume = function () {
-	this._stopped = false;
-	this.requestUpdate();
-	if (!Utils.isMobileSafari()) {
-		this._currentTime = this._getTimeInMsWithoutMobileSafari();
-		this._accumulator = 0;
-	}
 };

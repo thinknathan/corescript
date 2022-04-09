@@ -4,80 +4,1106 @@
  *
  * @class Graphics
  */
-function Graphics() {
-	throw new Error('This is a static class');
+class Graphics {
+	constructor() {
+		throw new Error('This is a static class');
+	}
+
+	/**
+	 * Initializes the graphics system.
+	 *
+	 * @static
+	 * @method initialize
+	 * @param {Number} width The width of the game screen
+	 * @param {Number} height The height of the game screen
+	 * @param {String} type The type of the renderer.
+	 *                 'canvas', 'webgl', or 'auto'.
+	 */
+	static initialize(width, height, type) {
+		this._width = width || 800;
+		this._height = height || 600;
+		this._rendererType = type || 'auto';
+		this._boxWidth = this._width;
+		this._boxHeight = this._height;
+
+		this._scale = 1;
+		this._realScale = 1;
+
+		this._errorShowed = false;
+		this._errorPrinter = null;
+		this._canvas = null;
+		this._video = null;
+		this._videoUnlocked = false;
+		this._videoLoading = false;
+		this._upperCanvas = null;
+		this._fpsMeter = null;
+		this._modeBox = null;
+		this._skipCount = 0;
+		this._maxSkip = 3;
+		this._rendered = false;
+		this._loadingImage = null;
+		this._loadingCount = 0;
+		this._fpsMeterToggled = false;
+		this._stretchEnabled = this._defaultStretchMode();
+
+		this._canUseDifferenceBlend = false;
+		this._canUseSaturationBlend = false;
+		this._hiddenCanvas = null;
+		this._app = null;
+
+		this._testCanvasBlendModes();
+		this._modifyExistingElements();
+		this._updateRealScale();
+		this._createAllElements();
+		this._disableTextSelection();
+		this._disableContextMenu();
+		this._setupEventHandlers();
+		this._setupCssFontLoading();
+		this._setupProgress();
+	}
+
+	static canUseCssFontLoading() {
+		return !!this._cssFontLoading;
+	}
+
+	/**
+	 * Renders the stage to the game screen.
+	 *
+	 * @static
+	 * @method render
+	 * @param {Stage} stage The stage object to be rendered
+	 */
+	static render(stage) {
+		if (stage) this._app.stage = stage;
+	}
+
+	/**
+	 * Checks whether the renderer type is WebGL.
+	 *
+	 * @static
+	 * @method isWebGL
+	 * @return {Boolean} True if the renderer type is WebGL
+	 */
+	static isWebGL() {
+		return this._renderer && this._renderer.type === PIXI.RENDERER_TYPE.WEBGL;
+	}
+
+	/**
+	 * Checks whether the canvas blend mode 'difference' is supported.
+	 *
+	 * @static
+	 * @method canUseDifferenceBlend
+	 * @return {Boolean} True if the canvas blend mode 'difference' is supported
+	 */
+	static canUseDifferenceBlend() {
+		return this._canUseDifferenceBlend;
+	}
+
+	/**
+	 * Checks whether the canvas blend mode 'saturation' is supported.
+	 *
+	 * @static
+	 * @method canUseSaturationBlend
+	 * @return {Boolean} True if the canvas blend mode 'saturation' is supported
+	 */
+	static canUseSaturationBlend() {
+		return this._canUseSaturationBlend;
+	}
+
+	/**
+	 * Sets the source of the "Now Loading" image.
+	 *
+	 * @static
+	 * @method setLoadingImage
+	 */
+	static setLoadingImage(src) {
+		this._loadingImage = new Image();
+		this._loadingImage.src = src;
+	}
+
+	/**
+	 * Sets whether the progress bar is enabled.
+	 *
+	 * @static
+	 * @method setEnableProgress
+	 */
+	static setProgressEnabled(enable) {
+		this._progressEnabled = enable;
+	}
+
+	/**
+	 * Initializes the counter for displaying the "Now Loading" image.
+	 *
+	 * @static
+	 * @method startLoading
+	 */
+	static startLoading() {
+		this._loadingCount = 0;
+
+		ProgressWatcher.truncateProgress();
+		ProgressWatcher.setProgressListener(this._updateProgressCount.bind(this));
+		this._progressTimeout = setTimeout(() => {
+			Graphics._showProgress();
+		}, 1500);
+	}
+
+	static _setupProgress() {
+		this._progressElement = document.createElement('div');
+		this._progressElement.id = 'loading-progress';
+		this._progressElement.width = 600;
+		this._progressElement.height = 300;
+		this._progressElement.style.visibility = 'hidden';
+
+		this._barElement = document.createElement('div');
+		this._barElement.id = 'loading-bar';
+		this._barElement.style.width = '100%';
+		this._barElement.style.height = '10%';
+		this._barElement.style.background = 'linear-gradient(to top, gray, lightgray)';
+		this._barElement.style.border = '5px solid white';
+		this._barElement.style.borderRadius = '15px';
+		this._barElement.style.marginTop = '40%';
+
+		this._filledBarElement = document.createElement('div');
+		this._filledBarElement.id = 'loading-filled-bar';
+		this._filledBarElement.style.width = '0%';
+		this._filledBarElement.style.height = '100%';
+		this._filledBarElement.style.background = 'linear-gradient(to top, lime, honeydew)';
+		this._filledBarElement.style.borderRadius = '10px';
+
+		this._progressElement.appendChild(this._barElement);
+		this._barElement.appendChild(this._filledBarElement);
+		this._updateProgress();
+
+		document.body.appendChild(this._progressElement);
+	}
+
+	static _showProgress() {
+		if (this._progressEnabled) {
+			this._progressElement.value = 0;
+			this._progressElement.style.visibility = 'visible';
+			this._progressElement.style.zIndex = 98;
+		}
+	}
+
+	static _hideProgress() {
+		if (this._progressElement) {
+			this._progressElement.style.visibility = 'hidden';
+		}
+		clearTimeout(this._progressTimeout);
+	}
+
+	static _updateProgressCount(countLoaded, countLoading) {
+		let progressValue;
+		if (countLoading !== 0) {
+			progressValue = (countLoaded / countLoading) * 100;
+		} else {
+			progressValue = 100;
+		}
+
+		this._filledBarElement.style.width = `${progressValue}%`;
+	}
+
+	static _updateProgress() {
+		this._centerElement(this._progressElement);
+	}
+
+	/**
+	 * Increments the loading counter and displays the "Now Loading" image if necessary.
+	 *
+	 * @static
+	 * @method updateLoading
+	 */
+	static updateLoading() {
+		this._loadingCount++;
+		this._paintUpperCanvas();
+		this._upperCanvas.style.opacity = 1;
+		this._updateProgress();
+	}
+
+	/**
+	 * Erases the "Now Loading" image.
+	 *
+	 * @static
+	 * @method endLoading
+	 */
+	static endLoading() {
+		this._clearUpperCanvas();
+		this._upperCanvas.style.opacity = 0;
+		this._hideProgress();
+	}
+
+	/**
+	 * Displays the loading error text to the screen.
+	 *
+	 * @static
+	 * @method printLoadingError
+	 * @param {String} url The url of the resource failed to load
+	 */
+	static printLoadingError(url) {
+		if (this._errorPrinter && !this._errorShowed) {
+			this._updateErrorPrinter();
+			this._errorPrinter.innerHTML = this._makeErrorHtml('Loading Error', `Failed to load: ${url}`);
+			this._errorPrinter.style.userSelect = 'text';
+			this._errorPrinter.style.webkitUserSelect = 'text';
+			this._errorPrinter.style.msUserSelect = 'text';
+			this._errorPrinter.style.mozUserSelect = 'text';
+			this._errorPrinter.oncontextmenu = null; // enable context menu
+			const button = document.createElement('button');
+			button.innerHTML = 'Retry';
+			button.style.fontSize = '24px';
+			button.style.color = '#ffffff';
+			button.style.backgroundColor = '#000000';
+			button.addEventListener('touchstart', event => {
+				event.stopPropagation();
+			});
+			button.addEventListener('click', event => {
+				ResourceHandler.retry();
+			});
+			this._errorPrinter.appendChild(button);
+			this._loadingCount = -Infinity;
+		}
+	}
+
+	/**
+	 * Erases the loading error text.
+	 *
+	 * @static
+	 * @method eraseLoadingError
+	 */
+	static eraseLoadingError() {
+		if (this._errorPrinter && !this._errorShowed) {
+			this._errorPrinter.innerHTML = '';
+			this._errorPrinter.style.userSelect = 'none';
+			this._errorPrinter.style.webkitUserSelect = 'none';
+			this._errorPrinter.style.msUserSelect = 'none';
+			this._errorPrinter.style.mozUserSelect = 'none';
+			this._errorPrinter.oncontextmenu = () => false;
+			this._loadingCount = 0;
+		}
+	}
+
+	// The following code is partly borrowed from triacontane.
+	/**
+	 * Displays the error text to the screen.
+	 *
+	 * @static
+	 * @method printError
+	 * @param {String} name The name of the error
+	 * @param {String} message The message of the error
+	 */
+	static printError(name, message) {
+		this._errorShowed = true;
+		this._hideProgress();
+		this.hideFps();
+		if (this._errorPrinter) {
+			this._updateErrorPrinter();
+			this._errorPrinter.innerHTML = this._makeErrorHtml(name, message);
+			this._errorPrinter.style.userSelect = 'text';
+			this._errorPrinter.style.webkitUserSelect = 'text';
+			this._errorPrinter.style.msUserSelect = 'text';
+			this._errorPrinter.style.mozUserSelect = 'text';
+			this._errorPrinter.oncontextmenu = null; // enable context menu
+			if (this._errorMessage) {
+				this._makeErrorMessage();
+			}
+		}
+		this._applyCanvasFilter();
+		this._clearUpperCanvas();
+	}
+
+	/**
+	 * Shows the detail of error.
+	 *
+	 * @static
+	 * @method printErrorDetail
+	 */
+	static printErrorDetail(error) {
+		if (this._errorPrinter && this._showErrorDetail) {
+			const eventInfo = this._formatEventInfo(error);
+			const eventCommandInfo = this._formatEventCommandInfo(error);
+			const info = eventCommandInfo ? `${eventInfo}, ${eventCommandInfo}` : eventInfo;
+			const stack = this._formatStackTrace(error);
+			this._makeErrorDetail(info, stack);
+		}
+	}
+
+	/**
+	 * Sets the error message.
+	 *
+	 * @static
+	 * @method setErrorMessage
+	 */
+	static setErrorMessage(message) {
+		this._errorMessage = message;
+	}
+
+	/**
+	 * Sets whether shows the detail of error.
+	 *
+	 * @static
+	 * @method setShowErrorDetail
+	 */
+	static setShowErrorDetail(showErrorDetail) {
+		this._showErrorDetail = showErrorDetail;
+	}
+
+	/**
+	 * Shows the FPSMeter element.
+	 *
+	 * @static
+	 * @method showFps
+	 */
+	static showFps() {
+		if (this._fpsMeter) {
+			if (!this._fpsMeter.extensions.pixi) {
+				this._fpsMeter.enableExtension('pixi', [PIXI, this._app]);
+			}
+			document.body.appendChild(this._fpsMeter.dom);
+			this._fpsMeter.show(true);
+		}
+	}
+
+	/**
+	 * Hides the FPSMeter element.
+	 *
+	 * @static
+	 * @method hideFps
+	 */
+	static hideFps() {
+		if (this._fpsMeter) {
+			if (document.body.contains(this._fpsMeter.dom)) {
+				document.body.removeChild(this._fpsMeter.dom);
+			}
+			this._fpsMeter.show(false);
+		}
+	}
+
+	/**
+	 * Loads a font file.
+	 *
+	 * @static
+	 * @method loadFont
+	 * @param {String} name The face name of the font
+	 * @param {String} url The url of the font file
+	 */
+	static loadFont(name, url) {
+		const style = document.createElement('style');
+		const head = document.getElementsByTagName('head');
+		const rule = `@font-face { font-family: "${name}"; src: url("${url}"); }`;
+		style.type = 'text/css';
+		head.item(0)
+			.appendChild(style);
+		style.sheet.insertRule(rule, 0);
+		this._createFontLoader(name);
+	}
+
+	/**
+	 * Checks whether the font file is loaded.
+	 *
+	 * @static
+	 * @method isFontLoaded
+	 * @param {String} name The face name of the font
+	 * @return {Boolean} True if the font file is loaded
+	 */
+	static isFontLoaded(name) {
+		if (Graphics._cssFontLoading) {
+			if (Graphics._fontLoaded) {
+				return Graphics._fontLoaded.check(`10px "${name}"`);
+			}
+
+			return false;
+		} else {
+			if (!this._hiddenCanvas) {
+				this._hiddenCanvas = document.createElement('canvas');
+			}
+			const context = this._hiddenCanvas.getContext('2d');
+			const text = 'abcdefghijklmnopqrstuvwxyz';
+			let width1;
+			let width2;
+			context.font = `40px ${name}, sans-serif`;
+			width1 = context.measureText(text)
+				.width;
+			context.font = '40px sans-serif';
+			width2 = context.measureText(text)
+				.width;
+			return width1 !== width2;
+		}
+	}
+
+	/**
+	 * Starts playback of a video.
+	 *
+	 * @static
+	 * @method playVideo
+	 * @param {String} src
+	 */
+	static playVideo(src) {
+		this._videoLoader = ResourceHandler.createLoader(null, this._playVideo.bind(this, src), this._onVideoError.bind(this));
+		this._playVideo(src);
+	}
+
+	/**
+	 * @static
+	 * @method _playVideo
+	 * @param {String} src
+	 * @private
+	 */
+	static _playVideo(src) {
+		this._video.src = src;
+		this._video.onloadeddata = this._onVideoLoad.bind(this);
+		this._video.onerror = this._videoLoader;
+		this._video.onended = this._onVideoEnd.bind(this);
+		this._video.load();
+		this._videoLoading = true;
+	}
+
+	/**
+	 * Checks whether the video is playing.
+	 *
+	 * @static
+	 * @method isVideoPlaying
+	 * @return {Boolean} True if the video is playing
+	 */
+	static isVideoPlaying() {
+		return this._videoLoading || this._isVideoVisible();
+	}
+
+	/**
+	 * Checks whether the browser can play the specified video type.
+	 *
+	 * @static
+	 * @method canPlayVideoType
+	 * @param {String} type The video type to test support for
+	 * @return {Boolean} True if the browser can play the specified video type
+	 */
+	static canPlayVideoType(type) {
+		return this._video && this._video.canPlayType(type);
+	}
+
+	/**
+	 * Sets volume of a video.
+	 *
+	 * @static
+	 * @method setVideoVolume
+	 * @param {Number} value
+	 */
+	static setVideoVolume(value) {
+		this._videoVolume = value;
+		if (this._video) {
+			this._video.volume = this._videoVolume;
+		}
+	}
+
+	/**
+	 * Converts an x coordinate on the page to the corresponding
+	 * x coordinate on the canvas area.
+	 *
+	 * @static
+	 * @method pageToCanvasX
+	 * @param {Number} x The x coordinate on the page to be converted
+	 * @return {Number} The x coordinate on the canvas area
+	 */
+	static pageToCanvasX(x) {
+		if (this._canvas) {
+			const left = this._canvas.offsetLeft;
+			return Math.round((x - left) / this._realScale);
+		} else {
+			return 0;
+		}
+	}
+
+	/**
+	 * Converts a y coordinate on the page to the corresponding
+	 * y coordinate on the canvas area.
+	 *
+	 * @static
+	 * @method pageToCanvasY
+	 * @param {Number} y The y coordinate on the page to be converted
+	 * @return {Number} The y coordinate on the canvas area
+	 */
+	static pageToCanvasY(y) {
+		if (this._canvas) {
+			const top = this._canvas.offsetTop;
+			return Math.round((y - top) / this._realScale);
+		} else {
+			return 0;
+		}
+	}
+
+	/**
+	 * Checks whether the specified point is inside the game canvas area.
+	 *
+	 * @static
+	 * @method isInsideCanvas
+	 * @param {Number} x The x coordinate on the canvas area
+	 * @param {Number} y The y coordinate on the canvas area
+	 * @return {Boolean} True if the specified point is inside the game canvas area
+	 */
+	static isInsideCanvas(x, y) {
+		return (x >= 0 && x < this._width && y >= 0 && y < this._height);
+	}
+
+	/**
+	 * @static
+	 * @method _createAllElements
+	 * @private
+	 */
+	static _createAllElements() {
+		this._createErrorPrinter();
+		this._createCanvas();
+		this._createVideo();
+		this._createUpperCanvas();
+		this._createRenderer();
+		this._createPixiApp();
+		this._createFPSMeter();
+		this._createModeBox();
+		this._createGameFontLoader();
+	}
+
+	/**
+	 * @static
+	 * @method _updateAllElements
+	 * @private
+	 */
+	static _updateAllElements() {
+		this._updateRealScale();
+		this._updateErrorPrinter();
+		this._updateCanvas();
+		this._updateVideo();
+		this._updateUpperCanvas();
+		this._updateRenderer();
+		this._paintUpperCanvas();
+		this._updateProgress();
+	}
+
+	/**
+	 * @static
+	 * @method _updateRealScale
+	 * @private
+	 */
+	static _updateRealScale() {
+		if (this._stretchEnabled) {
+			let h = window.innerWidth / this._width;
+			let v = window.innerHeight / this._height;
+			if (h >= 1 && h - 0.01 <= 1) h = 1;
+			if (v >= 1 && v - 0.01 <= 1) v = 1;
+			this._realScale = Math.min(h, v);
+		} else {
+			this._realScale = this._scale;
+		}
+	}
+
+	/**
+	 * @static
+	 * @method _testCanvasBlendModes
+	 * @private
+	 */
+	static _testCanvasBlendModes() {
+		let canvas;
+		let context;
+		let imageData1;
+		let imageData2;
+		canvas = document.createElement('canvas');
+		canvas.width = 1;
+		canvas.height = 1;
+		context = canvas.getContext('2d');
+		context.globalCompositeOperation = 'source-over';
+		context.fillStyle = 'white';
+		context.fillRect(0, 0, 1, 1);
+		context.globalCompositeOperation = 'difference';
+		context.fillStyle = 'white';
+		context.fillRect(0, 0, 1, 1);
+		imageData1 = context.getImageData(0, 0, 1, 1);
+		context.globalCompositeOperation = 'source-over';
+		context.fillStyle = 'black';
+		context.fillRect(0, 0, 1, 1);
+		context.globalCompositeOperation = 'saturation';
+		context.fillStyle = 'white';
+		context.fillRect(0, 0, 1, 1);
+		imageData2 = context.getImageData(0, 0, 1, 1);
+		this._canUseDifferenceBlend = imageData1.data[0] === 0;
+		this._canUseSaturationBlend = imageData2.data[0] === 0;
+	}
+
+	/**
+	 * @static
+	 * @method _createErrorPrinter
+	 * @private
+	 */
+	static _createErrorPrinter() {
+		this._errorPrinter = document.createElement('p');
+		this._errorPrinter.id = 'ErrorPrinter';
+		this._updateErrorPrinter();
+		document.body.appendChild(this._errorPrinter);
+	}
+
+	/**
+	 * @static
+	 * @method _updateErrorPrinter
+	 * @private
+	 */
+	static _updateErrorPrinter() {
+		this._errorPrinter.width = this._width * 0.9;
+		if (this._errorShowed && this._showErrorDetail) {
+			this._errorPrinter.height = this._height * 0.9;
+		} else if (this._errorShowed && this._errorMessage) {
+			this._errorPrinter.height = 100;
+		} else {
+			this._errorPrinter.height = 40;
+		}
+		this._errorPrinter.style.textAlign = 'center';
+		this._errorPrinter.style.textShadow = '1px 1px 3px #000';
+		this._errorPrinter.style.fontSize = '20px';
+		this._errorPrinter.style.zIndex = 99;
+		this._centerElement(this._errorPrinter);
+	}
+
+	/**
+	 * @static
+	 * @method _makeErrorMessage
+	 * @private
+	 */
+	static _makeErrorMessage() {
+		const mainMessage = document.createElement('div');
+		const style = mainMessage.style;
+		style.color = 'white';
+		style.textAlign = 'left';
+		style.fontSize = '18px';
+		mainMessage.innerHTML = `<hr>${this._errorMessage}`;
+		this._errorPrinter.appendChild(mainMessage);
+	}
+
+	/**
+	 * @static
+	 * @method _makeErrorDetail
+	 * @private
+	 */
+	static _makeErrorDetail(info, stack) {
+		const detail = document.createElement('div');
+		const style = detail.style;
+		style.color = 'white';
+		style.textAlign = 'left';
+		style.fontSize = '18px';
+		detail.innerHTML = `<br><hr>${info}<br><br>${stack}`;
+		this._errorPrinter.appendChild(detail);
+	}
+
+	/**
+	 * @static
+	 * @method _createCanvas
+	 * @private
+	 */
+	static _createCanvas() {
+		this._canvas = document.createElement('canvas');
+		this._canvas.id = 'GameCanvas';
+		this._updateCanvas();
+		document.body.appendChild(this._canvas);
+	}
+
+	/**
+	 * @static
+	 * @method _updateCanvas
+	 * @private
+	 */
+	static _updateCanvas() {
+		this._canvas.width = this._width;
+		this._canvas.height = this._height;
+		this._canvas.style.zIndex = 1;
+		this._centerElement(this._canvas);
+	}
+
+	/**
+	 * @static
+	 * @method _createVideo
+	 * @private
+	 */
+	static _createVideo() {
+		this._video = document.createElement('video');
+		this._video.id = 'GameVideo';
+		this._video.style.opacity = 0;
+		this._video.setAttribute('playsinline', '');
+		this._video.volume = this._videoVolume;
+		this._updateVideo();
+		makeVideoPlayableInline(this._video);
+		document.body.appendChild(this._video);
+	}
+
+	/**
+	 * @static
+	 * @method _updateVideo
+	 * @private
+	 */
+	static _updateVideo() {
+		this._video.width = this._width;
+		this._video.height = this._height;
+		this._video.style.zIndex = 2;
+		this._centerElement(this._video);
+	}
+
+	/**
+	 * @static
+	 * @method _createUpperCanvas
+	 * @private
+	 */
+	static _createUpperCanvas() {
+		this._upperCanvas = document.createElement('canvas');
+		this._upperCanvas.id = 'UpperCanvas';
+		this._updateUpperCanvas();
+		document.body.appendChild(this._upperCanvas);
+	}
+
+	/**
+	 * @static
+	 * @method _updateUpperCanvas
+	 * @private
+	 */
+	static _updateUpperCanvas() {
+		this._upperCanvas.width = this._width;
+		this._upperCanvas.height = this._height;
+		this._upperCanvas.style.zIndex = 3;
+		this._centerElement(this._upperCanvas);
+	}
+
+	/**
+	 * @static
+	 * @method _clearUpperCanvas
+	 * @private
+	 */
+	static _clearUpperCanvas() {
+		const context = this._upperCanvas.getContext('2d');
+		context.clearRect(0, 0, this._width, this._height);
+	}
+
+	/**
+	 * @static
+	 * @method _paintUpperCanvas
+	 * @private
+	 */
+	static _paintUpperCanvas() {
+		this._clearUpperCanvas();
+		if (this._loadingImage && this._loadingCount >= 20) {
+			const context = this._upperCanvas.getContext('2d');
+			const dx = (this._width - this._loadingImage.width) / 2;
+			const dy = (this._height - this._loadingImage.height) / 2;
+			const alpha = ((this._loadingCount - 20) / 30)
+				.clamp(0, 1);
+			context.save();
+			context.globalAlpha = alpha;
+			context.drawImage(this._loadingImage, dx, dy);
+			context.restore();
+		}
+	}
+
+	/**
+	 * @static
+	 * @method _updateRenderer
+	 * @private
+	 */
+	static _updateRenderer() {
+		if (this._app) {
+			this._app.renderer.resize(this._width, this._height);
+		}
+	}
+
+	/**
+	 * @static
+	 * @method _createFPSMeter
+	 * @private
+	 */
+	static _createFPSMeter() {
+		if (typeof GameStats == 'function') {
+			this._fpsMeter = new GameStats({
+				autoPlace: false,
+			});
+			this._fpsMeter.show(false);
+			this._fpsMeter.dom.style.zIndex = 1;
+		} else {
+			console.warn('GameStats is not a function. Is gamestats.js installed?');
+		}
+	}
+
+	/**
+	 * @static
+	 * @method _createModeBox
+	 * @private
+	 */
+	static _createModeBox() {
+		const box = document.createElement('div');
+		box.id = 'modeTextBack';
+		box.style.position = 'absolute';
+		box.style.left = '5px';
+		box.style.top = '5px';
+		box.style.width = '119px';
+		box.style.height = '58px';
+		box.style.background = 'rgba(0,0,0,0.2)';
+		box.style.zIndex = 9;
+		box.style.opacity = 0;
+
+		const text = document.createElement('div');
+		text.id = 'modeText';
+		text.style.position = 'absolute';
+		text.style.left = '0px';
+		text.style.top = '41px';
+		text.style.width = '119px';
+		text.style.fontSize = '12px';
+		text.style.fontFamily = 'monospace';
+		text.style.color = 'white';
+		text.style.textAlign = 'center';
+		text.style.textShadow = '1px 1px 0 rgba(0,0,0,0.5)';
+		text.innerHTML = this.isWebGL() ? 'WebGL mode' : 'Canvas mode';
+
+		document.body.appendChild(box);
+		box.appendChild(text);
+
+		this._modeBox = box;
+	}
+
+	/**
+	 * @static
+	 * @method _createGameFontLoader
+	 * @private
+	 */
+	static _createGameFontLoader() {
+		this._createFontLoader('GameFont');
+	}
+
+	/**
+	 * @static
+	 * @method _centerElement
+	 * @param {HTMLElement} element
+	 * @private
+	 */
+	static _centerElement(element) {
+		const width = element.width * this._realScale;
+		const height = element.height * this._realScale;
+		element.style.position = 'absolute';
+		element.style.margin = 'auto';
+		element.style.top = 0;
+		element.style.left = 0;
+		element.style.right = 0;
+		element.style.bottom = 0;
+		element.style.width = `${width}px`;
+		element.style.height = `${height}px`;
+	}
+
+	/**
+	 * @static
+	 * @method _applyCanvasFilter
+	 * @private
+	 */
+	static _applyCanvasFilter() {
+		if (this._canvas) {
+			this._canvas.style.opacity = 0.5;
+			this._canvas.style.filter = 'blur(8px)';
+			this._canvas.style.webkitFilter = 'blur(8px)';
+		}
+	}
+
+	/**
+	 * @static
+	 * @method _onVideoLoad
+	 * @private
+	 */
+	static _onVideoLoad() {
+		this._video.play();
+		this._updateVisibility(true);
+		this._videoLoading = false;
+	}
+
+	/**
+	 * @static
+	 * @method _onVideoError
+	 * @private
+	 */
+	static _onVideoError() {
+		this._updateVisibility(false);
+		this._videoLoading = false;
+	}
+
+	/**
+	 * @static
+	 * @method _onVideoEnd
+	 * @private
+	 */
+	static _onVideoEnd() {
+		this._updateVisibility(false);
+	}
+
+	/**
+	 * @static
+	 * @method _updateVisibility
+	 * @param {Boolean} videoVisible
+	 * @private
+	 */
+	static _updateVisibility(videoVisible) {
+		this._video.style.opacity = videoVisible ? 1 : 0;
+		this._canvas.style.opacity = videoVisible ? 0 : 1;
+	}
+
+	/**
+	 * @static
+	 * @method _isVideoVisible
+	 * @return {Boolean}
+	 * @private
+	 */
+	static _isVideoVisible() {
+		return this._video.style.opacity > 0;
+	}
+
+	/**
+	 * @static
+	 * @method _setupEventHandlers
+	 * @private
+	 */
+	static _setupEventHandlers() {
+		window.addEventListener('resize', this._onWindowResize.bind(this));
+		document.addEventListener('keydown', this._onKeyDown.bind(this));
+		document.addEventListener('keydown', this._onTouchEnd.bind(this));
+		document.addEventListener('mousedown', this._onTouchEnd.bind(this));
+		document.addEventListener('touchend', this._onTouchEnd.bind(this));
+	}
+
+	/**
+	 * @static
+	 * @method _onWindowResize
+	 * @private
+	 */
+	static _onWindowResize() {
+		this._updateAllElements();
+	}
+
+	/**
+	 * @static
+	 * @method _onKeyDown
+	 * @param {KeyboardEvent} event
+	 * @private
+	 */
+	static _onKeyDown(event) {
+		if (!event.ctrlKey && !event.altKey) {
+			switch (event.keyCode) {
+			case 113: // F2
+				event.preventDefault();
+				this._switchFPSMeter();
+				break;
+			case 114: // F3
+				event.preventDefault();
+				this._switchStretchMode();
+				break;
+			case 115: // F4
+				event.preventDefault();
+				this._switchFullScreen();
+				break;
+			}
+		}
+	}
+
+	/**
+	 * @static
+	 * @method _onTouchEnd
+	 * @param {TouchEvent} event
+	 * @private
+	 */
+	static _onTouchEnd(event) {
+		if (!this._videoUnlocked) {
+			this._video.play();
+			this._videoUnlocked = true;
+		}
+		if (this._isVideoVisible() && this._video.paused) {
+			this._video.play();
+		}
+	}
+
+	/**
+	 * @static
+	 * @method _switchFPSMeter
+	 * @private
+	 */
+	static _switchFPSMeter() {
+		if (this._fpsMeter && this._fpsMeterToggled) {
+			this.hideFps();
+			this._fpsMeterToggled = false;
+		} else if (this._fpsMeter && !this._fpsMeterToggled) {
+			this.showFps();
+			this._fpsMeterToggled = true;
+		}
+	}
+
+	/**
+	 * @static
+	 * @method _switchStretchMode
+	 * @return {Boolean}
+	 * @private
+	 */
+	static _switchStretchMode() {
+		this._stretchEnabled = !this._stretchEnabled;
+		this._updateAllElements();
+	}
+
+	/**
+	 * @static
+	 * @method _switchFullScreen
+	 * @private
+	 */
+	static _switchFullScreen() {
+		if (this._isFullScreen()) {
+			this._cancelFullScreen();
+		} else {
+			this._requestFullScreen();
+		}
+	}
+
+	/**
+	 * @static
+	 * @method _onTick
+	 * @param {Number} delta
+	 * @private
+	 */
+	static _onTick(delta) {
+		if (this._fpsMeter && this._fpsMeter.shown) this._fpsMeter.begin();
+		if (this._app.stage) {
+			this._app.render();
+		}
+		if (this._fpsMeter && this._fpsMeter.shown) this._fpsMeter.end();
+	}
+
+	/**
+	 * @static
+	 * @method _createPixiApp
+	 * @private
+	 */
+	static _createPixiApp() {
+		const options = {
+			view: this._canvas,
+			width: this._width,
+			height: this._height,
+			resolution: window.devicePixelRatio,
+			powerPreference: "high-performance",
+			autoStart: true,
+		};
+		try {
+			this._app = new PIXI.Application(options);
+			this._app.ticker.remove(this._app.render, this._app);
+			this._app.ticker.add(this._onTick, this);
+		} catch (e) {
+			this._app = null;
+			console.error(e);
+		}
+	}
 }
 
 Graphics._cssFontLoading = document.fonts && document.fonts.ready && document.fonts.ready.then;
 Graphics._fontLoaded = null;
 Graphics._videoVolume = 1;
 
-/**
- * Initializes the graphics system.
- *
- * @static
- * @method initialize
- * @param {Number} width The width of the game screen
- * @param {Number} height The height of the game screen
- * @param {String} type The type of the renderer.
- *                 'canvas', 'webgl', or 'auto'.
- */
-Graphics.initialize = function (width, height, type) {
-	this._width = width || 800;
-	this._height = height || 600;
-	this._rendererType = type || 'auto';
-	this._boxWidth = this._width;
-	this._boxHeight = this._height;
-
-	this._scale = 1;
-	this._realScale = 1;
-
-	this._errorShowed = false;
-	this._errorPrinter = null;
-	this._canvas = null;
-	this._video = null;
-	this._videoUnlocked = false;
-	this._videoLoading = false;
-	this._upperCanvas = null;
-	this._fpsMeter = null;
-	this._modeBox = null;
-	this._skipCount = 0;
-	this._maxSkip = 3;
-	this._rendered = false;
-	this._loadingImage = null;
-	this._loadingCount = 0;
-	this._fpsMeterToggled = false;
-	this._stretchEnabled = this._defaultStretchMode();
-
-	this._canUseDifferenceBlend = false;
-	this._canUseSaturationBlend = false;
-	this._hiddenCanvas = null;
-	this._app = null;
-
-	this._testCanvasBlendModes();
-	this._modifyExistingElements();
-	this._updateRealScale();
-	this._createAllElements();
-	this._disableTextSelection();
-	this._disableContextMenu();
-	this._setupEventHandlers();
-	this._setupCssFontLoading();
-	this._setupProgress();
-};
-
-Graphics._setupCssFontLoading = function () {
+Graphics._setupCssFontLoading = () => {
 	if (Graphics._cssFontLoading) {
-		document.fonts.ready.then(function (fonts) {
+		document.fonts.ready.then(fonts => {
 				Graphics._fontLoaded = fonts;
 			})
-			.catch(function (error) {
+			.catch(error => {
 				SceneManager.onError(error);
 			});
 	}
-};
-
-Graphics.canUseCssFontLoading = function () {
-	return !!this._cssFontLoading;
 };
 
 /**
@@ -88,7 +1114,7 @@ Graphics.canUseCssFontLoading = function () {
  * @name Graphics.app
  */
 Object.defineProperty(Graphics, "app", {
-	get: function () {
+	get() {
 		return this._app;
 	},
 	configurable: true
@@ -102,7 +1128,7 @@ Object.defineProperty(Graphics, "app", {
  * @name Graphics._renderer
  */
 Object.defineProperty(Graphics, "_renderer", {
-	get: function () {
+	get() {
 		return this._app.renderer;
 	},
 	configurable: true
@@ -163,7 +1189,7 @@ Graphics.BLEND_SCREEN = 3;
  * @static
  * @method tickStart
  */
-Graphics.tickStart = function () {};
+Graphics.tickStart = () => {};
 
 /**
  * Marks the end of each frame for FPSMeter.
@@ -171,29 +1197,7 @@ Graphics.tickStart = function () {};
  * @static
  * @method tickEnd
  */
-Graphics.tickEnd = function () {};
-
-/**
- * Renders the stage to the game screen.
- *
- * @static
- * @method render
- * @param {Stage} stage The stage object to be rendered
- */
-Graphics.render = function (stage) {
-	if (stage) this._app.stage = stage;
-};
-
-/**
- * Checks whether the renderer type is WebGL.
- *
- * @static
- * @method isWebGL
- * @return {Boolean} True if the renderer type is WebGL
- */
-Graphics.isWebGL = function () {
-	return this._renderer && this._renderer.type === PIXI.RENDERER_TYPE.WEBGL;
-};
+Graphics.tickEnd = () => {};
 
 Graphics._canWebGL = null;
 /**
@@ -203,7 +1207,7 @@ Graphics._canWebGL = null;
  * @method hasWebGL
  * @return {Boolean} True if the current browser supports WebGL.
  */
-Graphics.hasWebGL = function () {
+Graphics.hasWebGL = () => {
 	if (typeof Graphics._canWebGL === "boolean") {
 		return Graphics._canWebGL;
 	}
@@ -219,463 +1223,9 @@ Graphics.hasWebGL = function () {
 };
 
 /**
- * Checks whether the canvas blend mode 'difference' is supported.
- *
- * @static
- * @method canUseDifferenceBlend
- * @return {Boolean} True if the canvas blend mode 'difference' is supported
- */
-Graphics.canUseDifferenceBlend = function () {
-	return this._canUseDifferenceBlend;
-};
-
-/**
- * Checks whether the canvas blend mode 'saturation' is supported.
- *
- * @static
- * @method canUseSaturationBlend
- * @return {Boolean} True if the canvas blend mode 'saturation' is supported
- */
-Graphics.canUseSaturationBlend = function () {
-	return this._canUseSaturationBlend;
-};
-
-/**
- * Sets the source of the "Now Loading" image.
- *
- * @static
- * @method setLoadingImage
- */
-Graphics.setLoadingImage = function (src) {
-	this._loadingImage = new Image();
-	this._loadingImage.src = src;
-};
-
-/**
- * Sets whether the progress bar is enabled.
- *
- * @static
- * @method setEnableProgress
- */
-Graphics.setProgressEnabled = function (enable) {
-	this._progressEnabled = enable;
-};
-
-/**
- * Initializes the counter for displaying the "Now Loading" image.
- *
- * @static
- * @method startLoading
- */
-Graphics.startLoading = function () {
-	this._loadingCount = 0;
-
-	ProgressWatcher.truncateProgress();
-	ProgressWatcher.setProgressListener(this._updateProgressCount.bind(this));
-	this._progressTimeout = setTimeout(function () {
-		Graphics._showProgress();
-	}, 1500);
-};
-
-Graphics._setupProgress = function () {
-	this._progressElement = document.createElement('div');
-	this._progressElement.id = 'loading-progress';
-	this._progressElement.width = 600;
-	this._progressElement.height = 300;
-	this._progressElement.style.visibility = 'hidden';
-
-	this._barElement = document.createElement('div');
-	this._barElement.id = 'loading-bar';
-	this._barElement.style.width = '100%';
-	this._barElement.style.height = '10%';
-	this._barElement.style.background = 'linear-gradient(to top, gray, lightgray)';
-	this._barElement.style.border = '5px solid white';
-	this._barElement.style.borderRadius = '15px';
-	this._barElement.style.marginTop = '40%';
-
-	this._filledBarElement = document.createElement('div');
-	this._filledBarElement.id = 'loading-filled-bar';
-	this._filledBarElement.style.width = '0%';
-	this._filledBarElement.style.height = '100%';
-	this._filledBarElement.style.background = 'linear-gradient(to top, lime, honeydew)';
-	this._filledBarElement.style.borderRadius = '10px';
-
-	this._progressElement.appendChild(this._barElement);
-	this._barElement.appendChild(this._filledBarElement);
-	this._updateProgress();
-
-	document.body.appendChild(this._progressElement);
-};
-
-Graphics._showProgress = function () {
-	if (this._progressEnabled) {
-		this._progressElement.value = 0;
-		this._progressElement.style.visibility = 'visible';
-		this._progressElement.style.zIndex = 98;
-	}
-};
-
-Graphics._hideProgress = function () {
-	if (this._progressElement) {
-		this._progressElement.style.visibility = 'hidden';
-	}
-	clearTimeout(this._progressTimeout);
-};
-
-Graphics._updateProgressCount = function (countLoaded, countLoading) {
-	let progressValue;
-	if (countLoading !== 0) {
-		progressValue = (countLoaded / countLoading) * 100;
-	} else {
-		progressValue = 100;
-	}
-
-	this._filledBarElement.style.width = progressValue + '%';
-};
-
-Graphics._updateProgress = function () {
-	this._centerElement(this._progressElement);
-};
-
-/**
- * Increments the loading counter and displays the "Now Loading" image if necessary.
- *
- * @static
- * @method updateLoading
- */
-Graphics.updateLoading = function () {
-	this._loadingCount++;
-	this._paintUpperCanvas();
-	this._upperCanvas.style.opacity = 1;
-	this._updateProgress();
-};
-
-/**
- * Erases the "Now Loading" image.
- *
- * @static
- * @method endLoading
- */
-Graphics.endLoading = function () {
-	this._clearUpperCanvas();
-	this._upperCanvas.style.opacity = 0;
-	this._hideProgress();
-};
-
-/**
- * Displays the loading error text to the screen.
- *
- * @static
- * @method printLoadingError
- * @param {String} url The url of the resource failed to load
- */
-Graphics.printLoadingError = function (url) {
-	if (this._errorPrinter && !this._errorShowed) {
-		this._updateErrorPrinter();
-		this._errorPrinter.innerHTML = this._makeErrorHtml('Loading Error', 'Failed to load: ' + url);
-		this._errorPrinter.style.userSelect = 'text';
-		this._errorPrinter.style.webkitUserSelect = 'text';
-		this._errorPrinter.style.msUserSelect = 'text';
-		this._errorPrinter.style.mozUserSelect = 'text';
-		this._errorPrinter.oncontextmenu = null; // enable context menu
-		const button = document.createElement('button');
-		button.innerHTML = 'Retry';
-		button.style.fontSize = '24px';
-		button.style.color = '#ffffff';
-		button.style.backgroundColor = '#000000';
-		button.addEventListener('touchstart', function (event) {
-			event.stopPropagation();
-		});
-		button.addEventListener('click', function (event) {
-			ResourceHandler.retry();
-		});
-		this._errorPrinter.appendChild(button);
-		this._loadingCount = -Infinity;
-	}
-};
-
-/**
- * Erases the loading error text.
- *
- * @static
- * @method eraseLoadingError
- */
-Graphics.eraseLoadingError = function () {
-	if (this._errorPrinter && !this._errorShowed) {
-		this._errorPrinter.innerHTML = '';
-		this._errorPrinter.style.userSelect = 'none';
-		this._errorPrinter.style.webkitUserSelect = 'none';
-		this._errorPrinter.style.msUserSelect = 'none';
-		this._errorPrinter.style.mozUserSelect = 'none';
-		this._errorPrinter.oncontextmenu = function () {
-			return false;
-		};
-		this._loadingCount = 0;
-	}
-};
-
-// The following code is partly borrowed from triacontane.
-/**
- * Displays the error text to the screen.
- *
- * @static
- * @method printError
- * @param {String} name The name of the error
- * @param {String} message The message of the error
- */
-Graphics.printError = function (name, message) {
-	this._errorShowed = true;
-	this._hideProgress();
-	this.hideFps();
-	if (this._errorPrinter) {
-		this._updateErrorPrinter();
-		this._errorPrinter.innerHTML = this._makeErrorHtml(name, message);
-		this._errorPrinter.style.userSelect = 'text';
-		this._errorPrinter.style.webkitUserSelect = 'text';
-		this._errorPrinter.style.msUserSelect = 'text';
-		this._errorPrinter.style.mozUserSelect = 'text';
-		this._errorPrinter.oncontextmenu = null; // enable context menu
-		if (this._errorMessage) {
-			this._makeErrorMessage();
-		}
-	}
-	this._applyCanvasFilter();
-	this._clearUpperCanvas();
-};
-
-/**
- * Shows the detail of error.
- *
- * @static
- * @method printErrorDetail
- */
-Graphics.printErrorDetail = function (error) {
-	if (this._errorPrinter && this._showErrorDetail) {
-		const eventInfo = this._formatEventInfo(error);
-		const eventCommandInfo = this._formatEventCommandInfo(error);
-		const info = eventCommandInfo ? eventInfo + ", " + eventCommandInfo : eventInfo;
-		const stack = this._formatStackTrace(error);
-		this._makeErrorDetail(info, stack);
-	}
-};
-
-/**
- * Sets the error message.
- *
- * @static
- * @method setErrorMessage
- */
-Graphics.setErrorMessage = function (message) {
-	this._errorMessage = message;
-};
-
-/**
- * Sets whether shows the detail of error.
- *
- * @static
- * @method setShowErrorDetail
- */
-Graphics.setShowErrorDetail = function (showErrorDetail) {
-	this._showErrorDetail = showErrorDetail;
-};
-
-/**
- * Shows the FPSMeter element.
- *
- * @static
- * @method showFps
- */
-Graphics.showFps = function () {
-	if (this._fpsMeter) {
-		if (!this._fpsMeter.extensions.pixi) {
-			this._fpsMeter.enableExtension('pixi', [PIXI, this._app]);
-		}
-		document.body.appendChild(this._fpsMeter.dom);
-		this._fpsMeter.show(true);
-	}
-};
-
-/**
- * Hides the FPSMeter element.
- *
- * @static
- * @method hideFps
- */
-Graphics.hideFps = function () {
-	if (this._fpsMeter) {
-		document.body.removeChild(this._fpsMeter.dom);
-		this._fpsMeter.show(false);
-	}
-};
-
-/**
- * Loads a font file.
- *
- * @static
- * @method loadFont
- * @param {String} name The face name of the font
- * @param {String} url The url of the font file
- */
-Graphics.loadFont = function (name, url) {
-	const style = document.createElement('style');
-	const head = document.getElementsByTagName('head');
-	const rule = '@font-face { font-family: "' + name + '"; src: url("' + url + '"); }';
-	style.type = 'text/css';
-	head.item(0)
-		.appendChild(style);
-	style.sheet.insertRule(rule, 0);
-	this._createFontLoader(name);
-};
-
-/**
- * Checks whether the font file is loaded.
- *
- * @static
- * @method isFontLoaded
- * @param {String} name The face name of the font
- * @return {Boolean} True if the font file is loaded
- */
-Graphics.isFontLoaded = function (name) {
-	if (Graphics._cssFontLoading) {
-		if (Graphics._fontLoaded) {
-			return Graphics._fontLoaded.check('10px "' + name + '"');
-		}
-
-		return false;
-	} else {
-		if (!this._hiddenCanvas) {
-			this._hiddenCanvas = document.createElement('canvas');
-		}
-		const context = this._hiddenCanvas.getContext('2d');
-		const text = 'abcdefghijklmnopqrstuvwxyz';
-		let width1, width2;
-		context.font = '40px ' + name + ', sans-serif';
-		width1 = context.measureText(text)
-			.width;
-		context.font = '40px sans-serif';
-		width2 = context.measureText(text)
-			.width;
-		return width1 !== width2;
-	}
-};
-
-/**
- * Starts playback of a video.
- *
- * @static
- * @method playVideo
- * @param {String} src
- */
-Graphics.playVideo = function (src) {
-	this._videoLoader = ResourceHandler.createLoader(null, this._playVideo.bind(this, src), this._onVideoError.bind(this));
-	this._playVideo(src);
-};
-
-/**
- * @static
- * @method _playVideo
- * @param {String} src
- * @private
- */
-Graphics._playVideo = function (src) {
-	this._video.src = src;
-	this._video.onloadeddata = this._onVideoLoad.bind(this);
-	this._video.onerror = this._videoLoader;
-	this._video.onended = this._onVideoEnd.bind(this);
-	this._video.load();
-	this._videoLoading = true;
-};
-
-/**
- * Checks whether the video is playing.
- *
- * @static
- * @method isVideoPlaying
- * @return {Boolean} True if the video is playing
- */
-Graphics.isVideoPlaying = function () {
-	return this._videoLoading || this._isVideoVisible();
-};
-
-/**
- * Checks whether the browser can play the specified video type.
- *
- * @static
- * @method canPlayVideoType
- * @param {String} type The video type to test support for
- * @return {Boolean} True if the browser can play the specified video type
- */
-Graphics.canPlayVideoType = function (type) {
-	return this._video && this._video.canPlayType(type);
-};
-
-/**
- * Sets volume of a video.
- *
- * @static
- * @method setVideoVolume
- * @param {Number} value
- */
-Graphics.setVideoVolume = function (value) {
-	this._videoVolume = value;
-	if (this._video) {
-		this._video.volume = this._videoVolume;
-	}
-};
-
-/**
- * Converts an x coordinate on the page to the corresponding
- * x coordinate on the canvas area.
- *
- * @static
- * @method pageToCanvasX
- * @param {Number} x The x coordinate on the page to be converted
- * @return {Number} The x coordinate on the canvas area
- */
-Graphics.pageToCanvasX = function (x) {
-	if (this._canvas) {
-		const left = this._canvas.offsetLeft;
-		return Math.round((x - left) / this._realScale);
-	} else {
-		return 0;
-	}
-};
-
-/**
- * Converts a y coordinate on the page to the corresponding
- * y coordinate on the canvas area.
- *
- * @static
- * @method pageToCanvasY
- * @param {Number} y The y coordinate on the page to be converted
- * @return {Number} The y coordinate on the canvas area
- */
-Graphics.pageToCanvasY = function (y) {
-	if (this._canvas) {
-		const top = this._canvas.offsetTop;
-		return Math.round((y - top) / this._realScale);
-	} else {
-		return 0;
-	}
-};
-
-/**
- * Checks whether the specified point is inside the game canvas area.
- *
- * @static
- * @method isInsideCanvas
- * @param {Number} x The x coordinate on the canvas area
- * @param {Number} y The y coordinate on the canvas area
- * @return {Boolean} True if the specified point is inside the game canvas area
- */
-Graphics.isInsideCanvas = function (x, y) {
-	return (x >= 0 && x < this._width && y >= 0 && y < this._height);
-};
-
-/**
  * Calls pixi.js garbage collector
  */
-Graphics.callGC = function () {
+Graphics.callGC = () => {
 	if (Graphics.isWebGL()) {
 		Graphics._renderer.textureGC.run();
 	}
@@ -690,10 +1240,10 @@ Graphics.callGC = function () {
  * @type Number
  */
 Object.defineProperty(Graphics, 'width', {
-	get: function () {
+	get() {
 		return this._width;
 	},
-	set: function (value) {
+	set(value) {
 		if (this._width !== value) {
 			this._width = value;
 			this._updateAllElements();
@@ -710,10 +1260,10 @@ Object.defineProperty(Graphics, 'width', {
  * @type Number
  */
 Object.defineProperty(Graphics, 'height', {
-	get: function () {
+	get() {
 		return this._height;
 	},
-	set: function (value) {
+	set(value) {
 		if (this._height !== value) {
 			this._height = value;
 			this._updateAllElements();
@@ -730,10 +1280,10 @@ Object.defineProperty(Graphics, 'height', {
  * @type Number
  */
 Object.defineProperty(Graphics, 'boxWidth', {
-	get: function () {
+	get() {
 		return this._boxWidth;
 	},
-	set: function (value) {
+	set(value) {
 		this._boxWidth = value;
 	},
 	configurable: true
@@ -747,10 +1297,10 @@ Object.defineProperty(Graphics, 'boxWidth', {
  * @type Number
  */
 Object.defineProperty(Graphics, 'boxHeight', {
-	get: function () {
+	get() {
 		return this._boxHeight;
 	},
-	set: function (value) {
+	set(value) {
 		this._boxHeight = value;
 	},
 	configurable: true
@@ -764,10 +1314,10 @@ Object.defineProperty(Graphics, 'boxHeight', {
  * @type Number
  */
 Object.defineProperty(Graphics, 'scale', {
-	get: function () {
+	get() {
 		return this._scale;
 	},
-	set: function (value) {
+	set(value) {
 		if (this._scale !== value) {
 			this._scale = value;
 			this._updateAllElements();
@@ -778,111 +1328,27 @@ Object.defineProperty(Graphics, 'scale', {
 
 /**
  * @static
- * @method _createAllElements
- * @private
- */
-Graphics._createAllElements = function () {
-	this._createErrorPrinter();
-	this._createCanvas();
-	this._createVideo();
-	this._createUpperCanvas();
-	this._createRenderer();
-	this._createPixiApp();
-	this._createFPSMeter();
-	this._createModeBox();
-	this._createGameFontLoader();
-};
-
-/**
- * @static
- * @method _updateAllElements
- * @private
- */
-Graphics._updateAllElements = function () {
-	this._updateRealScale();
-	this._updateErrorPrinter();
-	this._updateCanvas();
-	this._updateVideo();
-	this._updateUpperCanvas();
-	this._updateRenderer();
-	this._paintUpperCanvas();
-	this._updateProgress();
-};
-
-/**
- * @static
- * @method _updateRealScale
- * @private
- */
-Graphics._updateRealScale = function () {
-	if (this._stretchEnabled) {
-		let h = window.innerWidth / this._width;
-		let v = window.innerHeight / this._height;
-		if (h >= 1 && h - 0.01 <= 1) h = 1;
-		if (v >= 1 && v - 0.01 <= 1) v = 1;
-		this._realScale = Math.min(h, v);
-	} else {
-		this._realScale = this._scale;
-	}
-};
-
-/**
- * @static
  * @method _makeErrorHtml
  * @param {String} name
  * @param {String} message
  * @return {String}
  * @private
  */
-Graphics._makeErrorHtml = function (name, message) {
-	return ('<font color="yellow"><b>' + name + '</b></font><br>' +
-		'<font color="white">' + decodeURIComponent(message) + '</font><br>');
-};
+Graphics._makeErrorHtml = (name, message) => `<font color="yellow"><b>${name}</b></font><br><font color="white">${decodeURIComponent(message)}</font><br>`;
 
 /**
  * @static
  * @method _defaultStretchMode
  * @private
  */
-Graphics._defaultStretchMode = function () {
-	return Utils.isNwjs() || Utils.isMobileDevice();
-};
-
-/**
- * @static
- * @method _testCanvasBlendModes
- * @private
- */
-Graphics._testCanvasBlendModes = function () {
-	let canvas, context, imageData1, imageData2;
-	canvas = document.createElement('canvas');
-	canvas.width = 1;
-	canvas.height = 1;
-	context = canvas.getContext('2d');
-	context.globalCompositeOperation = 'source-over';
-	context.fillStyle = 'white';
-	context.fillRect(0, 0, 1, 1);
-	context.globalCompositeOperation = 'difference';
-	context.fillStyle = 'white';
-	context.fillRect(0, 0, 1, 1);
-	imageData1 = context.getImageData(0, 0, 1, 1);
-	context.globalCompositeOperation = 'source-over';
-	context.fillStyle = 'black';
-	context.fillRect(0, 0, 1, 1);
-	context.globalCompositeOperation = 'saturation';
-	context.fillStyle = 'white';
-	context.fillRect(0, 0, 1, 1);
-	imageData2 = context.getImageData(0, 0, 1, 1);
-	this._canUseDifferenceBlend = imageData1.data[0] === 0;
-	this._canUseSaturationBlend = imageData2.data[0] === 0;
-};
+Graphics._defaultStretchMode = () => Utils.isNwjs() || Utils.isMobileDevice();
 
 /**
  * @static
  * @method _modifyExistingElements
  * @private
  */
-Graphics._modifyExistingElements = function () {
+Graphics._modifyExistingElements = () => {
 	const elements = document.getElementsByTagName('*');
 	for (let i = 0; i < elements.length; i++) {
 		if (elements[i].style.zIndex > 0) {
@@ -893,73 +1359,10 @@ Graphics._modifyExistingElements = function () {
 
 /**
  * @static
- * @method _createErrorPrinter
- * @private
- */
-Graphics._createErrorPrinter = function () {
-	this._errorPrinter = document.createElement('p');
-	this._errorPrinter.id = 'ErrorPrinter';
-	this._updateErrorPrinter();
-	document.body.appendChild(this._errorPrinter);
-};
-
-/**
- * @static
- * @method _updateErrorPrinter
- * @private
- */
-Graphics._updateErrorPrinter = function () {
-	this._errorPrinter.width = this._width * 0.9;
-	if (this._errorShowed && this._showErrorDetail) {
-		this._errorPrinter.height = this._height * 0.9;
-	} else if (this._errorShowed && this._errorMessage) {
-		this._errorPrinter.height = 100;
-	} else {
-		this._errorPrinter.height = 40;
-	}
-	this._errorPrinter.style.textAlign = 'center';
-	this._errorPrinter.style.textShadow = '1px 1px 3px #000';
-	this._errorPrinter.style.fontSize = '20px';
-	this._errorPrinter.style.zIndex = 99;
-	this._centerElement(this._errorPrinter);
-};
-
-/**
- * @static
- * @method _makeErrorMessage
- * @private
- */
-Graphics._makeErrorMessage = function () {
-	const mainMessage = document.createElement('div');
-	const style = mainMessage.style;
-	style.color = 'white';
-	style.textAlign = 'left';
-	style.fontSize = '18px';
-	mainMessage.innerHTML = '<hr>' + this._errorMessage;
-	this._errorPrinter.appendChild(mainMessage);
-};
-
-/**
- * @static
- * @method _makeErrorDetail
- * @private
- */
-Graphics._makeErrorDetail = function (info, stack) {
-	const detail = document.createElement('div');
-	const style = detail.style;
-	style.color = 'white';
-	style.textAlign = 'left';
-	style.fontSize = '18px';
-	detail.innerHTML = '<br><hr>' + info + '<br><br>' + stack;
-	this._errorPrinter.appendChild(detail);
-};
-
-/**
- * @static
  * @method _formatEventInfo
  * @private
  */
-Graphics._formatEventInfo = function (error) {
+Graphics._formatEventInfo = error => {
 	switch (String(error.eventType)) {
 	case "map_event":
 		return "MapID: %1, MapEventID: %2, page: %3, line: %4".format(error.mapId, error.mapEventId, error.page, error.line);
@@ -979,20 +1382,23 @@ Graphics._formatEventInfo = function (error) {
  * @method _formatEventCommandInfo
  * @private
  */
-Graphics._formatEventCommandInfo = function (error) {
-	switch (String(error.eventCommand)) {
+Graphics._formatEventCommandInfo = ({
+	eventCommand,
+	content
+}) => {
+	switch (String(eventCommand)) {
 	case "plugin_command":
-		return "◆Plugin Command: " + error.content;
+		return `◆Plugin Command: ${content}`;
 	case "script":
-		return "◆Script: " + error.content;
+		return `◆Script: ${content}`;
 	case "control_variables":
-		return "◆Control Variables: Script: " + error.content;
+		return `◆Control Variables: Script: ${content}`;
 	case "conditional_branch_script":
-		return "◆If: Script: " + error.content;
+		return `◆If: Script: ${content}`;
 	case "set_route_script":
-		return "◆Set Movement Route: ◇Script: " + error.content;
+		return `◆Set Movement Route: ◇Script: ${content}`;
 	case "auto_route_script":
-		return "Autonomous Movement Custom Route: ◇Script: " + error.content;
+		return `Autonomous Movement Custom Route: ◇Script: ${content}`;
 	case "other":
 	default:
 		return "";
@@ -1004,200 +1410,21 @@ Graphics._formatEventCommandInfo = function (error) {
  * @method _formatStackTrace
  * @private
  */
-Graphics._formatStackTrace = function (error) {
-	return decodeURIComponent((error.stack || '')
-		.replace(/file:.*js\//g, '')
-		.replace(/http:.*js\//g, '')
-		.replace(/https:.*js\//g, '')
-		.replace(/chrome-extension:.*js\//g, '')
-		.replace(/\n/g, '<br>'));
-};
-
-/**
- * @static
- * @method _createCanvas
- * @private
- */
-Graphics._createCanvas = function () {
-	this._canvas = document.createElement('canvas');
-	this._canvas.id = 'GameCanvas';
-	this._updateCanvas();
-	document.body.appendChild(this._canvas);
-};
-
-/**
- * @static
- * @method _updateCanvas
- * @private
- */
-Graphics._updateCanvas = function () {
-	this._canvas.width = this._width;
-	this._canvas.height = this._height;
-	this._canvas.style.zIndex = 1;
-	this._centerElement(this._canvas);
-};
-
-/**
- * @static
- * @method _createVideo
- * @private
- */
-Graphics._createVideo = function () {
-	this._video = document.createElement('video');
-	this._video.id = 'GameVideo';
-	this._video.style.opacity = 0;
-	this._video.setAttribute('playsinline', '');
-	this._video.volume = this._videoVolume;
-	this._updateVideo();
-	makeVideoPlayableInline(this._video);
-	document.body.appendChild(this._video);
-};
-
-/**
- * @static
- * @method _updateVideo
- * @private
- */
-Graphics._updateVideo = function () {
-	this._video.width = this._width;
-	this._video.height = this._height;
-	this._video.style.zIndex = 2;
-	this._centerElement(this._video);
-};
-
-/**
- * @static
- * @method _createUpperCanvas
- * @private
- */
-Graphics._createUpperCanvas = function () {
-	this._upperCanvas = document.createElement('canvas');
-	this._upperCanvas.id = 'UpperCanvas';
-	this._updateUpperCanvas();
-	document.body.appendChild(this._upperCanvas);
-};
-
-/**
- * @static
- * @method _updateUpperCanvas
- * @private
- */
-Graphics._updateUpperCanvas = function () {
-	this._upperCanvas.width = this._width;
-	this._upperCanvas.height = this._height;
-	this._upperCanvas.style.zIndex = 3;
-	this._centerElement(this._upperCanvas);
-};
-
-/**
- * @static
- * @method _clearUpperCanvas
- * @private
- */
-Graphics._clearUpperCanvas = function () {
-	const context = this._upperCanvas.getContext('2d');
-	context.clearRect(0, 0, this._width, this._height);
-};
-
-/**
- * @static
- * @method _paintUpperCanvas
- * @private
- */
-Graphics._paintUpperCanvas = function () {
-	this._clearUpperCanvas();
-	if (this._loadingImage && this._loadingCount >= 20) {
-		const context = this._upperCanvas.getContext('2d');
-		const dx = (this._width - this._loadingImage.width) / 2;
-		const dy = (this._height - this._loadingImage.height) / 2;
-		const alpha = ((this._loadingCount - 20) / 30)
-			.clamp(0, 1);
-		context.save();
-		context.globalAlpha = alpha;
-		context.drawImage(this._loadingImage, dx, dy);
-		context.restore();
-	}
-};
+Graphics._formatStackTrace = ({
+	stack
+}) => decodeURIComponent((stack || '')
+	.replace(/file:.*js\//g, '')
+	.replace(/http:.*js\//g, '')
+	.replace(/https:.*js\//g, '')
+	.replace(/chrome-extension:.*js\//g, '')
+	.replace(/\n/g, '<br>'));
 
 /**
  * @static
  * @method _createRenderer
  * @private
  */
-Graphics._createRenderer = function () {};
-
-/**
- * @static
- * @method _updateRenderer
- * @private
- */
-Graphics._updateRenderer = function () {
-	if (this._app) {
-		this._app.renderer.resize(this._width, this._height);
-	}
-};
-
-/**
- * @static
- * @method _createFPSMeter
- * @private
- */
-Graphics._createFPSMeter = function () {
-	if (typeof GameStats == 'function') {
-		this._fpsMeter = new GameStats({
-			autoPlace: false,
-		});
-		this._fpsMeter.show(false);
-		this._fpsMeter.dom.style.zIndex = 1;
-	} else {
-		console.warn('GameStats is not a function. Is gamestats.js installed?');
-	}
-};
-
-/**
- * @static
- * @method _createModeBox
- * @private
- */
-Graphics._createModeBox = function () {
-	const box = document.createElement('div');
-	box.id = 'modeTextBack';
-	box.style.position = 'absolute';
-	box.style.left = '5px';
-	box.style.top = '5px';
-	box.style.width = '119px';
-	box.style.height = '58px';
-	box.style.background = 'rgba(0,0,0,0.2)';
-	box.style.zIndex = 9;
-	box.style.opacity = 0;
-
-	const text = document.createElement('div');
-	text.id = 'modeText';
-	text.style.position = 'absolute';
-	text.style.left = '0px';
-	text.style.top = '41px';
-	text.style.width = '119px';
-	text.style.fontSize = '12px';
-	text.style.fontFamily = 'monospace';
-	text.style.color = 'white';
-	text.style.textAlign = 'center';
-	text.style.textShadow = '1px 1px 0 rgba(0,0,0,0.5)';
-	text.innerHTML = this.isWebGL() ? 'WebGL mode' : 'Canvas mode';
-
-	document.body.appendChild(box);
-	box.appendChild(text);
-
-	this._modeBox = box;
-};
-
-/**
- * @static
- * @method _createGameFontLoader
- * @private
- */
-Graphics._createGameFontLoader = function () {
-	this._createFontLoader('GameFont');
-};
+Graphics._createRenderer = () => {};
 
 /**
  * @static
@@ -1205,7 +1432,7 @@ Graphics._createGameFontLoader = function () {
  * @param {String} name
  * @private
  */
-Graphics._createFontLoader = function (name) {
+Graphics._createFontLoader = name => {
 	const div = document.createElement('div');
 	const text = document.createTextNode('.');
 	div.style.fontFamily = name;
@@ -1223,29 +1450,10 @@ Graphics._createFontLoader = function (name) {
 
 /**
  * @static
- * @method _centerElement
- * @param {HTMLElement} element
- * @private
- */
-Graphics._centerElement = function (element) {
-	const width = element.width * this._realScale;
-	const height = element.height * this._realScale;
-	element.style.position = 'absolute';
-	element.style.margin = 'auto';
-	element.style.top = 0;
-	element.style.left = 0;
-	element.style.right = 0;
-	element.style.bottom = 0;
-	element.style.width = width + 'px';
-	element.style.height = height + 'px';
-};
-
-/**
- * @static
  * @method _disableTextSelection
  * @private
  */
-Graphics._disableTextSelection = function () {
+Graphics._disableTextSelection = () => {
 	const body = document.body;
 	body.style.userSelect = 'none';
 	body.style.webkitUserSelect = 'none';
@@ -1258,179 +1466,11 @@ Graphics._disableTextSelection = function () {
  * @method _disableContextMenu
  * @private
  */
-Graphics._disableContextMenu = function () {
+Graphics._disableContextMenu = () => {
 	const elements = document.body.getElementsByTagName('*');
-	const oncontextmenu = function () {
-		return false;
-	};
+	const oncontextmenu = () => false;
 	for (let i = 0; i < elements.length; i++) {
 		elements[i].oncontextmenu = oncontextmenu;
-	}
-};
-
-/**
- * @static
- * @method _applyCanvasFilter
- * @private
- */
-Graphics._applyCanvasFilter = function () {
-	if (this._canvas) {
-		this._canvas.style.opacity = 0.5;
-		this._canvas.style.filter = 'blur(8px)';
-		this._canvas.style.webkitFilter = 'blur(8px)';
-	}
-};
-
-/**
- * @static
- * @method _onVideoLoad
- * @private
- */
-Graphics._onVideoLoad = function () {
-	this._video.play();
-	this._updateVisibility(true);
-	this._videoLoading = false;
-};
-
-/**
- * @static
- * @method _onVideoError
- * @private
- */
-Graphics._onVideoError = function () {
-	this._updateVisibility(false);
-	this._videoLoading = false;
-};
-
-/**
- * @static
- * @method _onVideoEnd
- * @private
- */
-Graphics._onVideoEnd = function () {
-	this._updateVisibility(false);
-};
-
-/**
- * @static
- * @method _updateVisibility
- * @param {Boolean} videoVisible
- * @private
- */
-Graphics._updateVisibility = function (videoVisible) {
-	this._video.style.opacity = videoVisible ? 1 : 0;
-	this._canvas.style.opacity = videoVisible ? 0 : 1;
-};
-
-/**
- * @static
- * @method _isVideoVisible
- * @return {Boolean}
- * @private
- */
-Graphics._isVideoVisible = function () {
-	return this._video.style.opacity > 0;
-};
-
-/**
- * @static
- * @method _setupEventHandlers
- * @private
- */
-Graphics._setupEventHandlers = function () {
-	window.addEventListener('resize', this._onWindowResize.bind(this));
-	document.addEventListener('keydown', this._onKeyDown.bind(this));
-	document.addEventListener('keydown', this._onTouchEnd.bind(this));
-	document.addEventListener('mousedown', this._onTouchEnd.bind(this));
-	document.addEventListener('touchend', this._onTouchEnd.bind(this));
-};
-
-/**
- * @static
- * @method _onWindowResize
- * @private
- */
-Graphics._onWindowResize = function () {
-	this._updateAllElements();
-};
-
-/**
- * @static
- * @method _onKeyDown
- * @param {KeyboardEvent} event
- * @private
- */
-Graphics._onKeyDown = function (event) {
-	if (!event.ctrlKey && !event.altKey) {
-		switch (event.keyCode) {
-		case 113: // F2
-			event.preventDefault();
-			this._switchFPSMeter();
-			break;
-		case 114: // F3
-			event.preventDefault();
-			this._switchStretchMode();
-			break;
-		case 115: // F4
-			event.preventDefault();
-			this._switchFullScreen();
-			break;
-		}
-	}
-};
-
-/**
- * @static
- * @method _onTouchEnd
- * @param {TouchEvent} event
- * @private
- */
-Graphics._onTouchEnd = function (event) {
-	if (!this._videoUnlocked) {
-		this._video.play();
-		this._videoUnlocked = true;
-	}
-	if (this._isVideoVisible() && this._video.paused) {
-		this._video.play();
-	}
-};
-
-/**
- * @static
- * @method _switchFPSMeter
- * @private
- */
-Graphics._switchFPSMeter = function () {
-	if (this._fpsMeter && this._fpsMeterToggled) {
-		this.hideFps();
-		this._fpsMeterToggled = false;
-	} else if (this._fpsMeter && !this._fpsMeterToggled) {
-		this.showFps();
-		this._fpsMeterToggled = true;
-	}
-};
-
-/**
- * @static
- * @method _switchStretchMode
- * @return {Boolean}
- * @private
- */
-Graphics._switchStretchMode = function () {
-	this._stretchEnabled = !this._stretchEnabled;
-	this._updateAllElements();
-};
-
-/**
- * @static
- * @method _switchFullScreen
- * @private
- */
-Graphics._switchFullScreen = function () {
-	if (this._isFullScreen()) {
-		this._cancelFullScreen();
-	} else {
-		this._requestFullScreen();
 	}
 };
 
@@ -1440,19 +1480,17 @@ Graphics._switchFullScreen = function () {
  * @return {Boolean}
  * @private
  */
-Graphics._isFullScreen = function () {
-	return document.fullscreenElement ||
-		document.mozFullScreen ||
-		document.webkitFullscreenElement ||
-		document.msFullscreenElement;
-};
+Graphics._isFullScreen = () => document.fullscreenElement ||
+	document.mozFullScreen ||
+	document.webkitFullscreenElement ||
+	document.msFullscreenElement;
 
 /**
  * @static
  * @method _requestFullScreen
  * @private
  */
-Graphics._requestFullScreen = function () {
+Graphics._requestFullScreen = () => {
 	const element = document.body;
 	if (element.requestFullscreen) {
 		element.requestFullscreen();
@@ -1470,7 +1508,7 @@ Graphics._requestFullScreen = function () {
  * @method _cancelFullScreen
  * @private
  */
-Graphics._cancelFullScreen = function () {
+Graphics._cancelFullScreen = () => {
 	if (document.exitFullscreen) {
 		document.exitFullscreen();
 	} else if (document.mozCancelFullScreen) {
@@ -1479,43 +1517,5 @@ Graphics._cancelFullScreen = function () {
 		document.webkitCancelFullScreen();
 	} else if (document.msExitFullscreen) {
 		document.msExitFullscreen();
-	}
-};
-
-/**
- * @static
- * @method _onTick
- * @param {Number} delta
- * @private
- */
-Graphics._onTick = function (delta) {
-	if (this._fpsMeter && this._fpsMeter.shown) this._fpsMeter.begin();
-	if (this._app.stage) {
-		this._app.render();
-	}
-	if (this._fpsMeter && this._fpsMeter.shown) this._fpsMeter.end();
-};
-
-/**
- * @static
- * @method _createPixiApp
- * @private
- */
-Graphics._createPixiApp = function () {
-	const options = {
-		view: this._canvas,
-		width: this._width,
-		height: this._height,
-		resolution: window.devicePixelRatio,
-		powerPreference: "high-performance",
-		autoStart: true,
-	};
-	try {
-		this._app = new PIXI.Application(options);
-		this._app.ticker.remove(this._app.render, this._app);
-		this._app.ticker.add(this._onTick, this);
-	} catch (e) {
-		this._app = null;
-		console.error(e);
 	}
 };

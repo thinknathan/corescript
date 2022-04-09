@@ -1,41 +1,43 @@
-function ProgressWatcher() {
-	throw new Error('This is a static class');
-}
+class ProgressWatcher {
+	constructor() {
+		throw new Error('This is a static class');
+	}
 
-ProgressWatcher.initialize = function () {
-	this.clearProgress();
-	ImageManager.setCreationHook(this._bitmapListener.bind(this));
-	AudioManager.setCreationHook(this._audioListener.bind(this));
-};
+	static initialize() {
+		this.clearProgress();
+		ImageManager.setCreationHook(this._bitmapListener.bind(this));
+		AudioManager.setCreationHook(this._audioListener.bind(this));
+	}
 
-ProgressWatcher._bitmapListener = function (bitmap) {
-	this._countLoading++;
-	bitmap.addLoadListener(function () {
-		this._countLoaded++;
-		if (this._progressListener) this._progressListener(this._countLoaded, this._countLoading);
-	}.bind(this));
-};
+	static _bitmapListener(bitmap) {
+		this._countLoading++;
+		bitmap.addLoadListener(() => {
+			this._countLoaded++;
+			if (this._progressListener) this._progressListener(this._countLoaded, this._countLoading);
+		});
+	}
 
-ProgressWatcher._audioListener = function (audio) {
-	this._countLoading++;
-	audio.addLoadListener(function () {
-		this._countLoaded++;
-		if (this._progressListener) this._progressListener(this._countLoaded, this._countLoading);
-	}.bind(this));
-};
+	static _audioListener(audio) {
+		this._countLoading++;
+		audio.addLoadListener(() => {
+			this._countLoaded++;
+			if (this._progressListener) this._progressListener(this._countLoaded, this._countLoading);
+		});
+	}
 
-ProgressWatcher.setProgressListener = function (progressListener) {
-	this._progressListener = progressListener;
-};
+	static setProgressListener(progressListener) {
+		this._progressListener = progressListener;
+	}
 
-ProgressWatcher.clearProgress = function () {
-	this._countLoading = 0;
-	this._countLoaded = 0;
-};
-
-ProgressWatcher.truncateProgress = function () {
-	if (this._countLoaded) {
-		this._countLoading -= this._countLoaded;
+	static clearProgress() {
+		this._countLoading = 0;
 		this._countLoaded = 0;
 	}
-};
+
+	static truncateProgress() {
+		if (this._countLoaded) {
+			this._countLoading -= this._countLoaded;
+			this._countLoaded = 0;
+		}
+	}
+}

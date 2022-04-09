@@ -3,88 +3,98 @@
 //
 // The window for displaying the status of party members on the battle screen.
 
-function Window_BattleStatus() {
-	this.initialize.apply(this, arguments);
-}
-
-Window_BattleStatus.prototype = Object.create(Window_Selectable.prototype);
-Window_BattleStatus.prototype.constructor = Window_BattleStatus;
-
-Window_BattleStatus.prototype.initialize = function () {
-	const width = this.windowWidth();
-	const height = this.windowHeight();
-	const x = Graphics.boxWidth - width;
-	const y = Graphics.boxHeight - height;
-	Window_Selectable.prototype.initialize.call(this, x, y, width, height);
-	this.refresh();
-	this.openness = 0;
-};
-
-Window_BattleStatus.prototype.windowWidth = function () {
-	return Graphics.boxWidth - 192;
-};
-
-Window_BattleStatus.prototype.windowHeight = function () {
-	return this.fittingHeight(this.numVisibleRows());
-};
-
-Window_BattleStatus.prototype.numVisibleRows = function () {
-	return 4;
-};
-
-Window_BattleStatus.prototype.maxItems = function () {
-	return $gameParty.battleMembers()
-		.length;
-};
-
-Window_BattleStatus.prototype.refresh = function () {
-	this.contents.clear();
-	this.drawAllItems();
-};
-
-Window_BattleStatus.prototype.drawItem = function (index) {
-	const actor = $gameParty.battleMembers()[index];
-	this.drawBasicArea(this.basicAreaRect(index), actor);
-	this.drawGaugeArea(this.gaugeAreaRect(index), actor);
-};
-
-Window_BattleStatus.prototype.basicAreaRect = function (index) {
-	const rect = this.itemRectForText(index);
-	rect.width -= this.gaugeAreaWidth() + 15;
-	return rect;
-};
-
-Window_BattleStatus.prototype.gaugeAreaRect = function (index) {
-	const rect = this.itemRectForText(index);
-	rect.x += rect.width - this.gaugeAreaWidth();
-	rect.width = this.gaugeAreaWidth();
-	return rect;
-};
-
-Window_BattleStatus.prototype.gaugeAreaWidth = function () {
-	return 330;
-};
-
-Window_BattleStatus.prototype.drawBasicArea = function (rect, actor) {
-	this.drawActorName(actor, rect.x + 0, rect.y, 150);
-	this.drawActorIcons(actor, rect.x + 156, rect.y, rect.width - 156);
-};
-
-Window_BattleStatus.prototype.drawGaugeArea = function (rect, actor) {
-	if ($dataSystem.optDisplayTp) {
-		this.drawGaugeAreaWithTp(rect, actor);
-	} else {
-		this.drawGaugeAreaWithoutTp(rect, actor);
+class Window_BattleStatus extends Window_Selectable {
+	constructor(...args) {
+		super(...args);
+		this.initialize(...args);
 	}
-};
 
-Window_BattleStatus.prototype.drawGaugeAreaWithTp = function (rect, actor) {
-	this.drawActorHp(actor, rect.x + 0, rect.y, 108);
-	this.drawActorMp(actor, rect.x + 123, rect.y, 96);
-	this.drawActorTp(actor, rect.x + 234, rect.y, 96);
-};
+	initialize() {
+		const width = this.windowWidth();
+		const height = this.windowHeight();
+		const x = Graphics.boxWidth - width;
+		const y = Graphics.boxHeight - height;
+		super.initialize(x, y, width, height);
+		this.refresh();
+		this.openness = 0;
+	}
 
-Window_BattleStatus.prototype.drawGaugeAreaWithoutTp = function (rect, actor) {
-	this.drawActorHp(actor, rect.x + 0, rect.y, 201);
-	this.drawActorMp(actor, rect.x + 216, rect.y, 114);
-};
+	windowWidth() {
+		return Graphics.boxWidth - 192;
+	}
+
+	windowHeight() {
+		return this.fittingHeight(this.numVisibleRows());
+	}
+
+	numVisibleRows() {
+		return 4;
+	}
+
+	maxItems() {
+		return $gameParty.battleMembers()
+			.length;
+	}
+
+	refresh() {
+		this.contents.clear();
+		this.drawAllItems();
+	}
+
+	drawItem(index) {
+		const actor = $gameParty.battleMembers()[index];
+		this.drawBasicArea(this.basicAreaRect(index), actor);
+		this.drawGaugeArea(this.gaugeAreaRect(index), actor);
+	}
+
+	basicAreaRect(index) {
+		const rect = this.itemRectForText(index);
+		rect.width -= this.gaugeAreaWidth() + 15;
+		return rect;
+	}
+
+	gaugeAreaRect(index) {
+		const rect = this.itemRectForText(index);
+		rect.x += rect.width - this.gaugeAreaWidth();
+		rect.width = this.gaugeAreaWidth();
+		return rect;
+	}
+
+	gaugeAreaWidth() {
+		return 330;
+	}
+
+	drawBasicArea({
+		x,
+		y,
+		width
+	}, actor) {
+		this.drawActorName(actor, x + 0, y, 150);
+		this.drawActorIcons(actor, x + 156, y, width - 156);
+	}
+
+	drawGaugeArea(rect, actor) {
+		if ($dataSystem.optDisplayTp) {
+			this.drawGaugeAreaWithTp(rect, actor);
+		} else {
+			this.drawGaugeAreaWithoutTp(rect, actor);
+		}
+	}
+
+	drawGaugeAreaWithTp({
+		x,
+		y
+	}, actor) {
+		this.drawActorHp(actor, x + 0, y, 108);
+		this.drawActorMp(actor, x + 123, y, 96);
+		this.drawActorTp(actor, x + 234, y, 96);
+	}
+
+	drawGaugeAreaWithoutTp({
+		x,
+		y
+	}, actor) {
+		this.drawActorHp(actor, x + 0, y, 201);
+		this.drawActorMp(actor, x + 216, y, 114);
+	}
+}

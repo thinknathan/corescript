@@ -38,7 +38,7 @@ Utils.RPGMAKER_ENGINE = "community-1.4";
  * @param {String} name The option name
  * @return {Boolean} True if the option is in the query string
  */
-Utils.isOptionValid = function (name) {
+Utils.isOptionValid = name => {
 	if (location.search.slice(1)
 		.split('&')
 		.contains(name)) {
@@ -62,7 +62,7 @@ Utils._nwjs = null;
  * @method isNwjs
  * @return {Boolean} True if the platform is NW.js
  */
-Utils.isNwjs = function () {
+Utils.isNwjs = () => {
 	if (typeof Utils._nwjs === "boolean") {
 		return Utils._nwjs;
 	}
@@ -79,7 +79,7 @@ Utils._highFps = false;
  * @method isHighFps
  * @return {Boolean} True if refresh rate >= 66hz
  */
-Utils.isHighFps = function () {
+Utils.isHighFps = () => {
 	if (Utils._fpsChecked) {
 		return Utils._highFps;
 	} else {
@@ -99,7 +99,7 @@ Utils._fpsChecked = false;
  * @credit Adapted from Adam Sassano on Stack Overflow
  * @license CC BY-SA 4.0
  */
-Utils.getFps = function () {
+Utils.getFps = () => {
 	if (Utils._fpsChecked || Utils._fpsIsBusyCounting) {
 		return Utils._fps;
 	} else {
@@ -144,7 +144,7 @@ Utils._mobileDevice = null;
  * @method isMobileDevice
  * @return {Boolean} True if the platform is a mobile device
  */
-Utils.isMobileDevice = function () {
+Utils.isMobileDevice = () => {
 	if (typeof Utils._mobileDevice === "boolean") {
 		return Utils._mobileDevice;
 	}
@@ -162,7 +162,7 @@ Utils._mobileSafari = null;
  * @method isMobileSafari
  * @return {Boolean} True if the browser is Mobile Safari
  */
-Utils.isMobileSafari = function () {
+Utils.isMobileSafari = () => {
 	if (typeof Utils._mobileSafari === "boolean") {
 		return Utils._mobileSafari;
 	}
@@ -181,7 +181,7 @@ Utils._androidChrome = null;
  * @method isAndroidChrome
  * @return {Boolean} True if the browser is Android Chrome
  */
-Utils.isAndroidChrome = function () {
+Utils.isAndroidChrome = () => {
 	if (typeof Utils._androidChrome === "boolean") {
 		return Utils._androidChrome;
 	}
@@ -198,7 +198,7 @@ Utils.isAndroidChrome = function () {
  * @method canReadGameFiles
  * @return {Boolean} True if the browser can read files in the game folder
  */
-Utils.canReadGameFiles = function () {
+Utils.canReadGameFiles = () => {
 	const scripts = document.getElementsByTagName('script');
 	const lastScript = scripts[scripts.length - 1];
 	const xhr = new XMLHttpRequest();
@@ -222,17 +222,15 @@ Utils.canReadGameFiles = function () {
  * @param {Number} b The blue value in the range (0, 255)
  * @return {String} CSS color string
  */
-Utils.rgbToCssColor = function (r, g, b) {
+Utils.rgbToCssColor = (r, g, b) => {
 	r = Math.round(r);
 	g = Math.round(g);
 	b = Math.round(b);
-	return 'rgb(' + r + ',' + g + ',' + b + ')';
+	return `rgb(${r},${g},${b})`;
 };
 
 Utils._id = 1;
-Utils.generateRuntimeId = function () {
-	return Utils._id++;
-};
+Utils.generateRuntimeId = () => Utils._id++;
 
 Utils._supportPassiveEvent = null;
 /**
@@ -242,7 +240,7 @@ Utils._supportPassiveEvent = null;
  * @method isSupportPassiveEvent
  * @return {Boolean} this browser support passive event or not
  */
-Utils.isSupportPassiveEvent = function () {
+Utils.isSupportPassiveEvent = () => {
 	if (typeof Utils._supportPassiveEvent === "boolean") {
 		return Utils._supportPassiveEvent;
 	}
@@ -250,7 +248,7 @@ Utils.isSupportPassiveEvent = function () {
 	// https://github.com/WICG/EventListenerOptions/blob/gh-pages/explainer.md#feature-detection
 	let passive = false;
 	const options = Object.defineProperty({}, "passive", {
-		get: function () {
+		get() {
 			passive = true;
 		}
 	});

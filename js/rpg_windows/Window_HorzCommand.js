@@ -3,25 +3,25 @@
 //
 // The command window for the horizontal selection format.
 
-function Window_HorzCommand() {
-	this.initialize.apply(this, arguments);
+class Window_HorzCommand extends Window_Command {
+	constructor(...args) {
+		super(...args);
+		this.initialize(...args);
+	}
+
+	initialize(x, y) {
+		super.initialize(x, y);
+	}
+
+	numVisibleRows() {
+		return 1;
+	}
+
+	maxCols() {
+		return 4;
+	}
+
+	itemTextAlign() {
+		return 'center';
+	}
 }
-
-Window_HorzCommand.prototype = Object.create(Window_Command.prototype);
-Window_HorzCommand.prototype.constructor = Window_HorzCommand;
-
-Window_HorzCommand.prototype.initialize = function (x, y) {
-	Window_Command.prototype.initialize.call(this, x, y);
-};
-
-Window_HorzCommand.prototype.numVisibleRows = function () {
-	return 1;
-};
-
-Window_HorzCommand.prototype.maxCols = function () {
-	return 4;
-};
-
-Window_HorzCommand.prototype.itemTextAlign = function () {
-	return 'center';
-};

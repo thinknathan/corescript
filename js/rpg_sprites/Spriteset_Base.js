@@ -3,140 +3,140 @@
 //
 // The superclass of Spriteset_Map and Spriteset_Battle.
 
-function Spriteset_Base() {
-	this.initialize.apply(this, arguments);
-}
-
-Spriteset_Base.prototype = Object.create(Sprite.prototype);
-Spriteset_Base.prototype.constructor = Spriteset_Base;
-
-Spriteset_Base.prototype.initialize = function () {
-	Sprite.prototype.initialize.call(this);
-	this.setFrame(0, 0, Graphics.width, Graphics.height);
-	this._tone = [0, 0, 0, 0];
-	this.opaque = true;
-	this.createLowerLayer();
-	this.createToneChanger();
-	this.createUpperLayer();
-	this.update();
-};
-
-Spriteset_Base.prototype.createLowerLayer = function () {
-	this.createBaseSprite();
-};
-
-Spriteset_Base.prototype.createUpperLayer = function () {
-	this.createPictures();
-	this.createTimer();
-	this.createScreenSprites();
-};
-
-Spriteset_Base.prototype.update = function () {
-	Sprite.prototype.update.call(this);
-	this.updateScreenSprites();
-	this.updateToneChanger();
-	this.updatePosition();
-};
-
-Spriteset_Base.prototype.createBaseSprite = function () {
-	this._baseSprite = new Sprite();
-	this._baseSprite.setFrame(0, 0, this.width, this.height);
-	this._blackScreen = new ScreenSprite();
-	this._blackScreen.opacity = 255;
-	this.addChild(this._baseSprite);
-	this._baseSprite.addChild(this._blackScreen);
-};
-
-Spriteset_Base.prototype.createToneChanger = function () {
-	if (Graphics.isWebGL()) {
-		this.createWebGLToneChanger();
-	} else {
-		this.createCanvasToneChanger();
+class Spriteset_Base extends Sprite {
+	constructor(...args) {
+		super(...args);
+		this.initialize(...args);
 	}
-};
 
-Spriteset_Base.prototype.createWebGLToneChanger = function () {
-	const margin = 48;
-	const width = Graphics.width + margin * 2;
-	const height = Graphics.height + margin * 2;
-	this._toneFilter = new ToneFilter();
-	this._toneFilter.enabled = false;
-	this._baseSprite.filters = [this._toneFilter];
-	this._baseSprite.filterArea = new Rectangle(-margin, -margin, width, height);
-};
-
-Spriteset_Base.prototype.createCanvasToneChanger = function () {
-	this._toneSprite = new ToneSprite();
-	this.addChild(this._toneSprite);
-};
-
-Spriteset_Base.prototype.createPictures = function () {
-	const width = Graphics.boxWidth;
-	const height = Graphics.boxHeight;
-	const x = (Graphics.width - width) / 2;
-	const y = (Graphics.height - height) / 2;
-	this._pictureContainer = new Sprite();
-	this._pictureContainer.setFrame(x, y, width, height);
-	for (let i = 1; i <= $gameScreen.maxPictures(); i++) {
-		this._pictureContainer.addChild(new Sprite_Picture(i));
+	initialize() {
+		super.initialize();
+		this.setFrame(0, 0, Graphics.width, Graphics.height);
+		this._tone = [0, 0, 0, 0];
+		this.opaque = true;
+		this.createLowerLayer();
+		this.createToneChanger();
+		this.createUpperLayer();
+		this.update();
 	}
-	this.addChild(this._pictureContainer);
-};
 
-Spriteset_Base.prototype.createTimer = function () {
-	this._timerSprite = new Sprite_Timer();
-	this.addChild(this._timerSprite);
-};
+	createLowerLayer() {
+		this.createBaseSprite();
+	}
 
-Spriteset_Base.prototype.createScreenSprites = function () {
-	this._flashSprite = new ScreenSprite();
-	this._fadeSprite = new ScreenSprite();
-	this.addChild(this._flashSprite);
-	this.addChild(this._fadeSprite);
-};
+	createUpperLayer() {
+		this.createPictures();
+		this.createTimer();
+		this.createScreenSprites();
+	}
 
-Spriteset_Base.prototype.updateScreenSprites = function () {
-	const color = $gameScreen.flashColor();
-	this._flashSprite.setColor(color[0], color[1], color[2]);
-	this._flashSprite.opacity = color[3];
-	this._fadeSprite.opacity = 255 - $gameScreen.brightness();
-};
+	update() {
+		super.update();
+		this.updateScreenSprites();
+		this.updateToneChanger();
+		this.updatePosition();
+	}
 
-Spriteset_Base.prototype.updateToneChanger = function () {
-	const tone = $gameScreen.tone();
-	if (!this._tone.equals(tone)) {
-		this._tone = tone.clone();
+	createBaseSprite() {
+		this._baseSprite = new Sprite();
+		this._baseSprite.setFrame(0, 0, this.width, this.height);
+		this._blackScreen = new ScreenSprite();
+		this._blackScreen.opacity = 255;
+		this.addChild(this._baseSprite);
+		this._baseSprite.addChild(this._blackScreen);
+	}
+
+	createToneChanger() {
 		if (Graphics.isWebGL()) {
-			this.updateWebGLToneChanger();
+			this.createWebGLToneChanger();
 		} else {
-			this.updateCanvasToneChanger();
+			this.createCanvasToneChanger();
 		}
 	}
-};
 
-Spriteset_Base.prototype.updateWebGLToneChanger = function () {
-	const tone = this._tone;
-	this._toneFilter.reset();
-	if (tone[0] || tone[1] || tone[2] || tone[3]) {
-		this._toneFilter.enabled = true;
-		this._toneFilter.adjustTone(tone[0], tone[1], tone[2]);
-		this._toneFilter.adjustSaturation(-tone[3]);
-	} else {
+	createWebGLToneChanger() {
+		const margin = 48;
+		const width = Graphics.width + margin * 2;
+		const height = Graphics.height + margin * 2;
+		this._toneFilter = new ToneFilter();
 		this._toneFilter.enabled = false;
+		this._baseSprite.filters = [this._toneFilter];
+		this._baseSprite.filterArea = new Rectangle(-margin, -margin, width, height);
 	}
-};
 
-Spriteset_Base.prototype.updateCanvasToneChanger = function () {
-	const tone = this._tone;
-	this._toneSprite.setTone(tone[0], tone[1], tone[2], tone[3]);
-};
+	createCanvasToneChanger() {
+		this._toneSprite = new ToneSprite();
+		this.addChild(this._toneSprite);
+	}
 
-Spriteset_Base.prototype.updatePosition = function () {
-	const screen = $gameScreen;
-	const scale = screen.zoomScale();
-	this.scale.x = scale;
-	this.scale.y = scale;
-	this.x = Math.round(-screen.zoomX() * (scale - 1));
-	this.y = Math.round(-screen.zoomY() * (scale - 1));
-	this.x += Math.round(screen.shake());
-};
+	createPictures() {
+		const width = Graphics.boxWidth;
+		const height = Graphics.boxHeight;
+		const x = (Graphics.width - width) / 2;
+		const y = (Graphics.height - height) / 2;
+		this._pictureContainer = new Sprite();
+		this._pictureContainer.setFrame(x, y, width, height);
+		for (let i = 1; i <= $gameScreen.maxPictures(); i++) {
+			this._pictureContainer.addChild(new Sprite_Picture(i));
+		}
+		this.addChild(this._pictureContainer);
+	}
+
+	createTimer() {
+		this._timerSprite = new Sprite_Timer();
+		this.addChild(this._timerSprite);
+	}
+
+	createScreenSprites() {
+		this._flashSprite = new ScreenSprite();
+		this._fadeSprite = new ScreenSprite();
+		this.addChild(this._flashSprite);
+		this.addChild(this._fadeSprite);
+	}
+
+	updateScreenSprites() {
+		const color = $gameScreen.flashColor();
+		this._flashSprite.setColor(color[0], color[1], color[2]);
+		this._flashSprite.opacity = color[3];
+		this._fadeSprite.opacity = 255 - $gameScreen.brightness();
+	}
+
+	updateToneChanger() {
+		const tone = $gameScreen.tone();
+		if (!this._tone.equals(tone)) {
+			this._tone = tone.clone();
+			if (Graphics.isWebGL()) {
+				this.updateWebGLToneChanger();
+			} else {
+				this.updateCanvasToneChanger();
+			}
+		}
+	}
+
+	updateWebGLToneChanger() {
+		const tone = this._tone;
+		this._toneFilter.reset();
+		if (tone[0] || tone[1] || tone[2] || tone[3]) {
+			this._toneFilter.enabled = true;
+			this._toneFilter.adjustTone(tone[0], tone[1], tone[2]);
+			this._toneFilter.adjustSaturation(-tone[3]);
+		} else {
+			this._toneFilter.enabled = false;
+		}
+	}
+
+	updateCanvasToneChanger() {
+		const tone = this._tone;
+		this._toneSprite.setTone(tone[0], tone[1], tone[2], tone[3]);
+	}
+
+	updatePosition() {
+		const screen = $gameScreen;
+		const scale = screen.zoomScale();
+		this.scale.x = scale;
+		this.scale.y = scale;
+		this.x = Math.round(-screen.zoomX() * (scale - 1));
+		this.y = Math.round(-screen.zoomY() * (scale - 1));
+		this.x += Math.round(screen.shake());
+	}
+}

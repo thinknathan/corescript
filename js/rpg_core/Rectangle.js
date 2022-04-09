@@ -9,16 +9,16 @@
  * @param {Number} width The width of the rectangle
  * @param {Number} height The height of the rectangle
  */
-function Rectangle() {
-	this.initialize.apply(this, arguments);
+class Rectangle extends PIXI.Rectangle {
+	constructor(...args) {
+		super(...args);
+		this.initialize(...args);
+	}
+
+	initialize(x, y, width, height) {
+		PIXI.Rectangle.call(this, x, y, width, height);
+	}
 }
-
-Rectangle.prototype = Object.create(PIXI.Rectangle.prototype);
-Rectangle.prototype.constructor = Rectangle;
-
-Rectangle.prototype.initialize = function (x, y, width, height) {
-	PIXI.Rectangle.call(this, x, y, width, height);
-};
 
 /**
  * @static

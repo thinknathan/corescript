@@ -41,9 +41,7 @@ Number.prototype.mod = function (n) {
  */
 String.prototype.format = function () {
 	const args = arguments;
-	return this.replace(/%([0-9]+)/g, function (s, n) {
-		return args[Number(n) - 1];
-	});
+	return this.replace(/%([0-9]+)/g, (s, n) => args[Number(n) - 1]);
 };
 
 /**
@@ -56,7 +54,7 @@ String.prototype.format = function () {
 String.prototype.padZero = function (length) {
 	let s = this;
 	while (s.length < length) {
-		s = '0' + s;
+		s = `0${s}`;
 	}
 	return s;
 };
@@ -83,7 +81,7 @@ Object.defineProperties(Array.prototype, {
 	 */
 	equals: {
 		enumerable: false,
-		value: function (array) {
+		value(array) {
 			if (!array || this.length !== array.length) {
 				return false;
 			}
@@ -107,7 +105,7 @@ Object.defineProperties(Array.prototype, {
 	 */
 	clone: {
 		enumerable: false,
-		value: function () {
+		value() {
 			return this.slice(0);
 		}
 	},
@@ -120,8 +118,8 @@ Object.defineProperties(Array.prototype, {
 	 */
 	contains: {
 		enumerable: false,
-		value: function (element) {
-			return this.indexOf(element) >= 0;
+		value(element) {
+			return this.includes(element);
 		}
 	}
 });
@@ -134,7 +132,7 @@ Object.defineProperties(Array.prototype, {
  * @return {Boolean} True if the string contains a given string
  */
 String.prototype.contains = function (string) {
-	return this.indexOf(string) >= 0;
+	return this.includes(string);
 };
 
 /**
@@ -145,6 +143,4 @@ String.prototype.contains = function (string) {
  * @param {Number} max The upper boundary (excluded)
  * @return {Number} A random integer
  */
-Math.randomInt = function (max) {
-	return Math.floor(max * Math.random());
-};
+Math.randomInt = max => Math.floor(max * Math.random());

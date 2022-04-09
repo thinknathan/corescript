@@ -5,88 +5,84 @@
  * @class WindowLayer
  * @constructor
  */
-function WindowLayer() {
-	this.initialize.apply(this, arguments);
+class WindowLayer extends PIXI.Container {
+	constructor(...args) {
+		super(...args);
+		this.initialize(...args);
+	}
+
+	initialize() {
+		PIXI.Container.call(this);
+		this._width = 0;
+		this._height = 0;
+
+		//temporary fix for memory leak bug
+		this.on('removed', this.onRemoveAsAChild);
+	}
+
+	onRemoveAsAChild() {
+		this.removeChildren();
+	}
+
+	/**
+	 * The width of the window layer in pixels.
+	 *
+	 * @property width
+	 * @type Number
+	 */
+	get width() {
+		return this._width;
+	}
+
+	set width(value) {
+		this._width = value;
+	}
+
+	/**
+	 * The height of the window layer in pixels.
+	 *
+	 * @property height
+	 * @type Number
+	 */
+	get height() {
+		return this._height;
+	}
+
+	set height(value) {
+		this._height = value;
+	}
+
+	/**
+	 * Sets the x, y, width, and height all at once.
+	 *
+	 * @method move
+	 * @param {Number} x The x coordinate of the window layer
+	 * @param {Number} y The y coordinate of the window layer
+	 * @param {Number} width The width of the window layer
+	 * @param {Number} height The height of the window layer
+	 */
+	move(x, y, width, height) {
+		this.x = x;
+		this.y = y;
+		this.width = width;
+		this.height = height;
+	}
+
+	/**
+	 * Updates the window layer for each frame.
+	 *
+	 * @method update
+	 */
+	update() {
+		this.children.forEach(child => {
+			if (child.update) {
+				child.update();
+			}
+		});
+	}
 }
 
-WindowLayer.prototype = Object.create(PIXI.Container.prototype);
-WindowLayer.prototype.constructor = WindowLayer;
-
-WindowLayer.prototype.initialize = function () {
-	PIXI.Container.call(this);
-	this._width = 0;
-	this._height = 0;
-
-	//temporary fix for memory leak bug
-	this.on('removed', this.onRemoveAsAChild);
-};
-
-WindowLayer.prototype.onRemoveAsAChild = function () {
-	this.removeChildren();
-};
-
 WindowLayer.voidFilter = new PIXI.filters.AlphaFilter();
-
-/**
- * The width of the window layer in pixels.
- *
- * @property width
- * @type Number
- */
-Object.defineProperty(WindowLayer.prototype, 'width', {
-	get: function () {
-		return this._width;
-	},
-	set: function (value) {
-		this._width = value;
-	},
-	configurable: true
-});
-
-/**
- * The height of the window layer in pixels.
- *
- * @property height
- * @type Number
- */
-Object.defineProperty(WindowLayer.prototype, 'height', {
-	get: function () {
-		return this._height;
-	},
-	set: function (value) {
-		this._height = value;
-	},
-	configurable: true
-});
-
-/**
- * Sets the x, y, width, and height all at once.
- *
- * @method move
- * @param {Number} x The x coordinate of the window layer
- * @param {Number} y The y coordinate of the window layer
- * @param {Number} width The width of the window layer
- * @param {Number} height The height of the window layer
- */
-WindowLayer.prototype.move = function (x, y, width, height) {
-	this.x = x;
-	this.y = y;
-	this.width = width;
-	this.height = height;
-};
-
-/**
- * Updates the window layer for each frame.
- *
- * @method update
- */
-WindowLayer.prototype.update = function () {
-	this.children.forEach(function (child) {
-		if (child.update) {
-			child.update();
-		}
-	});
-};
 
 WindowLayer.prototype.render = PIXI.Container.prototype.render;
 WindowLayer.prototype.renderCanvas = PIXI.Container.prototype.renderCanvas;

@@ -3,47 +3,47 @@
 //
 // The window for selecting a target actor on the item and skill screens.
 
-function Window_MenuActor() {
-	this.initialize.apply(this, arguments);
-}
-
-Window_MenuActor.prototype = Object.create(Window_MenuStatus.prototype);
-Window_MenuActor.prototype.constructor = Window_MenuActor;
-
-Window_MenuActor.prototype.initialize = function () {
-	Window_MenuStatus.prototype.initialize.call(this, 0, 0);
-	this.hide();
-};
-
-Window_MenuActor.prototype.processOk = function () {
-	if (!this.cursorAll()) {
-		$gameParty.setTargetActor($gameParty.members()[this.index()]);
+class Window_MenuActor extends Window_MenuStatus {
+	constructor(...args) {
+		super(...args);
+		this.initialize(...args);
 	}
-	this.callOkHandler();
-};
 
-Window_MenuActor.prototype.selectLast = function () {
-	this.select($gameParty.targetActor()
-		.index() || 0);
-};
+	initialize() {
+		super.initialize(0, 0);
+		this.hide();
+	}
 
-Window_MenuActor.prototype.selectForItem = function (item) {
-	const actor = $gameParty.menuActor();
-	const action = new Game_Action(actor);
-	action.setItemObject(item);
-	this.setCursorFixed(false);
-	this.setCursorAll(false);
-	if (action.isForUser()) {
-		if (DataManager.isSkill(item)) {
-			this.setCursorFixed(true);
-			this.select(actor.index());
+	processOk() {
+		if (!this.cursorAll()) {
+			$gameParty.setTargetActor($gameParty.members()[this.index()]);
+		}
+		this.callOkHandler();
+	}
+
+	selectLast() {
+		this.select($gameParty.targetActor()
+			.index() || 0);
+	}
+
+	selectForItem(item) {
+		const actor = $gameParty.menuActor();
+		const action = new Game_Action(actor);
+		action.setItemObject(item);
+		this.setCursorFixed(false);
+		this.setCursorAll(false);
+		if (action.isForUser()) {
+			if (DataManager.isSkill(item)) {
+				this.setCursorFixed(true);
+				this.select(actor.index());
+			} else {
+				this.selectLast();
+			}
+		} else if (action.isForAll()) {
+			this.setCursorAll(true);
+			this.select(0);
 		} else {
 			this.selectLast();
 		}
-	} else if (action.isForAll()) {
-		this.setCursorAll(true);
-		this.select(0);
-	} else {
-		this.selectLast();
 	}
-};
+}

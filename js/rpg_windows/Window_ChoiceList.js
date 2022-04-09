@@ -3,131 +3,131 @@
 //
 // The window used for the event command [Show Choices].
 
-function Window_ChoiceList() {
-	this.initialize.apply(this, arguments);
-}
-
-Window_ChoiceList.prototype = Object.create(Window_Command.prototype);
-Window_ChoiceList.prototype.constructor = Window_ChoiceList;
-
-Window_ChoiceList.prototype.initialize = function (messageWindow) {
-	this._messageWindow = messageWindow;
-	Window_Command.prototype.initialize.call(this, 0, 0);
-	this.openness = 0;
-	this.deactivate();
-	this._background = 0;
-};
-
-Window_ChoiceList.prototype.start = function () {
-	this.updatePlacement();
-	this.updateBackground();
-	this.refresh();
-	this.selectDefault();
-	this.open();
-	this.activate();
-};
-
-Window_ChoiceList.prototype.selectDefault = function () {
-	this.select($gameMessage.choiceDefaultType());
-};
-
-Window_ChoiceList.prototype.updatePlacement = function () {
-	const positionType = $gameMessage.choicePositionType();
-	const messageY = this._messageWindow.y;
-	this.width = this.windowWidth();
-	this.height = this.windowHeight();
-	switch (positionType) {
-	case 0:
-		this.x = 0;
-		break;
-	case 1:
-		this.x = (Graphics.boxWidth - this.width) / 2;
-		break;
-	case 2:
-		this.x = Graphics.boxWidth - this.width;
-		break;
+class Window_ChoiceList extends Window_Command {
+	constructor(...args) {
+		super(...args);
+		this.initialize(...args);
 	}
-	if (messageY >= Graphics.boxHeight / 2) {
-		this.y = messageY - this.height;
-	} else {
-		this.y = messageY + this._messageWindow.height;
+
+	initialize(messageWindow) {
+		this._messageWindow = messageWindow;
+		super.initialize(0, 0);
+		this.openness = 0;
+		this.deactivate();
+		this._background = 0;
 	}
-};
 
-Window_ChoiceList.prototype.updateBackground = function () {
-	this._background = $gameMessage.choiceBackground();
-	this.setBackgroundType(this._background);
-};
-
-Window_ChoiceList.prototype.windowWidth = function () {
-	const width = this.maxChoiceWidth() + this.padding * 2;
-	return Math.min(width, Graphics.boxWidth);
-};
-
-Window_ChoiceList.prototype.numVisibleRows = function () {
-	const messageY = this._messageWindow.y;
-	const messageHeight = this._messageWindow.height;
-	const centerY = Graphics.boxHeight / 2;
-	const choices = $gameMessage.choices();
-	let numLines = choices.length;
-	let maxLines = 8;
-	if (messageY < centerY && messageY + messageHeight > centerY) {
-		maxLines = 4;
+	start() {
+		this.updatePlacement();
+		this.updateBackground();
+		this.refresh();
+		this.selectDefault();
+		this.open();
+		this.activate();
 	}
-	if (numLines > maxLines) {
-		numLines = maxLines;
-	}
-	return numLines;
-};
 
-Window_ChoiceList.prototype.maxChoiceWidth = function () {
-	let maxWidth = 96;
-	const choices = $gameMessage.choices();
-	for (let i = 0; i < choices.length; i++) {
-		const choiceWidth = this.textWidthEx(choices[i]) + this.textPadding() * 2;
-		if (maxWidth < choiceWidth) {
-			maxWidth = choiceWidth;
+	selectDefault() {
+		this.select($gameMessage.choiceDefaultType());
+	}
+
+	updatePlacement() {
+		const positionType = $gameMessage.choicePositionType();
+		const messageY = this._messageWindow.y;
+		this.width = this.windowWidth();
+		this.height = this.windowHeight();
+		switch (positionType) {
+		case 0:
+			this.x = 0;
+			break;
+		case 1:
+			this.x = (Graphics.boxWidth - this.width) / 2;
+			break;
+		case 2:
+			this.x = Graphics.boxWidth - this.width;
+			break;
+		}
+		if (messageY >= Graphics.boxHeight / 2) {
+			this.y = messageY - this.height;
+		} else {
+			this.y = messageY + this._messageWindow.height;
 		}
 	}
-	return maxWidth;
-};
 
-Window_ChoiceList.prototype.textWidthEx = function (text) {
-	return this.drawTextEx(text, 0, this.contents.height);
-};
-
-Window_ChoiceList.prototype.contentsHeight = function () {
-	return this.maxItems() * this.itemHeight();
-};
-
-Window_ChoiceList.prototype.makeCommandList = function () {
-	const choices = $gameMessage.choices();
-	for (let i = 0; i < choices.length; i++) {
-		this.addCommand(choices[i], 'choice');
+	updateBackground() {
+		this._background = $gameMessage.choiceBackground();
+		this.setBackgroundType(this._background);
 	}
-};
 
-Window_ChoiceList.prototype.drawItem = function (index) {
-	const rect = this.itemRectForText(index);
-	this.drawTextEx(this.commandName(index), rect.x, rect.y);
-};
+	windowWidth() {
+		const width = this.maxChoiceWidth() + this.padding * 2;
+		return Math.min(width, Graphics.boxWidth);
+	}
 
-Window_ChoiceList.prototype.isCancelEnabled = function () {
-	return $gameMessage.choiceCancelType() !== -1;
-};
+	numVisibleRows() {
+		const messageY = this._messageWindow.y;
+		const messageHeight = this._messageWindow.height;
+		const centerY = Graphics.boxHeight / 2;
+		const choices = $gameMessage.choices();
+		let numLines = choices.length;
+		let maxLines = 8;
+		if (messageY < centerY && messageY + messageHeight > centerY) {
+			maxLines = 4;
+		}
+		if (numLines > maxLines) {
+			numLines = maxLines;
+		}
+		return numLines;
+	}
 
-Window_ChoiceList.prototype.isOkTriggered = function () {
-	return Input.isTriggered('ok');
-};
+	maxChoiceWidth() {
+		let maxWidth = 96;
+		const choices = $gameMessage.choices();
+		for (let i = 0; i < choices.length; i++) {
+			const choiceWidth = this.textWidthEx(choices[i]) + this.textPadding() * 2;
+			if (maxWidth < choiceWidth) {
+				maxWidth = choiceWidth;
+			}
+		}
+		return maxWidth;
+	}
 
-Window_ChoiceList.prototype.callOkHandler = function () {
-	$gameMessage.onChoice(this.index());
-	this._messageWindow.terminateMessage();
-	this.close();
-};
+	textWidthEx(text) {
+		return this.drawTextEx(text, 0, this.contents.height);
+	}
 
-Window_ChoiceList.prototype.callCancelHandler = function () {
-	$gameMessage.onChoice($gameMessage.choiceCancelType());
-	this._messageWindow.terminateMessage();
-	this.close();
-};
+	contentsHeight() {
+		return this.maxItems() * this.itemHeight();
+	}
+
+	makeCommandList() {
+		const choices = $gameMessage.choices();
+		for (let i = 0; i < choices.length; i++) {
+			this.addCommand(choices[i], 'choice');
+		}
+	}
+
+	drawItem(index) {
+		const rect = this.itemRectForText(index);
+		this.drawTextEx(this.commandName(index), rect.x, rect.y);
+	}
+
+	isCancelEnabled() {
+		return $gameMessage.choiceCancelType() !== -1;
+	}
+
+	isOkTriggered() {
+		return Input.isTriggered('ok');
+	}
+
+	callOkHandler() {
+		$gameMessage.onChoice(this.index());
+		this._messageWindow.terminateMessage();
+		this.close();
+	}
+
+	callCancelHandler() {
+		$gameMessage.onChoice($gameMessage.choiceCancelType());
+		this._messageWindow.terminateMessage();
+		this.close();
+	}
+}

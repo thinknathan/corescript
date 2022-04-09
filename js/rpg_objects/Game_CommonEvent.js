@@ -4,48 +4,50 @@
 // The game object class for a common event. It contains functionality for
 // running parallel process events.
 
-function Game_CommonEvent() {
-	this.initialize.apply(this, arguments);
+class Game_CommonEvent {
+	constructor(...args) {
+		this.initialize(...args);
+	}
+
+	initialize(commonEventId) {
+		this._commonEventId = commonEventId;
+		this.refresh();
+	}
+
+	event() {
+		return $dataCommonEvents[this._commonEventId];
+	}
+
+	list() {
+		return this.event()
+			.list;
+	}
+
+	refresh() {
+		if (this.isActive()) {
+			if (!this._interpreter) {
+				this._interpreter = new Game_Interpreter();
+			}
+		} else {
+			this._interpreter = null;
+		}
+	}
+
+	isActive() {
+		const event = this.event();
+		return event.trigger === 2 && $gameSwitches.value(event.switchId);
+	}
+
+	update() {
+		if (this._interpreter) {
+			if (!this._interpreter.isRunning()) {
+				this._interpreter.setup(this.list());
+				this._interpreter.setEventInfo({
+					eventType: 'common_event',
+					commonEventId: this._commonEventId
+				});
+			}
+			this._interpreter.update();
+		}
+	}
 }
-
-Game_CommonEvent.prototype.initialize = function (commonEventId) {
-	this._commonEventId = commonEventId;
-	this.refresh();
-};
-
-Game_CommonEvent.prototype.event = function () {
-	return $dataCommonEvents[this._commonEventId];
-};
-
-Game_CommonEvent.prototype.list = function () {
-	return this.event()
-		.list;
-};
-
-Game_CommonEvent.prototype.refresh = function () {
-	if (this.isActive()) {
-		if (!this._interpreter) {
-			this._interpreter = new Game_Interpreter();
-		}
-	} else {
-		this._interpreter = null;
-	}
-};
-
-Game_CommonEvent.prototype.isActive = function () {
-	const event = this.event();
-	return event.trigger === 2 && $gameSwitches.value(event.switchId);
-};
-
-Game_CommonEvent.prototype.update = function () {
-	if (this._interpreter) {
-		if (!this._interpreter.isRunning()) {
-			this._interpreter.setup(this.list());
-			this._interpreter.setEventInfo({
-				eventType: 'common_event',
-				commonEventId: this._commonEventId
-			});
-		}
-		this._interpreter.update();
-	}
-};

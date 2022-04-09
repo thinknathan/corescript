@@ -3,61 +3,61 @@
 //
 // The scene class of the game over screen.
 
-function Scene_Gameover() {
-	this.initialize.apply(this, arguments);
-}
-
-Scene_Gameover.prototype = Object.create(Scene_Base.prototype);
-Scene_Gameover.prototype.constructor = Scene_Gameover;
-
-Scene_Gameover.prototype.initialize = function () {
-	Scene_Base.prototype.initialize.call(this);
-};
-
-Scene_Gameover.prototype.create = function () {
-	Scene_Base.prototype.create.call(this);
-	this.playGameoverMusic();
-	this.createBackground();
-};
-
-Scene_Gameover.prototype.start = function () {
-	Scene_Base.prototype.start.call(this);
-	this.startFadeIn(this.slowFadeSpeed(), false);
-};
-
-Scene_Gameover.prototype.update = function () {
-	if (this.isActive() && !this.isBusy() && this.isTriggered()) {
-		this.gotoTitle();
+class Scene_Gameover extends Scene_Base {
+	constructor(...args) {
+		super(...args);
+		this.initialize(...args);
 	}
-	Scene_Base.prototype.update.call(this);
-};
 
-Scene_Gameover.prototype.stop = function () {
-	Scene_Base.prototype.stop.call(this);
-	this.fadeOutAll();
-};
+	initialize() {
+		super.initialize();
+	}
 
-Scene_Gameover.prototype.terminate = function () {
-	Scene_Base.prototype.terminate.call(this);
-	AudioManager.stopAll();
-};
+	create() {
+		super.create();
+		this.playGameoverMusic();
+		this.createBackground();
+	}
 
-Scene_Gameover.prototype.playGameoverMusic = function () {
-	AudioManager.stopBgm();
-	AudioManager.stopBgs();
-	AudioManager.playMe($dataSystem.gameoverMe);
-};
+	start() {
+		super.start();
+		this.startFadeIn(this.slowFadeSpeed(), false);
+	}
 
-Scene_Gameover.prototype.createBackground = function () {
-	this._backSprite = new Sprite();
-	this._backSprite.bitmap = ImageManager.loadSystem('GameOver');
-	this.addChild(this._backSprite);
-};
+	update() {
+		if (this.isActive() && !this.isBusy() && this.isTriggered()) {
+			this.gotoTitle();
+		}
+		super.update();
+	}
 
-Scene_Gameover.prototype.isTriggered = function () {
-	return Input.isTriggered('ok') || TouchInput.isTriggered();
-};
+	stop() {
+		super.stop();
+		this.fadeOutAll();
+	}
 
-Scene_Gameover.prototype.gotoTitle = function () {
-	SceneManager.goto(Scene_Title);
-};
+	terminate() {
+		super.terminate();
+		AudioManager.stopAll();
+	}
+
+	playGameoverMusic() {
+		AudioManager.stopBgm();
+		AudioManager.stopBgs();
+		AudioManager.playMe($dataSystem.gameoverMe);
+	}
+
+	createBackground() {
+		this._backSprite = new Sprite();
+		this._backSprite.bitmap = ImageManager.loadSystem('GameOver');
+		this.addChild(this._backSprite);
+	}
+
+	isTriggered() {
+		return Input.isTriggered('ok') || TouchInput.isTriggered();
+	}
+
+	gotoTitle() {
+		SceneManager.goto(Scene_Title);
+	}
+}
