@@ -393,7 +393,7 @@ class DataManager {
 	}
 
 	static maxSavefiles() {
-		return 20;
+		return this._maxSavefiles;
 	}
 
 	static makeSaveContents(parent = self) {
@@ -430,6 +430,7 @@ DataManager._globalId = 'RPGMV';
 DataManager._lastAccessedId = 1;
 DataManager._errorUrl = null;
 DataManager._autoSaveFileId = 0;
+DataManager._maxSavefiles = 20;
 
 DataManager._databaseFiles = [
 	{
