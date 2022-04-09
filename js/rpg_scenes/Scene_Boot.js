@@ -72,7 +72,7 @@ class Scene_Boot extends Scene_Base {
 		}
 	}
 
-	loadSystemImages() {
+	static loadSystemImages() {
 		ImageManager.reserveSystem('IconSet');
 		ImageManager.reserveSystem('Balloon');
 		ImageManager.reserveSystem('Shadow1');
