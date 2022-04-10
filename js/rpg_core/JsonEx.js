@@ -65,8 +65,6 @@ class JsonEx {
 		}
 		const type = Object.prototype.toString.call(value);
 		if (type === '[object Object]' || type === '[object Array]') {
-			value['@c'] = JsonEx._generateId();
-
 			const constructorName = value.constructor.name;
 			if (constructorName !== 'Object' && constructorName !== 'Array') {
 				value['@'] = constructorName;
@@ -102,9 +100,7 @@ class JsonEx {
 		return value;
 	}
 
-	static _generateId() {
-		return JsonEx._id++;
-	}
+	static _generateId() {}
 
 	static _restoreCircularReference(circulars) {}
 
