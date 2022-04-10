@@ -939,3 +939,5 @@ Object.defineProperties(Game_BattlerBase.prototype, {
 		configurable: true
 	}
 });
+
+self.Game_BattlerBase = Game_BattlerBase;

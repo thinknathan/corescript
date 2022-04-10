@@ -101,3 +101,5 @@ class Window_ShopBuy extends Window_Selectable {
 		}
 	}
 }
+
+self.Window_ShopBuy = Window_ShopBuy;

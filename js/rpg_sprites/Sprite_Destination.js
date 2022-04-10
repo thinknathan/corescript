@@ -54,3 +54,5 @@ class Sprite_Destination extends Sprite {
 		this.scale.y = this.scale.x;
 	}
 }
+
+self.Sprite_Destination = Sprite_Destination;

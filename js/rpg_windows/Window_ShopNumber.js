@@ -222,3 +222,5 @@ class Window_ShopNumber extends Window_Selectable {
 		this.processOk();
 	}
 }
+
+self.Window_ShopNumber = Window_ShopNumber;

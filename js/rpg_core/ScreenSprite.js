@@ -110,10 +110,4 @@ class ScreenSprite extends PIXI.Container {
 	}
 }
 
-ScreenSprite.YEPWarned = false;
-ScreenSprite.warnYep = () => {
-	if (!ScreenSprite.YEPWarned) {
-		console.log("Deprecation warning. Please update YEP_CoreEngine. ScreenSprite is not a sprite, it has graphics inside.");
-		ScreenSprite.YEPWarned = true;
-	}
-};
+self.ScreenSprite = ScreenSprite;

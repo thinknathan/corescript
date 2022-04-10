@@ -62,3 +62,5 @@ class Scene_Load extends Scene_File {
 		}
 	}
 }
+
+self.Scene_Load = Scene_Load;

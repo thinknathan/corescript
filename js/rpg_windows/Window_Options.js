@@ -143,3 +143,5 @@ class Window_Options extends Window_Command {
 		ConfigManager[symbol] = volume;
 	}
 }
+
+self.Window_Options = Window_Options;

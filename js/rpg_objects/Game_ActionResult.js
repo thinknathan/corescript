@@ -100,3 +100,5 @@ class Game_ActionResult {
 		}
 	}
 }
+
+self.Game_ActionResult = Game_ActionResult;

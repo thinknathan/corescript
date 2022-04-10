@@ -47,3 +47,5 @@ class Window_MenuActor extends Window_MenuStatus {
 		}
 	}
 }
+
+self.Window_MenuActor = Window_MenuActor;

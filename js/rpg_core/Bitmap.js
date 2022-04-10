@@ -1023,3 +1023,5 @@ Bitmap.request = url => {
 
 	return bitmap;
 };
+
+self.Bitmap = Bitmap;

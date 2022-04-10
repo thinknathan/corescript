@@ -88,3 +88,5 @@ class Window_ScrollText extends Window_Base {
 		this.hide();
 	}
 }
+
+self.Window_ScrollText = Window_ScrollText;

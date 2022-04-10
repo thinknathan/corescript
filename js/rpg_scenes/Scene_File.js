@@ -68,3 +68,5 @@ class Scene_File extends Scene_MenuBase {
 
 	onSavefileOk() {}
 }
+
+self.Scene_File = Scene_File;

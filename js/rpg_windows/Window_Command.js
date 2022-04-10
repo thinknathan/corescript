@@ -158,3 +158,5 @@ class Window_Command extends Window_Selectable {
 		super.refresh();
 	}
 }
+
+self.Window_Command = Window_Command;

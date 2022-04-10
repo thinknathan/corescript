@@ -781,6 +781,10 @@ class WebAudio {
 		}
 		return string;
 	}
+
+	static _shouldMuteOnHide() {
+		return Utils.isMobileDevice();
+	}
 }
 
 WebAudio._standAlone = ((top => !top.ResourceHandler))(this);
@@ -791,9 +795,4 @@ WebAudio._masterGainNode = null;
 WebAudio._initialized = false;
 WebAudio._unlocked = false;
 
-/**
- * @static
- * @method _shouldMuteOnHide
- * @private
- */
-WebAudio._shouldMuteOnHide = () => Utils.isMobileDevice();
+self.WebAudio = WebAudio;

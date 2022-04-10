@@ -103,3 +103,5 @@ Object.defineProperty(ConfigManager, 'seVolume', {
 	},
 	configurable: true
 });
+
+self.ConfigManager = ConfigManager;

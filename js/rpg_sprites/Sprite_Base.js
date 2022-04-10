@@ -62,3 +62,5 @@ class Sprite_Base extends Sprite {
 		return this._animationSprites.length > 0;
 	}
 }
+
+self.Sprite_Base = Sprite_Base;

@@ -108,3 +108,5 @@ class Window_SavefileList extends Window_Selectable {
 
 	playOkSound() {}
 }
+
+self.Window_SavefileList = Window_SavefileList;

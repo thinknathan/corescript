@@ -617,3 +617,5 @@ class Window_BattleLog extends Window_Selectable {
 		}
 	}
 }
+
+self.Window_BattleLog = Window_BattleLog;

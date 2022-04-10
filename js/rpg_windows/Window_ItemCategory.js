@@ -39,3 +39,5 @@ class Window_ItemCategory extends Window_HorzCommand {
 		this._itemWindow = itemWindow;
 	}
 }
+
+self.Window_ItemCategory = Window_ItemCategory;

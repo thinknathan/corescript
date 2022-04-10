@@ -38,3 +38,5 @@ class Scene_Status extends Scene_MenuBase {
 		this._statusWindow.activate();
 	}
 }
+
+self.Scene_Status = Scene_Status;

@@ -131,3 +131,5 @@ class Window_NameEdit extends Window_Base {
 		this.setCursorRect(rect.x, rect.y, rect.width, rect.height);
 	}
 }
+
+self.Window_NameEdit = Window_NameEdit;

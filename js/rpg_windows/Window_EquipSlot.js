@@ -79,3 +79,5 @@ class Window_EquipSlot extends Window_Selectable {
 		}
 	}
 }
+
+self.Window_EquipSlot = Window_EquipSlot;

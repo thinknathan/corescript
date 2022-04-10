@@ -1988,3 +1988,5 @@ class Game_Interpreter {
 		}
 	}
 }
+
+self.Game_Interpreter = Game_Interpreter;

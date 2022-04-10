@@ -29,3 +29,5 @@ class Window_ShopCommand extends Window_HorzCommand {
 		this.addCommand(TextManager.cancel, 'cancel');
 	}
 }
+
+self.Window_ShopCommand = Window_ShopCommand;

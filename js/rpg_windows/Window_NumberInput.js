@@ -213,3 +213,5 @@ class Window_NumberInput extends Window_Selectable {
 		this.hideButtons();
 	}
 }
+
+self.Window_NumberInput = Window_NumberInput;

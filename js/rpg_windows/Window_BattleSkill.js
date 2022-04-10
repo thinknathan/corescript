@@ -25,3 +25,5 @@ class Window_BattleSkill extends Window_SkillList {
 		super.hide();
 	}
 }
+
+self.Window_BattleSkill = Window_BattleSkill;

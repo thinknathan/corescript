@@ -131,3 +131,5 @@ class Scene_Equip extends Scene_MenuBase {
 		this._commandWindow.activate();
 	}
 }
+
+self.Scene_Equip = Scene_Equip;

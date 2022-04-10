@@ -118,3 +118,5 @@ class Sprite_Damage extends Sprite {
 		return this._duration > 0;
 	}
 }
+
+self.Sprite_Damage = Sprite_Damage;

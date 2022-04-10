@@ -80,3 +80,5 @@ class CacheEntry {
 		}
 	}
 }
+
+self.CacheEntry = CacheEntry;

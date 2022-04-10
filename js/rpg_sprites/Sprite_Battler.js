@@ -183,3 +183,5 @@ class Sprite_Battler extends Sprite_Base {
 		return this._offsetX === 0 && this._offsetY === 0;
 	}
 }
+
+self.Sprite_Battler = Sprite_Battler;

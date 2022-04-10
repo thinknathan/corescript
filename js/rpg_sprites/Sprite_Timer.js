@@ -58,3 +58,5 @@ class Sprite_Timer extends Sprite {
 		this.visible = $gameTimer.isWorking();
 	}
 }
+
+self.Sprite_Timer = Sprite_Timer;

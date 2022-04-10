@@ -93,3 +93,5 @@ class Window_DebugRange extends Window_Selectable {
 
 Window_DebugRange.lastTopRow = 0;
 Window_DebugRange.lastIndex = 0;
+
+self.Window_DebugRange = Window_DebugRange;

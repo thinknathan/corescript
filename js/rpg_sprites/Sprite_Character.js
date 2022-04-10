@@ -265,3 +265,5 @@ class Sprite_Character extends Sprite_Base {
 		return !!this._balloonSprite;
 	}
 }
+
+self.Sprite_Character = Sprite_Character;

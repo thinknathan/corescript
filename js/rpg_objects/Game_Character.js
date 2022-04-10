@@ -596,3 +596,5 @@ Game_Character.ROUTE_CHANGE_OPACITY = 42;
 Game_Character.ROUTE_CHANGE_BLEND_MODE = 43;
 Game_Character.ROUTE_PLAY_SE = 44;
 Game_Character.ROUTE_SCRIPT = 45;
+
+self.Game_Character = Game_Character;

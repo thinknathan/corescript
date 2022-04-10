@@ -70,3 +70,5 @@ class Window_MapName extends Window_Base {
 		this.contents.gradientFillRect(x + width / 2, y, width / 2, height, color1, color2);
 	}
 }
+
+self.Window_MapName = Window_MapName;

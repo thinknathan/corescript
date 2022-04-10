@@ -320,3 +320,5 @@ ImageManager.cache = new CacheMap(ImageManager);
 ImageManager._imageCache = new ImageCache();
 ImageManager._requestQueue = new RequestQueue();
 ImageManager._systemReservationId = Utils.generateRuntimeId();
+
+self.ImageManager = ImageManager;

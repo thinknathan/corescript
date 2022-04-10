@@ -29,3 +29,5 @@ class Window_BattleItem extends Window_ItemList {
 		super.hide();
 	}
 }
+
+self.Window_BattleItem = Window_BattleItem;

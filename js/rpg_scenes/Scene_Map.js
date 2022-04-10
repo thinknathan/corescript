@@ -364,3 +364,5 @@ class Scene_Map extends Scene_Base {
 		return 60;
 	}
 }
+
+self.Scene_Map = Scene_Map;

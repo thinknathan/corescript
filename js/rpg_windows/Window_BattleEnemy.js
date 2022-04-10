@@ -75,3 +75,5 @@ class Window_BattleEnemy extends Window_Selectable {
 		$gameTroop.select(this.enemy());
 	}
 }
+
+self.Window_BattleEnemy = Window_BattleEnemy;

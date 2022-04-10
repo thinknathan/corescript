@@ -58,3 +58,5 @@ class Stage extends PIXI.Container {
 	 * @return {Object} The child that was removed
 	 */
 }
+
+self.Stage = Stage;

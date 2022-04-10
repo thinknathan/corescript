@@ -38,3 +38,5 @@ class Window_PartyCommand extends Window_Command {
 		this.open();
 	}
 }
+
+self.Window_PartyCommand = Window_PartyCommand;

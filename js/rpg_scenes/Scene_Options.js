@@ -29,3 +29,5 @@ class Scene_Options extends Scene_MenuBase {
 		this.addWindow(this._optionsWindow);
 	}
 }
+
+self.Scene_Options = Scene_Options;

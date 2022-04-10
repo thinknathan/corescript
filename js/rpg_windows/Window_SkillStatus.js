@@ -33,3 +33,5 @@ class Window_SkillStatus extends Window_Base {
 		}
 	}
 }
+
+self.Window_SkillStatus = Window_SkillStatus;

@@ -61,3 +61,5 @@ class Window_SkillType extends Window_Command {
 		}
 	}
 }
+
+self.Window_SkillType = Window_SkillType;

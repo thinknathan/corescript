@@ -70,3 +70,5 @@ class CacheMap {
 		}
 	}
 }
+
+self.CacheMap = CacheMap;

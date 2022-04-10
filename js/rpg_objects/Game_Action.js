@@ -902,3 +902,5 @@ Game_Action.SPECIAL_EFFECT_ESCAPE = 0;
 Game_Action.HITTYPE_CERTAIN = 0;
 Game_Action.HITTYPE_PHYSICAL = 1;
 Game_Action.HITTYPE_MAGICAL = 2;
+
+self.Game_Action = Game_Action;

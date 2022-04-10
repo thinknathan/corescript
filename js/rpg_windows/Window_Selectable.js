@@ -572,3 +572,5 @@ class Window_Selectable extends Window_Base {
 		}
 	}
 }
+
+self.Window_Selectable = Window_Selectable;

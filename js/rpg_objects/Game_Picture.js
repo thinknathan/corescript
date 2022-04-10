@@ -168,3 +168,5 @@ class Game_Picture {
 		}
 	}
 }
+
+self.Game_Picture = Game_Picture;

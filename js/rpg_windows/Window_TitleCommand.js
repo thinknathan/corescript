@@ -54,3 +54,5 @@ class Window_TitleCommand extends Window_Command {
 }
 
 Window_TitleCommand._lastCommandSymbol = null;
+
+self.Window_TitleCommand = Window_TitleCommand;

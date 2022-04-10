@@ -149,3 +149,5 @@ WindowLayer.prototype.renderCanvas = PIXI.Container.prototype.renderCanvas;
  * @param {Number} index The index to get the child from
  * @return {Object} The child that was removed
  */
+
+self.WindowLayer = WindowLayer;

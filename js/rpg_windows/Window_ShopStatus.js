@@ -151,3 +151,5 @@ class Window_ShopStatus extends Window_Base {
 		SoundManager.playCursor();
 	}
 }
+
+self.Window_ShopStatus = Window_ShopStatus;

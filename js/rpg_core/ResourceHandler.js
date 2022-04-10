@@ -52,3 +52,5 @@ class ResourceHandler {
 
 ResourceHandler._reloaders = [];
 ResourceHandler._defaultRetryInterval = [500, 1000, 3000];
+
+self.ResourceHandler = ResourceHandler;

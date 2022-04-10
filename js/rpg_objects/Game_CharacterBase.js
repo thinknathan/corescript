@@ -600,3 +600,5 @@ Object.defineProperties(Game_CharacterBase.prototype, {
 		configurable: true
 	}
 });
+
+self.Game_CharacterBase = Game_CharacterBase;

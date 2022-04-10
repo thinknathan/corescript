@@ -63,3 +63,5 @@ class Window_EquipItem extends Window_ItemList {
 
 	playOkSound() {}
 }
+
+self.Window_EquipItem = Window_EquipItem;

@@ -87,3 +87,5 @@ class Window_EquipStatus extends Window_Base {
 		this.drawText(newValue, x, y, 48, 'right');
 	}
 }
+
+self.Window_EquipStatus = Window_EquipStatus;

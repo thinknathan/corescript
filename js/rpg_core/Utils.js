@@ -260,3 +260,5 @@ Utils._mobileSafari = null;
 Utils._androidChrome = null;
 Utils._id = 1;
 Utils._supportPassiveEvent = null;
+
+self.Utils = Utils;

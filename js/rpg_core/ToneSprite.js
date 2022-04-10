@@ -106,3 +106,5 @@ class ToneSprite extends PIXI.Container {
 		// Not supported
 	}
 }
+
+self.ToneSprite = ToneSprite;

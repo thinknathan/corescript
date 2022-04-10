@@ -91,3 +91,5 @@ class Sprite_Picture extends Sprite {
 		this.bitmap = ImageManager.loadPicture(this._pictureName);
 	}
 }
+
+self.Sprite_Picture = Sprite_Picture;

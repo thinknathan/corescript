@@ -78,3 +78,5 @@ class Scene_Item extends Scene_ItemBase {
 		this._itemWindow.redrawCurrentItem();
 	}
 }
+
+self.Scene_Item = Scene_Item;

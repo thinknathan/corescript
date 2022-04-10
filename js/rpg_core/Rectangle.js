@@ -55,3 +55,5 @@ Rectangle.emptyRectangle = new Rectangle(0, 0, 0, 0);
  * @property height
  * @type Number
  */
+
+self.Rectangle = Rectangle;

@@ -325,3 +325,5 @@ Sprite_Actor.MOTIONS = {
 		loop: true
 	}
 };
+
+self.Sprite_Actor = Sprite_Actor;

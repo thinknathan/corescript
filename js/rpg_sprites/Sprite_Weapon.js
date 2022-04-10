@@ -78,3 +78,5 @@ class Sprite_Weapon extends Sprite_Base {
 		return this._weaponImageId > 0;
 	}
 }
+
+self.Sprite_Weapon = Sprite_Weapon;

@@ -67,3 +67,5 @@ class Sprite_StateOverlay extends Sprite_Base {
 		}
 	}
 }
+
+self.Sprite_StateOverlay = Sprite_StateOverlay;

@@ -112,3 +112,5 @@ class Game_Followers {
 			.some(follower => follower.pos(x, y), this);
 	}
 }
+
+self.Game_Followers = Game_Followers;

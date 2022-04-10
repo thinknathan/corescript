@@ -59,3 +59,5 @@ PluginManager._path = 'js/plugins/';
 PluginManager._scripts = [];
 PluginManager._errorUrls = [];
 PluginManager._parameters = {};
+
+self.PluginManager = PluginManager;

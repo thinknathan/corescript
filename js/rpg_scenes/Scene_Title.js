@@ -110,3 +110,5 @@ class Scene_Title extends Scene_Base {
 		AudioManager.stopMe();
 	}
 }
+
+self.Scene_Title = Scene_Title;

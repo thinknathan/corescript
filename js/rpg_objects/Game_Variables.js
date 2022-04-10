@@ -34,3 +34,5 @@ class Game_Variables {
 		$gameMap.requestRefresh();
 	}
 }
+
+self.Game_Variables = Game_Variables;

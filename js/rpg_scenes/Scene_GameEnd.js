@@ -40,3 +40,5 @@ class Scene_GameEnd extends Scene_MenuBase {
 		SceneManager.goto(Scene_Title);
 	}
 }
+
+self.Scene_GameEnd = Scene_GameEnd;

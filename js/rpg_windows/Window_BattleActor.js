@@ -36,3 +36,5 @@ class Window_BattleActor extends Window_BattleStatus {
 		return $gameParty.members()[this.index()];
 	}
 }
+
+self.Window_BattleActor = Window_BattleActor;

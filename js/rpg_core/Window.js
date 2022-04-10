@@ -716,3 +716,6 @@ class Window extends PIXI.Container {
 	 * @return {Object} The child that was removed
 	 */
 }
+
+self.WindowSkinCache = WindowSkinCache;
+self.Window = Window;

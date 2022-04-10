@@ -41,3 +41,5 @@ class ProgressWatcher {
 		}
 	}
 }
+
+self.ProgressWatcher = ProgressWatcher;

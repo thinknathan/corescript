@@ -22,3 +22,5 @@ class Game_Actors {
 		return null;
 	}
 }
+
+self.Game_Actors = Game_Actors;

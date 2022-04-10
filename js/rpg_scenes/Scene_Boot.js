@@ -85,3 +85,5 @@ class Scene_Boot extends Scene_Base {
 		ImageManager.reserveSystem('ButtonSet');
 	}
 }
+
+self.Scene_Boot = Scene_Boot;

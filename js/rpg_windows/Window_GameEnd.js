@@ -30,3 +30,5 @@ class Window_GameEnd extends Window_Command {
 		this.addCommand(TextManager.cancel, 'cancel');
 	}
 }
+
+self.Window_GameEnd = Window_GameEnd;

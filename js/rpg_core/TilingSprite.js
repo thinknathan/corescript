@@ -204,3 +204,5 @@ TilingSprite.prototype._renderCanvas_PIXI = PIXI.TilingSprite.prototype._renderC
 TilingSprite.prototype._render_PIXI = PIXI.TilingSprite.prototype._render;
 
 TilingSprite.prototype.updateTransformTS = PIXI.TilingSprite.prototype.updateTransform;
+
+self.TilingSprite = TilingSprite;

@@ -44,3 +44,5 @@ class Window_Gold extends Window_Base {
 		super.open();
 	}
 }
+
+self.Window_Gold = Window_Gold;

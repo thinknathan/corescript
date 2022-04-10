@@ -131,3 +131,5 @@ class Window_ChoiceList extends Window_Command {
 		this.close();
 	}
 }
+
+self.Window_ChoiceList = Window_ChoiceList;

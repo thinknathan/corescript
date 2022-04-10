@@ -579,3 +579,5 @@ Sprite._counter = 0;
 
 Sprite.prototype._renderCanvas_PIXI = PIXI.Sprite.prototype._renderCanvas;
 Sprite.prototype._render_PIXI = PIXI.Sprite.prototype._render;
+
+self.Sprite = Sprite;

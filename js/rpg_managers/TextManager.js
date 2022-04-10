@@ -128,3 +128,5 @@ Object.defineProperties(TextManager, {
 	buffRemove: TextManager.getter('message', 'buffRemove'),
 	actionFailure: TextManager.getter('message', 'actionFailure'),
 });
+
+self.TextManager = TextManager;

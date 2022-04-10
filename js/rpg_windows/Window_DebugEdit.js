@@ -120,3 +120,5 @@ class Window_DebugEdit extends Window_Selectable {
 		}
 	}
 }
+
+self.Window_DebugEdit = Window_DebugEdit;

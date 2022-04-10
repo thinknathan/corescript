@@ -394,3 +394,5 @@ PIXI.tilemap.Constant.SCALE_MODE = PIXI.SCALE_MODES.NEAREST;
 PIXI.tilemap.Constant.DO_CLEAR = true;
 PIXI.tilemap.Constant.boundCountPerBuffer = 4;
 PIXI.tilemap.Constant.maxTextures = 4;
+
+self.ShaderTilemap = ShaderTilemap;

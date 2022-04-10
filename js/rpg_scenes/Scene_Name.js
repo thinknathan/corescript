@@ -46,3 +46,5 @@ class Scene_Name extends Scene_MenuBase {
 		this.popScene();
 	}
 }
+
+self.Scene_Name = Scene_Name;

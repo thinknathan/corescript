@@ -187,3 +187,5 @@ class Game_Message {
 		return this._texts.join('\n');
 	}
 }
+
+self.Game_Message = Game_Message;

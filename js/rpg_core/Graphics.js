@@ -1089,22 +1089,271 @@ class Graphics {
 			console.error(e);
 		}
 	}
+
+	static _setupCssFontLoading() {
+		if (Graphics._cssFontLoading) {
+			document.fonts.ready.then(fonts => {
+					Graphics._fontLoaded = fonts;
+				})
+				.catch(error => {
+					SceneManager.onError(error);
+				});
+		}
+	}
+
+	/**
+	 * Marks the beginning of each frame for FPSMeter.
+	 *
+	 * @static
+	 * @method tickStart
+	 */
+	static tickStart() {};
+
+	/**
+	 * Marks the end of each frame for FPSMeter.
+	 *
+	 * @static
+	 * @method tickEnd
+	 */
+	static tickEnd() {};
+
+	/**
+	 * Checks whether the current browser supports WebGL.
+	 *
+	 * @static
+	 * @method hasWebGL
+	 * @return {Boolean} True if the current browser supports WebGL.
+	 */
+	static hasWebGL() {
+		if (typeof Graphics._canWebGL === "boolean") {
+			return Graphics._canWebGL;
+		}
+		try {
+			const canvas = document.createElement('canvas');
+			const result = !!(canvas.getContext('webgl') || canvas.getContext('experimental-webgl'));
+			Graphics._canWebGL = result;
+			return result;
+		} catch (e) {
+			Graphics._canWebGL = false;
+			return false;
+		}
+	};
+
+	/**
+	 * Calls pixi.js garbage collector
+	 */
+	static callGC() {
+		if (Graphics.isWebGL()) {
+			Graphics._renderer.textureGC.run();
+		}
+	}
+
+	/**
+	 * @static
+	 * @method _makeErrorHtml
+	 * @param {String} name
+	 * @param {String} message
+	 * @return {String}
+	 * @private
+	 */
+	static _makeErrorHtml(name, message) {
+		return `<font color="yellow"><b>${name}</b></font><br><font color="white">${decodeURIComponent(message)}</font><br>`;
+	}
+
+	/**
+	 * @static
+	 * @method _defaultStretchMode
+	 * @private
+	 */
+	static _defaultStretchMode() {
+		return Utils.isNwjs() || Utils.isMobileDevice();
+	}
+
+	/**
+	 * @static
+	 * @method _modifyExistingElements
+	 * @private
+	 */
+	static _modifyExistingElements() {
+		const elements = document.getElementsByTagName('*');
+		for (let i = 0; i < elements.length; i++) {
+			if (elements[i].style.zIndex > 0) {
+				elements[i].style.zIndex = 0;
+			}
+		}
+	}
+
+	/**
+	 * @static
+	 * @method _formatEventInfo
+	 * @private
+	 */
+	static _formatEventInfo(error) {
+		switch (String(error.eventType)) {
+		case "map_event":
+			return "MapID: %1, MapEventID: %2, page: %3, line: %4".format(error.mapId, error.mapEventId, error.page, error.line);
+		case "common_event":
+			return "CommonEventID: %1, line: %2".format(error.commonEventId, error.line);
+		case "battle_event":
+			return "TroopID: %1, page: %2, line: %3".format(error.troopId, error.page, error.line);
+		case "test_event":
+			return "TestEvent, line: %1".format(error.line);
+		default:
+			return "No information";
+		}
+	}
+
+	/**
+	 * @static
+	 * @method _formatEventCommandInfo
+	 * @private
+	 */
+	static _formatEventCommandInfo({
+		eventCommand,
+		content
+	}) {
+		switch (String(eventCommand)) {
+		case "plugin_command":
+			return `◆Plugin Command: ${content}`;
+		case "script":
+			return `◆Script: ${content}`;
+		case "control_variables":
+			return `◆Control Variables: Script: ${content}`;
+		case "conditional_branch_script":
+			return `◆If: Script: ${content}`;
+		case "set_route_script":
+			return `◆Set Movement Route: ◇Script: ${content}`;
+		case "auto_route_script":
+			return `Autonomous Movement Custom Route: ◇Script: ${content}`;
+		case "other":
+		default:
+			return "";
+		}
+	}
+
+	/**
+	 * @static
+	 * @method _formatStackTrace
+	 * @private
+	 */
+	static _formatStackTrace({
+		stack
+	}) {
+		return decodeURIComponent((stack || '')
+			.replace(/file:.*js\//g, '')
+			.replace(/http:.*js\//g, '')
+			.replace(/https:.*js\//g, '')
+			.replace(/chrome-extension:.*js\//g, '')
+			.replace(/\n/g, '<br>'));
+	}
+
+	/**
+	 * @static
+	 * @method _createRenderer
+	 * @private
+	 */
+	static _createRenderer() {};
+
+	/**
+	 * @static
+	 * @method _createFontLoader
+	 * @param {String} name
+	 * @private
+	 */
+	static _createFontLoader(name) {
+		const div = document.createElement('div');
+		const text = document.createTextNode('.');
+		div.style.fontFamily = name;
+		div.style.fontSize = '0px';
+		div.style.color = 'transparent';
+		div.style.position = 'absolute';
+		div.style.margin = 'auto';
+		div.style.top = '0px';
+		div.style.left = '0px';
+		div.style.width = '1px';
+		div.style.height = '1px';
+		div.appendChild(text);
+		document.body.appendChild(div);
+	};
+
+	/**
+	 * @static
+	 * @method _disableTextSelection
+	 * @private
+	 */
+	static _disableTextSelection() {
+		const body = document.body;
+		body.style.userSelect = 'none';
+		body.style.webkitUserSelect = 'none';
+		body.style.msUserSelect = 'none';
+		body.style.mozUserSelect = 'none';
+	};
+
+	/**
+	 * @static
+	 * @method _disableContextMenu
+	 * @private
+	 */
+	static _disableContextMenu() {
+		const elements = document.body.getElementsByTagName('*');
+		const oncontextmenu = () => false;
+		for (let i = 0; i < elements.length; i++) {
+			elements[i].oncontextmenu = oncontextmenu;
+		}
+	};
+
+	/**
+	 * @static
+	 * @method _isFullScreen
+	 * @return {Boolean}
+	 * @private
+	 */
+	static _isFullScreen() {
+		return document.fullscreenElement ||
+			document.mozFullScreen ||
+			document.webkitFullscreenElement ||
+			document.msFullscreenElement;
+	}
+
+	/**
+	 * @static
+	 * @method _requestFullScreen
+	 * @private
+	 */
+	static _requestFullScreen() {
+		const element = document.body;
+		if (element.requestFullscreen) {
+			element.requestFullscreen();
+		} else if (element.mozRequestFullScreen) {
+			element.mozRequestFullScreen();
+		} else if (element.webkitRequestFullScreen) {
+			element.webkitRequestFullScreen(Element.ALLOW_KEYBOARD_INPUT);
+		} else if (element.msRequestFullscreen) {
+			element.msRequestFullscreen();
+		}
+	}
+
+	/**
+	 * @static
+	 * @method _cancelFullScreen
+	 * @private
+	 */
+	static _cancelFullScreen() {
+		if (document.exitFullscreen) {
+			document.exitFullscreen();
+		} else if (document.mozCancelFullScreen) {
+			document.mozCancelFullScreen();
+		} else if (document.webkitCancelFullScreen) {
+			document.webkitCancelFullScreen();
+		} else if (document.msExitFullscreen) {
+			document.msExitFullscreen();
+		}
+	}
 }
 
 Graphics._cssFontLoading = document.fonts && document.fonts.ready && document.fonts.ready.then;
 Graphics._fontLoaded = null;
 Graphics._videoVolume = 1;
-
-Graphics._setupCssFontLoading = () => {
-	if (Graphics._cssFontLoading) {
-		document.fonts.ready.then(fonts => {
-				Graphics._fontLoaded = fonts;
-			})
-			.catch(error => {
-				SceneManager.onError(error);
-			});
-	}
-};
 
 /**
  * Expose access to PIXI.Application object.
@@ -1183,54 +1432,7 @@ Graphics.BLEND_MULTIPLY = 2;
  */
 Graphics.BLEND_SCREEN = 3;
 
-/**
- * Marks the beginning of each frame for FPSMeter.
- *
- * @static
- * @method tickStart
- */
-Graphics.tickStart = () => {};
-
-/**
- * Marks the end of each frame for FPSMeter.
- *
- * @static
- * @method tickEnd
- */
-Graphics.tickEnd = () => {};
-
 Graphics._canWebGL = null;
-/**
- * Checks whether the current browser supports WebGL.
- *
- * @static
- * @method hasWebGL
- * @return {Boolean} True if the current browser supports WebGL.
- */
-Graphics.hasWebGL = () => {
-	if (typeof Graphics._canWebGL === "boolean") {
-		return Graphics._canWebGL;
-	}
-	try {
-		const canvas = document.createElement('canvas');
-		const result = !!(canvas.getContext('webgl') || canvas.getContext('experimental-webgl'));
-		Graphics._canWebGL = result;
-		return result;
-	} catch (e) {
-		Graphics._canWebGL = false;
-		return false;
-	}
-};
-
-/**
- * Calls pixi.js garbage collector
- */
-Graphics.callGC = () => {
-	if (Graphics.isWebGL()) {
-		Graphics._renderer.textureGC.run();
-	}
-};
-
 
 /**
  * The width of the game screen.
@@ -1326,196 +1528,4 @@ Object.defineProperty(Graphics, 'scale', {
 	configurable: true
 });
 
-/**
- * @static
- * @method _makeErrorHtml
- * @param {String} name
- * @param {String} message
- * @return {String}
- * @private
- */
-Graphics._makeErrorHtml = (name, message) => `<font color="yellow"><b>${name}</b></font><br><font color="white">${decodeURIComponent(message)}</font><br>`;
-
-/**
- * @static
- * @method _defaultStretchMode
- * @private
- */
-Graphics._defaultStretchMode = () => Utils.isNwjs() || Utils.isMobileDevice();
-
-/**
- * @static
- * @method _modifyExistingElements
- * @private
- */
-Graphics._modifyExistingElements = () => {
-	const elements = document.getElementsByTagName('*');
-	for (let i = 0; i < elements.length; i++) {
-		if (elements[i].style.zIndex > 0) {
-			elements[i].style.zIndex = 0;
-		}
-	}
-};
-
-/**
- * @static
- * @method _formatEventInfo
- * @private
- */
-Graphics._formatEventInfo = error => {
-	switch (String(error.eventType)) {
-	case "map_event":
-		return "MapID: %1, MapEventID: %2, page: %3, line: %4".format(error.mapId, error.mapEventId, error.page, error.line);
-	case "common_event":
-		return "CommonEventID: %1, line: %2".format(error.commonEventId, error.line);
-	case "battle_event":
-		return "TroopID: %1, page: %2, line: %3".format(error.troopId, error.page, error.line);
-	case "test_event":
-		return "TestEvent, line: %1".format(error.line);
-	default:
-		return "No information";
-	}
-};
-
-/**
- * @static
- * @method _formatEventCommandInfo
- * @private
- */
-Graphics._formatEventCommandInfo = ({
-	eventCommand,
-	content
-}) => {
-	switch (String(eventCommand)) {
-	case "plugin_command":
-		return `◆Plugin Command: ${content}`;
-	case "script":
-		return `◆Script: ${content}`;
-	case "control_variables":
-		return `◆Control Variables: Script: ${content}`;
-	case "conditional_branch_script":
-		return `◆If: Script: ${content}`;
-	case "set_route_script":
-		return `◆Set Movement Route: ◇Script: ${content}`;
-	case "auto_route_script":
-		return `Autonomous Movement Custom Route: ◇Script: ${content}`;
-	case "other":
-	default:
-		return "";
-	}
-};
-
-/**
- * @static
- * @method _formatStackTrace
- * @private
- */
-Graphics._formatStackTrace = ({
-	stack
-}) => decodeURIComponent((stack || '')
-	.replace(/file:.*js\//g, '')
-	.replace(/http:.*js\//g, '')
-	.replace(/https:.*js\//g, '')
-	.replace(/chrome-extension:.*js\//g, '')
-	.replace(/\n/g, '<br>'));
-
-/**
- * @static
- * @method _createRenderer
- * @private
- */
-Graphics._createRenderer = () => {};
-
-/**
- * @static
- * @method _createFontLoader
- * @param {String} name
- * @private
- */
-Graphics._createFontLoader = name => {
-	const div = document.createElement('div');
-	const text = document.createTextNode('.');
-	div.style.fontFamily = name;
-	div.style.fontSize = '0px';
-	div.style.color = 'transparent';
-	div.style.position = 'absolute';
-	div.style.margin = 'auto';
-	div.style.top = '0px';
-	div.style.left = '0px';
-	div.style.width = '1px';
-	div.style.height = '1px';
-	div.appendChild(text);
-	document.body.appendChild(div);
-};
-
-/**
- * @static
- * @method _disableTextSelection
- * @private
- */
-Graphics._disableTextSelection = () => {
-	const body = document.body;
-	body.style.userSelect = 'none';
-	body.style.webkitUserSelect = 'none';
-	body.style.msUserSelect = 'none';
-	body.style.mozUserSelect = 'none';
-};
-
-/**
- * @static
- * @method _disableContextMenu
- * @private
- */
-Graphics._disableContextMenu = () => {
-	const elements = document.body.getElementsByTagName('*');
-	const oncontextmenu = () => false;
-	for (let i = 0; i < elements.length; i++) {
-		elements[i].oncontextmenu = oncontextmenu;
-	}
-};
-
-/**
- * @static
- * @method _isFullScreen
- * @return {Boolean}
- * @private
- */
-Graphics._isFullScreen = () => document.fullscreenElement ||
-	document.mozFullScreen ||
-	document.webkitFullscreenElement ||
-	document.msFullscreenElement;
-
-/**
- * @static
- * @method _requestFullScreen
- * @private
- */
-Graphics._requestFullScreen = () => {
-	const element = document.body;
-	if (element.requestFullscreen) {
-		element.requestFullscreen();
-	} else if (element.mozRequestFullScreen) {
-		element.mozRequestFullScreen();
-	} else if (element.webkitRequestFullScreen) {
-		element.webkitRequestFullScreen(Element.ALLOW_KEYBOARD_INPUT);
-	} else if (element.msRequestFullscreen) {
-		element.msRequestFullscreen();
-	}
-};
-
-/**
- * @static
- * @method _cancelFullScreen
- * @private
- */
-Graphics._cancelFullScreen = () => {
-	if (document.exitFullscreen) {
-		document.exitFullscreen();
-	} else if (document.mozCancelFullScreen) {
-		document.mozCancelFullScreen();
-	} else if (document.webkitCancelFullScreen) {
-		document.webkitCancelFullScreen();
-	} else if (document.msExitFullscreen) {
-		document.msExitFullscreen();
-	}
-};
+self.Graphics = Graphics;

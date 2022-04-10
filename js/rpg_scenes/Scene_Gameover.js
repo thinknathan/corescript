@@ -61,3 +61,5 @@ class Scene_Gameover extends Scene_Base {
 		SceneManager.goto(Scene_Title);
 	}
 }
+
+self.Scene_Gameover = Scene_Gameover;

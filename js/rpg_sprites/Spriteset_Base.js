@@ -140,3 +140,5 @@ class Spriteset_Base extends Sprite {
 		this.x += Math.round(screen.shake());
 	}
 }
+
+self.Spriteset_Base = Spriteset_Base;

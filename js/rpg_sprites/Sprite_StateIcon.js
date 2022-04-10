@@ -75,3 +75,5 @@ class Sprite_StateIcon extends Sprite {
 
 Sprite_StateIcon._iconWidth = 32;
 Sprite_StateIcon._iconHeight = 32;
+
+self.Sprite_StateIcon = Sprite_StateIcon;

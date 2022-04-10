@@ -467,3 +467,5 @@ Game_Party.ABILITY_CANCEL_SURPRISE = 2;
 Game_Party.ABILITY_RAISE_PREEMPTIVE = 3;
 Game_Party.ABILITY_GOLD_DOUBLE = 4;
 Game_Party.ABILITY_DROP_ITEM_DOUBLE = 5;
+
+self.Game_Party = Game_Party;

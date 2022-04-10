@@ -233,3 +233,5 @@ class Game_Vehicle extends Game_Character {
 		return true;
 	}
 }
+
+self.Game_Vehicle = Game_Vehicle;

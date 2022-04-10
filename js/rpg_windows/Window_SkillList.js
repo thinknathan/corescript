@@ -119,3 +119,5 @@ class Window_SkillList extends Window_Selectable {
 		this.drawAllItems();
 	}
 }
+
+self.Window_SkillList = Window_SkillList;

@@ -485,3 +485,5 @@ Input._makeNumpadDirection = (x, y) => {
  * @private
  */
 Input._isEscapeCompatible = keyName => keyName === 'cancel' || keyName === 'menu';
+
+self.Input = Input;

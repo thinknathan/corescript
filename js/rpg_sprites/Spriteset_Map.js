@@ -179,3 +179,5 @@ class Spriteset_Map extends Spriteset_Base {
 		this._weather.origin.y = $gameMap.displayY() * $gameMap.tileHeight();
 	}
 }
+
+self.Spriteset_Map = Spriteset_Map;

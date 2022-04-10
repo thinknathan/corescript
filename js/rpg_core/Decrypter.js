@@ -104,3 +104,5 @@ Decrypter.extToEncryptExt = url => {
 
 	return url.slice(0, url.lastIndexOf(ext) - 1) + encryptedExt;
 };
+
+self.Decrypter = Decrypter;

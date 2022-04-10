@@ -125,3 +125,5 @@ class Window_Status extends Window_Selectable {
 		return 6;
 	}
 }
+
+self.Window_Status = Window_Status;

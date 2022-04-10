@@ -319,3 +319,5 @@ class Scene_Base extends Stage {
 		return this.fadeSpeed() * 2;
 	}
 }
+
+self.Scene_Base = Scene_Base;

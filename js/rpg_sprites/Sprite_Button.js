@@ -106,3 +106,5 @@ class Sprite_Button extends Sprite {
 		return y;
 	}
 }
+
+self.Sprite_Button = Sprite_Button;

@@ -283,3 +283,5 @@ class Spriteset_Battle extends Spriteset_Base {
 		return this.isAnimationPlaying() || this.isAnyoneMoving();
 	}
 }
+
+self.Spriteset_Battle = Spriteset_Battle;

@@ -306,3 +306,5 @@ class Game_Enemy extends Game_Battler {
 		this.setActionState('waiting');
 	}
 }
+
+self.Game_Enemy = Game_Enemy;

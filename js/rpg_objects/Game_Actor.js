@@ -929,3 +929,5 @@ class Game_Actor extends Game_Battler {
 		return Game_BattlerBase.prototype.meetsUsableItemConditions.call(this, item);
 	}
 }
+
+self.Game_Actor = Game_Actor;

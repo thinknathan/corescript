@@ -131,3 +131,5 @@ class Window_MenuCommand extends Window_Command {
 }
 
 Window_MenuCommand._lastCommandSymbol = null;
+
+self.Window_MenuCommand = Window_MenuCommand;

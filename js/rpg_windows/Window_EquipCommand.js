@@ -28,3 +28,5 @@ class Window_EquipCommand extends Window_HorzCommand {
 		this.addCommand(TextManager.clear, 'clear');
 	}
 }
+
+self.Window_EquipCommand = Window_EquipCommand;

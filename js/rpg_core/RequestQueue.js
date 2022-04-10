@@ -43,3 +43,5 @@ class RequestQueue {
 		this._queue.splice(0);
 	}
 }
+
+self.RequestQueue = RequestQueue;

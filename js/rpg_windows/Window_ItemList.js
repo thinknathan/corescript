@@ -116,3 +116,5 @@ class Window_ItemList extends Window_Selectable {
 		this.drawAllItems();
 	}
 }
+
+self.Window_ItemList = Window_ItemList;

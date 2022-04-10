@@ -246,3 +246,5 @@ class StorageManager {
 		}
 	}
 }
+
+self.StorageManager = StorageManager;

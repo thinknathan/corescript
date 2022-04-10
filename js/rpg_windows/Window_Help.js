@@ -36,3 +36,5 @@ class Window_Help extends Window_Base {
 		this.drawTextEx(this._text, this.textPadding(), 0);
 	}
 }
+
+self.Window_Help = Window_Help;

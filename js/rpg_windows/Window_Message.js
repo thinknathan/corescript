@@ -340,3 +340,5 @@ class Window_Message extends Window_Base {
 		this.pause = true;
 	}
 }
+
+self.Window_Message = Window_Message;

@@ -117,3 +117,5 @@ class Window_MenuStatus extends Window_Selectable {
 		this.redrawItem(lastPendingIndex);
 	}
 }
+
+self.Window_MenuStatus = Window_MenuStatus;

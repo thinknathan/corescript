@@ -670,3 +670,5 @@ class BattleManager {
 		$gameMessage.add(`\\.${TextManager.escapeFailure}`);
 	}
 }
+
+self.BattleManager = BattleManager;

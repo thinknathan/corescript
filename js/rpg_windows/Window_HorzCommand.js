@@ -25,3 +25,5 @@ class Window_HorzCommand extends Window_Command {
 		return 'center';
 	}
 }
+
+self.Window_HorzCommand = Window_HorzCommand;

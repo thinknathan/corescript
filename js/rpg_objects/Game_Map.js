@@ -794,3 +794,5 @@ class Game_Map {
 			.some(event => event.isStarting());
 	}
 }
+
+self.Game_Map = Game_Map;

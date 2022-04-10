@@ -57,3 +57,5 @@ class Scene_MenuBase extends Scene_Base {
 
 	onActorChange() {}
 }
+
+self.Scene_MenuBase = Scene_MenuBase;

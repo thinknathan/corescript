@@ -197,3 +197,5 @@ class Weather extends PIXI.Container {
 		sprite.opacity = 160 + Math.randomInt(60);
 	}
 }
+
+self.Weather = Weather;

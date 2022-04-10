@@ -255,3 +255,5 @@ class Sprite_Enemy extends Sprite_Battler {
 		return -8;
 	}
 }
+
+self.Sprite_Enemy = Sprite_Enemy;

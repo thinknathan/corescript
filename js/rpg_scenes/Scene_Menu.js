@@ -125,3 +125,5 @@ class Scene_Menu extends Scene_MenuBase {
 		}
 	}
 }
+
+self.Scene_Menu = Scene_Menu;

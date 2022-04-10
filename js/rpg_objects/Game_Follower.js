@@ -61,3 +61,5 @@ class Game_Follower extends Game_Character {
 		this.setMoveSpeed($gamePlayer.realMoveSpeed());
 	}
 }
+
+self.Game_Follower = Game_Follower;

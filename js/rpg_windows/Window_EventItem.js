@@ -67,3 +67,5 @@ class Window_EventItem extends Window_ItemList {
 		this.close();
 	}
 }
+
+self.Window_EventItem = Window_EventItem;

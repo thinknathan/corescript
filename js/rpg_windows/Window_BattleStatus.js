@@ -98,3 +98,5 @@ class Window_BattleStatus extends Window_Selectable {
 		this.drawActorMp(actor, x + 216, y, 114);
 	}
 }
+
+self.Window_BattleStatus = Window_BattleStatus;

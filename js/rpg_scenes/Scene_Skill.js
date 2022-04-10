@@ -103,3 +103,5 @@ class Scene_Skill extends Scene_ItemBase {
 		this._skillTypeWindow.activate();
 	}
 }
+
+self.Scene_Skill = Scene_Skill;

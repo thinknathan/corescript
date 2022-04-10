@@ -259,3 +259,5 @@ class Scene_Shop extends Scene_MenuBase {
 		return Math.floor(this._item.price / 2);
 	}
 }
+
+self.Scene_Shop = Scene_Shop;

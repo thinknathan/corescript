@@ -90,3 +90,5 @@ class Window_ActorCommand extends Window_Command {
 		}
 	}
 }
+
+self.Window_ActorCommand = Window_ActorCommand;

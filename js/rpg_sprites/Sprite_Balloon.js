@@ -68,3 +68,5 @@ class Sprite_Balloon extends Sprite_Base {
 		return this._duration > 0;
 	}
 }
+
+self.Sprite_Balloon = Sprite_Balloon;

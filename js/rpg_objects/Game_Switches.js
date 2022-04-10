@@ -31,3 +31,5 @@ class Game_Switches {
 		$gameMap.requestRefresh();
 	}
 }
+
+self.Game_Switches = Game_Switches;

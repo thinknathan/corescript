@@ -75,3 +75,5 @@ class Scene_Debug extends Scene_MenuBase {
 		}
 	}
 }
+
+self.Scene_Debug = Scene_Debug;

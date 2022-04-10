@@ -463,3 +463,5 @@ class BitmapPIXI extends PIXI.Container {
 		return circle;
 	}
 }
+
+self.BitmapPIXI = BitmapPIXI;

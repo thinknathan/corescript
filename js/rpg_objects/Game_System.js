@@ -217,3 +217,5 @@ class Game_System {
 		this._walkingBgm = $dataMap.bgm;
 	}
 }
+
+self.Game_System = Game_System;

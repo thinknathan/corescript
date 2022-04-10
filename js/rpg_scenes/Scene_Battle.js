@@ -407,3 +407,5 @@ class Scene_Battle extends Scene_Base {
 		this._statusWindow.deselect();
 	}
 }
+
+self.Scene_Battle = Scene_Battle;

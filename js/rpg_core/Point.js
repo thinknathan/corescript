@@ -31,3 +31,5 @@ class Point extends PIXI.Point {
 	 * @type Number
 	 */
 }
+
+self.Point = Point;

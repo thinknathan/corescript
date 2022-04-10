@@ -43,3 +43,5 @@ class Game_Timer {
 		BattleManager.abort();
 	}
 }
+
+self.Game_Timer = Game_Timer;

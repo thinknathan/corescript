@@ -360,3 +360,5 @@ class Game_Event extends Game_Character {
 		};
 	}
 }
+
+self.Game_Event = Game_Event;

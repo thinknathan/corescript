@@ -50,3 +50,5 @@ class Scene_Save extends Scene_File {
 		this.activateListWindow();
 	}
 }
+
+self.Scene_Save = Scene_Save;

@@ -962,3 +962,5 @@ Tilemap.WATERFALL_AUTOTILE_TABLE = [
  * @param {Number} index The index to get the child from
  * @return {Object} The child that was removed
  */
+
+self.Tilemap = Tilemap;

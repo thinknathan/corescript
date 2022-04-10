@@ -17,3 +17,5 @@ class Window_ShopSell extends Window_ItemList {
 		return item && item.price > 0;
 	}
 }
+
+self.Window_ShopSell = Window_ShopSell;

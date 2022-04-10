@@ -549,3 +549,5 @@ class Game_Battler extends Game_BattlerBase {
 	performSubstitute(target) {}
 	performCollapse() {}
 }
+
+self.Game_Battler = Game_Battler;

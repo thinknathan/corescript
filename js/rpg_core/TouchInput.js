@@ -524,3 +524,5 @@ Object.defineProperty(TouchInput, 'date', {
  * @private
  */
 TouchInput._onMiddleButtonDown = event => {};
+
+self.TouchInput = TouchInput;

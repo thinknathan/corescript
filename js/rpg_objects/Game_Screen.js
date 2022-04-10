@@ -314,3 +314,5 @@ class Game_Screen {
 		this._pictures[realPictureId] = null;
 	}
 }
+
+self.Game_Screen = Game_Screen;

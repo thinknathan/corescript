@@ -718,3 +718,5 @@ Window_Base._iconWidth = 32;
 Window_Base._iconHeight = 32;
 Window_Base._faceWidth = 144;
 Window_Base._faceHeight = 144;
+
+self.Window_Base = Window_Base;

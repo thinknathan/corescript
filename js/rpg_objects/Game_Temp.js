@@ -61,3 +61,5 @@ class Game_Temp {
 		return this._destinationY;
 	}
 }
+
+self.Game_Temp = Game_Temp;

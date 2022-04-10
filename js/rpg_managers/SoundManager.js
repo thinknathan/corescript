@@ -123,3 +123,5 @@ class SoundManager {
 		}
 	}
 }
+
+self.SoundManager = SoundManager;
