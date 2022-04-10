@@ -5,7 +5,7 @@
 
 This fork introduces opinionated changes and is not necessarily a drop-in replacement for the default RPG Maker MV scripts.
 
-- Updated to use PIXI v6 and PIXI-Tilemap v2.1.4
+- Updated to use PIXI v6.x and PIXI-Tilemap v2.1.4
 - Uses PIXI equivalents whenever possible instead of the Bitmap object
 - Uses PIXI.BitmapText for fast, memory-efficient text
 - Allows windows to overlap each other
@@ -15,32 +15,14 @@ This fork introduces opinionated changes and is not necessarily a drop-in replac
 - REMOVED: Gradients in gauges
 - NOTE: "Window Color" in the System menu of the editor is now applied differently than the default scripts. The default value of (0, 0, 0) is black. Using pure white (255, 255, 255) will disable it.
 
-# Performance Benchmarks
+## Upgrading your project to this fork
+Download main.js from */dist/main.js*
 
-## Running the drawText command inside Window_Base.drawActorName x1000 times (smaller is better)
+Replace *js/main.js* in your project with the one you downloaded.
 
-### Vanilla RPG Maker (PixiJS 4.5.4)
-- totalMilliseconds: 12.415000004693866
+Replace your *js/libs* folder with the *js/libs* folder from this repo.
 
-### This branch (PixiJS 5.3.8)
-- totalMilliseconds: 3.109999932348728
-
-
-## Running the Window._refreshAllParts function on the title screen x1000 times (smaller is better)
-
-### Vanilla RPG Maker (PixiJS 4.5.4)
-- 1: totalMilliseconds: 68.654999951832
-- 2: totalMilliseconds: 142.04500010237098
-- 3: totalMilliseconds: 104.53000001143664
-
-### This branch (PixiJS 5.3.8)
-- 1: totalMilliseconds: 5.775000085122883
-- 2: totalMilliseconds: 19.564999965950847
-- 3: totalMilliseconds: 7.569999899715185
-
-
-
-
+Open your *index.html* and delete script tags that load rpg_core.js rpg_managers.js rpg_objects.js rpg_scenes.js rpg_sprites.js rpg_windows.js. They are no longer necessary.
 
 ## Introduction
 
@@ -53,67 +35,26 @@ This project is a project aimed at improving "RPG Maker MV CoreScript" better by
 The core script developed by this project is widely distributed to RPG Maker users through KADOKAWA.
 The RPGMaker MV community is centered around plugins. Therefore, Ver1 series is developed while minimizing destructive change.
 
-## How to join
-
-- This project uses English as the main language.
-- The workflow is Github Flow. When sending PR, prepare a new feature branch and send it to the master branch of this repository.http://scottchacon.com/2011/08/31/github-flow.html
-- This project uses ES5. It is for compatibility with plugins.
-- Please apply for development slack from this form. It will usually be invited within 48 hours.https://docs.google.com/forms/d/1T5wrKeOAfFBNytHrby4HMDzShtOMl2s7ayvjGwBrbNY/edit
-- This project is just started. The rules of development are decided through discussion.
-
-## Roadmap
-
-Development will be done according to the roadmap. Currently we are developing ver 1.2
-
-### ver 1.0
-
-Goal: Publish community development version
-- Split core script file
-- Put on github
-- Publish roadmap
-
-### ver 1.1
-
-Goal: Fix a fatal bug
-- Fix memory related problems
-- Preceding reading of image material
-- Responding to sound problems of google Chrome
-- Fixed bugs already known
-
-
-### ver 1.2
-
-Goal: Responding to problems where games can not continue
-- Retry at load error
-- Development of a standard plugin for options
-- Volume Change API
-
-### ver 1.3
-
-Goal: Assist in game development
-- AutoSave
-- Simple conflict check for plugins
-- Guidelines and sample writing for plugins
-- Refined bug report
-
 ## Constitution
-The core script is finally output to mainly 6 files.
+The core script is split into 6 sections.
 <dl>
-    <dt>rpg_core.js</dt>
+    <dt>rpg_core</dt>
     <dd>Wrapper classes of Pixi.js and base classes such as audio and input processing.</dd>
-    <dt>rpg_managers.js</dt>
+    <dt>rpg_managers</dt>
     <dd>Static classes named XxxManager that manage the game overall.</dd>
-    <dt>rpg_objects.js</dt>
+    <dt>rpg_objects</dt>
     <dd>Classes named Game_Xxx dealing with game data (many are saved).</dd>
-    <dt>rpg_scenes.js</dt>
+    <dt>rpg_scenes</dt>
     <dd>Classes named Scene_Xxx in which the scene is defined.</dd>
-    <dt>rpg_sprites.js</dt>
+    <dt>rpg_sprites</dt>
     <dd>Classes named Sprite_Xxx related to image display and processing.</dd>
-    <dt>rpg_windows.js</dt>
+    <dt>rpg_windows</dt>
     <dd>Classes named Window_Xxx handling window display and input.</dd>
 </dl>
 
 In addition, a plugin list is defined in *plugins.js*, and *main.js* launches the game.
+
+Each part of the engine can loaded as a JS module, or you can use the compiled *dist/main.js* that includes the full engine.
 
 ## Global variables
 Variables named `$dataXxx` are read from JSON in the *data* folder.
