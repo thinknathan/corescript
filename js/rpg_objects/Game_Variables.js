@@ -35,4 +35,4 @@ class Game_Variables {
 	}
 }
 
-self.Game_Variables = Game_Variables;
+export default Game_Variables;

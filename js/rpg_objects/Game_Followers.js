@@ -113,4 +113,4 @@ class Game_Followers {
 	}
 }
 
-self.Game_Followers = Game_Followers;
+export default Game_Followers;

@@ -1,3 +1,5 @@
+import Window_Command from "./Window_Command.js";
+
 //-----------------------------------------------------------------------------
 // Window_Options
 //
@@ -144,4 +146,4 @@ class Window_Options extends Window_Command {
 	}
 }
 
-self.Window_Options = Window_Options;
+export default Window_Options;

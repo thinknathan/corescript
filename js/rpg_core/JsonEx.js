@@ -141,4 +141,4 @@ JsonEx.maxDepth = 100;
 
 JsonEx._id = 1;
 
-self.JsonEx = JsonEx;
+export default JsonEx;

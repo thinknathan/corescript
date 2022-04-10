@@ -1,3 +1,5 @@
+import ResourceHandler from "./ResourceHandler.js";
+
 //-----------------------------------------------------------------------------
 /**
  * The audio object of Web Audio API.
@@ -787,7 +789,7 @@ class WebAudio {
 	}
 }
 
-WebAudio._standAlone = ((top => !top.ResourceHandler))(this);
+WebAudio._standAlone = (() => !ResourceHandler)(this);
 
 WebAudio._masterVolume = 1;
 WebAudio._context = null;
@@ -795,4 +797,4 @@ WebAudio._masterGainNode = null;
 WebAudio._initialized = false;
 WebAudio._unlocked = false;
 
-self.WebAudio = WebAudio;
+export default WebAudio;

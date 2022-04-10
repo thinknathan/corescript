@@ -1,3 +1,5 @@
+import Window_Base from "./Window_Base.js";
+
 //-----------------------------------------------------------------------------
 // Window_Help
 //
@@ -37,4 +39,4 @@ class Window_Help extends Window_Base {
 	}
 }
 
-self.Window_Help = Window_Help;
+export default Window_Help;

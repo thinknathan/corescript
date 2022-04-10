@@ -60,4 +60,4 @@ PluginManager._scripts = [];
 PluginManager._errorUrls = [];
 PluginManager._parameters = {};
 
-self.PluginManager = PluginManager;
+export default PluginManager;

@@ -1,3 +1,5 @@
+import Window_Base from "./Window_Base.js";
+
 //-----------------------------------------------------------------------------
 // Window_Gold
 //
@@ -45,4 +47,4 @@ class Window_Gold extends Window_Base {
 	}
 }
 
-self.Window_Gold = Window_Gold;
+export default Window_Gold;

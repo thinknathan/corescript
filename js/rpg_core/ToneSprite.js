@@ -107,4 +107,4 @@ class ToneSprite extends PIXI.Container {
 	}
 }
 
-self.ToneSprite = ToneSprite;
+export default ToneSprite;

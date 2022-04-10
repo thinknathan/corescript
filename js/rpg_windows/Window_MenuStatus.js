@@ -1,3 +1,5 @@
+import Window_Selectable from "./Window_Selectable.js";
+
 //-----------------------------------------------------------------------------
 // Window_MenuStatus
 //
@@ -118,4 +120,4 @@ class Window_MenuStatus extends Window_Selectable {
 	}
 }
 
-self.Window_MenuStatus = Window_MenuStatus;
+export default Window_MenuStatus;

@@ -205,4 +205,4 @@ TilingSprite.prototype._render_PIXI = PIXI.TilingSprite.prototype._render;
 
 TilingSprite.prototype.updateTransformTS = PIXI.TilingSprite.prototype.updateTransform;
 
-self.TilingSprite = TilingSprite;
+export default TilingSprite;

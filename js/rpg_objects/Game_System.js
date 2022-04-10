@@ -218,4 +218,4 @@ class Game_System {
 	}
 }
 
-self.Game_System = Game_System;
+export default Game_System;

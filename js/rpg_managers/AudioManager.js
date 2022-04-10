@@ -438,4 +438,4 @@ Object.defineProperty(AudioManager, 'seVolume', {
 	configurable: true
 });
 
-self.AudioManager = AudioManager;
+export default AudioManager;

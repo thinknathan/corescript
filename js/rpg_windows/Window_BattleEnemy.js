@@ -1,3 +1,5 @@
+import Window_Selectable from "./Window_Selectable.js";
+
 //-----------------------------------------------------------------------------
 // Window_BattleEnemy
 //
@@ -76,4 +78,4 @@ class Window_BattleEnemy extends Window_Selectable {
 	}
 }
 
-self.Window_BattleEnemy = Window_BattleEnemy;
+export default Window_BattleEnemy;

@@ -1,3 +1,5 @@
+import Scene_Base from "./Scene_Base.js";
+
 //-----------------------------------------------------------------------------
 // Scene_MenuBase
 //
@@ -58,4 +60,4 @@ class Scene_MenuBase extends Scene_Base {
 	onActorChange() {}
 }
 
-self.Scene_MenuBase = Scene_MenuBase;
+export default Scene_MenuBase;

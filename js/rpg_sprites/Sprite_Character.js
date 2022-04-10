@@ -1,3 +1,5 @@
+import Sprite_Base from "./Sprite_Base.js";
+
 //-----------------------------------------------------------------------------
 // Sprite_Character
 //
@@ -266,4 +268,4 @@ class Sprite_Character extends Sprite_Base {
 	}
 }
 
-self.Sprite_Character = Sprite_Character;
+export default Sprite_Character;

@@ -1,3 +1,5 @@
+import Window_ItemList from "./Window_ItemList.js";
+
 //-----------------------------------------------------------------------------
 // Window_EquipItem
 //
@@ -64,4 +66,4 @@ class Window_EquipItem extends Window_ItemList {
 	playOkSound() {}
 }
 
-self.Window_EquipItem = Window_EquipItem;
+export default Window_EquipItem;

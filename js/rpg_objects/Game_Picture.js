@@ -169,4 +169,4 @@ class Game_Picture {
 	}
 }
 
-self.Game_Picture = Game_Picture;
+export default Game_Picture;

@@ -1,3 +1,5 @@
+import Sprite from "../rpg_core/Sprite.js";
+
 //-----------------------------------------------------------------------------
 // Sprite_Button
 //
@@ -107,4 +109,4 @@ class Sprite_Button extends Sprite {
 	}
 }
 
-self.Sprite_Button = Sprite_Button;
+export default Sprite_Button;

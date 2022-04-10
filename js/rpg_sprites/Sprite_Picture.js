@@ -1,3 +1,5 @@
+import Sprite from "../rpg_core/Sprite.js";
+
 //-----------------------------------------------------------------------------
 // Sprite_Picture
 //
@@ -92,4 +94,4 @@ class Sprite_Picture extends Sprite {
 	}
 }
 
-self.Sprite_Picture = Sprite_Picture;
+export default Sprite_Picture;

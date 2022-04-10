@@ -1,3 +1,5 @@
+import Sprite_Base from "./Sprite_Base.js";
+
 //-----------------------------------------------------------------------------
 // Sprite_Balloon
 //
@@ -69,4 +71,4 @@ class Sprite_Balloon extends Sprite_Base {
 	}
 }
 
-self.Sprite_Balloon = Sprite_Balloon;
+export default Sprite_Balloon;

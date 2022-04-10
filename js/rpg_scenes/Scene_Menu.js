@@ -1,3 +1,5 @@
+import Scene_MenuBase from "./Scene_MenuBase.js";
+
 //-----------------------------------------------------------------------------
 // Scene_Menu
 //
@@ -126,4 +128,4 @@ class Scene_Menu extends Scene_MenuBase {
 	}
 }
 
-self.Scene_Menu = Scene_Menu;
+export default Scene_Menu;

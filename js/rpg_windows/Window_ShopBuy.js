@@ -1,3 +1,5 @@
+import Window_Selectable from "./Window_Selectable.js";
+
 //-----------------------------------------------------------------------------
 // Window_ShopBuy
 //
@@ -102,4 +104,4 @@ class Window_ShopBuy extends Window_Selectable {
 	}
 }
 
-self.Window_ShopBuy = Window_ShopBuy;
+export default Window_ShopBuy;

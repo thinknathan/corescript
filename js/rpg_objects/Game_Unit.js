@@ -151,4 +151,4 @@ class Game_Unit {
 	}
 }
 
-self.Game_Unit = Game_Unit;
+export default Game_Unit;

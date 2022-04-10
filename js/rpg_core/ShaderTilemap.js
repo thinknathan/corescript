@@ -1,3 +1,5 @@
+import Tilemap from "./Tilemap.js";
+
 //-----------------------------------------------------------------------------
 /**
  * The tilemap which displays 2D tile-based game map using shaders
@@ -395,4 +397,4 @@ PIXI.tilemap.Constant.DO_CLEAR = true;
 PIXI.tilemap.Constant.boundCountPerBuffer = 4;
 PIXI.tilemap.Constant.maxTextures = 4;
 
-self.ShaderTilemap = ShaderTilemap;
+export default ShaderTilemap;

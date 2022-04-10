@@ -924,11 +924,79 @@ class Bitmap {
 			this._requestImage(this._url);
 		}
 	}
+
+	/**
+	 * Loads a image file and returns a new bitmap object.
+	 *
+	 * @static
+	 * @method load
+	 * @param {String} url The image url of the texture
+	 * @return Bitmap
+	 */
+	static load (url) {
+		const bitmap = Object.create(Bitmap.prototype);
+		bitmap._defer = true;
+		bitmap.initialize();
+
+		bitmap._decodeAfterRequest = true;
+		bitmap._requestImage(url);
+
+		return bitmap;
+	}
+
+	/**
+	 * Takes a snapshot of the game screen and returns a new bitmap object.
+	 *
+	 * @static
+	 * @method snap
+	 * @param {Stage} stage The stage object
+	 * @return Bitmap
+	 */
+	static snap (stage) {
+		const width = Graphics.width;
+		const height = Graphics.height;
+		const bitmap = new Bitmap(width, height);
+		const context = bitmap._context;
+		const renderTexture = PIXI.RenderTexture.create({
+			width,
+			height
+		});
+		if (stage) {
+			Graphics._renderer.render(stage, {
+				renderTexture
+			});
+			stage.worldTransform.identity();
+			let canvas = null;
+			if (Graphics.isWebGL()) {
+				canvas = Graphics._renderer.plugins.extract.canvas(renderTexture);
+			} else {
+				canvas = renderTexture.baseTexture._canvasRenderTarget.canvas;
+			}
+			context.drawImage(canvas, 0, 0);
+		} else {
+
+		}
+		renderTexture.destroy({
+			destroyBase: true
+		});
+		bitmap._setDirty();
+		return bitmap;
+	}
+
+	static request (url) {
+		const bitmap = Object.create(Bitmap.prototype);
+		bitmap._defer = true;
+		bitmap.initialize();
+
+		bitmap._url = url;
+		bitmap._loadingState = 'pending';
+
+		return bitmap;
+	}
 }
 
 //for iOS. img consumes memory. so reuse it.
 Bitmap._reuseImages = [];
-
 
 //
 //We don't want to waste memory, so creating canvas is deferred.
@@ -955,73 +1023,5 @@ Object.defineProperties(Bitmap.prototype, {
 	}
 });
 
-/**
- * Loads a image file and returns a new bitmap object.
- *
- * @static
- * @method load
- * @param {String} url The image url of the texture
- * @return Bitmap
- */
-Bitmap.load = url => {
-	const bitmap = Object.create(Bitmap.prototype);
-	bitmap._defer = true;
-	bitmap.initialize();
 
-	bitmap._decodeAfterRequest = true;
-	bitmap._requestImage(url);
-
-	return bitmap;
-};
-
-/**
- * Takes a snapshot of the game screen and returns a new bitmap object.
- *
- * @static
- * @method snap
- * @param {Stage} stage The stage object
- * @return Bitmap
- */
-Bitmap.snap = stage => {
-	const width = Graphics.width;
-	const height = Graphics.height;
-	const bitmap = new Bitmap(width, height);
-	const context = bitmap._context;
-	const renderTexture = PIXI.RenderTexture.create({
-		width,
-		height
-	});
-	if (stage) {
-		Graphics._renderer.render(stage, {
-			renderTexture
-		});
-		stage.worldTransform.identity();
-		let canvas = null;
-		if (Graphics.isWebGL()) {
-			canvas = Graphics._renderer.plugins.extract.canvas(renderTexture);
-		} else {
-			canvas = renderTexture.baseTexture._canvasRenderTarget.canvas;
-		}
-		context.drawImage(canvas, 0, 0);
-	} else {
-
-	}
-	renderTexture.destroy({
-		destroyBase: true
-	});
-	bitmap._setDirty();
-	return bitmap;
-};
-
-Bitmap.request = url => {
-	const bitmap = Object.create(Bitmap.prototype);
-	bitmap._defer = true;
-	bitmap.initialize();
-
-	bitmap._url = url;
-	bitmap._loadingState = 'pending';
-
-	return bitmap;
-};
-
-self.Bitmap = Bitmap;
+export default Bitmap;

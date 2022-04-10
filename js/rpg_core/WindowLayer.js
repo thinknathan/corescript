@@ -150,4 +150,4 @@ WindowLayer.prototype.renderCanvas = PIXI.Container.prototype.renderCanvas;
  * @return {Object} The child that was removed
  */
 
-self.WindowLayer = WindowLayer;
+export default WindowLayer;

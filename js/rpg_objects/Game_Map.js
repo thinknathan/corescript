@@ -795,4 +795,4 @@ class Game_Map {
 	}
 }
 
-self.Game_Map = Game_Map;
+export default Game_Map;

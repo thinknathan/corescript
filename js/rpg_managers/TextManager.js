@@ -129,4 +129,4 @@ Object.defineProperties(TextManager, {
 	actionFailure: TextManager.getter('message', 'actionFailure'),
 });
 
-self.TextManager = TextManager;
+export default TextManager;

@@ -1,3 +1,5 @@
+import Game_Character from "./Game_Character.js";
+
 //-----------------------------------------------------------------------------
 // Game_Vehicle
 //
@@ -234,4 +236,4 @@ class Game_Vehicle extends Game_Character {
 	}
 }
 
-self.Game_Vehicle = Game_Vehicle;
+export default Game_Vehicle;

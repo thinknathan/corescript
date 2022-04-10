@@ -1,3 +1,5 @@
+import Scene_MenuBase from "./Scene_MenuBase.js";
+
 //-----------------------------------------------------------------------------
 // Scene_GameEnd
 //
@@ -41,4 +43,4 @@ class Scene_GameEnd extends Scene_MenuBase {
 	}
 }
 
-self.Scene_GameEnd = Scene_GameEnd;
+export default Scene_GameEnd;

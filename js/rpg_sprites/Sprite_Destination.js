@@ -1,3 +1,5 @@
+import Sprite from "../rpg_core/Sprite.js";
+
 //-----------------------------------------------------------------------------
 // Sprite_Destination
 //
@@ -55,4 +57,4 @@ class Sprite_Destination extends Sprite {
 	}
 }
 
-self.Sprite_Destination = Sprite_Destination;
+export default Sprite_Destination;

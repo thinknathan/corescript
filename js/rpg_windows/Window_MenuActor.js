@@ -1,3 +1,5 @@
+import Window_MenuStatus from "./Window_MenuStatus.js";
+
 //-----------------------------------------------------------------------------
 // Window_MenuActor
 //
@@ -48,4 +50,4 @@ class Window_MenuActor extends Window_MenuStatus {
 	}
 }
 
-self.Window_MenuActor = Window_MenuActor;
+export default Window_MenuActor;

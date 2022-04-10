@@ -1528,4 +1528,4 @@ Object.defineProperty(Graphics, 'scale', {
 	configurable: true
 });
 
-self.Graphics = Graphics;
+export default Graphics;

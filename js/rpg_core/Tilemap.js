@@ -963,4 +963,4 @@ Tilemap.WATERFALL_AUTOTILE_TABLE = [
  * @return {Object} The child that was removed
  */
 
-self.Tilemap = Tilemap;
+export default Tilemap;

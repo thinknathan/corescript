@@ -84,4 +84,4 @@ class Game_Item {
 	}
 }
 
-self.Game_Item = Game_Item;
+export default Game_Item;

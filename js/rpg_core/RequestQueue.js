@@ -44,4 +44,4 @@ class RequestQueue {
 	}
 }
 
-self.RequestQueue = RequestQueue;
+export default RequestQueue;

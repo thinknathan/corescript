@@ -1,3 +1,5 @@
+import Window_Selectable from "./Window_Selectable.js";
+
 //-----------------------------------------------------------------------------
 // Window_BattleLog
 //
@@ -618,4 +620,4 @@ class Window_BattleLog extends Window_Selectable {
 	}
 }
 
-self.Window_BattleLog = Window_BattleLog;
+export default Window_BattleLog;

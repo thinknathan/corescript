@@ -1,3 +1,5 @@
+import Scene_Base from "./Scene_Base.js";
+
 //-----------------------------------------------------------------------------
 // Scene_Map
 //
@@ -365,4 +367,4 @@ class Scene_Map extends Scene_Base {
 	}
 }
 
-self.Scene_Map = Scene_Map;
+export default Scene_Map;

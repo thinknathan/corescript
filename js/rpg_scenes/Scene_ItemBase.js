@@ -1,3 +1,5 @@
+import Scene_MenuBase from "./Scene_MenuBase.js";
+
 //-----------------------------------------------------------------------------
 // Scene_ItemBase
 //
@@ -136,4 +138,4 @@ class Scene_ItemBase extends Scene_MenuBase {
 	}
 }
 
-self.Scene_ItemBase = Scene_ItemBase;
+export default Scene_ItemBase;

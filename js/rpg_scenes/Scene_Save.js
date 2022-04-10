@@ -1,3 +1,5 @@
+import Scene_File from "./Scene_File.js";
+
 //-----------------------------------------------------------------------------
 // Scene_Save
 //
@@ -51,4 +53,4 @@ class Scene_Save extends Scene_File {
 	}
 }
 
-self.Scene_Save = Scene_Save;
+export default Scene_Save;

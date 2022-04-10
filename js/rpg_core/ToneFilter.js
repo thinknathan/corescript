@@ -62,4 +62,4 @@ class ToneFilter extends PIXI.filters.ColorMatrixFilter {
 	}
 }
 
-self.ToneFilter = ToneFilter;
+export default ToneFilter;

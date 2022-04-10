@@ -32,4 +32,4 @@ class Game_Switches {
 	}
 }
 
-self.Game_Switches = Game_Switches;
+export default Game_Switches;

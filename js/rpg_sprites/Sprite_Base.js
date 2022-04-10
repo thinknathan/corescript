@@ -1,3 +1,5 @@
+import Sprite from "../rpg_core/Sprite.js";
+
 //-----------------------------------------------------------------------------
 // Sprite_Base
 //
@@ -63,4 +65,4 @@ class Sprite_Base extends Sprite {
 	}
 }
 
-self.Sprite_Base = Sprite_Base;
+export default Sprite_Base;

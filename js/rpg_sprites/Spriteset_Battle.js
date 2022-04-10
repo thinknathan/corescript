@@ -1,3 +1,5 @@
+import Spriteset_Base from "./Spriteset_Base.js";
+
 //-----------------------------------------------------------------------------
 // Spriteset_Battle
 //
@@ -284,4 +286,4 @@ class Spriteset_Battle extends Spriteset_Base {
 	}
 }
 
-self.Spriteset_Battle = Spriteset_Battle;
+export default Spriteset_Battle;

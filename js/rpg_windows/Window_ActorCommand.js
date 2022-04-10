@@ -1,3 +1,5 @@
+import Window_Command from "./Window_Command.js";
+
 //-----------------------------------------------------------------------------
 // Window_ActorCommand
 //
@@ -91,4 +93,4 @@ class Window_ActorCommand extends Window_Command {
 	}
 }
 
-self.Window_ActorCommand = Window_ActorCommand;
+export default Window_ActorCommand;

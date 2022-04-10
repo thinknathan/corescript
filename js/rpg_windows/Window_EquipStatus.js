@@ -1,3 +1,5 @@
+import Window_Base from "./Window_Base.js";
+
 //-----------------------------------------------------------------------------
 // Window_EquipStatus
 //
@@ -88,4 +90,4 @@ class Window_EquipStatus extends Window_Base {
 	}
 }
 
-self.Window_EquipStatus = Window_EquipStatus;
+export default Window_EquipStatus;

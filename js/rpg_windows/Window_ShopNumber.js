@@ -1,3 +1,5 @@
+import Window_Selectable from "./Window_Selectable.js";
+
 //-----------------------------------------------------------------------------
 // Window_ShopNumber
 //
@@ -223,4 +225,4 @@ class Window_ShopNumber extends Window_Selectable {
 	}
 }
 
-self.Window_ShopNumber = Window_ShopNumber;
+export default Window_ShopNumber;

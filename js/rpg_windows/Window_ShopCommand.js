@@ -1,3 +1,5 @@
+import Window_HorzCommand from "./Window_HorzCommand.js";
+
 //-----------------------------------------------------------------------------
 // Window_ShopCommand
 //
@@ -30,4 +32,4 @@ class Window_ShopCommand extends Window_HorzCommand {
 	}
 }
 
-self.Window_ShopCommand = Window_ShopCommand;
+export default Window_ShopCommand;

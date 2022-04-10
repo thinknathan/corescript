@@ -1,3 +1,5 @@
+import Game_Character from "./Game_Character.js";
+
 //-----------------------------------------------------------------------------
 // Game_Event
 //
@@ -361,4 +363,4 @@ class Game_Event extends Game_Character {
 	}
 }
 
-self.Game_Event = Game_Event;
+export default Game_Event;

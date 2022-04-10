@@ -1,3 +1,5 @@
+import Window_Base from "./Window_Base.js";
+
 //-----------------------------------------------------------------------------
 // Window_ScrollText
 //
@@ -89,4 +91,4 @@ class Window_ScrollText extends Window_Base {
 	}
 }
 
-self.Window_ScrollText = Window_ScrollText;
+export default Window_ScrollText;

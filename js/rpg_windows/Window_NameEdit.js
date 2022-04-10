@@ -1,3 +1,5 @@
+import Window_Base from "./Window_Base.js";
+
 //-----------------------------------------------------------------------------
 // Window_NameEdit
 //
@@ -132,4 +134,4 @@ class Window_NameEdit extends Window_Base {
 	}
 }
 
-self.Window_NameEdit = Window_NameEdit;
+export default Window_NameEdit;

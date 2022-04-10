@@ -1,3 +1,5 @@
+import Utils from "../rpg_core/Utils.js";
+
 //-----------------------------------------------------------------------------
 // SceneManager
 //
@@ -417,4 +419,4 @@ if (!Utils.isMobileSafari()) SceneManager._currentTime = SceneManager._getTimeIn
 SceneManager._accumulator = 0.0;
 SceneManager._frameCount = 0;
 
-self.SceneManager = SceneManager;
+export default SceneManager;

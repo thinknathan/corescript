@@ -1,3 +1,5 @@
+import Stage from "../rpg_core/Stage.js";
+
 //=============================================================================
 
 /**
@@ -320,4 +322,4 @@ class Scene_Base extends Stage {
 	}
 }
 
-self.Scene_Base = Scene_Base;
+export default Scene_Base;

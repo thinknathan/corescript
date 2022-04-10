@@ -62,4 +62,4 @@ class Game_Temp {
 	}
 }
 
-self.Game_Temp = Game_Temp;
+export default Game_Temp;

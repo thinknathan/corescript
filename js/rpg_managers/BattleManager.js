@@ -671,4 +671,4 @@ class BattleManager {
 	}
 }
 
-self.BattleManager = BattleManager;
+export default BattleManager;

@@ -1,3 +1,5 @@
+import Window_ItemList from "./Window_ItemList.js";
+
 //-----------------------------------------------------------------------------
 // Window_EventItem
 //
@@ -68,4 +70,4 @@ class Window_EventItem extends Window_ItemList {
 	}
 }
 
-self.Window_EventItem = Window_EventItem;
+export default Window_EventItem;

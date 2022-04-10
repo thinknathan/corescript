@@ -124,4 +124,4 @@ class SoundManager {
 	}
 }
 
-self.SoundManager = SoundManager;
+export default SoundManager;

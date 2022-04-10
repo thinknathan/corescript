@@ -1,3 +1,5 @@
+import Game_BattlerBase from "./Game_BattlerBase.js";
+
 //-----------------------------------------------------------------------------
 // Game_Battler
 //
@@ -550,4 +552,4 @@ class Game_Battler extends Game_BattlerBase {
 	performCollapse() {}
 }
 
-self.Game_Battler = Game_Battler;
+export default Game_Battler;

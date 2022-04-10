@@ -1,3 +1,5 @@
+import Scene_MenuBase from "./Scene_MenuBase.js";
+
 //-----------------------------------------------------------------------------
 // Scene_Options
 //
@@ -30,4 +32,4 @@ class Scene_Options extends Scene_MenuBase {
 	}
 }
 
-self.Scene_Options = Scene_Options;
+export default Scene_Options;

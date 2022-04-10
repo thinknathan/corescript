@@ -1,3 +1,5 @@
+import Window_Command from "./Window_Command.js";
+
 //-----------------------------------------------------------------------------
 // Window_SkillType
 //
@@ -62,4 +64,4 @@ class Window_SkillType extends Window_Command {
 	}
 }
 
-self.Window_SkillType = Window_SkillType;
+export default Window_SkillType;

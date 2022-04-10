@@ -1,3 +1,5 @@
+import Window_Selectable from "./Window_Selectable.js";
+
 //-----------------------------------------------------------------------------
 // Window_NameInput
 //
@@ -263,4 +265,4 @@ Window_NameInput.JAPAN3 = ['Ａ', 'Ｂ', 'Ｃ', 'Ｄ', 'Ｅ', 'ａ', 'ｂ', 'ｃ
           '５', '６', '７', '８', '９', '（', '）', '＊', '＋', '－',
           '／', '＝', '＠', '＜', '＞', '：', '；', '　', 'かな', '決定'];
 
-self.Window_NameInput = Window_NameInput;
+export default Window_NameInput;

@@ -1,3 +1,5 @@
+import Window_ItemList from "./Window_ItemList.js";
+
 //-----------------------------------------------------------------------------
 // Window_BattleItem
 //
@@ -30,4 +32,4 @@ class Window_BattleItem extends Window_ItemList {
 	}
 }
 
-self.Window_BattleItem = Window_BattleItem;
+export default Window_BattleItem;

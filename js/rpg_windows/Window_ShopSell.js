@@ -1,3 +1,5 @@
+import Window_ItemList from "./Window_ItemList.js";
+
 //-----------------------------------------------------------------------------
 // Window_ShopSell
 //
@@ -18,4 +20,4 @@ class Window_ShopSell extends Window_ItemList {
 	}
 }
 
-self.Window_ShopSell = Window_ShopSell;
+export default Window_ShopSell;

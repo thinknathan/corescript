@@ -1,3 +1,5 @@
+import Window_Base from "./Window_Base.js";
+
 //-----------------------------------------------------------------------------
 // Window_MapName
 //
@@ -71,4 +73,4 @@ class Window_MapName extends Window_Base {
 	}
 }
 
-self.Window_MapName = Window_MapName;
+export default Window_MapName;

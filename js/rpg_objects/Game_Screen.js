@@ -315,4 +315,4 @@ class Game_Screen {
 	}
 }
 
-self.Game_Screen = Game_Screen;
+export default Game_Screen;

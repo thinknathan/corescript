@@ -1,3 +1,5 @@
+import Game_Battler from "./Game_Battler.js";
+
 //-----------------------------------------------------------------------------
 // Game_Enemy
 //
@@ -307,4 +309,4 @@ class Game_Enemy extends Game_Battler {
 	}
 }
 
-self.Game_Enemy = Game_Enemy;
+export default Game_Enemy;

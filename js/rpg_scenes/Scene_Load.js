@@ -1,3 +1,5 @@
+import Scene_File from "./Scene_File.js";
+
 //-----------------------------------------------------------------------------
 // Scene_Load
 //
@@ -63,4 +65,4 @@ class Scene_Load extends Scene_File {
 	}
 }
 
-self.Scene_Load = Scene_Load;
+export default Scene_Load;

@@ -32,4 +32,4 @@ class Point extends PIXI.Point {
 	 */
 }
 
-self.Point = Point;
+export default Point;

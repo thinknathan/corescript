@@ -1,3 +1,5 @@
+import Scene_ItemBase from "./Scene_ItemBase.js";
+
 //-----------------------------------------------------------------------------
 // Scene_Skill
 //
@@ -104,4 +106,4 @@ class Scene_Skill extends Scene_ItemBase {
 	}
 }
 
-self.Scene_Skill = Scene_Skill;
+export default Scene_Skill;

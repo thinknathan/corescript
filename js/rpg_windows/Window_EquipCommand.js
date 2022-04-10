@@ -1,3 +1,5 @@
+import Window_HorzCommand from "./Window_HorzCommand.js";
+
 //-----------------------------------------------------------------------------
 // Window_EquipCommand
 //
@@ -29,4 +31,4 @@ class Window_EquipCommand extends Window_HorzCommand {
 	}
 }
 
-self.Window_EquipCommand = Window_EquipCommand;
+export default Window_EquipCommand;

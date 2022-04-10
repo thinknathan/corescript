@@ -308,6 +308,70 @@ class Input {
 		}
 		return y;
 	}
+
+	/**
+	 * @static
+	 * @method _wrapNwjsAlert
+	 * @private
+	 */
+	static _wrapNwjsAlert() {
+		if (Utils.isNwjs()) {
+			const _alert = window.alert;
+			window.alert = function (...args) {
+				const gui = require('nw.gui');
+				const win = gui.Window.get();
+				_alert.apply(this, args);
+				win.focus();
+				Input.clear();
+			};
+		}
+	}
+
+	/**
+	 * @static
+	 * @method _shouldPreventDefault
+	 * @param {Number} keyCode
+	 * @private
+	 */
+	static _shouldPreventDefault(keyCode) {
+		switch (keyCode) {
+		case 8: // backspace
+		case 33: // pageup
+		case 34: // pagedown
+		case 37: // left arrow
+		case 38: // up arrow
+		case 39: // right arrow
+		case 40: // down arrow
+			return true;
+		}
+		return false;
+	}
+
+	/**
+	 * @static
+	 * @method _makeNumpadDirection
+	 * @param {Number} x
+	 * @param {Number} y
+	 * @return {Number}
+	 * @private
+	 */
+	static _makeNumpadDirection(x, y) {
+		if (x !== 0 || y !== 0) {
+			return 5 - y * 3 + x;
+		}
+		return 0;
+	};
+
+	/**
+	 * @static
+	 * @method _isEscapeCompatible
+	 * @param {String} keyName
+	 * @return {Boolean}
+	 * @private
+	 */
+	static _isEscapeCompatible(keyName) {
+		return keyName === 'cancel' || keyName === 'menu';
+	}
 }
 
 /**
@@ -424,66 +488,4 @@ Object.defineProperty(Input, 'date', {
 	configurable: true
 });
 
-/**
- * @static
- * @method _wrapNwjsAlert
- * @private
- */
-Input._wrapNwjsAlert = () => {
-	if (Utils.isNwjs()) {
-		const _alert = window.alert;
-		window.alert = function (...args) {
-			const gui = require('nw.gui');
-			const win = gui.Window.get();
-			_alert.apply(this, args);
-			win.focus();
-			Input.clear();
-		};
-	}
-};
-
-/**
- * @static
- * @method _shouldPreventDefault
- * @param {Number} keyCode
- * @private
- */
-Input._shouldPreventDefault = keyCode => {
-	switch (keyCode) {
-	case 8: // backspace
-	case 33: // pageup
-	case 34: // pagedown
-	case 37: // left arrow
-	case 38: // up arrow
-	case 39: // right arrow
-	case 40: // down arrow
-		return true;
-	}
-	return false;
-};
-
-/**
- * @static
- * @method _makeNumpadDirection
- * @param {Number} x
- * @param {Number} y
- * @return {Number}
- * @private
- */
-Input._makeNumpadDirection = (x, y) => {
-	if (x !== 0 || y !== 0) {
-		return 5 - y * 3 + x;
-	}
-	return 0;
-};
-
-/**
- * @static
- * @method _isEscapeCompatible
- * @param {String} keyName
- * @return {Boolean}
- * @private
- */
-Input._isEscapeCompatible = keyName => keyName === 'cancel' || keyName === 'menu';
-
-self.Input = Input;
+export default Input;

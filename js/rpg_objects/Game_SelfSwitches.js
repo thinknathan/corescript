@@ -34,4 +34,4 @@ class Game_SelfSwitches {
 	}
 }
 
-self.Game_SelfSwitches = Game_SelfSwitches;
+export default Game_SelfSwitches;

@@ -1,3 +1,5 @@
+import Window_Selectable from "./Window_Selectable.js";
+
 //-----------------------------------------------------------------------------
 // Window_SavefileList
 //
@@ -109,4 +111,4 @@ class Window_SavefileList extends Window_Selectable {
 	playOkSound() {}
 }
 
-self.Window_SavefileList = Window_SavefileList;
+export default Window_SavefileList;

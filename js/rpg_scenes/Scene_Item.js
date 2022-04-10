@@ -1,3 +1,5 @@
+import Scene_ItemBase from "./Scene_ItemBase.js";
+
 //-----------------------------------------------------------------------------
 // Scene_Item
 //
@@ -79,4 +81,4 @@ class Scene_Item extends Scene_ItemBase {
 	}
 }
 
-self.Scene_Item = Scene_Item;
+export default Scene_Item;

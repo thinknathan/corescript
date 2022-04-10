@@ -1,3 +1,5 @@
+import Game_Character from "./Game_Character.js";
+
 //-----------------------------------------------------------------------------
 // Game_Follower
 //
@@ -62,4 +64,4 @@ class Game_Follower extends Game_Character {
 	}
 }
 
-self.Game_Follower = Game_Follower;
+export default Game_Follower;

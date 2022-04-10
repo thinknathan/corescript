@@ -1,3 +1,5 @@
+import Window_Selectable from "./Window_Selectable.js";
+
 //-----------------------------------------------------------------------------
 // Window_NumberInput
 //
@@ -214,4 +216,4 @@ class Window_NumberInput extends Window_Selectable {
 	}
 }
 
-self.Window_NumberInput = Window_NumberInput;
+export default Window_NumberInput;

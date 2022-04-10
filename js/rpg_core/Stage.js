@@ -59,4 +59,4 @@ class Stage extends PIXI.Container {
 	 */
 }
 
-self.Stage = Stage;
+export default Stage;

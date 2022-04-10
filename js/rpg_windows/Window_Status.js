@@ -1,3 +1,5 @@
+import Window_Selectable from "./Window_Selectable.js";
+
 //-----------------------------------------------------------------------------
 // Window_Status
 //
@@ -126,4 +128,4 @@ class Window_Status extends Window_Selectable {
 	}
 }
 
-self.Window_Status = Window_Status;
+export default Window_Status;

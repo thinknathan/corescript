@@ -110,4 +110,4 @@ class ScreenSprite extends PIXI.Container {
 	}
 }
 
-self.ScreenSprite = ScreenSprite;
+export default ScreenSprite;

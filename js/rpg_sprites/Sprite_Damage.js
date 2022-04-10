@@ -1,3 +1,5 @@
+import Sprite from "../rpg_core/Sprite.js";
+
 //-----------------------------------------------------------------------------
 // Sprite_Damage
 //
@@ -119,4 +121,4 @@ class Sprite_Damage extends Sprite {
 	}
 }
 
-self.Sprite_Damage = Sprite_Damage;
+export default Sprite_Damage;

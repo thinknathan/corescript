@@ -1,3 +1,5 @@
+import Spriteset_Base from "./Spriteset_Base.js";
+
 //-----------------------------------------------------------------------------
 // Spriteset_Map
 //
@@ -180,4 +182,4 @@ class Spriteset_Map extends Spriteset_Base {
 	}
 }
 
-self.Spriteset_Map = Spriteset_Map;
+export default Spriteset_Map;

@@ -1,3 +1,5 @@
+import Window_Command from "./Window_Command.js";
+
 //-----------------------------------------------------------------------------
 // Window_TitleCommand
 //
@@ -55,4 +57,4 @@ class Window_TitleCommand extends Window_Command {
 
 Window_TitleCommand._lastCommandSymbol = null;
 
-self.Window_TitleCommand = Window_TitleCommand;
+export default Window_TitleCommand;

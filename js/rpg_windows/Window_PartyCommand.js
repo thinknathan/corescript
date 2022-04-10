@@ -1,3 +1,5 @@
+import Window_Command from "./Window_Command.js";
+
 //-----------------------------------------------------------------------------
 // Window_PartyCommand
 //
@@ -39,4 +41,4 @@ class Window_PartyCommand extends Window_Command {
 	}
 }
 
-self.Window_PartyCommand = Window_PartyCommand;
+export default Window_PartyCommand;

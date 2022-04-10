@@ -198,4 +198,4 @@ class Weather extends PIXI.Container {
 	}
 }
 
-self.Weather = Weather;
+export default Weather;

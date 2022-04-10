@@ -1,3 +1,5 @@
+import Sprite_Battler from "./Sprite_Battler.js";
+
 //-----------------------------------------------------------------------------
 // Sprite_Actor
 //
@@ -326,4 +328,4 @@ Sprite_Actor.MOTIONS = {
 	}
 };
 
-self.Sprite_Actor = Sprite_Actor;
+export default Sprite_Actor;

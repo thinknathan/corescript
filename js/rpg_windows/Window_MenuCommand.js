@@ -1,3 +1,5 @@
+import Window_Command from "./Window_Command.js";
+
 //-----------------------------------------------------------------------------
 // Window_MenuCommand
 //
@@ -132,4 +134,4 @@ class Window_MenuCommand extends Window_Command {
 
 Window_MenuCommand._lastCommandSymbol = null;
 
-self.Window_MenuCommand = Window_MenuCommand;
+export default Window_MenuCommand;

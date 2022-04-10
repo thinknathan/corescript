@@ -1,3 +1,5 @@
+import Window_Selectable from "./Window_Selectable.js";
+
 //-----------------------------------------------------------------------------
 // Window_ItemList
 //
@@ -117,4 +119,4 @@ class Window_ItemList extends Window_Selectable {
 	}
 }
 
-self.Window_ItemList = Window_ItemList;
+export default Window_ItemList;

@@ -1,3 +1,5 @@
+import Window_SkillList from "./Window_SkillList.js";
+
 //-----------------------------------------------------------------------------
 // Window_BattleSkill
 //
@@ -26,4 +28,4 @@ class Window_BattleSkill extends Window_SkillList {
 	}
 }
 
-self.Window_BattleSkill = Window_BattleSkill;
+export default Window_BattleSkill;

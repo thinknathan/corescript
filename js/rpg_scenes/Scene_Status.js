@@ -1,3 +1,5 @@
+import Scene_MenuBase from "./Scene_MenuBase.js";
+
 //-----------------------------------------------------------------------------
 // Scene_Status
 //
@@ -39,4 +41,4 @@ class Scene_Status extends Scene_MenuBase {
 	}
 }
 
-self.Scene_Status = Scene_Status;
+export default Scene_Status;

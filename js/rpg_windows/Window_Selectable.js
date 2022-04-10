@@ -1,3 +1,5 @@
+import Window_Base from "./Window_Base.js";
+
 //-----------------------------------------------------------------------------
 // Window_Selectable
 //
@@ -573,4 +575,4 @@ class Window_Selectable extends Window_Base {
 	}
 }
 
-self.Window_Selectable = Window_Selectable;
+export default Window_Selectable;

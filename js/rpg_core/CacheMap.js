@@ -71,4 +71,4 @@ class CacheMap {
 	}
 }
 
-self.CacheMap = CacheMap;
+export default CacheMap;

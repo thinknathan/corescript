@@ -1,3 +1,5 @@
+import Scene_Base from "./Scene_Base.js";
+
 //-----------------------------------------------------------------------------
 // Scene_Boot
 //
@@ -86,4 +88,4 @@ class Scene_Boot extends Scene_Base {
 	}
 }
 
-self.Scene_Boot = Scene_Boot;
+export default Scene_Boot;

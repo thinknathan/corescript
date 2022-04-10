@@ -1,3 +1,5 @@
+import Sprite from "../rpg_core/Sprite.js";
+
 //-----------------------------------------------------------------------------
 // Sprite_Timer
 //
@@ -59,4 +61,4 @@ class Sprite_Timer extends Sprite {
 	}
 }
 
-self.Sprite_Timer = Sprite_Timer;
+export default Sprite_Timer;

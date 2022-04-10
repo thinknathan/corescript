@@ -1,3 +1,5 @@
+import Game_Unit from "./Game_Unit.js";
+
 //-----------------------------------------------------------------------------
 // Game_Troop
 //
@@ -214,4 +216,4 @@ Game_Troop.LETTER_TABLE_FULL = [
     'Ｎ', 'Ｏ', 'Ｐ', 'Ｑ', 'Ｒ', 'Ｓ', 'Ｔ', 'Ｕ', 'Ｖ', 'Ｗ', 'Ｘ', 'Ｙ', 'Ｚ'
 ];
 
-self.Game_Troop = Game_Troop;
+export default Game_Troop;

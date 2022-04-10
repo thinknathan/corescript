@@ -1,3 +1,5 @@
+import Scene_MenuBase from "./Scene_MenuBase.js";
+
 //-----------------------------------------------------------------------------
 // Scene_Debug
 //
@@ -76,4 +78,4 @@ class Scene_Debug extends Scene_MenuBase {
 	}
 }
 
-self.Scene_Debug = Scene_Debug;
+export default Scene_Debug;

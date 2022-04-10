@@ -1,3 +1,8 @@
+import CacheMap from "../rpg_core/CacheMap.js";
+import ImageCache from "../rpg_core/ImageCache.js";
+import RequestQueue from "../rpg_core/RequestQueue.js";
+import Utils from "../rpg_core/Utils.js";
+
 //-----------------------------------------------------------------------------
 // ImageManager
 //
@@ -321,4 +326,4 @@ ImageManager._imageCache = new ImageCache();
 ImageManager._requestQueue = new RequestQueue();
 ImageManager._systemReservationId = Utils.generateRuntimeId();
 
-self.ImageManager = ImageManager;
+export default ImageManager;

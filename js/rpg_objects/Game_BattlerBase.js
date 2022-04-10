@@ -940,4 +940,4 @@ Object.defineProperties(Game_BattlerBase.prototype, {
 	}
 });
 
-self.Game_BattlerBase = Game_BattlerBase;
+export default Game_BattlerBase;

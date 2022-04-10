@@ -42,4 +42,4 @@ class ProgressWatcher {
 	}
 }
 
-self.ProgressWatcher = ProgressWatcher;
+export default ProgressWatcher;

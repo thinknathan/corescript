@@ -1,3 +1,5 @@
+import Scene_MenuBase from "./Scene_MenuBase.js";
+
 //-----------------------------------------------------------------------------
 // Scene_Name
 //
@@ -47,4 +49,4 @@ class Scene_Name extends Scene_MenuBase {
 	}
 }
 
-self.Scene_Name = Scene_Name;
+export default Scene_Name;

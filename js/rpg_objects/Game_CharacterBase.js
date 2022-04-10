@@ -601,4 +601,4 @@ Object.defineProperties(Game_CharacterBase.prototype, {
 	}
 });
 
-self.Game_CharacterBase = Game_CharacterBase;
+export default Game_CharacterBase;

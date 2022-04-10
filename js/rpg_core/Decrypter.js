@@ -70,6 +70,28 @@ class Decrypter {
 		this._encryptionKey = $dataSystem.encryptionKey.split(/(.{2})/)
 			.filter(Boolean);
 	}
+
+	static cutArrayHeader(arrayBuffer, length) {
+		arrayBuffer.slice(length);
+	}
+
+	static createBlobUrl(arrayBuffer) {
+		const blob = new Blob([arrayBuffer]);
+		return window.URL.createObjectURL(blob);
+	}
+
+	static extToEncryptExt(url) {
+		const ext = url.split('.')
+			.pop();
+		let encryptedExt = ext;
+
+		if (ext === "ogg") encryptedExt = ".rpgmvo";
+		else if (ext === "m4a") encryptedExt = ".rpgmvm";
+		else if (ext === "png") encryptedExt = ".rpgmvp";
+		else encryptedExt = ext;
+
+		return url.slice(0, url.lastIndexOf(ext) - 1) + encryptedExt;
+	}
 }
 
 Decrypter.hasEncryptedImages = false;
@@ -85,24 +107,4 @@ Decrypter.SIGNATURE = "5250474d56000000";
 Decrypter.VER = "000301";
 Decrypter.REMAIN = "0000000000";
 
-Decrypter.cutArrayHeader = (arrayBuffer, length) => arrayBuffer.slice(length);
-
-Decrypter.createBlobUrl = arrayBuffer => {
-	const blob = new Blob([arrayBuffer]);
-	return window.URL.createObjectURL(blob);
-};
-
-Decrypter.extToEncryptExt = url => {
-	const ext = url.split('.')
-		.pop();
-	let encryptedExt = ext;
-
-	if (ext === "ogg") encryptedExt = ".rpgmvo";
-	else if (ext === "m4a") encryptedExt = ".rpgmvm";
-	else if (ext === "png") encryptedExt = ".rpgmvp";
-	else encryptedExt = ext;
-
-	return url.slice(0, url.lastIndexOf(ext) - 1) + encryptedExt;
-};
-
-self.Decrypter = Decrypter;
+export default Decrypter;

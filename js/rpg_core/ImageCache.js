@@ -108,4 +108,4 @@ class ImageCache {
 
 ImageCache.limit = 10 * 1000 * 1000;
 
-self.ImageCache = ImageCache;
+export default ImageCache;

@@ -1,3 +1,5 @@
+import Game_Battler from "./Game_Battler.js";
+
 //-----------------------------------------------------------------------------
 // Game_Actor
 //
@@ -930,4 +932,4 @@ class Game_Actor extends Game_Battler {
 	}
 }
 
-self.Game_Actor = Game_Actor;
+export default Game_Actor;

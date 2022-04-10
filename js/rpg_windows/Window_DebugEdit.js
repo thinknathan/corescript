@@ -1,3 +1,5 @@
+import Window_Selectable from "./Window_Selectable.js";
+
 //-----------------------------------------------------------------------------
 // Window_DebugEdit
 //
@@ -121,4 +123,4 @@ class Window_DebugEdit extends Window_Selectable {
 	}
 }
 
-self.Window_DebugEdit = Window_DebugEdit;
+export default Window_DebugEdit;

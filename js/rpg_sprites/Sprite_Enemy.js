@@ -1,3 +1,5 @@
+import Sprite_Battler from "./Sprite_Battler.js";
+
 //-----------------------------------------------------------------------------
 // Sprite_Enemy
 //
@@ -256,4 +258,4 @@ class Sprite_Enemy extends Sprite_Battler {
 	}
 }
 
-self.Sprite_Enemy = Sprite_Enemy;
+export default Sprite_Enemy;

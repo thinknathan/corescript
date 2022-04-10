@@ -188,4 +188,4 @@ class Game_Message {
 	}
 }
 
-self.Game_Message = Game_Message;
+export default Game_Message;

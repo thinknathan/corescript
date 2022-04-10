@@ -1,3 +1,5 @@
+import Window_Base from "./Window_Base.js";
+
 //-----------------------------------------------------------------------------
 // Window_Message
 //
@@ -341,4 +343,4 @@ class Window_Message extends Window_Base {
 	}
 }
 
-self.Window_Message = Window_Message;
+export default Window_Message;

@@ -464,4 +464,4 @@ class BitmapPIXI extends PIXI.Container {
 	}
 }
 
-self.BitmapPIXI = BitmapPIXI;
+export default BitmapPIXI;

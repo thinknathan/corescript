@@ -44,4 +44,4 @@ class Game_Timer {
 	}
 }
 
-self.Game_Timer = Game_Timer;
+export default Game_Timer;

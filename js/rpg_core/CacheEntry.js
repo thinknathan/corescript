@@ -81,4 +81,4 @@ class CacheEntry {
 	}
 }
 
-self.CacheEntry = CacheEntry;
+export default CacheEntry;

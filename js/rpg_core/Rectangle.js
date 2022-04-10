@@ -56,4 +56,4 @@ Rectangle.emptyRectangle = new Rectangle(0, 0, 0, 0);
  * @type Number
  */
 
-self.Rectangle = Rectangle;
+export default Rectangle;

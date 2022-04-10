@@ -491,33 +491,65 @@ DataManager._databaseFiles = [
 	}
 ];
 
-self.$dataActors = null;
-self.$dataClasses = null;
-self.$dataSkills = null;
-self.$dataItems = null;
-self.$dataWeapons = null;
-self.$dataArmors = null;
-self.$dataEnemies = null;
-self.$dataTroops = null;
-self.$dataStates = null;
-self.$dataAnimations = null;
-self.$dataTilesets = null;
-self.$dataCommonEvents = null;
-self.$dataSystem = null;
-self.$dataMapInfos = null;
-self.$dataMap = null;
-self.$gameTemp = null;
-self.$gameSystem = null;
-self.$gameScreen = null;
-self.$gameTimer = null;
-self.$gameMessage = null;
-self.$gameSwitches = null;
-self.$gameVariables = null;
-self.$gameSelfSwitches = null;
-self.$gameActors = null;
-self.$gameParty = null;
-self.$gameTroop = null;
-self.$gameMap = null;
-self.$gamePlayer = null;
-self.$testEvent = null;
-self.DataManager = DataManager;
+let $dataActors = null;
+let $dataClasses = null;
+let $dataSkills = null;
+let $dataItems = null;
+let $dataWeapons = null;
+let $dataArmors = null;
+let $dataEnemies = null;
+let $dataTroops = null;
+let $dataStates = null;
+let $dataAnimations = null;
+let $dataTilesets = null;
+let $dataCommonEvents = null;
+let $dataSystem = null;
+let $dataMapInfos = null;
+let $dataMap = null;
+let $gameTemp = null;
+let $gameSystem = null;
+let $gameScreen = null;
+let $gameTimer = null;
+let $gameMessage = null;
+let $gameSwitches = null;
+let $gameVariables = null;
+let $gameSelfSwitches = null;
+let $gameActors = null;
+let $gameParty = null;
+let $gameTroop = null;
+let $gameMap = null;
+let $gamePlayer = null;
+let $testEvent = null;
+
+export {
+	$dataActors,
+	$dataClasses,
+	$dataSkills,
+	$dataItems,
+	$dataWeapons,
+	$dataArmors,
+	$dataEnemies,
+	$dataTroops,
+	$dataStates,
+	$dataAnimations,
+	$dataTilesets,
+	$dataCommonEvents,
+	$dataSystem,
+	$dataMapInfos,
+	$dataMap,
+	$gameTemp,
+	$gameSystem,
+	$gameScreen,
+	$gameTimer,
+	$gameMessage,
+	$gameSwitches,
+	$gameVariables,
+	$gameSelfSwitches,
+	$gameActors,
+	$gameParty,
+	$gameTroop,
+	$gameMap,
+	$gamePlayer,
+	$testEvent,
+	DataManager
+}

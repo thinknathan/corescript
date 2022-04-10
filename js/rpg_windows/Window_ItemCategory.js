@@ -1,3 +1,5 @@
+import Window_HorzCommand from "./Window_HorzCommand.js";
+
 //-----------------------------------------------------------------------------
 // Window_ItemCategory
 //
@@ -40,4 +42,4 @@ class Window_ItemCategory extends Window_HorzCommand {
 	}
 }
 
-self.Window_ItemCategory = Window_ItemCategory;
+export default Window_ItemCategory;

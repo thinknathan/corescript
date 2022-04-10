@@ -1,3 +1,5 @@
+import Window_Selectable from "./Window_Selectable.js";
+
 //-----------------------------------------------------------------------------
 // Window_Command
 //
@@ -159,4 +161,4 @@ class Window_Command extends Window_Selectable {
 	}
 }
 
-self.Window_Command = Window_Command;
+export default Window_Command;

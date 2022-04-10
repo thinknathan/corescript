@@ -101,4 +101,4 @@ class Game_ActionResult {
 	}
 }
 
-self.Game_ActionResult = Game_ActionResult;
+export default Game_ActionResult;

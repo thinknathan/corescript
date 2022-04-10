@@ -1,3 +1,5 @@
+import Window_Selectable from "./Window_Selectable.js";
+
 //-----------------------------------------------------------------------------
 // Window_SkillList
 //
@@ -120,4 +122,4 @@ class Window_SkillList extends Window_Selectable {
 	}
 }
 
-self.Window_SkillList = Window_SkillList;
+export default Window_SkillList;

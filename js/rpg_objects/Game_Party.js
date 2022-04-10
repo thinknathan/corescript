@@ -1,3 +1,5 @@
+import Game_Unit from "./Game_Unit.js";
+
 //-----------------------------------------------------------------------------
 // Game_Party
 //
@@ -468,4 +470,4 @@ Game_Party.ABILITY_RAISE_PREEMPTIVE = 3;
 Game_Party.ABILITY_GOLD_DOUBLE = 4;
 Game_Party.ABILITY_DROP_ITEM_DOUBLE = 5;
 
-self.Game_Party = Game_Party;
+export default Game_Party;

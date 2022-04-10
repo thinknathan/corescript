@@ -1,3 +1,5 @@
+import Sprite_Base from "./Sprite_Base.js";
+
 //-----------------------------------------------------------------------------
 // Sprite_StateOverlay
 //
@@ -68,4 +70,4 @@ class Sprite_StateOverlay extends Sprite_Base {
 	}
 }
 
-self.Sprite_StateOverlay = Sprite_StateOverlay;
+export default Sprite_StateOverlay;

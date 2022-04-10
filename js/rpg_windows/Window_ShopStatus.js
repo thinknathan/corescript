@@ -1,3 +1,5 @@
+import Window_Base from "./Window_Base.js";
+
 //-----------------------------------------------------------------------------
 // Window_ShopStatus
 //
@@ -152,4 +154,4 @@ class Window_ShopStatus extends Window_Base {
 	}
 }
 
-self.Window_ShopStatus = Window_ShopStatus;
+export default Window_ShopStatus;

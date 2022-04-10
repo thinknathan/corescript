@@ -1,3 +1,5 @@
+import Window_Selectable from "./Window_Selectable.js";
+
 //-----------------------------------------------------------------------------
 // Window_EquipSlot
 //
@@ -80,4 +82,4 @@ class Window_EquipSlot extends Window_Selectable {
 	}
 }
 
-self.Window_EquipSlot = Window_EquipSlot;
+export default Window_EquipSlot;

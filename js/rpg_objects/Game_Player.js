@@ -1,3 +1,5 @@
+import Game_Character from "./Game_Character.js";
+
 //-----------------------------------------------------------------------------
 // Game_Player
 //
@@ -639,4 +641,4 @@ class Game_Player extends Game_Character {
 	}
 }
 
-self.Game_Player = Game_Player;
+export default Game_Player;

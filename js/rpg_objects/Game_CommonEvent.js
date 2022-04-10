@@ -52,4 +52,4 @@ class Game_CommonEvent {
 	}
 }
 
-self.Game_CommonEvent = Game_CommonEvent;
+export default Game_CommonEvent;

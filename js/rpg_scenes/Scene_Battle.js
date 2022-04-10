@@ -1,3 +1,5 @@
+import Scene_Base from "./Scene_Base.js";
+
 //-----------------------------------------------------------------------------
 // Scene_Battle
 //
@@ -408,4 +410,4 @@ class Scene_Battle extends Scene_Base {
 	}
 }
 
-self.Scene_Battle = Scene_Battle;
+export default Scene_Battle;

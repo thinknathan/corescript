@@ -1,3 +1,5 @@
+import Scene_MenuBase from "./Scene_MenuBase.js";
+
 //-----------------------------------------------------------------------------
 // Scene_File
 //
@@ -69,4 +71,4 @@ class Scene_File extends Scene_MenuBase {
 	onSavefileOk() {}
 }
 
-self.Scene_File = Scene_File;
+export default Scene_File;

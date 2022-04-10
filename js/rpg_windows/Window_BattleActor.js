@@ -1,3 +1,5 @@
+import Window_BattleStatus from "./Window_BattleStatus.js";
+
 //-----------------------------------------------------------------------------
 // Window_BattleActor
 //
@@ -37,4 +39,4 @@ class Window_BattleActor extends Window_BattleStatus {
 	}
 }
 
-self.Window_BattleActor = Window_BattleActor;
+export default Window_BattleActor;

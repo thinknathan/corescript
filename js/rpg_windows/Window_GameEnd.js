@@ -1,3 +1,5 @@
+import Window_Command from "./Window_Command.js";
+
 //-----------------------------------------------------------------------------
 // Window_GameEnd
 //
@@ -31,4 +33,4 @@ class Window_GameEnd extends Window_Command {
 	}
 }
 
-self.Window_GameEnd = Window_GameEnd;
+export default Window_GameEnd;

@@ -23,4 +23,4 @@ class Game_Actors {
 	}
 }
 
-self.Game_Actors = Game_Actors;
+export default Game_Actors;

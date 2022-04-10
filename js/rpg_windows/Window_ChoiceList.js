@@ -1,3 +1,5 @@
+import Window_Command from "./Window_Command.js";
+
 //-----------------------------------------------------------------------------
 // Window_ChoiceList
 //
@@ -132,4 +134,4 @@ class Window_ChoiceList extends Window_Command {
 	}
 }
 
-self.Window_ChoiceList = Window_ChoiceList;
+export default Window_ChoiceList;

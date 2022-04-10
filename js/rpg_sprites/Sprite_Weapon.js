@@ -1,3 +1,5 @@
+import Sprite_Base from "./Sprite_Base.js";
+
 //-----------------------------------------------------------------------------
 // Sprite_Weapon
 //
@@ -79,4 +81,4 @@ class Sprite_Weapon extends Sprite_Base {
 	}
 }
 
-self.Sprite_Weapon = Sprite_Weapon;
+export default Sprite_Weapon;

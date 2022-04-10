@@ -261,4 +261,4 @@ Utils._androidChrome = null;
 Utils._id = 1;
 Utils._supportPassiveEvent = null;
 
-self.Utils = Utils;
+export default Utils;

@@ -1,3 +1,5 @@
+import Scene_Base from "./Scene_Base.js";
+
 //-----------------------------------------------------------------------------
 // Scene_Title
 //
@@ -111,4 +113,4 @@ class Scene_Title extends Scene_Base {
 	}
 }
 
-self.Scene_Title = Scene_Title;
+export default Scene_Title;

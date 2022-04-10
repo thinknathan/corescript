@@ -1,3 +1,5 @@
+import Window_Base from "./Window_Base.js";
+
 //-----------------------------------------------------------------------------
 // Window_SkillStatus
 //
@@ -34,4 +36,4 @@ class Window_SkillStatus extends Window_Base {
 	}
 }
 
-self.Window_SkillStatus = Window_SkillStatus;
+export default Window_SkillStatus;

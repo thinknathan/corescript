@@ -1,3 +1,5 @@
+import Sprite from "../rpg_core/Sprite.js";
+
 //-----------------------------------------------------------------------------
 // Sprite_Animation
 //
@@ -311,4 +313,4 @@ class Sprite_Animation extends Sprite {
 Sprite_Animation._checker1 = {};
 Sprite_Animation._checker2 = {};
 
-self.Sprite_Animation = Sprite_Animation;
+export default Sprite_Animation;

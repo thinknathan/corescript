@@ -247,4 +247,4 @@ class StorageManager {
 	}
 }
 
-self.StorageManager = StorageManager;
+export default StorageManager;

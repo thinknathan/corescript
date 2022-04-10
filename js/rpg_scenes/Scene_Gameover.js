@@ -1,3 +1,5 @@
+import Scene_Base from "./Scene_Base.js";
+
 //-----------------------------------------------------------------------------
 // Scene_Gameover
 //
@@ -62,4 +64,4 @@ class Scene_Gameover extends Scene_Base {
 	}
 }
 
-self.Scene_Gameover = Scene_Gameover;
+export default Scene_Gameover;
