@@ -1,3 +1,6 @@
+import ImageManager from "../rpg_managers/ImageManager.js";
+import AudioManager from "../rpg_managers/AudioManager.js";
+
 class ProgressWatcher {
 	constructor() {
 		throw new Error('This is a static class');

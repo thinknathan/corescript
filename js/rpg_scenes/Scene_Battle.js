@@ -1,4 +1,23 @@
 import Scene_Base from "./Scene_Base.js";
+import ImageManager from "../rpg_managers/ImageManager.js";
+import BattleManager from "../rpg_managers/BattleManager.js";
+import SceneManager from "../rpg_managers/SceneManager.js";
+import AudioManager from "../rpg_managers/AudioManager.js";
+import Scene_Title from "../rpg_scenes/Scene_Title.js";
+import Scene_Gameover from "../rpg_scenes/Scene_Gameover.js";
+import Graphics from "../rpg_core/Graphics.js";
+import Spriteset_Battle from "../rpg_sprites/Spriteset_Battle.js";
+import Window_Help from "../rpg_windows/Window_Help.js";
+import Window_Message from "../rpg_windows/Window_Message.js";
+import Window_ScrollText from "../rpg_windows/Window_ScrollText.js";
+import Window_BattleLog from "../rpg_windows/Window_BattleLog.js";
+import Window_PartyCommand from "../rpg_windows/Window_PartyCommand.js";
+import Window_ActorCommand from "../rpg_windows/Window_ActorCommand.js";
+import Window_BattleStatus from "../rpg_windows/Window_BattleStatus.js";
+import Window_BattleActor from "../rpg_windows/Window_BattleActor.js";
+import Window_BattleEnemy from "../rpg_windows/Window_BattleEnemy.js";
+import Window_BattleSkill from "../rpg_windows/Window_BattleSkill.js";
+import Window_BattleItem from "../rpg_windows/Window_BattleItem.js";
 
 //-----------------------------------------------------------------------------
 // Scene_Battle

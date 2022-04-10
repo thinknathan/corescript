@@ -1,4 +1,8 @@
 import Scene_ItemBase from "./Scene_ItemBase.js";
+import Graphics from "../rpg_core/Graphics.js";
+import SoundManager from "../rpg_managers/SoundManager.js";
+import Window_ItemCategory from "../rpg_windows/Window_ItemCategory.js";
+import Window_ItemList from "../rpg_windows/Window_ItemList.js";
 
 //-----------------------------------------------------------------------------
 // Scene_Item

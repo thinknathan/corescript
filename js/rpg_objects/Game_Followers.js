@@ -1,3 +1,5 @@
+import Game_Follower from "../rpg_objects/Game_Follower.js";
+
 //-----------------------------------------------------------------------------
 // Game_Followers
 //

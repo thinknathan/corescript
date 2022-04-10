@@ -1,4 +1,11 @@
 import Scene_Base from "./Scene_Base.js";
+import ImageManager from "../rpg_managers/ImageManager.js";
+import AudioManager from "../rpg_managers/AudioManager.js";
+import SceneManager from "../rpg_managers/SceneManager.js";
+import Input from "../rpg_core/Input.js";
+import TouchInput from "../rpg_core/TouchInput.js";
+import Sprite from "../rpg_core/Sprite.js";
+import Scene_Title from "../rpg_scenes/Scene_Title.js";
 
 //-----------------------------------------------------------------------------
 // Scene_Gameover

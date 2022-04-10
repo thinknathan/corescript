@@ -1,4 +1,5 @@
 import Game_Battler from "./Game_Battler.js";
+import SoundManager from "../rpg_managers/SoundManager.js";
 
 //-----------------------------------------------------------------------------
 // Game_Enemy

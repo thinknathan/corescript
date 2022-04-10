@@ -1,3 +1,6 @@
+import Utils from "../rpg_core/Utils.js";
+import Graphics from "../rpg_core/Graphics.js";
+
 //-----------------------------------------------------------------------------
 /**
  * The sprite which changes the screen color in 2D canvas mode.

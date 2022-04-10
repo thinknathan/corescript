@@ -1,3 +1,5 @@
+import BattleManager from "../rpg_managers/BattleManager.js";
+
 //-----------------------------------------------------------------------------
 // Game_Timer
 //

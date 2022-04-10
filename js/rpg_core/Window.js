@@ -1,3 +1,10 @@
+import BitmapPIXI from "../rpg_core/BitmapPIXI.js";
+import Sprite from "../rpg_core/Sprite.js";
+import Point from "../rpg_core/Point.js";
+import Rectangle from "../rpg_core/Rectangle.js";
+import WindowSkinCache from "../rpg_core/WindowSkinCache.js";
+import Graphics from "../rpg_core/Graphics.js";
+
 //-----------------------------------------------------------------------------
 /**
  * The window in the game.

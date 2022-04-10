@@ -1,3 +1,6 @@
+import Graphics from "../rpg_core/Graphics.js";
+import SceneManager from "../rpg_managers/SceneManager.js";
+
 //-----------------------------------------------------------------------------
 /**
  * The static class that handles resource loading.

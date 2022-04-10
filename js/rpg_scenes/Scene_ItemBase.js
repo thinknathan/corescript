@@ -1,4 +1,10 @@
 import Scene_MenuBase from "./Scene_MenuBase.js";
+import Graphics from "../rpg_core/Graphics.js";
+import SoundManager from "../rpg_managers/SoundManager.js";
+import SceneManager from "../rpg_managers/SceneManager.js";
+import Window_MenuActor from "../rpg_windows/Window_MenuActor.js";
+import Game_Action from "../rpg_objects/Game_Action.js";
+import Scene_Map from "../rpg_scenes/Scene_Map.js";
 
 //-----------------------------------------------------------------------------
 // Scene_ItemBase

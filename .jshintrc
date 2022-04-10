@@ -11,15 +11,14 @@
     "self": true,
     "__TAURI__": true,
     "PIXI": true,
-    "CS_URL": true,
     "LZString": true,
     "nw": true,
     "makeVideoPlayableInline": true,
     "AudioContext": true,
     "webkitAudioContext": true,
-    "PixiFps": true,
     "gc": true,
     "$plugins": true,
+    "GameStats": true,
     "localstorage": true
   }
 }

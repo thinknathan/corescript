@@ -1,3 +1,21 @@
+import ImageManager from "../rpg_managers/ImageManager.js";
+import AudioManager from "../rpg_managers/AudioManager.js";
+import SceneManager from "../rpg_managers/SceneManager.js";
+import BattleManager from "../rpg_managers/BattleManager.js";
+import Graphics from "../rpg_core/Graphics.js";
+import Input from "../rpg_core/Input.js";
+import Utils from "../rpg_core/Utils.js";
+import JsonEx from "../rpg_core/JsonEx.js";
+import Window_MenuCommand from "../rpg_windows/Window_MenuCommand.js";
+import Game_Character from "../rpg_objects/Game_Character.js";
+import Scene_Title from "../rpg_scenes/Scene_Title.js";
+import Scene_Menu from "../rpg_scenes/Scene_Menu.js";
+import Scene_Save from "../rpg_scenes/Scene_Save.js";
+import Scene_Shop from "../rpg_scenes/Scene_Shop.js";
+import Scene_Name from "../rpg_scenes/Scene_Name.js";
+import Scene_Battle from "../rpg_scenes/Scene_Battle.js";
+import Scene_Gameover from "../rpg_scenes/Scene_Gameover.js";
+
 //-----------------------------------------------------------------------------
 // Game_Interpreter
 //

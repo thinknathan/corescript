@@ -1,3 +1,6 @@
+import Graphics from "../rpg_core/Graphics.js";
+import ImageManager from "../rpg_managers/ImageManager.js";
+
 //-----------------------------------------------------------------------------
 // Game_CharacterBase
 //

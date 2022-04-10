@@ -1,4 +1,11 @@
 import Game_Character from "./Game_Character.js";
+import Game_Followers from "../rpg_objects/Game_Followers.js";
+import Input from "../rpg_core/Input.js";
+import TouchInput from "../rpg_core/TouchInput.js";
+import Graphics from "../rpg_core/Graphics.js";
+import ConfigManager from "../rpg_managers/ConfigManager.js";
+import BattleManager from "../rpg_managers/BattleManager.js";
+import { DataManager } from "../rpg_managers/DataManager.js";
 
 //-----------------------------------------------------------------------------
 // Game_Player

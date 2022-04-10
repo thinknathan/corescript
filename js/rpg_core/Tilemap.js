@@ -1,3 +1,8 @@
+import Point from "../rpg_core/Point.js";
+import Sprite from "../rpg_core/Sprite.js";
+import Bitmap from "../rpg_core/Bitmap.js";
+import Graphics from "../rpg_core/Graphics.js";
+
 //-----------------------------------------------------------------------------
 /**
  * The tilemap which displays 2D tile-based game map.

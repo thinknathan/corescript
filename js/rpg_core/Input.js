@@ -1,3 +1,6 @@
+import Utils from "../rpg_core/Utils.js";
+import ResourceHandler from "../rpg_core/ResourceHandler.js";
+
 //-----------------------------------------------------------------------------
 /**
  * The static class that handles input data from the keyboard and gamepads.

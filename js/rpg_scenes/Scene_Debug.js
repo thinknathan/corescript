@@ -1,4 +1,8 @@
 import Scene_MenuBase from "./Scene_MenuBase.js";
+import Graphics from "../rpg_core/Graphics.js";
+import Window_Base from "../rpg_windows/Window_Base.js";
+import Window_DebugRange from "../rpg_windows/Window_DebugRange.js";
+import Window_DebugEdit from "../rpg_windows/Window_DebugEdit.js";
 
 //-----------------------------------------------------------------------------
 // Scene_Debug

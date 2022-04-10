@@ -1,4 +1,7 @@
 import Scene_MenuBase from "./Scene_MenuBase.js";
+import Scene_Title from "../rpg_scenes/Scene_Title.js";
+import SceneManager from "../rpg_managers/SceneManager.js";
+import Window_GameEnd from "../rpg_windows/Window_GameEnd.js";
 
 //-----------------------------------------------------------------------------
 // Scene_GameEnd

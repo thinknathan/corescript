@@ -1,4 +1,7 @@
 import Scene_Base from "./Scene_Base.js";
+import Window_Help from "../rpg_windows/Window_Help.js";
+import Sprite from "../rpg_core/Sprite.js";
+import SceneManager from "../rpg_managers/SceneManager.js";
 
 //-----------------------------------------------------------------------------
 // Scene_MenuBase

@@ -1,3 +1,5 @@
+import Bitmap from "../rpg_core/Bitmap.js";
+
 class Decrypter {
 	constructor() {
 		throw new Error('This is a static class');

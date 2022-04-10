@@ -1,4 +1,5 @@
 import Game_CharacterBase from "./Game_CharacterBase.js";
+import AudioManager from "../rpg_managers/AudioManager.js";
 
 //-----------------------------------------------------------------------------
 // Game_Character

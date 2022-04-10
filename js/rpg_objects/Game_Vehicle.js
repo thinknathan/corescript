@@ -1,4 +1,5 @@
 import Game_Character from "./Game_Character.js";
+import AudioManager from "../rpg_managers/AudioManager.js";
 
 //-----------------------------------------------------------------------------
 // Game_Vehicle

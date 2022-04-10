@@ -1,4 +1,7 @@
 import Game_Unit from "./Game_Unit.js";
+import TextManager from "../rpg_managers/TextManager.js";
+import { DataManager } from "../rpg_managers/DataManager.js";
+import Game_Item from "../rpg_objects/Game_Item.js";
 
 //-----------------------------------------------------------------------------
 // Game_Party

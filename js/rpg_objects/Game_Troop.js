@@ -1,4 +1,7 @@
 import Game_Unit from "./Game_Unit.js";
+import BattleManager from "../rpg_managers/BattleManager.js";
+import Game_Enemy from "../rpg_objects/Game_Enemy.js";
+import Game_Interpreter from "../rpg_objects/Game_Interpreter.js";
 
 //-----------------------------------------------------------------------------
 // Game_Troop

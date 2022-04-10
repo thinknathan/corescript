@@ -1,4 +1,11 @@
 import Game_Battler from "./Game_Battler.js";
+import SoundManager from "../rpg_managers/SoundManager.js";
+import TextManager from "../rpg_managers/TextManager.js";
+import { DataManager } from "../rpg_managers/DataManager.js";
+import BattleManager from "../rpg_managers/BattleManager.js";
+import Game_Item from "../rpg_objects/Game_Item.js";
+import Game_Action from "../rpg_objects/Game_Action.js";
+import Game_BattlerBase from "../rpg_objects/Game_BattlerBase.js";
 
 //-----------------------------------------------------------------------------
 // Game_Actor

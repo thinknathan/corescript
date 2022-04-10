@@ -1,4 +1,10 @@
 import Scene_MenuBase from "./Scene_MenuBase.js";
+import Graphics from "../rpg_core/Graphics.js";
+import SoundManager from "../rpg_managers/SoundManager.js";
+import Window_EquipStatus from "../rpg_windows/Window_EquipStatus.js";
+import Window_EquipCommand from "../rpg_windows/Window_EquipCommand.js";
+import Window_EquipSlot from "../rpg_windows/Window_EquipSlot.js";
+import Window_EquipItem from "../rpg_windows/Window_EquipItem.js";
 
 //-----------------------------------------------------------------------------
 // Scene_Equip

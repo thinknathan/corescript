@@ -1,3 +1,6 @@
+import Graphics from "../rpg_core/Graphics.js";
+import Utils from "../rpg_core/Utils.js";
+
 //-----------------------------------------------------------------------------
 /**
  * The sprite which covers the entire game screen.

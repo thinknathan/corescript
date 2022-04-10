@@ -1,4 +1,6 @@
 import ResourceHandler from "./ResourceHandler.js";
+import Decrypter from "./Decrypter.js";
+import Utils from "./Utils.js";
 
 //-----------------------------------------------------------------------------
 /**
@@ -789,7 +791,7 @@ class WebAudio {
 	}
 }
 
-WebAudio._standAlone = (() => !ResourceHandler)(this);
+WebAudio._standAlone = ((top) => !top.ResourceHandler)(self);
 
 WebAudio._masterVolume = 1;
 WebAudio._context = null;

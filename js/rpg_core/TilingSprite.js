@@ -1,3 +1,7 @@
+import Point from "../rpg_core/Point.js";
+import Rectangle from "../rpg_core/Rectangle.js";
+import Sprite from "../rpg_core/Sprite.js";
+
 //-----------------------------------------------------------------------------
 /**
  * The sprite object for a tiling image.

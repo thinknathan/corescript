@@ -1,3 +1,9 @@
+import Point from "../rpg_core/Point.js";
+import Graphics from "../rpg_core/Graphics.js";
+import Bitmap from "../rpg_core/Bitmap.js";
+import Sprite from "../rpg_core/Sprite.js";
+import ScreenSprite from "../rpg_core/ScreenSprite.js";
+
 //-----------------------------------------------------------------------------
 /**
  * The weather effect which displays rain, storm, or snow.

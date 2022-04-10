@@ -1,3 +1,11 @@
+import ImageManager from "../rpg_managers/ImageManager.js";
+import AudioManager from "../rpg_managers/AudioManager.js";
+import Graphics from "../rpg_core/Graphics.js";
+import Game_CommonEvent from "../rpg_objects/Game_CommonEvent.js";
+import Game_Vehicle from "../rpg_objects/Game_Vehicle.js";
+import Game_Event from "../rpg_objects/Game_Event.js";
+import Game_Interpreter from "../rpg_objects/Game_Interpreter.js";
+
 //-----------------------------------------------------------------------------
 // Game_Map
 //

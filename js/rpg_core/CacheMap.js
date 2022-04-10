@@ -1,3 +1,5 @@
+import CacheEntry from "../rpg_core/CacheEntry.js";
+
 /**
  * Cache for images, audio, or any other kind of resource
  * @param manager

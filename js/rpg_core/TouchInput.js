@@ -1,3 +1,6 @@
+import Utils from "../rpg_core/Utils.js";
+import Graphics from "../rpg_core/Graphics.js";
+
 //-----------------------------------------------------------------------------
 /**
  * The static class that handles input data from the mouse and touchscreen.

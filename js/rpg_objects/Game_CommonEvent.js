@@ -1,3 +1,5 @@
+import Game_Interpreter from "./Game_Interpreter.js";
+
 //-----------------------------------------------------------------------------
 // Game_CommonEvent
 //

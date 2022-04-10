@@ -1,3 +1,5 @@
+import { DataManager } from "../rpg_managers/DataManager.js";
+
 //-----------------------------------------------------------------------------
 // Game_BattlerBase
 //
