@@ -25,7 +25,7 @@ export default [
     input: 'js/main.js',
     output: [{
       format: formatType,
-      file: 'dist/main.js',
+      file: 'dist/main.min.js',
       banner: banner,
     }],
     plugins: pluginList,
@@ -34,7 +34,7 @@ export default [
     input: 'js/main.js',
     output: [{
       format: formatType,
-      file: 'dist/main.uncompressed.js',
+      file: 'dist/main.js',
       banner: banner,
     }],
   },
