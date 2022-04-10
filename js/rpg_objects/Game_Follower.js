@@ -15,7 +15,7 @@ class Game_Follower extends Game_Character {
 	initialize(memberIndex) {
 		super.initialize();
 		this._memberIndex = memberIndex;
-		this.setTransparent($dataSystem.optTransparent);
+		this.setTransparent(self.$dataSystem.optTransparent);
 		this.setThrough(true);
 	}
 
@@ -28,23 +28,23 @@ class Game_Follower extends Game_Character {
 	}
 
 	actor() {
-		return $gameParty.battleMembers()[this._memberIndex];
+		return self.$gameParty.battleMembers()[this._memberIndex];
 	}
 
 	isVisible() {
-		return this.actor() && $gamePlayer.followers()
+		return this.actor() && self.$gamePlayer.followers()
 			.isVisible();
 	}
 
 	update() {
 		super.update();
-		this.setMoveSpeed($gamePlayer.realMoveSpeed());
-		this.setOpacity($gamePlayer.opacity());
-		this.setBlendMode($gamePlayer.blendMode());
-		this.setWalkAnime($gamePlayer.hasWalkAnime());
-		this.setStepAnime($gamePlayer.hasStepAnime());
-		this.setDirectionFix($gamePlayer.isDirectionFixed());
-		this.setTransparent($gamePlayer.isTransparent());
+		this.setMoveSpeed(self.$gamePlayer.realMoveSpeed());
+		this.setOpacity(self.$gamePlayer.opacity());
+		this.setBlendMode(self.$gamePlayer.blendMode());
+		this.setWalkAnime(self.$gamePlayer.hasWalkAnime());
+		this.setStepAnime(self.$gamePlayer.hasStepAnime());
+		this.setDirectionFix(self.$gamePlayer.isDirectionFixed());
+		this.setTransparent(self.$gamePlayer.isTransparent());
 	}
 
 	chaseCharacter({
@@ -60,7 +60,7 @@ class Game_Follower extends Game_Character {
 		} else if (sy !== 0) {
 			this.moveStraight(sy > 0 ? 8 : 2);
 		}
-		this.setMoveSpeed($gamePlayer.realMoveSpeed());
+		this.setMoveSpeed(self.$gamePlayer.realMoveSpeed());
 	}
 }
 

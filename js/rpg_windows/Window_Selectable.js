@@ -1,4 +1,8 @@
 import Window_Base from "./Window_Base.js";
+import TouchInput from "../rpg_core/TouchInput.js";
+import Input from "../rpg_core/Input.js";
+import Rectangle from "../rpg_core/Rectangle.js";
+import SoundManager from "../rpg_managers/SoundManager.js";
 
 //-----------------------------------------------------------------------------
 // Window_Selectable

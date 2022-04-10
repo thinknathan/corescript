@@ -47,7 +47,7 @@ class Game_Party extends Game_Unit {
 	}
 
 	allMembers() {
-		return this._actors.map(id => $gameActors.actor(id));
+		return this._actors.map(id => self.$gameActors.actor(id));
 	}
 
 	battleMembers() {
@@ -76,7 +76,7 @@ class Game_Party extends Game_Unit {
 	items() {
 		const list = [];
 		for (let id in this._items) {
-			list.push($dataItems[id]);
+			list.push(self.$dataItems[id]);
 		}
 		return list;
 	}
@@ -84,7 +84,7 @@ class Game_Party extends Game_Unit {
 	weapons() {
 		const list = [];
 		for (let id in this._weapons) {
-			list.push($dataWeapons[id]);
+			list.push(self.$dataWeapons[id]);
 		}
 		return list;
 	}
@@ -92,7 +92,7 @@ class Game_Party extends Game_Unit {
 	armors() {
 		const list = [];
 		for (let id in this._armors) {
-			list.push($dataArmors[id]);
+			list.push(self.$dataArmors[id]);
 		}
 		return list;
 	}
@@ -123,8 +123,8 @@ class Game_Party extends Game_Unit {
 
 	setupStartingMembers() {
 		this._actors = [];
-		$dataSystem.partyMembers.forEach(function (actorId) {
-			if ($gameActors.actor(actorId)) {
+		self.$dataSystem.partyMembers.forEach(function (actorId) {
+			if (self.$gameActors.actor(actorId)) {
 				this._actors.push(actorId);
 			}
 		}, this);
@@ -150,12 +150,12 @@ class Game_Party extends Game_Unit {
 	}
 
 	setupBattleTestMembers() {
-		$dataSystem.testBattlers.forEach(function ({
+		self.$dataSystem.testBattlers.forEach(function ({
 			actorId,
 			level,
 			equips
 		}) {
-			const actor = $gameActors.actor(actorId);
+			const actor = self.$gameActors.actor(actorId);
 			if (actor) {
 				actor.changeLevel(level, false);
 				actor.initEquips(equips);
@@ -166,7 +166,7 @@ class Game_Party extends Game_Unit {
 	}
 
 	setupBattleTestItems() {
-		$dataItems.forEach(function (item) {
+		self.$dataItems.forEach(function (item) {
 			if (item && item.name.length > 0) {
 				this.gainItem(item, this.maxItems(item));
 			}
@@ -183,16 +183,16 @@ class Game_Party extends Game_Unit {
 	addActor(actorId) {
 		if (!this._actors.contains(actorId)) {
 			this._actors.push(actorId);
-			$gamePlayer.refresh();
-			$gameMap.requestRefresh();
+			self.$gamePlayer.refresh();
+			self.$gameMap.requestRefresh();
 		}
 	}
 
 	removeActor(actorId) {
 		if (this._actors.contains(actorId)) {
 			this._actors.splice(this._actors.indexOf(actorId), 1);
-			$gamePlayer.refresh();
-			$gameMap.requestRefresh();
+			self.$gamePlayer.refresh();
+			self.$gameMap.requestRefresh();
 		}
 	}
 
@@ -265,7 +265,7 @@ class Game_Party extends Game_Unit {
 			if (includeEquip && newNumber < 0) {
 				this.discardMembersEquip(item, -newNumber);
 			}
-			$gameMap.requestRefresh();
+			self.$gameMap.requestRefresh();
 		}
 	}
 
@@ -314,7 +314,7 @@ class Game_Party extends Game_Unit {
 	}
 
 	menuActor() {
-		let actor = $gameActors.actor(this._menuActorId);
+		let actor = self.$gameActors.actor(this._menuActorId);
 		if (!this.members()
 			.contains(actor)) {
 			actor = this.members()[0];
@@ -352,7 +352,7 @@ class Game_Party extends Game_Unit {
 	}
 
 	targetActor() {
-		let actor = $gameActors.actor(this._targetActorId);
+		let actor = self.$gameActors.actor(this._targetActorId);
 		if (!this.members()
 			.contains(actor)) {
 			actor = this.members()[0];
@@ -376,7 +376,7 @@ class Game_Party extends Game_Unit {
 		const temp = this._actors[index1];
 		this._actors[index1] = this._actors[index2];
 		this._actors[index2] = temp;
-		$gamePlayer.refresh();
+		self.$gamePlayer.refresh();
 	}
 
 	charactersForSavefile() {

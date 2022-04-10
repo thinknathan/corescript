@@ -29,9 +29,9 @@ class Window_Base extends Window {
 	}
 
 	standardFontFace() {
-		if ($gameSystem.isChinese()) {
+		if (self.$gameSystem.isChinese()) {
 			return 'SimHei, Heiti TC, sans-serif';
-		} else if ($gameSystem.isKorean()) {
+		} else if (self.$gameSystem.isKorean()) {
 			return 'Dotum, AppleGothic, sans-serif';
 		} else {
 			return 'GameFont';
@@ -79,7 +79,7 @@ class Window_Base extends Window {
 	}
 
 	updateTone() {
-		const tone = $gameSystem.windowTone();
+		const tone = self.$gameSystem.windowTone();
 		this.setTone(tone[0], tone[1], tone[2]);
 	}
 
@@ -281,10 +281,10 @@ class Window_Base extends Window {
 		text = text.replace(/\\/g, '\x1b');
 		text = text.replace(/\x1b\x1b/g, '\\');
 		text = text.replace(/\x1bV\[(\d+)\]/gi, function (...args) {
-			return $gameVariables.value(parseInt(args[1]));
+			return self.$gameVariables.value(parseInt(args[1]));
 		}.bind(this));
 		text = text.replace(/\x1bV\[(\d+)\]/gi, function (...args) {
-			return $gameVariables.value(parseInt(args[1]));
+			return self.$gameVariables.value(parseInt(args[1]));
 		}.bind(this));
 		text = text.replace(/\x1bN\[(\d+)\]/gi, function (...args) {
 			return this.actorName(parseInt(args[1]));
@@ -297,12 +297,12 @@ class Window_Base extends Window {
 	}
 
 	actorName(n) {
-		const actor = n >= 1 ? $gameActors.actor(n) : null;
+		const actor = n >= 1 ? self.$gameActors.actor(n) : null;
 		return actor ? actor.name() : '';
 	}
 
 	partyMemberName(n) {
-		const actor = n >= 1 ? $gameParty.members()[n - 1] : null;
+		const actor = n >= 1 ? self.$gameParty.members()[n - 1] : null;
 		return actor ? actor.name() : '';
 	}
 
@@ -709,7 +709,7 @@ class Window_Base extends Window {
 	}
 
 	reserveFaceImages() {
-		$gameParty.members()
+		self.$gameParty.members()
 			.forEach(actor => {
 				ImageManager.reserveFace(actor.faceName());
 			}, this);

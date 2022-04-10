@@ -47,7 +47,7 @@ class Window_EventItem extends Window_ItemList {
 	}
 
 	includes(item) {
-		const itypeId = $gameMessage.itemChoiceItypeId();
+		const itypeId = self.$gameMessage.itemChoiceItypeId();
 		return DataManager.isItem(item) && item.itypeId === itypeId;
 	}
 
@@ -58,13 +58,13 @@ class Window_EventItem extends Window_ItemList {
 	onOk() {
 		const item = this.item();
 		const itemId = item ? item.id : 0;
-		$gameVariables.setValue($gameMessage.itemChoiceVariableId(), itemId);
+		self.$gameVariables.setValue(self.$gameMessage.itemChoiceVariableId(), itemId);
 		this._messageWindow.terminateMessage();
 		this.close();
 	}
 
 	onCancel() {
-		$gameVariables.setValue($gameMessage.itemChoiceVariableId(), 0);
+		self.$gameVariables.setValue(self.$gameMessage.itemChoiceVariableId(), 0);
 		this._messageWindow.terminateMessage();
 		this.close();
 	}

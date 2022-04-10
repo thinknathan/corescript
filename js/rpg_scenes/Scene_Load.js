@@ -19,7 +19,7 @@ class Scene_Load extends Scene_File {
 	terminate() {
 		super.terminate();
 		if (this._loadSuccess) {
-			$gameSystem.onAfterLoad();
+			self.$gameSystem.onAfterLoad();
 		}
 	}
 
@@ -58,9 +58,9 @@ class Scene_Load extends Scene_File {
 	}
 
 	reloadMapIfUpdated() {
-		if ($gameSystem.versionId() !== $dataSystem.versionId) {
-			$gamePlayer.reserveTransfer($gameMap.mapId(), $gamePlayer.x, $gamePlayer.y);
-			$gamePlayer.requestMapReload();
+		if (self.$gameSystem.versionId() !== self.$dataSystem.versionId) {
+			self.$gamePlayer.reserveTransfer(self.$gameMap.mapId(), self.$gamePlayer.x, self.$gamePlayer.y);
+			self.$gamePlayer.requestMapReload();
 		}
 	}
 }

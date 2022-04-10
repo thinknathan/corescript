@@ -26,16 +26,16 @@ class Window_BattleActor extends Window_BattleStatus {
 
 	hide() {
 		super.hide();
-		$gameParty.select(null);
+		self.$gameParty.select(null);
 	}
 
 	select(index) {
 		super.select(index);
-		$gameParty.select(this.actor());
+		self.$gameParty.select(this.actor());
 	}
 
 	actor() {
-		return $gameParty.members()[this.index()];
+		return self.$gameParty.members()[this.index()];
 	}
 }
 

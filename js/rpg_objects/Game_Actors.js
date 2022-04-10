@@ -13,7 +13,7 @@ class Game_Actors {
 	}
 
 	actor(actorId) {
-		if ($dataActors[actorId]) {
+		if (self.$dataActors[actorId]) {
 			if (!this._data[actorId]) {
 				this._data[actorId] = new Game_Actor(actorId);
 			}

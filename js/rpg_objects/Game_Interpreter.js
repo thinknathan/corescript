@@ -40,7 +40,7 @@ class Game_Interpreter {
 
 	setup(list, eventId) {
 		this.clear();
-		this._mapId = $gameMap.mapId();
+		this._mapId = self.$gameMap.mapId();
 		this._eventId = eventId || 0;
 		this._list = list;
 		Game_Interpreter.requestImages(list);
@@ -51,7 +51,7 @@ class Game_Interpreter {
 	}
 
 	isOnCurrentMap() {
-		return this._mapId === $gameMap.mapId();
+		return this._mapId === self.$gameMap.mapId();
 	}
 
 	setEventInfo(eventInfo) {
@@ -59,14 +59,14 @@ class Game_Interpreter {
 	}
 
 	setupReservedCommonEvent() {
-		if ($gameTemp.isCommonEventReserved()) {
-			this.setup($gameTemp.reservedCommonEvent()
+		if (self.$gameTemp.isCommonEventReserved()) {
+			this.setup(self.$gameTemp.reservedCommonEvent()
 				.list);
 			this.setEventInfo({
 				eventType: 'common_event',
-				commonEventId: $gameTemp.reservedCommonEventId()
+				commonEventId: self.$gameTemp.reservedCommonEventId()
 			});
-			$gameTemp.clearCommonEvent();
+			self.$gameTemp.clearCommonEvent();
 			return true;
 		} else {
 			return false;
@@ -122,13 +122,13 @@ class Game_Interpreter {
 		let waiting = false;
 		switch (this._waitMode) {
 		case 'message':
-			waiting = $gameMessage.isBusy();
+			waiting = self.$gameMessage.isBusy();
 			break;
 		case 'transfer':
-			waiting = $gamePlayer.isTransferring();
+			waiting = self.$gamePlayer.isTransferring();
 			break;
 		case 'scroll':
-			waiting = $gameMap.isScrolling();
+			waiting = self.$gameMap.isScrolling();
 			break;
 		case 'route':
 			waiting = this._character.isMoveRouteForcing();
@@ -140,7 +140,7 @@ class Game_Interpreter {
 			waiting = this._character.isBalloonPlaying();
 			break;
 		case 'gather':
-			waiting = $gamePlayer.areFollowersGathering();
+			waiting = self.$gamePlayer.areFollowersGathering();
 			break;
 		case 'action':
 			waiting = BattleManager.isActionForced();
@@ -235,10 +235,10 @@ class Game_Interpreter {
 
 	iterateActorId(param, callback) {
 		if (param === 0) {
-			$gameParty.members()
+			self.$gameParty.members()
 				.forEach(callback);
 		} else {
-			const actor = $gameActors.actor(param);
+			const actor = self.$gameActors.actor(param);
 			if (actor) {
 				callback(actor);
 			}
@@ -249,16 +249,16 @@ class Game_Interpreter {
 		if (param1 === 0) {
 			this.iterateActorId(param2, callback);
 		} else {
-			this.iterateActorId($gameVariables.value(param2), callback);
+			this.iterateActorId(self.$gameVariables.value(param2), callback);
 		}
 	}
 
 	iterateActorIndex(param, callback) {
 		if (param < 0) {
-			$gameParty.members()
+			self.$gameParty.members()
 				.forEach(callback);
 		} else {
-			const actor = $gameParty.members()[param];
+			const actor = self.$gameParty.members()[param];
 			if (actor) {
 				callback(actor);
 			}
@@ -267,10 +267,10 @@ class Game_Interpreter {
 
 	iterateEnemyIndex(param, callback) {
 		if (param < 0) {
-			$gameTroop.members()
+			self.$gameTroop.members()
 				.forEach(callback);
 		} else {
-			const enemy = $gameTroop.members()[param];
+			const enemy = self.$gameTroop.members()[param];
 			if (enemy) {
 				callback(enemy);
 			}
@@ -278,7 +278,7 @@ class Game_Interpreter {
 	}
 
 	iterateBattler(param1, param2, callback) {
-		if ($gameParty.inBattle()) {
+		if (self.$gameParty.inBattle()) {
 			if (param1 === 0) {
 				this.iterateEnemyIndex(param2, callback);
 			} else {
@@ -288,19 +288,19 @@ class Game_Interpreter {
 	}
 
 	character(param) {
-		if ($gameParty.inBattle()) {
+		if (self.$gameParty.inBattle()) {
 			return null;
 		} else if (param < 0) {
-			return $gamePlayer;
+			return self.$gamePlayer;
 		} else if (this.isOnCurrentMap()) {
-			return $gameMap.event(param > 0 ? param : this._eventId);
+			return self.$gameMap.event(param > 0 ? param : this._eventId);
 		} else {
 			return null;
 		}
 	}
 
 	operateValue(operation, operandType, operand) {
-		const value = operandType === 0 ? operand : $gameVariables.value(operand);
+		const value = operandType === 0 ? operand : self.$gameVariables.value(operand);
 		return operation === 0 ? value : -value;
 	}
 
@@ -318,13 +318,13 @@ class Game_Interpreter {
 
 	// Show Text
 	command101() {
-		if (!$gameMessage.isBusy()) {
-			$gameMessage.setFaceImage(this._params[0], this._params[1]);
-			$gameMessage.setBackground(this._params[2]);
-			$gameMessage.setPositionType(this._params[3]);
+		if (!self.$gameMessage.isBusy()) {
+			self.$gameMessage.setFaceImage(this._params[0], this._params[1]);
+			self.$gameMessage.setBackground(this._params[2]);
+			self.$gameMessage.setPositionType(this._params[3]);
 			while (this.nextEventCode() === 401) { // Text data
 				this._index++;
-				$gameMessage.add(this.currentCommand()
+				self.$gameMessage.add(this.currentCommand()
 					.parameters[0]);
 			}
 			switch (this.nextEventCode()) {
@@ -352,7 +352,7 @@ class Game_Interpreter {
 
 	// Show Choices
 	command102() {
-		if (!$gameMessage.isBusy()) {
+		if (!self.$gameMessage.isBusy()) {
 			this.setupChoices(this._params);
 			this._index++;
 			this.setWaitMode('message');
@@ -369,10 +369,10 @@ class Game_Interpreter {
 		if (cancelType >= choices.length) {
 			cancelType = -2;
 		}
-		$gameMessage.setChoices(choices, defaultType, cancelType);
-		$gameMessage.setChoiceBackground(background);
-		$gameMessage.setChoicePositionType(positionType);
-		$gameMessage.setChoiceCallback(n => {
+		self.$gameMessage.setChoices(choices, defaultType, cancelType);
+		self.$gameMessage.setChoiceBackground(background);
+		self.$gameMessage.setChoicePositionType(positionType);
+		self.$gameMessage.setChoiceCallback(n => {
 			this._branch[this._indent] = n;
 		});
 	}
@@ -395,7 +395,7 @@ class Game_Interpreter {
 
 	// Input Number
 	command103() {
-		if (!$gameMessage.isBusy()) {
+		if (!self.$gameMessage.isBusy()) {
 			this.setupNumInput(this._params);
 			this._index++;
 			this.setWaitMode('message');
@@ -404,12 +404,12 @@ class Game_Interpreter {
 	}
 
 	setupNumInput(params) {
-		$gameMessage.setNumberInput(params[0], params[1]);
+		self.$gameMessage.setNumberInput(params[0], params[1]);
 	}
 
 	// Select Item
 	command104() {
-		if (!$gameMessage.isBusy()) {
+		if (!self.$gameMessage.isBusy()) {
 			this.setupItemChoice(this._params);
 			this._index++;
 			this.setWaitMode('message');
@@ -418,16 +418,16 @@ class Game_Interpreter {
 	}
 
 	setupItemChoice(params) {
-		$gameMessage.setItemChoice(params[0], params[1] || 2);
+		self.$gameMessage.setItemChoice(params[0], params[1] || 2);
 	}
 
 	// Show Scrolling Text
 	command105() {
-		if (!$gameMessage.isBusy()) {
-			$gameMessage.setScroll(this._params[0], this._params[1]);
+		if (!self.$gameMessage.isBusy()) {
+			self.$gameMessage.setScroll(this._params[0], this._params[1]);
 			while (this.nextEventCode() === 405) {
 				this._index++;
-				$gameMessage.add(this.currentCommand()
+				self.$gameMessage.add(this.currentCommand()
 					.parameters[0]);
 			}
 			this._index++;
@@ -452,15 +452,15 @@ class Game_Interpreter {
 		let result = false;
 		switch (this._params[0]) {
 		case 0: // Switch
-			result = ($gameSwitches.value(this._params[1]) === (this._params[2] === 0));
+			result = (self.$gameSwitches.value(this._params[1]) === (this._params[2] === 0));
 			break;
 		case 1: // Variable
-			const value1 = $gameVariables.value(this._params[1]);
+			const value1 = self.$gameVariables.value(this._params[1]);
 			let value2;
 			if (this._params[2] === 0) {
 				value2 = this._params[3];
 			} else {
-				value2 = $gameVariables.value(this._params[3]);
+				value2 = self.$gameVariables.value(this._params[3]);
 			}
 			switch (this._params[4]) {
 			case 0: // Equal to
@@ -486,41 +486,41 @@ class Game_Interpreter {
 		case 2: // Self Switch
 			if (this._eventId > 0) {
 				const key = [this._mapId, this._eventId, this._params[1]];
-				result = ($gameSelfSwitches.value(key) === (this._params[2] === 0));
+				result = (self.$gameSelfSwitches.value(key) === (this._params[2] === 0));
 			}
 			break;
 		case 3: // Timer
-			if ($gameTimer.isWorking()) {
+			if (self.$gameTimer.isWorking()) {
 				if (this._params[2] === 0) {
-					result = ($gameTimer.seconds() >= this._params[1]);
+					result = (self.$gameTimer.seconds() >= this._params[1]);
 				} else {
-					result = ($gameTimer.seconds() <= this._params[1]);
+					result = (self.$gameTimer.seconds() <= this._params[1]);
 				}
 			}
 			break;
 		case 4: // Actor
-			const actor = $gameActors.actor(this._params[1]);
+			const actor = self.$gameActors.actor(this._params[1]);
 			if (actor) {
 				const n = this._params[3];
 				switch (this._params[2]) {
 				case 0: // In the Party
-					result = $gameParty.members()
+					result = self.$gameParty.members()
 						.contains(actor);
 					break;
 				case 1: // Name
 					result = (actor.name() === n);
 					break;
 				case 2: // Class
-					result = actor.isClass($dataClasses[n]);
+					result = actor.isClass(self.$dataClasses[n]);
 					break;
 				case 3: // Skill
 					result = actor.hasSkill(n);
 					break;
 				case 4: // Weapon
-					result = actor.hasWeapon($dataWeapons[n]);
+					result = actor.hasWeapon(self.$dataWeapons[n]);
 					break;
 				case 5: // Armor
-					result = actor.hasArmor($dataArmors[n]);
+					result = actor.hasArmor(self.$dataArmors[n]);
 					break;
 				case 6: // State
 					result = actor.isStateAffected(n);
@@ -529,7 +529,7 @@ class Game_Interpreter {
 			}
 			break;
 		case 5: // Enemy
-			const enemy = $gameTroop.members()[this._params[1]];
+			const enemy = self.$gameTroop.members()[this._params[1]];
 			if (enemy) {
 				switch (this._params[2]) {
 				case 0: // Appeared
@@ -550,24 +550,24 @@ class Game_Interpreter {
 		case 7: // Gold
 			switch (this._params[2]) {
 			case 0: // Greater than or equal to
-				result = ($gameParty.gold() >= this._params[1]);
+				result = (self.$gameParty.gold() >= this._params[1]);
 				break;
 			case 1: // Less than or equal to
-				result = ($gameParty.gold() <= this._params[1]);
+				result = (self.$gameParty.gold() <= this._params[1]);
 				break;
 			case 2: // Less than
-				result = ($gameParty.gold() < this._params[1]);
+				result = (self.$gameParty.gold() < this._params[1]);
 				break;
 			}
 			break;
 		case 8: // Item
-			result = $gameParty.hasItem($dataItems[this._params[1]]);
+			result = self.$gameParty.hasItem(self.$dataItems[this._params[1]]);
 			break;
 		case 9: // Weapon
-			result = $gameParty.hasItem($dataWeapons[this._params[1]], this._params[2]);
+			result = self.$gameParty.hasItem(self.$dataWeapons[this._params[1]], this._params[2]);
 			break;
 		case 10: // Armor
-			result = $gameParty.hasItem($dataArmors[this._params[1]], this._params[2]);
+			result = self.$gameParty.hasItem(self.$dataArmors[this._params[1]], this._params[2]);
 			break;
 		case 11: // Button
 			result = Input.isPressed(this._params[1]);
@@ -582,7 +582,7 @@ class Game_Interpreter {
 			}
 			break;
 		case 13: // Vehicle
-			result = ($gamePlayer.vehicle() === $gameMap.vehicle(this._params[1]));
+			result = (self.$gamePlayer.vehicle() === self.$gameMap.vehicle(this._params[1]));
 			break;
 		}
 		this._branch[this._indent] = result;
@@ -642,7 +642,7 @@ class Game_Interpreter {
 
 	// Common Event
 	command117() {
-		const commonEvent = $dataCommonEvents[this._params[0]];
+		const commonEvent = self.$dataCommonEvents[this._params[0]];
 		if (commonEvent) {
 			const eventId = this.isOnCurrentMap() ? this._eventId : 0;
 			this.setupChild(commonEvent.list, eventId);
@@ -695,7 +695,7 @@ class Game_Interpreter {
 	// Control Switches
 	command121() {
 		for (let i = this._params[0]; i <= this._params[1]; i++) {
-			$gameSwitches.setValue(i, this._params[2] === 0);
+			self.$gameSwitches.setValue(i, this._params[2] === 0);
 		}
 		return true;
 	}
@@ -708,7 +708,7 @@ class Game_Interpreter {
 			value = this._params[4];
 			break;
 		case 1: // Variable
-			value = $gameVariables.value(this._params[4]);
+			value = self.$gameVariables.value(this._params[4]);
 			break;
 		case 2: // Random
 			value = this._params[5] - this._params[4] + 1;
@@ -739,13 +739,13 @@ class Game_Interpreter {
 	gameDataOperand(type, param1, param2) {
 		switch (type) {
 		case 0: // Item
-			return $gameParty.numItems($dataItems[param1]);
+			return self.$gameParty.numItems(self.$dataItems[param1]);
 		case 1: // Weapon
-			return $gameParty.numItems($dataWeapons[param1]);
+			return self.$gameParty.numItems(self.$dataWeapons[param1]);
 		case 2: // Armor
-			return $gameParty.numItems($dataArmors[param1]);
+			return self.$gameParty.numItems(self.$dataArmors[param1]);
 		case 3: // Actor
-			const actor = $gameActors.actor(param1);
+			const actor = self.$gameActors.actor(param1);
 			if (actor) {
 				switch (param2) {
 				case 0: // Level
@@ -764,7 +764,7 @@ class Game_Interpreter {
 			}
 			break;
 		case 4: // Enemy
-			const enemy = $gameTroop.members()[param1];
+			const enemy = self.$gameTroop.members()[param1];
 			if (enemy) {
 				switch (param2) {
 				case 0: // HP
@@ -796,30 +796,30 @@ class Game_Interpreter {
 			}
 			break;
 		case 6: // Party
-			const actor_party = $gameParty.members()[param1];
+			const actor_party = self.$gameParty.members()[param1];
 			return actor_party ? actor_party.actorId() : 0;
 		case 7: // Other
 			switch (param1) {
 			case 0: // Map ID
-				return $gameMap.mapId();
+				return self.$gameMap.mapId();
 			case 1: // Party Members
-				return $gameParty.size();
+				return self.$gameParty.size();
 			case 2: // Gold
-				return $gameParty.gold();
+				return self.$gameParty.gold();
 			case 3: // Steps
-				return $gameParty.steps();
+				return self.$gameParty.steps();
 			case 4: // Play Time
-				return $gameSystem.playtime();
+				return self.$gameSystem.playtime();
 			case 5: // Timer
-				return $gameTimer.seconds();
+				return self.$gameTimer.seconds();
 			case 6: // Save Count
-				return $gameSystem.saveCount();
+				return self.$gameSystem.saveCount();
 			case 7: // Battle Count
-				return $gameSystem.battleCount();
+				return self.$gameSystem.battleCount();
 			case 8: // Win Count
-				return $gameSystem.winCount();
+				return self.$gameSystem.winCount();
 			case 9: // Escape Count
-				return $gameSystem.escapeCount();
+				return self.$gameSystem.escapeCount();
 			}
 			break;
 		}
@@ -828,29 +828,29 @@ class Game_Interpreter {
 
 	operateVariable(variableId, operationType, value) {
 		try {
-			let oldValue = $gameVariables.value(variableId);
+			let oldValue = self.$gameVariables.value(variableId);
 			switch (operationType) {
 			case 0: // Set
-				$gameVariables.setValue(variableId, oldValue = value);
+				self.$gameVariables.setValue(variableId, oldValue = value);
 				break;
 			case 1: // Add
-				$gameVariables.setValue(variableId, oldValue + value);
+				self.$gameVariables.setValue(variableId, oldValue + value);
 				break;
 			case 2: // Sub
-				$gameVariables.setValue(variableId, oldValue - value);
+				self.$gameVariables.setValue(variableId, oldValue - value);
 				break;
 			case 3: // Mul
-				$gameVariables.setValue(variableId, oldValue * value);
+				self.$gameVariables.setValue(variableId, oldValue * value);
 				break;
 			case 4: // Div
-				$gameVariables.setValue(variableId, oldValue / value);
+				self.$gameVariables.setValue(variableId, oldValue / value);
 				break;
 			case 5: // Mod
-				$gameVariables.setValue(variableId, oldValue % value);
+				self.$gameVariables.setValue(variableId, oldValue % value);
 				break;
 			}
 		} catch (e) {
-			$gameVariables.setValue(variableId, 0);
+			self.$gameVariables.setValue(variableId, 0);
 		}
 	}
 
@@ -858,7 +858,7 @@ class Game_Interpreter {
 	command123() {
 		if (this._eventId > 0) {
 			const key = [this._mapId, this._eventId, this._params[0]];
-			$gameSelfSwitches.setValue(key, this._params[1] === 0);
+			self.$gameSelfSwitches.setValue(key, this._params[1] === 0);
 		}
 		return true;
 	}
@@ -866,9 +866,9 @@ class Game_Interpreter {
 	// Control Timer
 	command124() {
 		if (this._params[0] === 0) { // Start
-			$gameTimer.start(this._params[1] * 60);
+			self.$gameTimer.start(this._params[1] * 60);
 		} else { // Stop
-			$gameTimer.stop();
+			self.$gameTimer.stop();
 		}
 		return true;
 	}
@@ -876,43 +876,43 @@ class Game_Interpreter {
 	// Change Gold
 	command125() {
 		const value = this.operateValue(this._params[0], this._params[1], this._params[2]);
-		$gameParty.gainGold(value);
+		self.$gameParty.gainGold(value);
 		return true;
 	}
 
 	// Change Items
 	command126() {
 		const value = this.operateValue(this._params[1], this._params[2], this._params[3]);
-		$gameParty.gainItem($dataItems[this._params[0]], value);
+		self.$gameParty.gainItem(self.$dataItems[this._params[0]], value);
 		return true;
 	}
 
 	// Change Weapons
 	command127() {
 		const value = this.operateValue(this._params[1], this._params[2], this._params[3]);
-		$gameParty.gainItem($dataWeapons[this._params[0]], value, this._params[4]);
+		self.$gameParty.gainItem(self.$dataWeapons[this._params[0]], value, this._params[4]);
 		return true;
 	}
 
 	// Change Armors
 	command128() {
 		const value = this.operateValue(this._params[1], this._params[2], this._params[3]);
-		$gameParty.gainItem($dataArmors[this._params[0]], value, this._params[4]);
+		self.$gameParty.gainItem(self.$dataArmors[this._params[0]], value, this._params[4]);
 		return true;
 	}
 
 	// Change Party Member
 	command129() {
-		const actor = $gameActors.actor(this._params[0]);
+		const actor = self.$gameActors.actor(this._params[0]);
 		if (actor) {
 			if (this._params[1] === 0) { // Add
 				if (this._params[2]) { // Initialize
-					$gameActors.actor(this._params[0])
+					self.$gameActors.actor(this._params[0])
 						.setup(this._params[0]);
 				}
-				$gameParty.addActor(this._params[0]);
+				self.$gameParty.addActor(this._params[0]);
 			} else { // Remove
-				$gameParty.removeActor(this._params[0]);
+				self.$gameParty.removeActor(this._params[0]);
 			}
 		}
 		return true;
@@ -920,22 +920,22 @@ class Game_Interpreter {
 
 	// Change Battle BGM
 	command132() {
-		$gameSystem.setBattleBgm(this._params[0]);
+		self.$gameSystem.setBattleBgm(this._params[0]);
 		return true;
 	}
 
 	// Change Victory ME
 	command133() {
-		$gameSystem.setVictoryMe(this._params[0]);
+		self.$gameSystem.setVictoryMe(this._params[0]);
 		return true;
 	}
 
 	// Change Save Access
 	command134() {
 		if (this._params[0] === 0) {
-			$gameSystem.disableSave();
+			self.$gameSystem.disableSave();
 		} else {
-			$gameSystem.enableSave();
+			self.$gameSystem.enableSave();
 		}
 		return true;
 	}
@@ -943,9 +943,9 @@ class Game_Interpreter {
 	// Change Menu Access
 	command135() {
 		if (this._params[0] === 0) {
-			$gameSystem.disableMenu();
+			self.$gameSystem.disableMenu();
 		} else {
-			$gameSystem.enableMenu();
+			self.$gameSystem.enableMenu();
 		}
 		return true;
 	}
@@ -953,39 +953,39 @@ class Game_Interpreter {
 	// Change Encounter Disable
 	command136() {
 		if (this._params[0] === 0) {
-			$gameSystem.disableEncounter();
+			self.$gameSystem.disableEncounter();
 		} else {
-			$gameSystem.enableEncounter();
+			self.$gameSystem.enableEncounter();
 		}
-		$gamePlayer.makeEncounterCount();
+		self.$gamePlayer.makeEncounterCount();
 		return true;
 	}
 
 	// Change Formation Access
 	command137() {
 		if (this._params[0] === 0) {
-			$gameSystem.disableFormation();
+			self.$gameSystem.disableFormation();
 		} else {
-			$gameSystem.enableFormation();
+			self.$gameSystem.enableFormation();
 		}
 		return true;
 	}
 
 	// Change Window Color
 	command138() {
-		$gameSystem.setWindowTone(this._params[0]);
+		self.$gameSystem.setWindowTone(this._params[0]);
 		return true;
 	}
 
 	// Change Defeat ME
 	command139() {
-		$gameSystem.setDefeatMe(this._params[0]);
+		self.$gameSystem.setDefeatMe(this._params[0]);
 		return true;
 	}
 
 	// Change Vehicle BGM
 	command140() {
-		const vehicle = $gameMap.vehicle(this._params[0]);
+		const vehicle = self.$gameMap.vehicle(this._params[0]);
 		if (vehicle) {
 			vehicle.setBgm(this._params[1]);
 		}
@@ -994,7 +994,7 @@ class Game_Interpreter {
 
 	// Transfer Player
 	command201() {
-		if (!$gameParty.inBattle() && !$gameMessage.isBusy()) {
+		if (!self.$gameParty.inBattle() && !self.$gameMessage.isBusy()) {
 			let mapId;
 			let x;
 			let y;
@@ -1003,11 +1003,11 @@ class Game_Interpreter {
 				x = this._params[2];
 				y = this._params[3];
 			} else { // Designation with variables
-				mapId = $gameVariables.value(this._params[1]);
-				x = $gameVariables.value(this._params[2]);
-				y = $gameVariables.value(this._params[3]);
+				mapId = self.$gameVariables.value(this._params[1]);
+				x = self.$gameVariables.value(this._params[2]);
+				y = self.$gameVariables.value(this._params[3]);
 			}
-			$gamePlayer.reserveTransfer(mapId, x, y, this._params[4], this._params[5]);
+			self.$gamePlayer.reserveTransfer(mapId, x, y, this._params[4], this._params[5]);
 			this.setWaitMode('transfer');
 			this._index++;
 		}
@@ -1024,11 +1024,11 @@ class Game_Interpreter {
 			x = this._params[3];
 			y = this._params[4];
 		} else { // Designation with variables
-			mapId = $gameVariables.value(this._params[2]);
-			x = $gameVariables.value(this._params[3]);
-			y = $gameVariables.value(this._params[4]);
+			mapId = self.$gameVariables.value(this._params[2]);
+			x = self.$gameVariables.value(this._params[3]);
+			y = self.$gameVariables.value(this._params[4]);
 		}
-		const vehicle = $gameMap.vehicle(this._params[0]);
+		const vehicle = self.$gameMap.vehicle(this._params[0]);
 		if (vehicle) {
 			vehicle.setLocation(mapId, x, y);
 		}
@@ -1042,8 +1042,8 @@ class Game_Interpreter {
 			if (this._params[1] === 0) { // Direct designation
 				character.locate(this._params[2], this._params[3]);
 			} else if (this._params[1] === 1) { // Designation with variables
-				const x = $gameVariables.value(this._params[2]);
-				const y = $gameVariables.value(this._params[3]);
+				const x = self.$gameVariables.value(this._params[2]);
+				const y = self.$gameVariables.value(this._params[3]);
 				character.locate(x, y);
 			} else { // Exchange with another event
 				const character2 = this.character(this._params[2]);
@@ -1060,19 +1060,19 @@ class Game_Interpreter {
 
 	// Scroll Map
 	command204() {
-		if (!$gameParty.inBattle()) {
-			if ($gameMap.isScrolling()) {
+		if (!self.$gameParty.inBattle()) {
+			if (self.$gameMap.isScrolling()) {
 				this.setWaitMode('scroll');
 				return false;
 			}
-			$gameMap.startScroll(this._params[0], this._params[1], this._params[2]);
+			self.$gameMap.startScroll(this._params[0], this._params[1], this._params[2]);
 		}
 		return true;
 	}
 
 	// Set Movement Route
 	command205() {
-		$gameMap.refreshIfNeeded();
+		self.$gameMap.refreshIfNeeded();
 		this._character = this.character(this._params[0]);
 		if (this._character) {
 			this._character.forceMoveRoute(this._params[1]);
@@ -1088,13 +1088,13 @@ class Game_Interpreter {
 
 	// Getting On and Off Vehicles
 	command206() {
-		$gamePlayer.getOnOffVehicle();
+		self.$gamePlayer.getOnOffVehicle();
 		return true;
 	}
 
 	// Change Transparency
 	command211() {
-		$gamePlayer.setTransparent(this._params[0] === 0);
+		self.$gamePlayer.setTransparent(this._params[0] === 0);
 		return true;
 	}
 
@@ -1125,7 +1125,7 @@ class Game_Interpreter {
 	// Erase Event
 	command214() {
 		if (this.isOnCurrentMap() && this._eventId > 0) {
-			$gameMap.eraseEvent(this._eventId);
+			self.$gameMap.eraseEvent(this._eventId);
 		}
 		return true;
 	}
@@ -1133,18 +1133,18 @@ class Game_Interpreter {
 	// Change Player Followers
 	command216() {
 		if (this._params[0] === 0) {
-			$gamePlayer.showFollowers();
+			self.$gamePlayer.showFollowers();
 		} else {
-			$gamePlayer.hideFollowers();
+			self.$gamePlayer.hideFollowers();
 		}
-		$gamePlayer.refresh();
+		self.$gamePlayer.refresh();
 		return true;
 	}
 
 	// Gather Followers
 	command217() {
-		if (!$gameParty.inBattle()) {
-			$gamePlayer.gatherFollowers();
+		if (!self.$gameParty.inBattle()) {
+			self.$gamePlayer.gatherFollowers();
 			this.setWaitMode('gather');
 		}
 		return true;
@@ -1152,8 +1152,8 @@ class Game_Interpreter {
 
 	// Fadeout Screen
 	command221() {
-		if (!$gameMessage.isBusy()) {
-			$gameScreen.startFadeOut(this.fadeSpeed());
+		if (!self.$gameMessage.isBusy()) {
+			self.$gameScreen.startFadeOut(this.fadeSpeed());
 			this.wait(this.fadeSpeed());
 			this._index++;
 		}
@@ -1162,8 +1162,8 @@ class Game_Interpreter {
 
 	// Fadein Screen
 	command222() {
-		if (!$gameMessage.isBusy()) {
-			$gameScreen.startFadeIn(this.fadeSpeed());
+		if (!self.$gameMessage.isBusy()) {
+			self.$gameScreen.startFadeIn(this.fadeSpeed());
 			this.wait(this.fadeSpeed());
 			this._index++;
 		}
@@ -1172,7 +1172,7 @@ class Game_Interpreter {
 
 	// Tint Screen
 	command223() {
-		$gameScreen.startTint(this._params[0], this._params[1]);
+		self.$gameScreen.startTint(this._params[0], this._params[1]);
 		if (this._params[2]) {
 			this.wait(this._params[1]);
 		}
@@ -1181,7 +1181,7 @@ class Game_Interpreter {
 
 	// Flash Screen
 	command224() {
-		$gameScreen.startFlash(this._params[0], this._params[1]);
+		self.$gameScreen.startFlash(this._params[0], this._params[1]);
 		if (this._params[2]) {
 			this.wait(this._params[1]);
 		}
@@ -1190,7 +1190,7 @@ class Game_Interpreter {
 
 	// Shake Screen
 	command225() {
-		$gameScreen.startShake(this._params[0], this._params[1], this._params[2]);
+		self.$gameScreen.startShake(this._params[0], this._params[1], this._params[2]);
 		if (this._params[3]) {
 			this.wait(this._params[2]);
 		}
@@ -1211,10 +1211,10 @@ class Game_Interpreter {
 			x = this._params[4];
 			y = this._params[5];
 		} else { // Designation with variables
-			x = $gameVariables.value(this._params[4]);
-			y = $gameVariables.value(this._params[5]);
+			x = self.$gameVariables.value(this._params[4]);
+			y = self.$gameVariables.value(this._params[5]);
 		}
-		$gameScreen.showPicture(this._params[0], this._params[1], this._params[2],
+		self.$gameScreen.showPicture(this._params[0], this._params[1], this._params[2],
 			x, y, this._params[6], this._params[7], this._params[8], this._params[9]);
 		return true;
 	}
@@ -1227,10 +1227,10 @@ class Game_Interpreter {
 			x = this._params[4];
 			y = this._params[5];
 		} else { // Designation with variables
-			x = $gameVariables.value(this._params[4]);
-			y = $gameVariables.value(this._params[5]);
+			x = self.$gameVariables.value(this._params[4]);
+			y = self.$gameVariables.value(this._params[5]);
 		}
-		$gameScreen.movePicture(this._params[0], this._params[2], x, y, this._params[6],
+		self.$gameScreen.movePicture(this._params[0], this._params[2], x, y, this._params[6],
 			this._params[7], this._params[8], this._params[9], this._params[10]);
 		if (this._params[11]) {
 			this.wait(this._params[10]);
@@ -1240,13 +1240,13 @@ class Game_Interpreter {
 
 	// Rotate Picture
 	command233() {
-		$gameScreen.rotatePicture(this._params[0], this._params[1]);
+		self.$gameScreen.rotatePicture(this._params[0], this._params[1]);
 		return true;
 	}
 
 	// Tint Picture
 	command234() {
-		$gameScreen.tintPicture(this._params[0], this._params[1], this._params[2]);
+		self.$gameScreen.tintPicture(this._params[0], this._params[1], this._params[2]);
 		if (this._params[3]) {
 			this.wait(this._params[2]);
 		}
@@ -1255,14 +1255,14 @@ class Game_Interpreter {
 
 	// Erase Picture
 	command235() {
-		$gameScreen.erasePicture(this._params[0]);
+		self.$gameScreen.erasePicture(this._params[0]);
 		return true;
 	}
 
 	// Set Weather Effect
 	command236() {
-		if (!$gameParty.inBattle()) {
-			$gameScreen.changeWeather(this._params[0], this._params[1], this._params[2]);
+		if (!self.$gameParty.inBattle()) {
+			self.$gameScreen.changeWeather(this._params[0], this._params[1], this._params[2]);
 			if (this._params[3]) {
 				this.wait(this._params[2]);
 			}
@@ -1284,13 +1284,13 @@ class Game_Interpreter {
 
 	// Save BGM
 	command243() {
-		$gameSystem.saveBgm();
+		self.$gameSystem.saveBgm();
 		return true;
 	}
 
 	// Resume BGM
 	command244() {
-		$gameSystem.replayBgm();
+		self.$gameSystem.replayBgm();
 		return true;
 	}
 
@@ -1326,7 +1326,7 @@ class Game_Interpreter {
 
 	// Play Movie
 	command261() {
-		if (!$gameMessage.isBusy()) {
+		if (!self.$gameMessage.isBusy()) {
 			const name = this._params[0];
 			if (name.length > 0) {
 				const ext = this.videoFileExt();
@@ -1349,16 +1349,16 @@ class Game_Interpreter {
 	// Change Map Name Display
 	command281() {
 		if (this._params[0] === 0) {
-			$gameMap.enableNameDisplay();
+			self.$gameMap.enableNameDisplay();
 		} else {
-			$gameMap.disableNameDisplay();
+			self.$gameMap.disableNameDisplay();
 		}
 		return true;
 	}
 
 	// Change Tileset
 	command282() {
-		const tileset = $dataTilesets[this._params[0]];
+		const tileset = self.$dataTilesets[this._params[0]];
 		if (!this._imageReservationId) {
 			this._imageReservationId = Utils.generateRuntimeId();
 		}
@@ -1369,7 +1369,7 @@ class Game_Interpreter {
 			.every(bitmap => bitmap.isReady());
 
 		if (allReady) {
-			$gameMap.changeTileset(this._params[0]);
+			self.$gameMap.changeTileset(this._params[0]);
 			ImageManager.releaseReservation(this._imageReservationId);
 			this._imageReservationId = null;
 
@@ -1381,13 +1381,13 @@ class Game_Interpreter {
 
 	// Change Battle Back
 	command283() {
-		$gameMap.changeBattleback(this._params[0], this._params[1]);
+		self.$gameMap.changeBattleback(this._params[0], this._params[1]);
 		return true;
 	}
 
 	// Change Parallax
 	command284() {
-		$gameMap.changeParallax(this._params[0], this._params[1],
+		self.$gameMap.changeParallax(this._params[0], this._params[1],
 			this._params[2], this._params[3], this._params[4]);
 		return true;
 	}
@@ -1401,47 +1401,47 @@ class Game_Interpreter {
 			x = this._params[3];
 			y = this._params[4];
 		} else { // Designation with variables
-			x = $gameVariables.value(this._params[3]);
-			y = $gameVariables.value(this._params[4]);
+			x = self.$gameVariables.value(this._params[3]);
+			y = self.$gameVariables.value(this._params[4]);
 		}
 		switch (this._params[1]) {
 		case 0: // Terrain Tag
-			value = $gameMap.terrainTag(x, y);
+			value = self.$gameMap.terrainTag(x, y);
 			break;
 		case 1: // Event ID
-			value = $gameMap.eventIdXy(x, y);
+			value = self.$gameMap.eventIdXy(x, y);
 			break;
 		case 2: // Tile ID (Layer 1)
 		case 3: // Tile ID (Layer 2)
 		case 4: // Tile ID (Layer 3)
 		case 5: // Tile ID (Layer 4)
-			value = $gameMap.tileId(x, y, this._params[1] - 2);
+			value = self.$gameMap.tileId(x, y, this._params[1] - 2);
 			break;
 		default: // Region ID
-			value = $gameMap.regionId(x, y);
+			value = self.$gameMap.regionId(x, y);
 			break;
 		}
-		$gameVariables.setValue(this._params[0], value);
+		self.$gameVariables.setValue(this._params[0], value);
 		return true;
 	}
 
 	// Battle Processing
 	command301() {
-		if (!$gameParty.inBattle()) {
+		if (!self.$gameParty.inBattle()) {
 			let troopId;
 			if (this._params[0] === 0) { // Direct designation
 				troopId = this._params[1];
 			} else if (this._params[0] === 1) { // Designation with a variable
-				troopId = $gameVariables.value(this._params[1]);
+				troopId = self.$gameVariables.value(this._params[1]);
 			} else { // Same as Random Encounter
-				troopId = $gamePlayer.makeEncounterTroopId();
+				troopId = self.$gamePlayer.makeEncounterTroopId();
 			}
-			if ($dataTroops[troopId]) {
+			if (self.$dataTroops[troopId]) {
 				BattleManager.setup(troopId, this._params[2], this._params[3]);
 				BattleManager.setEventCallback(n => {
 					this._branch[this._indent] = n;
 				});
-				$gamePlayer.makeEncounterCount();
+				self.$gamePlayer.makeEncounterCount();
 				SceneManager.push(Scene_Battle);
 			}
 		}
@@ -1474,7 +1474,7 @@ class Game_Interpreter {
 
 	// Shop Processing
 	command302() {
-		if (!$gameParty.inBattle()) {
+		if (!self.$gameParty.inBattle()) {
 			const goods = [this._params];
 			while (this.nextEventCode() === 605) {
 				this._index++;
@@ -1489,8 +1489,8 @@ class Game_Interpreter {
 
 	// Name Input Processing
 	command303() {
-		if (!$gameParty.inBattle()) {
-			if ($dataActors[this._params[0]]) {
+		if (!self.$gameParty.inBattle()) {
+			if (self.$dataActors[this._params[0]]) {
 				SceneManager.push(Scene_Name);
 				SceneManager.prepareNextScene(this._params[0], this._params[1]);
 			}
@@ -1591,7 +1591,7 @@ class Game_Interpreter {
 
 	// Change Equipment
 	command319() {
-		const actor = $gameActors.actor(this._params[0]);
+		const actor = self.$gameActors.actor(this._params[0]);
 		if (actor) {
 			actor.changeEquipById(this._params[1], this._params[2]);
 		}
@@ -1600,7 +1600,7 @@ class Game_Interpreter {
 
 	// Change Name
 	command320() {
-		const actor = $gameActors.actor(this._params[0]);
+		const actor = self.$gameActors.actor(this._params[0]);
 		if (actor) {
 			actor.setName(this._params[1]);
 		}
@@ -1609,8 +1609,8 @@ class Game_Interpreter {
 
 	// Change Class
 	command321() {
-		const actor = $gameActors.actor(this._params[0]);
-		if (actor && $dataClasses[this._params[1]]) {
+		const actor = self.$gameActors.actor(this._params[0]);
+		if (actor && self.$dataClasses[this._params[1]]) {
 			actor.changeClass(this._params[1], this._params[2]);
 		}
 		return true;
@@ -1618,19 +1618,19 @@ class Game_Interpreter {
 
 	// Change Actor Images
 	command322() {
-		const actor = $gameActors.actor(this._params[0]);
+		const actor = self.$gameActors.actor(this._params[0]);
 		if (actor) {
 			actor.setCharacterImage(this._params[1], this._params[2]);
 			actor.setFaceImage(this._params[3], this._params[4]);
 			actor.setBattlerImage(this._params[5]);
 		}
-		$gamePlayer.refresh();
+		self.$gamePlayer.refresh();
 		return true;
 	}
 
 	// Change Vehicle Image
 	command323() {
-		const vehicle = $gameMap.vehicle(this._params[0]);
+		const vehicle = self.$gameMap.vehicle(this._params[0]);
 		if (vehicle) {
 			vehicle.setImage(this._params[1], this._params[2]);
 		}
@@ -1639,7 +1639,7 @@ class Game_Interpreter {
 
 	// Change Nickname
 	command324() {
-		const actor = $gameActors.actor(this._params[0]);
+		const actor = self.$gameActors.actor(this._params[0]);
 		if (actor) {
 			actor.setNickname(this._params[1]);
 		}
@@ -1648,7 +1648,7 @@ class Game_Interpreter {
 
 	// Change Profile
 	command325() {
-		const actor = $gameActors.actor(this._params[0]);
+		const actor = self.$gameActors.actor(this._params[0]);
 		if (actor) {
 			actor.setProfile(this._params[1]);
 		}
@@ -1711,7 +1711,7 @@ class Game_Interpreter {
 	command335() {
 		this.iterateEnemyIndex(this._params[0], enemy => {
 			enemy.appear();
-			$gameTroop.makeUniqueNames();
+			self.$gameTroop.makeUniqueNames();
 		});
 		return true;
 	}
@@ -1720,7 +1720,7 @@ class Game_Interpreter {
 	command336() {
 		this.iterateEnemyIndex(this._params[0], enemy => {
 			enemy.transform(this._params[1]);
-			$gameTroop.makeUniqueNames();
+			self.$gameTroop.makeUniqueNames();
 		});
 		return true;
 	}
@@ -1763,7 +1763,7 @@ class Game_Interpreter {
 
 	// Open Menu Screen
 	command351() {
-		if (!$gameParty.inBattle()) {
+		if (!self.$gameParty.inBattle()) {
 			SceneManager.push(Scene_Menu);
 			Window_MenuCommand.initCommandPosition();
 		}
@@ -1772,7 +1772,7 @@ class Game_Interpreter {
 
 	// Open Save Screen
 	command352() {
-		if (!$gameParty.inBattle()) {
+		if (!self.$gameParty.inBattle()) {
 			SceneManager.push(Scene_Save);
 		}
 		return true;
@@ -1845,7 +1845,7 @@ class Game_Interpreter {
 
 			// Change Party Member
 		case 129:
-			const actor = $gameActors.actor(params[0]);
+			const actor = self.$gameActors.actor(params[0]);
 			if (actor && params[1] === 0) {
 				const name = actor.characterName();
 				ImageManager.requestCharacter(name);
@@ -1871,7 +1871,7 @@ class Game_Interpreter {
 		case 212:
 		case 337:
 			if (params[1]) {
-				const animation = $dataAnimations[params[1]];
+				const animation = self.$dataAnimations[params[1]];
 				const name1 = animation.animation1Name;
 				const name2 = animation.animation2Name;
 				const hue1 = animation.animation1Hue;
@@ -1884,7 +1884,7 @@ class Game_Interpreter {
 			// Change Player Followers
 		case 216:
 			if (params[0] === 0) {
-				$gamePlayer.followers()
+				self.$gamePlayer.followers()
 					.forEach(follower => {
 						const name = follower.characterName();
 						ImageManager.requestCharacter(name);
@@ -1899,7 +1899,7 @@ class Game_Interpreter {
 
 			// Change Tileset
 		case 282:
-			const tileset = $dataTilesets[params[0]];
+			const tileset = self.$dataTilesets[params[0]];
 			tileset.tilesetNames.forEach(tilesetName => {
 				ImageManager.requestTileset(tilesetName);
 			});
@@ -1907,7 +1907,7 @@ class Game_Interpreter {
 
 			// Change Battle Back
 		case 283:
-			if ($gameParty.inBattle()) {
+			if (self.$gameParty.inBattle()) {
 				ImageManager.requestBattleback1(params[0]);
 				ImageManager.requestBattleback2(params[1]);
 			}
@@ -1915,7 +1915,7 @@ class Game_Interpreter {
 
 			// Change Parallax
 		case 284:
-			if (!$gameParty.inBattle()) {
+			if (!self.$gameParty.inBattle()) {
 				ImageManager.requestParallax(params[0]);
 			}
 			break;
@@ -1929,7 +1929,7 @@ class Game_Interpreter {
 
 			// Change Vehicle Image
 		case 323:
-			const vehicle = $gameMap.vehicle(params[0]);
+			const vehicle = self.$gameMap.vehicle(params[0]);
 			if (vehicle) {
 				ImageManager.requestCharacter(params[1]);
 			}
@@ -1937,10 +1937,10 @@ class Game_Interpreter {
 
 			// Enemy Transform
 		case 336:
-			const enemy = $dataEnemies[params[1]];
+			const enemy = self.$dataEnemies[params[1]];
 			const name = enemy.battlerName;
 			const hue = enemy.battlerHue;
-			if ($gameSystem.isSideView()) {
+			if (self.$gameSystem.isSideView()) {
 				ImageManager.requestSvEnemy(name, hue);
 			} else {
 				ImageManager.requestEnemy(name, hue);
@@ -1960,7 +1960,7 @@ class Game_Interpreter {
 		parameters
 	}, commonList) {
 		const params = parameters;
-		const commonEvent = $dataCommonEvents[params[0]];
+		const commonEvent = self.$dataCommonEvents[params[0]];
 		if (commonEvent) {
 			if (!commonList) {
 				commonList = [];

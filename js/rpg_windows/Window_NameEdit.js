@@ -74,7 +74,7 @@ class Window_NameEdit extends Window_Base {
 	}
 
 	charWidth() {
-		const text = $gameSystem.isJapanese() ? '\uff21' : 'A';
+		const text = self.$gameSystem.isJapanese() ? '\uff21' : 'A';
 		return this.textWidth(text);
 	}
 

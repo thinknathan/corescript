@@ -73,7 +73,7 @@ class Game_Screen {
 	}
 
 	realPictureId(pictureId) {
-		if ($gameParty.inBattle()) {
+		if (self.$gameParty.inBattle()) {
 			return pictureId + this.maxPictures();
 		} else {
 			return pictureId;

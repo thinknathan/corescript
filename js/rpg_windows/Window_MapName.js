@@ -31,7 +31,7 @@ class Window_MapName extends Window_Base {
 
 	update() {
 		super.update();
-		if (this._showCount > 0 && $gameMap.isNameDisplayEnabled()) {
+		if (this._showCount > 0 && self.$gameMap.isNameDisplayEnabled()) {
 			this.updateFadeIn();
 			this._showCount--;
 		} else {
@@ -58,10 +58,10 @@ class Window_MapName extends Window_Base {
 
 	refresh() {
 		this.contents.clear();
-		if ($gameMap.displayName()) {
+		if (self.$gameMap.displayName()) {
 			const width = this.contentsWidth();
 			this.drawBackground(0, 0, width, this.lineHeight());
-			this.drawText($gameMap.displayName(), 0, 0, width, 'center');
+			this.drawText(self.$gameMap.displayName(), 0, 0, width, 'center');
 		}
 	}
 

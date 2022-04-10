@@ -12,8 +12,8 @@ class Window_DebugRange extends Window_Selectable {
 	}
 
 	initialize(x, y) {
-		this._maxSwitches = Math.ceil(($dataSystem.switches.length - 1) / 10);
-		this._maxVariables = Math.ceil(($dataSystem.variables.length - 1) / 10);
+		this._maxSwitches = Math.ceil((self.$dataSystem.switches.length - 1) / 10);
+		this._maxVariables = Math.ceil((self.$dataSystem.variables.length - 1) / 10);
 		const width = this.windowWidth();
 		const height = this.windowHeight();
 		super.initialize(x, y, width, height);

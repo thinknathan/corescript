@@ -29,11 +29,11 @@ class Window_ChoiceList extends Window_Command {
 	}
 
 	selectDefault() {
-		this.select($gameMessage.choiceDefaultType());
+		this.select(self.$gameMessage.choiceDefaultType());
 	}
 
 	updatePlacement() {
-		const positionType = $gameMessage.choicePositionType();
+		const positionType = self.$gameMessage.choicePositionType();
 		const messageY = this._messageWindow.y;
 		this.width = this.windowWidth();
 		this.height = this.windowHeight();
@@ -56,7 +56,7 @@ class Window_ChoiceList extends Window_Command {
 	}
 
 	updateBackground() {
-		this._background = $gameMessage.choiceBackground();
+		this._background = self.$gameMessage.choiceBackground();
 		this.setBackgroundType(this._background);
 	}
 
@@ -69,7 +69,7 @@ class Window_ChoiceList extends Window_Command {
 		const messageY = this._messageWindow.y;
 		const messageHeight = this._messageWindow.height;
 		const centerY = Graphics.boxHeight / 2;
-		const choices = $gameMessage.choices();
+		const choices = self.$gameMessage.choices();
 		let numLines = choices.length;
 		let maxLines = 8;
 		if (messageY < centerY && messageY + messageHeight > centerY) {
@@ -83,7 +83,7 @@ class Window_ChoiceList extends Window_Command {
 
 	maxChoiceWidth() {
 		let maxWidth = 96;
-		const choices = $gameMessage.choices();
+		const choices = self.$gameMessage.choices();
 		for (let i = 0; i < choices.length; i++) {
 			const choiceWidth = this.textWidthEx(choices[i]) + this.textPadding() * 2;
 			if (maxWidth < choiceWidth) {
@@ -102,7 +102,7 @@ class Window_ChoiceList extends Window_Command {
 	}
 
 	makeCommandList() {
-		const choices = $gameMessage.choices();
+		const choices = self.$gameMessage.choices();
 		for (let i = 0; i < choices.length; i++) {
 			this.addCommand(choices[i], 'choice');
 		}
@@ -114,7 +114,7 @@ class Window_ChoiceList extends Window_Command {
 	}
 
 	isCancelEnabled() {
-		return $gameMessage.choiceCancelType() !== -1;
+		return self.$gameMessage.choiceCancelType() !== -1;
 	}
 
 	isOkTriggered() {
@@ -122,13 +122,13 @@ class Window_ChoiceList extends Window_Command {
 	}
 
 	callOkHandler() {
-		$gameMessage.onChoice(this.index());
+		self.$gameMessage.onChoice(this.index());
 		this._messageWindow.terminateMessage();
 		this.close();
 	}
 
 	callCancelHandler() {
-		$gameMessage.onChoice($gameMessage.choiceCancelType());
+		self.$gameMessage.onChoice(self.$gameMessage.choiceCancelType());
 		this._messageWindow.terminateMessage();
 		this.close();
 	}

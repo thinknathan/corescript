@@ -37,15 +37,15 @@ class Game_Enemy extends Game_Battler {
 	}
 
 	friendsUnit() {
-		return $gameTroop;
+		return self.$gameTroop;
 	}
 
 	opponentsUnit() {
-		return $gameParty;
+		return self.$gameParty;
 	}
 
 	index() {
-		return $gameTroop.members()
+		return self.$gameTroop.members()
 			.indexOf(this);
 	}
 
@@ -58,7 +58,7 @@ class Game_Enemy extends Game_Battler {
 	}
 
 	enemy() {
-		return $dataEnemies[this._enemyId];
+		return self.$dataEnemies[this._enemyId];
 	}
 
 	traitObjects() {
@@ -97,16 +97,16 @@ class Game_Enemy extends Game_Battler {
 	}
 
 	dropItemRate() {
-		return $gameParty.hasDropItemDouble() ? 2 : 1;
+		return self.$gameParty.hasDropItemDouble() ? 2 : 1;
 	}
 
 	itemObject(kind, dataId) {
 		if (kind === 1) {
-			return $dataItems[dataId];
+			return self.$dataItems[dataId];
 		} else if (kind === 2) {
-			return $dataWeapons[dataId];
+			return self.$dataWeapons[dataId];
 		} else if (kind === 3) {
-			return $dataArmors[dataId];
+			return self.$dataArmors[dataId];
 		} else {
 			return null;
 		}
@@ -230,7 +230,7 @@ class Game_Enemy extends Game_Battler {
 	}
 
 	meetsTurnCondition(param1, param2) {
-		const n = $gameTroop.turnCount();
+		const n = self.$gameTroop.turnCount();
 		if (param2 === 0) {
 			return n === param1;
 		} else {
@@ -251,15 +251,15 @@ class Game_Enemy extends Game_Battler {
 	}
 
 	meetsPartyLevelCondition(param) {
-		return $gameParty.highestLevel() >= param;
+		return self.$gameParty.highestLevel() >= param;
 	}
 
 	meetsSwitchCondition(param) {
-		return $gameSwitches.value(param);
+		return self.$gameSwitches.value(param);
 	}
 
 	isActionValid(action) {
-		return this.meetsCondition(action) && this.canUse($dataSkills[action.skillId]);
+		return this.meetsCondition(action) && this.canUse(self.$dataSkills[action.skillId]);
 	}
 
 	selectAction(actionList, ratingZero) {

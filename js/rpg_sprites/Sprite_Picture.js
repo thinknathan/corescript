@@ -19,7 +19,7 @@ class Sprite_Picture extends Sprite {
 	}
 
 	picture() {
-		return $gameScreen.picture(this._pictureId);
+		return self.$gameScreen.picture(this._pictureId);
 	}
 
 	update() {

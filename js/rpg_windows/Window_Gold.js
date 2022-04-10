@@ -34,7 +34,7 @@ class Window_Gold extends Window_Base {
 	}
 
 	value() {
-		return $gameParty.gold();
+		return self.$gameParty.gold();
 	}
 
 	currencyUnit() {

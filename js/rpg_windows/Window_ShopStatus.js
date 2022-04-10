@@ -1,4 +1,9 @@
 import Window_Base from "./Window_Base.js";
+import TextManager from "../rpg_managers/TextManager.js";
+import SoundManager from "../rpg_managers/SoundManager.js";
+import TouchInput from "../rpg_core/TouchInput.js";
+import Input from "../rpg_core/Input.js";
+import { DataManager } from "../rpg_managers/DataManager.js";
 
 //-----------------------------------------------------------------------------
 // Window_ShopStatus
@@ -45,7 +50,7 @@ class Window_ShopStatus extends Window_Base {
 		this.changeTextColor(this.systemColor());
 		this.drawText(TextManager.possession, x, y, width - possessionWidth);
 		this.resetTextColor();
-		this.drawText($gameParty.numItems(this._item), x, y, width, 'right');
+		this.drawText(self.$gameParty.numItems(this._item), x, y, width, 'right');
 	}
 
 	drawEquipInfo(x, y) {
@@ -58,7 +63,7 @@ class Window_ShopStatus extends Window_Base {
 	statusMembers() {
 		const start = this._pageIndex * this.pageSize();
 		const end = start + this.pageSize();
-		return $gameParty.members()
+		return self.$gameParty.members()
 			.slice(start, end);
 	}
 
@@ -67,7 +72,7 @@ class Window_ShopStatus extends Window_Base {
 	}
 
 	maxPages() {
-		return Math.floor(($gameParty.size() + this.pageSize() - 1) / this.pageSize());
+		return Math.floor((self.$gameParty.size() + this.pageSize() - 1) / this.pageSize());
 	}
 
 	drawActorEquipInfo(x, y, actor) {

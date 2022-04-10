@@ -112,14 +112,14 @@ class SoundManager {
 	}
 
 	static loadSystemSound(n) {
-		if ($dataSystem) {
-			AudioManager.loadStaticSe($dataSystem.sounds[n]);
+		if (self.$dataSystem) {
+			AudioManager.loadStaticSe(self.$dataSystem.sounds[n]);
 		}
 	}
 
 	static playSystemSound(n) {
-		if ($dataSystem) {
-			AudioManager.playStaticSe($dataSystem.sounds[n]);
+		if (self.$dataSystem) {
+			AudioManager.playStaticSe(self.$dataSystem.sounds[n]);
 		}
 	}
 }

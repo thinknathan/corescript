@@ -22,8 +22,8 @@ class Window_NumberInput extends Window_Selectable {
 	}
 
 	start() {
-		this._maxDigits = $gameMessage.numInputMaxDigits();
-		this._number = $gameVariables.value($gameMessage.numInputVariableId());
+		this._maxDigits = self.$gameMessage.numInputMaxDigits();
+		this._number = self.$gameVariables.value(self.$gameMessage.numInputVariableId());
 		this._number = this._number.clamp(0, Math.pow(10, this._maxDigits) - 1);
 		this.updatePlacement();
 		this.placeButtons();
@@ -186,7 +186,7 @@ class Window_NumberInput extends Window_Selectable {
 
 	processOk() {
 		SoundManager.playOk();
-		$gameVariables.setValue($gameMessage.numInputVariableId(), this._number);
+		self.$gameVariables.setValue(self.$gameMessage.numInputVariableId(), this._number);
 		this._messageWindow.terminateMessage();
 		this.updateInputData();
 		this.deactivate();

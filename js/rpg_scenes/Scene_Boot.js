@@ -65,11 +65,11 @@ class Scene_Boot extends Scene_Base {
 	}
 
 	updateDocumentTitle() {
-		document.title = $dataSystem.gameTitle;
+		document.title = self.$dataSystem.gameTitle;
 	}
 
 	checkPlayerLocation() {
-		if ($dataSystem.startMapId === 0) {
+		if (self.$dataSystem.startMapId === 0) {
 			throw new Error('Player\'s starting position is not set');
 		}
 	}

@@ -66,11 +66,11 @@ class Window_ItemList extends Window_Selectable {
 	}
 
 	isEnabled(item) {
-		return $gameParty.canUse(item);
+		return self.$gameParty.canUse(item);
 	}
 
 	makeItemList() {
-		this._data = $gameParty.allItems()
+		this._data = self.$gameParty.allItems()
 			.filter(function (item) {
 				return this.includes(item);
 			}, this);
@@ -80,7 +80,7 @@ class Window_ItemList extends Window_Selectable {
 	}
 
 	selectLast() {
-		const index = this._data.indexOf($gameParty.lastItem());
+		const index = this._data.indexOf(self.$gameParty.lastItem());
 		this.select(index >= 0 ? index : 0);
 	}
 
@@ -104,7 +104,7 @@ class Window_ItemList extends Window_Selectable {
 	drawItemNumber(item, x, y, width) {
 		if (this.needsNumber()) {
 			this.drawText(':', x, y, width - this.textWidth('00'), 'right');
-			this.drawText($gameParty.numItems(item), x, y, width, 'right');
+			this.drawText(self.$gameParty.numItems(item), x, y, width, 'right');
 		}
 	}
 

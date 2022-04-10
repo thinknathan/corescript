@@ -64,17 +64,17 @@ class Window_BattleEnemy extends Window_Selectable {
 
 	hide() {
 		super.hide();
-		$gameTroop.select(null);
+		self.$gameTroop.select(null);
 	}
 
 	refresh() {
-		this._enemies = $gameTroop.aliveMembers();
+		this._enemies = self.$gameTroop.aliveMembers();
 		super.refresh();
 	}
 
 	select(index) {
 		super.select(index);
-		$gameTroop.select(this.enemy());
+		self.$gameTroop.select(this.enemy());
 	}
 }
 

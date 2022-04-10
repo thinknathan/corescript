@@ -22,7 +22,7 @@ class Scene_Name extends Scene_MenuBase {
 
 	create() {
 		super.create();
-		this._actor = $gameActors.actor(this._actorId);
+		this._actor = self.$gameActors.actor(this._actorId);
 		this.createEditWindow();
 		this.createInputWindow();
 	}

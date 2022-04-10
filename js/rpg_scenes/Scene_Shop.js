@@ -210,13 +210,13 @@ class Scene_Shop extends Scene_MenuBase {
 	}
 
 	doBuy(number) {
-		$gameParty.loseGold(number * this.buyingPrice());
-		$gameParty.gainItem(this._item, number);
+		self.$gameParty.loseGold(number * this.buyingPrice());
+		self.$gameParty.gainItem(this._item, number);
 	}
 
 	doSell(number) {
-		$gameParty.gainGold(number * this.sellingPrice());
-		$gameParty.loseItem(this._item, number);
+		self.$gameParty.gainGold(number * this.sellingPrice());
+		self.$gameParty.loseItem(this._item, number);
 	}
 
 	endNumberInput() {
@@ -232,7 +232,7 @@ class Scene_Shop extends Scene_MenuBase {
 	}
 
 	maxBuy() {
-		const max = $gameParty.maxItems(this._item) - $gameParty.numItems(this._item);
+		const max = self.$gameParty.maxItems(this._item) - self.$gameParty.numItems(this._item);
 		const price = this.buyingPrice();
 		if (price > 0) {
 			return Math.min(max, Math.floor(this.money() / price));
@@ -242,7 +242,7 @@ class Scene_Shop extends Scene_MenuBase {
 	}
 
 	maxSell() {
-		return $gameParty.numItems(this._item);
+		return self.$gameParty.numItems(this._item);
 	}
 
 	money() {

@@ -9,10 +9,10 @@ class Game_Followers {
 	}
 
 	initialize() {
-		this._visible = $dataSystem.optFollowers;
+		this._visible = self.$dataSystem.optFollowers;
 		this._gathering = false;
 		this._data = [];
-		for (let i = 1; i < $gameParty.maxBattleMembers(); i++) {
+		for (let i = 1; i < self.$gameParty.maxBattleMembers(); i++) {
 			this._data.push(new Game_Follower(i));
 		}
 	}
@@ -63,16 +63,16 @@ class Game_Followers {
 
 	updateMove() {
 		for (let i = this._data.length - 1; i >= 0; i--) {
-			const precedingCharacter = (i > 0 ? this._data[i - 1] : $gamePlayer);
+			const precedingCharacter = (i > 0 ? this._data[i - 1] : self.$gamePlayer);
 			this._data[i].chaseCharacter(precedingCharacter);
 		}
 	}
 
 	jumpAll() {
-		if ($gamePlayer.isJumping()) {
+		if (self.$gamePlayer.isJumping()) {
 			for (const follower of this._data) {
-				const sx = $gamePlayer.deltaXFrom(follower.x);
-				const sy = $gamePlayer.deltaYFrom(follower.y);
+				const sx = self.$gamePlayer.deltaXFrom(follower.x);
+				const sy = self.$gamePlayer.deltaYFrom(follower.y);
 				follower.jump(sx, sy);
 			}
 		}
@@ -104,7 +104,7 @@ class Game_Followers {
 
 	areGathered() {
 		return this.visibleFollowers()
-			.every(follower => !follower.isMoving() && follower.pos($gamePlayer.x, $gamePlayer.y), this);
+			.every(follower => !follower.isMoving() && follower.pos(self.$gamePlayer.x, self.$gamePlayer.y), this);
 	}
 
 	isSomeoneCollided(x, y) {

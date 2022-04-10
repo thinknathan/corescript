@@ -54,23 +54,23 @@ class Spriteset_Map extends Spriteset_Base {
 		} else {
 			this._tilemap = new Tilemap();
 		}
-		this._tilemap.tileWidth = $gameMap.tileWidth();
-		this._tilemap.tileHeight = $gameMap.tileHeight();
-		this._tilemap.setData($gameMap.width(), $gameMap.height(), $gameMap.data());
-		this._tilemap.horizontalWrap = $gameMap.isLoopHorizontal();
-		this._tilemap.verticalWrap = $gameMap.isLoopVertical();
+		this._tilemap.tileWidth = self.$gameMap.tileWidth();
+		this._tilemap.tileHeight = self.$gameMap.tileHeight();
+		this._tilemap.setData(self.$gameMap.width(), self.$gameMap.height(), self.$gameMap.data());
+		this._tilemap.horizontalWrap = self.$gameMap.isLoopHorizontal();
+		this._tilemap.verticalWrap = self.$gameMap.isLoopVertical();
 		this.loadTileset();
 		this._baseSprite.addChild(this._tilemap);
 	}
 
 	loadTileset() {
-		this._tileset = $gameMap.tileset();
+		this._tileset = self.$gameMap.tileset();
 		if (this._tileset) {
 			const tilesetNames = this._tileset.tilesetNames;
 			for (let i = 0; i < tilesetNames.length; i++) {
 				this._tilemap.bitmaps[i] = ImageManager.loadTileset(tilesetNames[i]);
 			}
-			const newTilesetFlags = $gameMap.tilesetFlags();
+			const newTilesetFlags = self.$gameMap.tilesetFlags();
 			this._tilemap.refreshTileset();
 			if (!this._tilemap.flags.equals(newTilesetFlags)) {
 				this._tilemap.refresh();
@@ -81,19 +81,19 @@ class Spriteset_Map extends Spriteset_Base {
 
 	createCharacters() {
 		this._characterSprites = [];
-		$gameMap.events()
+		self.$gameMap.events()
 			.forEach(function (event) {
 				this._characterSprites.push(new Sprite_Character(event));
 			}, this);
-		$gameMap.vehicles()
+		self.$gameMap.vehicles()
 			.forEach(function (vehicle) {
 				this._characterSprites.push(new Sprite_Character(vehicle));
 			}, this);
-		$gamePlayer.followers()
+		self.$gamePlayer.followers()
 			.reverseEach(function (follower) {
 				this._characterSprites.push(new Sprite_Character(follower));
 			}, this);
-		this._characterSprites.push(new Sprite_Character($gamePlayer));
+		this._characterSprites.push(new Sprite_Character(self.$gamePlayer));
 		for (let i = 0; i < this._characterSprites.length; i++) {
 			this._tilemap.addChild(this._characterSprites[i]);
 		}
@@ -120,7 +120,7 @@ class Spriteset_Map extends Spriteset_Base {
 	}
 
 	updateTileset() {
-		if (this._tileset !== $gameMap.tileset()) {
+		if (this._tileset !== self.$gameMap.tileset()) {
 			this.loadTileset();
 		}
 	}
@@ -138,8 +138,8 @@ class Spriteset_Map extends Spriteset_Base {
 	}
 
 	updateParallax() {
-		if (this._parallaxName !== $gameMap.parallaxName()) {
-			this._parallaxName = $gameMap.parallaxName();
+		if (this._parallaxName !== self.$gameMap.parallaxName()) {
+			this._parallaxName = self.$gameMap.parallaxName();
 
 			if (this._parallax.bitmap && Graphics.isWebGL() != true) {
 				this._canvasReAddParallax();
@@ -148,14 +148,14 @@ class Spriteset_Map extends Spriteset_Base {
 			}
 		}
 		if (this._parallax.bitmap) {
-			this._parallax.origin.x = $gameMap.parallaxOx();
-			this._parallax.origin.y = $gameMap.parallaxOy();
+			this._parallax.origin.x = self.$gameMap.parallaxOx();
+			this._parallax.origin.y = self.$gameMap.parallaxOy();
 		}
 	}
 
 	updateTilemap() {
-		this._tilemap.origin.x = $gameMap.displayX() * $gameMap.tileWidth();
-		this._tilemap.origin.y = $gameMap.displayY() * $gameMap.tileHeight();
+		this._tilemap.origin.x = self.$gameMap.displayX() * self.$gameMap.tileWidth();
+		this._tilemap.origin.y = self.$gameMap.displayY() * self.$gameMap.tileHeight();
 
 		// Fix tilemap not being ready, by LTN Gaming
 		if (this._tilemap.bitmaps) {
@@ -168,17 +168,17 @@ class Spriteset_Map extends Spriteset_Base {
 	}
 
 	updateShadow() {
-		const airship = $gameMap.airship();
+		const airship = self.$gameMap.airship();
 		this._shadowSprite.x = airship.shadowX();
 		this._shadowSprite.y = airship.shadowY();
 		this._shadowSprite.opacity = airship.shadowOpacity();
 	}
 
 	updateWeather() {
-		this._weather.type = $gameScreen.weatherType();
-		this._weather.power = $gameScreen.weatherPower();
-		this._weather.origin.x = $gameMap.displayX() * $gameMap.tileWidth();
-		this._weather.origin.y = $gameMap.displayY() * $gameMap.tileHeight();
+		this._weather.type = self.$gameScreen.weatherType();
+		this._weather.power = self.$gameScreen.weatherPower();
+		this._weather.origin.x = self.$gameMap.displayX() * self.$gameMap.tileWidth();
+		this._weather.origin.y = self.$gameMap.displayY() * self.$gameMap.tileHeight();
 	}
 }
 

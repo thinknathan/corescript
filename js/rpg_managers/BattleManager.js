@@ -12,8 +12,8 @@ class BattleManager {
 		this.initMembers();
 		this._canEscape = canEscape;
 		this._canLose = canLose;
-		$gameTroop.setup(troopId);
-		$gameScreen.onBattleStart();
+		self.$gameTroop.setup(troopId);
+		self.$gameScreen.onBattleStart();
 		this.makeEscapeRatio();
 	}
 
@@ -88,7 +88,7 @@ class BattleManager {
 	}
 
 	static makeEscapeRatio() {
-		this._escapeRatio = 0.5 * $gameParty.agility() / $gameTroop.agility();
+		this._escapeRatio = 0.5 * self.$gameParty.agility() / self.$gameTroop.agility();
 	}
 
 	static update() {
@@ -129,20 +129,20 @@ class BattleManager {
 	}
 
 	static updateEventMain() {
-		$gameTroop.updateInterpreter();
-		$gameParty.requestMotionRefresh();
-		if ($gameTroop.isEventRunning() || this.checkBattleEnd()) {
+		self.$gameTroop.updateInterpreter();
+		self.$gameParty.requestMotionRefresh();
+		if (self.$gameTroop.isEventRunning() || this.checkBattleEnd()) {
 			return true;
 		}
-		$gameTroop.setupBattleEvent();
-		if ($gameTroop.isEventRunning() || SceneManager.isSceneChanging()) {
+		self.$gameTroop.setupBattleEvent();
+		if (self.$gameTroop.isEventRunning() || SceneManager.isSceneChanging()) {
 			return true;
 		}
 		return false;
 	}
 
 	static isBusy() {
-		return ($gameMessage.isBusy() || this._spriteset.isBusy() ||
+		return (self.$gameMessage.isBusy() || this._spriteset.isBusy() ||
 			this._logWindow.isBusy());
 	}
 
@@ -179,7 +179,7 @@ class BattleManager {
 	}
 
 	static actor() {
-		return this._actorIndex >= 0 ? $gameParty.members()[this._actorIndex] : null;
+		return this._actorIndex >= 0 ? self.$gameParty.members()[this._actorIndex] : null;
 	}
 
 	static clearActor() {
@@ -200,30 +200,30 @@ class BattleManager {
 
 	static startBattle() {
 		this._phase = 'start';
-		$gameSystem.onBattleStart();
-		$gameParty.onBattleStart();
-		$gameTroop.onBattleStart();
+		self.$gameSystem.onBattleStart();
+		self.$gameParty.onBattleStart();
+		self.$gameTroop.onBattleStart();
 		this.displayStartMessages();
 	}
 
 	static displayStartMessages() {
-		$gameTroop.enemyNames()
+		self.$gameTroop.enemyNames()
 			.forEach(name => {
-				$gameMessage.add(TextManager.emerge.format(name));
+				self.$gameMessage.add(TextManager.emerge.format(name));
 			});
 		if (this._preemptive) {
-			$gameMessage.add(TextManager.preemptive.format($gameParty.name()));
+			self.$gameMessage.add(TextManager.preemptive.format(self.$gameParty.name()));
 		} else if (this._surprise) {
-			$gameMessage.add(TextManager.surprise.format($gameParty.name()));
+			self.$gameMessage.add(TextManager.surprise.format(self.$gameParty.name()));
 		}
 	}
 
 	static startInput() {
 		this._phase = 'input';
-		$gameParty.makeActions();
-		$gameTroop.makeActions();
+		self.$gameParty.makeActions();
+		self.$gameTroop.makeActions();
 		this.clearActor();
-		if (this._surprise || !$gameParty.canInput()) {
+		if (this._surprise || !self.$gameParty.canInput()) {
 			this.startTurn();
 		}
 	}
@@ -238,7 +238,7 @@ class BattleManager {
 			const actor = this.actor();
 			if (!actor || !actor.selectNextCommand()) {
 				this.changeActor(this._actorIndex + 1, 'waiting');
-				if (this._actorIndex >= $gameParty.size()) {
+				if (this._actorIndex >= self.$gameParty.size()) {
 					this.startTurn();
 					break;
 				}
@@ -267,14 +267,14 @@ class BattleManager {
 	static startTurn() {
 		this._phase = 'turn';
 		this.clearActor();
-		$gameTroop.increaseTurn();
+		self.$gameTroop.increaseTurn();
 		this.makeActionOrders();
-		$gameParty.requestMotionRefresh();
+		self.$gameParty.requestMotionRefresh();
 		this._logWindow.startTurn();
 	}
 
 	static updateTurn() {
-		$gameParty.requestMotionRefresh();
+		self.$gameParty.requestMotionRefresh();
 		if (!this._subject) {
 			this._subject = this.getNextSubject();
 		}
@@ -343,10 +343,10 @@ class BattleManager {
 	static makeActionOrders() {
 		let battlers = [];
 		if (!this._surprise) {
-			battlers = battlers.concat($gameParty.members());
+			battlers = battlers.concat(self.$gameParty.members());
 		}
 		if (!this._preemptive) {
-			battlers = battlers.concat($gameTroop.members());
+			battlers = battlers.concat(self.$gameTroop.members());
 		}
 		battlers.forEach(battler => {
 			battler.makeSpeed();
@@ -463,10 +463,10 @@ class BattleManager {
 		if (this._phase) {
 			if (this.checkAbort()) {
 				return true;
-			} else if ($gameParty.isAllDead()) {
+			} else if (self.$gameParty.isAllDead()) {
 				this.processDefeat();
 				return true;
-			} else if ($gameTroop.isAllDead()) {
+			} else if (self.$gameTroop.isAllDead()) {
 				this.processVictory();
 				return true;
 			}
@@ -475,7 +475,7 @@ class BattleManager {
 	}
 
 	static checkAbort() {
-		if ($gameParty.isEmpty() || this.isAborting()) {
+		if (self.$gameParty.isEmpty() || this.isAborting()) {
 			SoundManager.playEscape();
 			this._escaped = true;
 			this.processAbort();
@@ -484,8 +484,8 @@ class BattleManager {
 	}
 
 	static processVictory() {
-		$gameParty.removeBattleStates();
-		$gameParty.performVictory();
+		self.$gameParty.removeBattleStates();
+		self.$gameParty.performVictory();
 		this.playVictoryMe();
 		this.replayBgmAndBgs();
 		this.makeRewards();
@@ -496,7 +496,7 @@ class BattleManager {
 	}
 
 	static processEscape() {
-		$gameParty.performEscape();
+		self.$gameParty.performEscape();
 		SoundManager.playEscape();
 		const success = this.processEscapeFormula();
 		if (success) {
@@ -506,7 +506,7 @@ class BattleManager {
 		} else {
 			this.displayEscapeFailureMessage();
 			this._escapeRatio += 0.1;
-			$gameParty.clearActions();
+			self.$gameParty.clearActions();
 			this.startTurn();
 		}
 		return success;
@@ -517,7 +517,7 @@ class BattleManager {
 	}
 
 	static processAbort() {
-		$gameParty.removeBattleStates();
+		self.$gameParty.removeBattleStates();
 		this.replayBgmAndBgs();
 		this.endBattle(1);
 	}
@@ -539,9 +539,9 @@ class BattleManager {
 			this._eventCallback(result);
 		}
 		if (result === 0) {
-			$gameSystem.onBattleWin();
+			self.$gameSystem.onBattleWin();
 		} else if (this._escaped) {
-			$gameSystem.onBattleEscape();
+			self.$gameSystem.onBattleEscape();
 		}
 	}
 
@@ -549,9 +549,9 @@ class BattleManager {
 		if (this.isBattleTest()) {
 			AudioManager.stopBgm();
 			SceneManager.exit();
-		} else if (!this._escaped && $gameParty.isAllDead()) {
+		} else if (!this._escaped && self.$gameParty.isAllDead()) {
 			if (this._canLose) {
-				$gameParty.reviveBattleMembers();
+				self.$gameParty.reviveBattleMembers();
 				SceneManager.pop();
 			} else {
 				SceneManager.goto(Scene_Gameover);
@@ -564,9 +564,9 @@ class BattleManager {
 
 	static makeRewards() {
 		this._rewards = {};
-		this._rewards.gold = $gameTroop.goldTotal();
-		this._rewards.exp = $gameTroop.expTotal();
-		this._rewards.items = $gameTroop.makeDropItems();
+		this._rewards.gold = self.$gameTroop.goldTotal();
+		this._rewards.exp = self.$gameTroop.expTotal();
+		this._rewards.items = self.$gameTroop.makeDropItems();
 	}
 
 	static displayRewards() {
@@ -579,25 +579,25 @@ class BattleManager {
 		const exp = this._rewards.exp;
 		if (exp > 0) {
 			const text = TextManager.obtainExp.format(exp, TextManager.exp);
-			$gameMessage.add(`\\.${text}`);
+			self.$gameMessage.add(`\\.${text}`);
 		}
 	}
 
 	static displayGold() {
 		const gold = this._rewards.gold;
 		if (gold > 0) {
-			$gameMessage.add(`\\.${TextManager.obtainGold.format(gold)}`);
+			self.$gameMessage.add(`\\.${TextManager.obtainGold.format(gold)}`);
 		}
 	}
 
 	static displayDropItems() {
 		const items = this._rewards.items;
 		if (items.length > 0) {
-			$gameMessage.newPage();
+			self.$gameMessage.newPage();
 			items.forEach(({
 				name
 			}) => {
-				$gameMessage.add(TextManager.obtainItem.format(name));
+				self.$gameMessage.add(TextManager.obtainItem.format(name));
 			});
 		}
 	}
@@ -610,64 +610,64 @@ class BattleManager {
 
 	static gainExp() {
 		const exp = this._rewards.exp;
-		$gameParty.allMembers()
+		self.$gameParty.allMembers()
 			.forEach(actor => {
 				actor.gainExp(exp);
 			});
 	}
 
 	static gainGold() {
-		$gameParty.gainGold(this._rewards.gold);
+		self.$gameParty.gainGold(this._rewards.gold);
 	}
 
 	static gainDropItems() {
 		const items = this._rewards.items;
 		items.forEach(item => {
-			$gameParty.gainItem(item, 1);
+			self.$gameParty.gainItem(item, 1);
 		});
 	}
 
 	static ratePreemptive() {
-		return $gameParty.ratePreemptive($gameTroop.agility());
+		return self.$gameParty.ratePreemptive(self.$gameTroop.agility());
 	}
 
 	static rateSurprise() {
-		return $gameParty.rateSurprise($gameTroop.agility());
+		return self.$gameParty.rateSurprise(self.$gameTroop.agility());
 	}
 
 	static playBattleBgm() {
-		AudioManager.playBgm($gameSystem.battleBgm());
+		AudioManager.playBgm(self.$gameSystem.battleBgm());
 		AudioManager.stopBgs();
 	}
 
 	static playVictoryMe() {
-		AudioManager.playMe($gameSystem.victoryMe());
+		AudioManager.playMe(self.$gameSystem.victoryMe());
 	}
 
 	static playDefeatMe() {
-		AudioManager.playMe($gameSystem.defeatMe());
+		AudioManager.playMe(self.$gameSystem.defeatMe());
 	}
 
 	static allBattleMembers() {
-		return $gameParty.members()
-			.concat($gameTroop.members());
+		return self.$gameParty.members()
+			.concat(self.$gameTroop.members());
 	}
 
 	static displayVictoryMessage() {
-		$gameMessage.add(TextManager.victory.format($gameParty.name()));
+		self.$gameMessage.add(TextManager.victory.format(self.$gameParty.name()));
 	}
 
 	static displayDefeatMessage() {
-		$gameMessage.add(TextManager.defeat.format($gameParty.name()));
+		self.$gameMessage.add(TextManager.defeat.format(self.$gameParty.name()));
 	}
 
 	static displayEscapeSuccessMessage() {
-		$gameMessage.add(TextManager.escapeStart.format($gameParty.name()));
+		self.$gameMessage.add(TextManager.escapeStart.format(self.$gameParty.name()));
 	}
 
 	static displayEscapeFailureMessage() {
-		$gameMessage.add(TextManager.escapeStart.format($gameParty.name()));
-		$gameMessage.add(`\\.${TextManager.escapeFailure}`);
+		self.$gameMessage.add(TextManager.escapeStart.format(self.$gameParty.name()));
+		self.$gameMessage.add(`\\.${TextManager.escapeFailure}`);
 	}
 }
 

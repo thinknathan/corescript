@@ -33,7 +33,7 @@ class Scene_Save extends Scene_File {
 			return;
 		}
 		super.onSavefileOk();
-		$gameSystem.onBeforeSave();
+		self.$gameSystem.onBeforeSave();
 		if (DataManager.saveGame(this.savefileId())) {
 			this.onSaveSuccess();
 		} else {

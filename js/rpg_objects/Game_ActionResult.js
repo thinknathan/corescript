@@ -33,11 +33,11 @@ class Game_ActionResult {
 	}
 
 	addedStateObjects() {
-		return this.addedStates.map(id => $dataStates[id]);
+		return this.addedStates.map(id => self.$dataStates[id]);
 	}
 
 	removedStateObjects() {
-		return this.removedStates.map(id => $dataStates[id]);
+		return this.removedStates.map(id => self.$dataStates[id]);
 	}
 
 	isStatusAffected() {

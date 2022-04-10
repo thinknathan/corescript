@@ -52,7 +52,7 @@ class Game_BattlerBase {
 	}
 
 	resetStateCounts(stateId) {
-		const state = $dataStates[stateId];
+		const state = self.$dataStates[stateId];
 		const variance = 1 + Math.max(state.maxTurns - state.minTurns, 0);
 		this._stateTurns[stateId] = state.minTurns + Math.randomInt(variance);
 	}
@@ -150,7 +150,7 @@ class Game_BattlerBase {
 	}
 
 	states() {
-		return this._states.map(id => $dataStates[id]);
+		return this._states.map(id => self.$dataStates[id]);
 	}
 
 	stateIcons() {
@@ -526,8 +526,8 @@ class Game_BattlerBase {
 
 	sortStates() {
 		this._states.sort((a, b) => {
-			const p1 = $dataStates[a].priority;
-			const p2 = $dataStates[b].priority;
+			const p1 = self.$dataStates[a].priority;
+			const p2 = self.$dataStates[b].priority;
 			if (p1 !== p2) {
 				return p2 - p1;
 			}
@@ -613,7 +613,7 @@ class Game_BattlerBase {
 	isOccasionOk({
 		occasion
 	}) {
-		if ($gameParty.inBattle()) {
+		if (self.$gameParty.inBattle()) {
 			return occasion === 0 || occasion === 1;
 		} else {
 			return occasion === 0 || occasion === 2;
@@ -631,7 +631,7 @@ class Game_BattlerBase {
 	}
 
 	meetsItemConditions(item) {
-		return this.meetsUsableItemConditions(item) && $gameParty.hasItem(item);
+		return this.meetsUsableItemConditions(item) && self.$gameParty.hasItem(item);
 	}
 
 	canUse(item) {
@@ -681,11 +681,11 @@ class Game_BattlerBase {
 	}
 
 	canAttack() {
-		return this.canUse($dataSkills[this.attackSkillId()]);
+		return this.canUse(self.$dataSkills[this.attackSkillId()]);
 	}
 
 	canGuard() {
-		return this.canUse($dataSkills[this.guardSkillId()]);
+		return this.canUse(self.$dataSkills[this.guardSkillId()]);
 	}
 }
 

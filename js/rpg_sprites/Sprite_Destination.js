@@ -19,7 +19,7 @@ class Sprite_Destination extends Sprite {
 
 	update() {
 		super.update();
-		if ($gameTemp.isDestinationValid()) {
+		if (self.$gameTemp.isDestinationValid()) {
 			this.updatePosition();
 			this.updateAnimation();
 			this.visible = true;
@@ -30,8 +30,8 @@ class Sprite_Destination extends Sprite {
 	}
 
 	createBitmap() {
-		const tileWidth = $gameMap.tileWidth();
-		const tileHeight = $gameMap.tileHeight();
+		const tileWidth = self.$gameMap.tileWidth();
+		const tileHeight = self.$gameMap.tileHeight();
 		this.bitmap = new Bitmap(tileWidth, tileHeight);
 		this.bitmap.fillAll('white');
 		this.anchor.x = 0.5;
@@ -40,12 +40,12 @@ class Sprite_Destination extends Sprite {
 	}
 
 	updatePosition() {
-		const tileWidth = $gameMap.tileWidth();
-		const tileHeight = $gameMap.tileHeight();
-		const x = $gameTemp.destinationX();
-		const y = $gameTemp.destinationY();
-		this.x = ($gameMap.adjustX(x) + 0.5) * tileWidth;
-		this.y = ($gameMap.adjustY(y) + 0.5) * tileHeight;
+		const tileWidth = self.$gameMap.tileWidth();
+		const tileHeight = self.$gameMap.tileHeight();
+		const x = self.$gameTemp.destinationX();
+		const y = self.$gameTemp.destinationY();
+		this.x = (self.$gameMap.adjustX(x) + 0.5) * tileWidth;
+		this.y = (self.$gameMap.adjustY(y) + 0.5) * tileHeight;
 	}
 
 	updateAnimation() {

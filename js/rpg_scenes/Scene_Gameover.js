@@ -46,7 +46,7 @@ class Scene_Gameover extends Scene_Base {
 	playGameoverMusic() {
 		AudioManager.stopBgm();
 		AudioManager.stopBgs();
-		AudioManager.playMe($dataSystem.gameoverMe);
+		AudioManager.playMe(self.$dataSystem.gameoverMe);
 	}
 
 	createBackground() {

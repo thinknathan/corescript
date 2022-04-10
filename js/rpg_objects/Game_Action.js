@@ -33,9 +33,9 @@ class Game_Action {
 
 	subject() {
 		if (this._subjectActorId > 0) {
-			return $gameActors.actor(this._subjectActorId);
+			return self.$gameActors.actor(this._subjectActorId);
 		} else {
-			return $gameTroop.members()[this._subjectEnemyIndex];
+			return self.$gameTroop.members()[this._subjectEnemyIndex];
 		}
 	}
 
@@ -68,11 +68,11 @@ class Game_Action {
 	}
 
 	setSkill(skillId) {
-		this._item.setObject($dataSkills[skillId]);
+		this._item.setObject(self.$dataSkills[skillId]);
 	}
 
 	setItem(itemId) {
-		this._item.setObject($dataItems[itemId]);
+		this._item.setObject(self.$dataItems[itemId]);
 	}
 
 	setItemObject(object) {
@@ -196,18 +196,18 @@ class Game_Action {
 	}
 
 	isAttack() {
-		return this.item() === $dataSkills[this.subject()
+		return this.item() === self.$dataSkills[this.subject()
 			.attackSkillId()];
 	}
 
 	isGuard() {
-		return this.item() === $dataSkills[this.subject()
+		return this.item() === self.$dataSkills[this.subject()
 			.guardSkillId()];
 	}
 
 	isMagicSkill() {
 		if (this.isSkill()) {
-			return $dataSystem.magicSkills.contains(this.item()
+			return self.$dataSystem.magicSkills.contains(this.item()
 				.stypeId);
 		} else {
 			return false;
@@ -403,7 +403,7 @@ class Game_Action {
 
 	testApply(target) {
 		return (this.isForDeadFriend() === target.isDead() &&
-			($gameParty.inBattle() || this.isForOpponent() ||
+			(self.$gameParty.inBattle() || this.isForOpponent() ||
 				(this.isHpRecover() && target.hp < target.mhp) ||
 				(this.isMpRecover() && target.mp < target.mmp) ||
 				(this.hasItemAnyValidEffects(target))));
@@ -549,7 +549,7 @@ class Game_Action {
 			const item = this.item();
 			const a = this.subject();
 			const b = target;
-			const v = $gameVariables._data;
+			const v = self.$gameVariables._data;
 			const sign = ([3, 4].contains(item.damage.type) ? -1 : 1);
 			const value = Math.max(eval(item.damage.formula), 0) * sign;
 			if (isNaN(value)) value = 0;
@@ -879,7 +879,7 @@ class Game_Action {
 				dataId
 			}) => {
 				if (code === Game_Action.EFFECT_COMMON_EVENT) {
-					$gameTemp.reserveCommonEvent(dataId);
+					self.$gameTemp.reserveCommonEvent(dataId);
 				}
 			}, this);
 	}

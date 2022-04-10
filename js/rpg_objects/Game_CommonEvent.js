@@ -15,7 +15,7 @@ class Game_CommonEvent {
 	}
 
 	event() {
-		return $dataCommonEvents[this._commonEventId];
+		return self.$dataCommonEvents[this._commonEventId];
 	}
 
 	list() {
@@ -35,7 +35,7 @@ class Game_CommonEvent {
 
 	isActive() {
 		const event = this.event();
-		return event.trigger === 2 && $gameSwitches.value(event.switchId);
+		return event.trigger === 2 && self.$gameSwitches.value(event.switchId);
 	}
 
 	update() {

@@ -1,4 +1,7 @@
 import Window_Command from "./Window_Command.js";
+import Graphics from "../rpg_core/Graphics.js";
+import TextManager from "../rpg_managers/TextManager.js";
+import { DataManager } from "../rpg_managers/DataManager.js";
 
 //-----------------------------------------------------------------------------
 // Window_TitleCommand

@@ -56,11 +56,11 @@ class Game_Vehicle extends Game_Character {
 
 	vehicle() {
 		if (this.isBoat()) {
-			return $dataSystem.boat;
+			return self.$dataSystem.boat;
 		} else if (this.isShip()) {
-			return $dataSystem.ship;
+			return self.$dataSystem.ship;
 		} else if (this.isAirship()) {
-			return $dataSystem.airship;
+			return self.$dataSystem.airship;
 		} else {
 			return null;
 		}
@@ -75,9 +75,9 @@ class Game_Vehicle extends Game_Character {
 
 	refresh() {
 		if (this._driving) {
-			this._mapId = $gameMap.mapId();
+			this._mapId = self.$gameMap.mapId();
 			this.syncWithPlayer();
-		} else if (this._mapId === $gameMap.mapId()) {
+		} else if (this._mapId === self.$gameMap.mapId()) {
 			this.locate(this.x, this.y);
 		}
 		if (this.isAirship()) {
@@ -87,7 +87,7 @@ class Game_Vehicle extends Game_Character {
 		}
 		this.setWalkAnime(this._driving);
 		this.setStepAnime(this._driving);
-		this.setTransparent(this._mapId !== $gameMap.mapId());
+		this.setTransparent(this._mapId !== self.$gameMap.mapId());
 	}
 
 	setLocation(mapId, x, y) {
@@ -97,7 +97,7 @@ class Game_Vehicle extends Game_Character {
 	}
 
 	pos(x, y) {
-		if (this._mapId === $gameMap.mapId()) {
+		if (this._mapId === self.$gameMap.mapId()) {
 			return Game_Character.prototype.pos.call(this, x, y);
 		} else {
 			return false;
@@ -105,12 +105,12 @@ class Game_Vehicle extends Game_Character {
 	}
 
 	isMapPassable(x, y, d) {
-		const x2 = $gameMap.roundXWithDirection(x, d);
-		const y2 = $gameMap.roundYWithDirection(y, d);
+		const x2 = self.$gameMap.roundXWithDirection(x, d);
+		const y2 = self.$gameMap.roundYWithDirection(y, d);
 		if (this.isBoat()) {
-			return $gameMap.isBoatPassable(x2, y2);
+			return self.$gameMap.isBoatPassable(x2, y2);
 		} else if (this.isShip()) {
-			return $gameMap.isShipPassable(x2, y2);
+			return self.$gameMap.isShipPassable(x2, y2);
 		} else if (this.isAirship()) {
 			return true;
 		} else {
@@ -122,7 +122,7 @@ class Game_Vehicle extends Game_Character {
 		this._driving = true;
 		this.setWalkAnime(true);
 		this.setStepAnime(true);
-		$gameSystem.saveWalkingBgm();
+		self.$gameSystem.saveWalkingBgm();
 		this.playBgm();
 	}
 
@@ -131,7 +131,7 @@ class Game_Vehicle extends Game_Character {
 		this.setWalkAnime(false);
 		this.setStepAnime(false);
 		this.resetDirection();
-		$gameSystem.replayWalkingBgm();
+		self.$gameSystem.replayWalkingBgm();
 	}
 
 	setBgm(bgm) {
@@ -144,7 +144,7 @@ class Game_Vehicle extends Game_Character {
 	}
 
 	syncWithPlayer() {
-		this.copyPosition($gamePlayer);
+		this.copyPosition(self.$gamePlayer);
 		this.refreshBushDepth();
 	}
 
@@ -207,25 +207,25 @@ class Game_Vehicle extends Game_Character {
 	}
 
 	isTakeoffOk() {
-		return $gamePlayer.areFollowersGathered();
+		return self.$gamePlayer.areFollowersGathered();
 	}
 
 	isLandOk(x, y, d) {
 		if (this.isAirship()) {
-			if (!$gameMap.isAirshipLandOk(x, y)) {
+			if (!self.$gameMap.isAirshipLandOk(x, y)) {
 				return false;
 			}
-			if ($gameMap.eventsXy(x, y)
+			if (self.$gameMap.eventsXy(x, y)
 				.length > 0) {
 				return false;
 			}
 		} else {
-			const x2 = $gameMap.roundXWithDirection(x, d);
-			const y2 = $gameMap.roundYWithDirection(y, d);
-			if (!$gameMap.isValid(x2, y2)) {
+			const x2 = self.$gameMap.roundXWithDirection(x, d);
+			const y2 = self.$gameMap.roundYWithDirection(y, d);
+			if (!self.$gameMap.isValid(x2, y2)) {
 				return false;
 			}
-			if (!$gameMap.isPassable(x2, y2, this.reverseDir(d))) {
+			if (!self.$gameMap.isPassable(x2, y2, this.reverseDir(d))) {
 				return false;
 			}
 			if (this.isCollidedWithCharacters(x2, y2)) {

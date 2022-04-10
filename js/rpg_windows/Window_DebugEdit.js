@@ -46,17 +46,17 @@ class Window_DebugEdit extends Window_Selectable {
 
 	itemName(dataId) {
 		if (this._mode === 'switch') {
-			return $dataSystem.switches[dataId];
+			return self.$dataSystem.switches[dataId];
 		} else {
-			return $dataSystem.variables[dataId];
+			return self.$dataSystem.variables[dataId];
 		}
 	}
 
 	itemStatus(dataId) {
 		if (this._mode === 'switch') {
-			return $gameSwitches.value(dataId) ? '[ON]' : '[OFF]';
+			return self.$gameSwitches.value(dataId) ? '[ON]' : '[OFF]';
 		} else {
-			return String($gameVariables.value(dataId));
+			return String(self.$gameVariables.value(dataId));
 		}
 	}
 
@@ -93,14 +93,14 @@ class Window_DebugEdit extends Window_Selectable {
 		if (Input.isRepeated('ok')) {
 			const switchId = this.currentId();
 			SoundManager.playCursor();
-			$gameSwitches.setValue(switchId, !$gameSwitches.value(switchId));
+			self.$gameSwitches.setValue(switchId, !self.$gameSwitches.value(switchId));
 			this.redrawCurrentItem();
 		}
 	}
 
 	updateVariable() {
 		const variableId = this.currentId();
-		let value = $gameVariables.value(variableId);
+		let value = self.$gameVariables.value(variableId);
 		if (typeof value === 'number') {
 			if (Input.isRepeated('right')) {
 				value++;
@@ -114,8 +114,8 @@ class Window_DebugEdit extends Window_Selectable {
 			if (Input.isRepeated('pageup')) {
 				value -= 10;
 			}
-			if ($gameVariables.value(variableId) !== value) {
-				$gameVariables.setValue(variableId, value);
+			if (self.$gameVariables.value(variableId) !== value) {
+				self.$gameVariables.setValue(variableId, value);
 				SoundManager.playCursor();
 				this.redrawCurrentItem();
 			}

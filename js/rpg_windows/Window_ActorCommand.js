@@ -44,7 +44,7 @@ class Window_ActorCommand extends Window_Command {
 		const skillTypes = this._actor.addedSkillTypes();
 		skillTypes.sort((a, b) => a - b);
 		skillTypes.forEach(function (stypeId) {
-			const name = $dataSystem.skillTypes[stypeId];
+			const name = self.$dataSystem.skillTypes[stypeId];
 			this.addCommand(name, 'skill', true, stypeId);
 		}, this);
 	}

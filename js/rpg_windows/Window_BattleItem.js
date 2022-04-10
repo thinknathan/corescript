@@ -17,7 +17,7 @@ class Window_BattleItem extends Window_ItemList {
 	}
 
 	includes(item) {
-		return $gameParty.canUse(item);
+		return self.$gameParty.canUse(item);
 	}
 
 	show() {

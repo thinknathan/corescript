@@ -27,7 +27,7 @@ class Scene_MenuBase extends Scene_Base {
 	}
 
 	updateActor() {
-		this._actor = $gameParty.menuActor();
+		this._actor = self.$gameParty.menuActor();
 	}
 
 	createBackground() {
@@ -46,13 +46,13 @@ class Scene_MenuBase extends Scene_Base {
 	}
 
 	nextActor() {
-		$gameParty.makeMenuActorNext();
+		self.$gameParty.makeMenuActorNext();
 		this.updateActor();
 		this.onActorChange();
 	}
 
 	previousActor() {
-		$gameParty.makeMenuActorPrevious();
+		self.$gameParty.makeMenuActorPrevious();
 		this.updateActor();
 		this.onActorChange();
 	}

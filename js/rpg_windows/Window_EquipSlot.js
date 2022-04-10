@@ -53,7 +53,7 @@ class Window_EquipSlot extends Window_Selectable {
 
 	slotName(index) {
 		const slots = this._actor.equipSlots();
-		return this._actor ? $dataSystem.equipTypes[slots[index]] : '';
+		return this._actor ? self.$dataSystem.equipTypes[slots[index]] : '';
 	}
 
 	isEnabled(index) {

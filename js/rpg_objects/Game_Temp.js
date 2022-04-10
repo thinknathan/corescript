@@ -32,7 +32,7 @@ class Game_Temp {
 	}
 
 	reservedCommonEvent() {
-		return $dataCommonEvents[this._commonEventId];
+		return self.$dataCommonEvents[this._commonEventId];
 	}
 
 	reservedCommonEventId() {

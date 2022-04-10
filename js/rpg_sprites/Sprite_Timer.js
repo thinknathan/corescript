@@ -31,8 +31,8 @@ class Sprite_Timer extends Sprite {
 	}
 
 	updateBitmap() {
-		if (this._seconds !== $gameTimer.seconds()) {
-			this._seconds = $gameTimer.seconds();
+		if (this._seconds !== self.$gameTimer.seconds()) {
+			this._seconds = self.$gameTimer.seconds();
 			this.redraw();
 		}
 	}
@@ -57,7 +57,7 @@ class Sprite_Timer extends Sprite {
 	}
 
 	updateVisibility() {
-		this.visible = $gameTimer.isWorking();
+		this.visible = self.$gameTimer.isWorking();
 	}
 }
 

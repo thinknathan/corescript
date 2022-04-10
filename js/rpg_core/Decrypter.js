@@ -67,7 +67,7 @@ class Decrypter {
 	}
 
 	static readEncryptionkey() {
-		this._encryptionKey = $dataSystem.encryptionKey.split(/(.{2})/)
+		this._encryptionKey = self.$dataSystem.encryptionKey.split(/(.{2})/)
 			.filter(Boolean);
 	}
 

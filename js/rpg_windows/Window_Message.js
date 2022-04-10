@@ -96,13 +96,13 @@ class Window_Message extends Window_Base {
 	}
 
 	canStart() {
-		return $gameMessage.hasText() && !$gameMessage.scrollMode();
+		return self.$gameMessage.hasText() && !self.$gameMessage.scrollMode();
 	}
 
 	startMessage() {
 		this._textState = {};
 		this._textState.index = 0;
-		this._textState.text = this.convertEscapeCharacters($gameMessage.allText());
+		this._textState.text = this.convertEscapeCharacters(self.$gameMessage.allText());
 		this.newPage(this._textState);
 		this.updatePlacement();
 		this.updateBackground();
@@ -110,20 +110,20 @@ class Window_Message extends Window_Base {
 	}
 
 	updatePlacement() {
-		this._positionType = $gameMessage.positionType();
+		this._positionType = self.$gameMessage.positionType();
 		this.y = this._positionType * (Graphics.boxHeight - this.height) / 2;
 		this._goldWindow.y = this.y > 0 ? 0 : Graphics.boxHeight - this._goldWindow.height;
 	}
 
 	updateBackground() {
-		this._background = $gameMessage.background();
+		this._background = self.$gameMessage.background();
 		this.setBackgroundType(this._background);
 	}
 
 	terminateMessage() {
 		this.close();
 		this._goldWindow.close();
-		$gameMessage.clear();
+		self.$gameMessage.clear();
 	}
 
 	updateWait() {
@@ -213,13 +213,13 @@ class Window_Message extends Window_Base {
 	}
 
 	startInput() {
-		if ($gameMessage.isChoice()) {
+		if (self.$gameMessage.isChoice()) {
 			this._choiceWindow.start();
 			return true;
-		} else if ($gameMessage.isNumberInput()) {
+		} else if (self.$gameMessage.isNumberInput()) {
 			this._numberWindow.start();
 			return true;
-		} else if ($gameMessage.isItemChoice()) {
+		} else if (self.$gameMessage.isItemChoice()) {
 			this._itemWindow.start();
 			return true;
 		} else {
@@ -233,13 +233,13 @@ class Window_Message extends Window_Base {
 	}
 
 	doesContinue() {
-		return ($gameMessage.hasText() && !$gameMessage.scrollMode() &&
+		return (self.$gameMessage.hasText() && !self.$gameMessage.scrollMode() &&
 			!this.areSettingsChanged());
 	}
 
 	areSettingsChanged() {
-		return (this._background !== $gameMessage.background() ||
-			this._positionType !== $gameMessage.positionType());
+		return (this._background !== self.$gameMessage.background() ||
+			this._positionType !== self.$gameMessage.positionType());
 	}
 
 	updateShowFast() {
@@ -260,16 +260,16 @@ class Window_Message extends Window_Base {
 	}
 
 	loadMessageFace() {
-		this._faceBitmap = ImageManager.reserveFace($gameMessage.faceName(), 0, this._imageReservationId);
+		this._faceBitmap = ImageManager.reserveFace(self.$gameMessage.faceName(), 0, this._imageReservationId);
 	}
 
 	drawMessageFace() {
-		this.drawFace($gameMessage.faceName(), $gameMessage.faceIndex(), 0, 0);
+		this.drawFace(self.$gameMessage.faceName(), self.$gameMessage.faceIndex(), 0, 0);
 		ImageManager.releaseReservation(this._imageReservationId);
 	}
 
 	newLineX() {
-		return $gameMessage.faceName() === '' ? 0 : 168;
+		return self.$gameMessage.faceName() === '' ? 0 : 168;
 	}
 
 	processNewLine(textState) {

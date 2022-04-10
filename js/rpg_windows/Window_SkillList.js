@@ -75,7 +75,7 @@ class Window_SkillList extends Window_Selectable {
 
 	selectLast() {
 		let skill;
-		if ($gameParty.inBattle()) {
+		if (self.$gameParty.inBattle()) {
 			skill = this._actor.lastBattleSkill();
 		} else {
 			skill = this._actor.lastMenuSkill();

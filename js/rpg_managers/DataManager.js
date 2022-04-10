@@ -61,12 +61,12 @@ class DataManager {
 
 	static isMapLoaded() {
 		this.checkError();
-		return !!$dataMap;
+		return !!self.$dataMap;
 	}
 
 	static onLoad(object) {
 		let array;
-		if (object === $dataMap) {
+		if (object === self.$dataMap) {
 			this.extractMetadata(object);
 			array = object.events;
 		} else {
@@ -79,7 +79,7 @@ class DataManager {
 				}
 			}
 		}
-		if (object === $dataSystem) {
+		if (object === self.$dataSystem) {
 			Decrypter.hasEncryptedImages = !!object.hasEncryptedImages;
 			Decrypter.hasEncryptedAudio = !!object.hasEncryptedAudio;
 			Scene_Boot.loadSystemImages();
@@ -89,17 +89,17 @@ class DataManager {
 	static setupNewGame() {
 		this.createGameObjects();
 		this.selectSavefileForNewGame();
-		$gameParty.setupStartingMembers();
-		$gamePlayer.reserveTransfer($dataSystem.startMapId,
-			$dataSystem.startX, $dataSystem.startY);
+		self.$gameParty.setupStartingMembers();
+		self.$gamePlayer.reserveTransfer(self.$dataSystem.startMapId,
+			self.$dataSystem.startX, self.$dataSystem.startY);
 		Graphics.frameCount = 0;
 		SceneManager.resetFrameCount();
 	}
 
 	static setupBattleTest() {
 		this.createGameObjects();
-		$gameParty.setupBattleTest();
-		BattleManager.setup($dataSystem.testTroopId, true, false);
+		self.$gameParty.setupBattleTest();
+		BattleManager.setup(self.$dataSystem.testTroopId, true, false);
 		BattleManager.setBattleTest(true);
 		BattleManager.playBattleBgm();
 	}
@@ -107,9 +107,9 @@ class DataManager {
 	static setupEventTest() {
 		this.createGameObjects();
 		this.selectSavefileForNewGame();
-		$gameParty.setupStartingMembers();
-		$gamePlayer.reserveTransfer(-1, 8, 6);
-		$gamePlayer.setTransparent(false);
+		self.$gameParty.setupStartingMembers();
+		self.$gamePlayer.reserveTransfer(-1, 8, 6);
+		self.$gamePlayer.setTransparent(false);
 	}
 
 	static loadGlobalInfo() {
@@ -150,7 +150,7 @@ class DataManager {
 			} else {
 				const savefile = globalInfo[savefileId];
 				return (savefile.globalId === this._globalId &&
-					savefile.title === $dataSystem.gameTitle);
+					savefile.title === self.$dataSystem.gameTitle);
 			}
 		} else {
 			return false;
@@ -279,10 +279,10 @@ class DataManager {
 	static makeSavefileInfo() {
 		const info = {};
 		info.globalId = this._globalId;
-		info.title = $dataSystem.gameTitle;
-		info.characters = $gameParty.charactersForSavefile();
-		info.faces = $gameParty.facesForSavefile();
-		info.playtime = $gameSystem.playtimeText();
+		info.title = self.$dataSystem.gameTitle;
+		info.characters = self.$gameParty.charactersForSavefile();
+		info.faces = self.$gameParty.facesForSavefile();
+		info.playtime = self.$gameSystem.playtimeText();
 		info.timestamp = Date.now();
 		return info;
 	}
@@ -296,21 +296,21 @@ class DataManager {
 	}
 
 	static autoSaveGame() {
-		if (this._autoSaveFileId !== 0 && !this.isEventTest() && $gameSystem.isSaveEnabled()) {
-			$gameSystem.onBeforeSave();
+		if (this._autoSaveFileId !== 0 && !this.isEventTest() && self.$gameSystem.isSaveEnabled()) {
+			self.$gameSystem.onBeforeSave();
 			if (this.saveGame(this._autoSaveFileId)) {
 				StorageManager.cleanBackup(this._autoSaveFileId);
 			}
 		}
 	}
 
-	static makeEmptyMap(parent = self) {
-		parent.$dataMap = {};
-		parent.$dataMap.data = [];
-		parent.$dataMap.events = [];
-		parent.$dataMap.width = 100;
-		parent.$dataMap.height = 100;
-		parent.$dataMap.scrollType = 3;
+	static makeEmptyMap() {
+		self.$dataMap = {};
+		self.$dataMap.data = [];
+		self.$dataMap.events = [];
+		self.$dataMap.width = 100;
+		self.$dataMap.height = 100;
+		self.$dataMap.scrollType = 3;
 	}
 
 	static extractMetadata(data) {
@@ -345,35 +345,35 @@ class DataManager {
 	}
 
 	static isSkill(item) {
-		return item && $dataSkills.contains(item);
+		return item && self.$dataSkills.contains(item);
 	}
 
 	static isItem(item) {
-		return item && $dataItems.contains(item);
+		return item && self.$dataItems.contains(item);
 	}
 
 	static isWeapon(item) {
-		return item && $dataWeapons.contains(item);
+		return item && self.$dataWeapons.contains(item);
 	}
 
 	static isArmor(item) {
-		return item && $dataArmors.contains(item);
+		return item && self.$dataArmors.contains(item);
 	}
 
-	static createGameObjects(parent = self) {
-		parent.$gameTemp = new Game_Temp();
-		parent.$gameSystem = new Game_System();
-		parent.$gameScreen = new Game_Screen();
-		parent.$gameTimer = new Game_Timer();
-		parent.$gameMessage = new Game_Message();
-		parent.$gameSwitches = new Game_Switches();
-		parent.$gameVariables = new Game_Variables();
-		parent.$gameSelfSwitches = new Game_SelfSwitches();
-		parent.$gameActors = new Game_Actors();
-		parent.$gameParty = new Game_Party();
-		parent.$gameTroop = new Game_Troop();
-		parent.$gameMap = new Game_Map();
-		parent.$gamePlayer = new Game_Player();
+	static createGameObjects() {
+		self.$gameTemp = new Game_Temp();
+		self.$gameSystem = new Game_System();
+		self.$gameScreen = new Game_Screen();
+		self.$gameTimer = new Game_Timer();
+		self.$gameMessage = new Game_Message();
+		self.$gameSwitches = new Game_Switches();
+		self.$gameVariables = new Game_Variables();
+		self.$gameSelfSwitches = new Game_SelfSwitches();
+		self.$gameActors = new Game_Actors();
+		self.$gameParty = new Game_Party();
+		self.$gameTroop = new Game_Troop();
+		self.$gameMap = new Game_Map();
+		self.$gamePlayer = new Game_Player();
 	}
 
 	static loadSavefileImages({
@@ -396,33 +396,33 @@ class DataManager {
 		return this._maxSavefiles;
 	}
 
-	static makeSaveContents(parent = self) {
+	static makeSaveContents() {
 		// A save data does not contain $gameTemp, $gameMessage, and $gameTroop.
 		const contents = {};
-		contents.system = parent.$gameSystem;
-		contents.screen = parent.$gameScreen;
-		contents.timer = parent.$gameTimer;
-		contents.switches = parent.$gameSwitches;
-		contents.variables = parent.$gameVariables;
-		contents.selfSwitches = parent.$gameSelfSwitches;
-		contents.actors = parent.$gameActors;
-		contents.party = parent.$gameParty;
-		contents.map = parent.$gameMap;
-		contents.player = parent.$gamePlayer;
+		contents.system = self.$gameSystem;
+		contents.screen = self.$gameScreen;
+		contents.timer = self.$gameTimer;
+		contents.switches = self.$gameSwitches;
+		contents.variables = self.$gameVariables;
+		contents.selfSwitches = self.$gameSelfSwitches;
+		contents.actors = self.$gameActors;
+		contents.party = self.$gameParty;
+		contents.map = self.$gameMap;
+		contents.player = self.$gamePlayer;
 		return contents;
 	}
 
-	static extractSaveContents(contents, parent = self) {
-		parent.$gameSystem = contents.system;
-		parent.$gameScreen = contents.screen;
-		parent.$gameTimer = contents.timer;
-		parent.$gameSwitches = contents.switches;
-		parent.$gameVariables = contents.variables;
-		parent.$gameSelfSwitches = contents.selfSwitches;
-		parent.$gameActors = contents.actors;
-		parent.$gameParty = contents.party;
-		parent.$gameMap = contents.map;
-		parent.$gamePlayer = contents.player;
+	static extractSaveContents(contents) {
+		self.$gameSystem = contents.system;
+		self.$gameScreen = contents.screen;
+		self.$gameTimer = contents.timer;
+		self.$gameSwitches = contents.switches;
+		self.$gameVariables = contents.variables;
+		self.$gameSelfSwitches = contents.selfSwitches;
+		self.$gameActors = contents.actors;
+		self.$gameParty = contents.party;
+		self.$gameMap = contents.map;
+		self.$gamePlayer = contents.player;
 	}
 }
 
@@ -552,4 +552,4 @@ export {
 	$gamePlayer,
 	$testEvent,
 	DataManager
-}
+};

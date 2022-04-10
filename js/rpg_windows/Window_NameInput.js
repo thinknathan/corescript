@@ -30,11 +30,11 @@ class Window_NameInput extends Window_Selectable {
 	}
 
 	table() {
-		if ($gameSystem.isJapanese()) {
+		if (self.$gameSystem.isJapanese()) {
 			return [Window_NameInput.JAPAN1,
                     Window_NameInput.JAPAN2,
                     Window_NameInput.JAPAN3];
-		} else if ($gameSystem.isRussian()) {
+		} else if (self.$gameSystem.isRussian()) {
 			return [Window_NameInput.RUSSIA];
 		} else {
 			return [Window_NameInput.LATIN1,

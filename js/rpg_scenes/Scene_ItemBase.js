@@ -99,9 +99,9 @@ class Scene_ItemBase extends Scene_MenuBase {
 		if (!action.isForFriend()) {
 			return [];
 		} else if (action.isForAll()) {
-			return $gameParty.members();
+			return self.$gameParty.members();
 		} else {
-			return [$gameParty.members()[this._actorWindow.index()]];
+			return [self.$gameParty.members()[this._actorWindow.index()]];
 		}
 	}
 
@@ -132,7 +132,7 @@ class Scene_ItemBase extends Scene_MenuBase {
 	}
 
 	checkCommonEvent() {
-		if ($gameTemp.isCommonEventReserved()) {
+		if (self.$gameTemp.isCommonEventReserved()) {
 			SceneManager.goto(Scene_Map);
 		}
 	}

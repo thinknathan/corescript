@@ -148,9 +148,9 @@ class Game_CharacterBase {
 	}
 
 	canPass(x, y, d) {
-		const x2 = $gameMap.roundXWithDirection(x, d);
-		const y2 = $gameMap.roundYWithDirection(y, d);
-		if (!$gameMap.isValid(x2, y2)) {
+		const x2 = self.$gameMap.roundXWithDirection(x, d);
+		const y2 = self.$gameMap.roundYWithDirection(y, d);
+		if (!self.$gameMap.isValid(x2, y2)) {
 			return false;
 		}
 		if (this.isThrough() || this.isDebugThrough()) {
@@ -166,8 +166,8 @@ class Game_CharacterBase {
 	}
 
 	canPassDiagonally(x, y, horz, vert) {
-		const x2 = $gameMap.roundXWithDirection(x, horz);
-		const y2 = $gameMap.roundYWithDirection(y, vert);
+		const x2 = self.$gameMap.roundXWithDirection(x, horz);
+		const y2 = self.$gameMap.roundYWithDirection(y, vert);
 		if (this.canPass(x, y, vert) && this.canPass(x, y2, horz)) {
 			return true;
 		}
@@ -178,10 +178,10 @@ class Game_CharacterBase {
 	}
 
 	isMapPassable(x, y, d) {
-		const x2 = $gameMap.roundXWithDirection(x, d);
-		const y2 = $gameMap.roundYWithDirection(y, d);
+		const x2 = self.$gameMap.roundXWithDirection(x, d);
+		const y2 = self.$gameMap.roundYWithDirection(y, d);
 		const d2 = this.reverseDir(d);
-		return $gameMap.isPassable(x, y, d) && $gameMap.isPassable(x2, y2, d2);
+		return self.$gameMap.isPassable(x, y, d) && self.$gameMap.isPassable(x2, y2, d2);
 	}
 
 	isCollidedWithCharacters(x, y) {
@@ -189,13 +189,13 @@ class Game_CharacterBase {
 	}
 
 	isCollidedWithEvents(x, y) {
-		const events = $gameMap.eventsXyNt(x, y);
+		const events = self.$gameMap.eventsXyNt(x, y);
 		return events.some(event => event.isNormalPriority());
 	}
 
 	isCollidedWithVehicles(x, y) {
-		return $gameMap.boat()
-			.posNt(x, y) || $gameMap.ship()
+		return self.$gameMap.boat()
+			.posNt(x, y) || self.$gameMap.ship()
 			.posNt(x, y);
 	}
 
@@ -244,20 +244,20 @@ class Game_CharacterBase {
 	}
 
 	scrolledX() {
-		return $gameMap.adjustX(this._realX);
+		return self.$gameMap.adjustX(this._realX);
 	}
 
 	scrolledY() {
-		return $gameMap.adjustY(this._realY);
+		return self.$gameMap.adjustY(this._realY);
 	}
 
 	screenX() {
-		const tw = $gameMap.tileWidth();
+		const tw = self.$gameMap.tileWidth();
 		return Math.round(this.scrolledX() * tw + tw / 2);
 	}
 
 	screenY() {
-		const th = $gameMap.tileHeight();
+		const th = self.$gameMap.tileHeight();
 		return Math.round(this.scrolledY() * th + th -
 			this.shiftY() - this.jumpHeight());
 	}
@@ -269,8 +269,8 @@ class Game_CharacterBase {
 	isNearTheScreen() {
 		const gw = Graphics.width;
 		const gh = Graphics.height;
-		const tw = $gameMap.tileWidth();
-		const th = $gameMap.tileHeight();
+		const tw = self.$gameMap.tileWidth();
+		const th = self.$gameMap.tileHeight();
 		const px = this.scrolledX() * tw + tw / 2 - gw / 2;
 		const py = this.scrolledY() * th + th / 2 - gh / 2;
 		return px >= -gw && px <= gw && py >= -gh && py <= gh;
@@ -298,8 +298,8 @@ class Game_CharacterBase {
 		this._realY = (this._realY * this._jumpCount + this._y) / (this._jumpCount + 1.0);
 		this.refreshBushDepth();
 		if (this._jumpCount === 0) {
-			this._realX = this._x = $gameMap.roundX(this._x);
-			this._realY = this._y = $gameMap.roundY(this._y);
+			this._realX = this._x = self.$gameMap.roundX(this._x);
+			this._realY = this._y = self.$gameMap.roundY(this._y);
 		}
 	}
 
@@ -381,19 +381,19 @@ class Game_CharacterBase {
 	}
 
 	isOnLadder() {
-		return $gameMap.isLadder(this._x, this._y);
+		return self.$gameMap.isLadder(this._x, this._y);
 	}
 
 	isOnBush() {
-		return $gameMap.isBush(this._x, this._y);
+		return self.$gameMap.isBush(this._x, this._y);
 	}
 
 	terrainTag() {
-		return $gameMap.terrainTag(this._x, this._y);
+		return self.$gameMap.terrainTag(this._x, this._y);
 	}
 
 	regionId() {
-		return $gameMap.regionId(this._x, this._y);
+		return self.$gameMap.regionId(this._x, this._y);
 	}
 
 	increaseSteps() {
@@ -431,8 +431,8 @@ class Game_CharacterBase {
 	}
 
 	checkEventTriggerTouchFront(d) {
-		const x2 = $gameMap.roundXWithDirection(this._x, d);
-		const y2 = $gameMap.roundYWithDirection(this._y, d);
+		const x2 = self.$gameMap.roundXWithDirection(this._x, d);
+		const y2 = self.$gameMap.roundYWithDirection(this._y, d);
 		this.checkEventTriggerTouch(x2, y2);
 	}
 
@@ -452,10 +452,10 @@ class Game_CharacterBase {
 		this.setMovementSuccess(this.canPass(this._x, this._y, d));
 		if (this.isMovementSucceeded()) {
 			this.setDirection(d);
-			this._x = $gameMap.roundXWithDirection(this._x, d);
-			this._y = $gameMap.roundYWithDirection(this._y, d);
-			this._realX = $gameMap.xWithDirection(this._x, this.reverseDir(d));
-			this._realY = $gameMap.yWithDirection(this._y, this.reverseDir(d));
+			this._x = self.$gameMap.roundXWithDirection(this._x, d);
+			this._y = self.$gameMap.roundYWithDirection(this._y, d);
+			this._realX = self.$gameMap.xWithDirection(this._x, this.reverseDir(d));
+			this._realY = self.$gameMap.yWithDirection(this._y, this.reverseDir(d));
 			this.increaseSteps();
 		} else {
 			this.setDirection(d);
@@ -466,10 +466,10 @@ class Game_CharacterBase {
 	moveDiagonally(horz, vert) {
 		this.setMovementSuccess(this.canPassDiagonally(this._x, this._y, horz, vert));
 		if (this.isMovementSucceeded()) {
-			this._x = $gameMap.roundXWithDirection(this._x, horz);
-			this._y = $gameMap.roundYWithDirection(this._y, vert);
-			this._realX = $gameMap.xWithDirection(this._x, this.reverseDir(horz));
-			this._realY = $gameMap.yWithDirection(this._y, this.reverseDir(vert));
+			this._x = self.$gameMap.roundXWithDirection(this._x, horz);
+			this._y = self.$gameMap.roundYWithDirection(this._y, vert);
+			this._realX = self.$gameMap.xWithDirection(this._x, this.reverseDir(horz));
+			this._realY = self.$gameMap.yWithDirection(this._y, this.reverseDir(vert));
 			this.increaseSteps();
 		}
 		if (this._direction === this.reverseDir(horz)) {

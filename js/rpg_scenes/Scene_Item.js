@@ -44,7 +44,7 @@ class Scene_Item extends Scene_ItemBase {
 	}
 
 	user() {
-		const members = $gameParty.movableMembers();
+		const members = self.$gameParty.movableMembers();
 		let bestActor = members[0];
 		let bestPha = 0;
 		for (let i = 0; i < members.length; i++) {
@@ -62,7 +62,7 @@ class Scene_Item extends Scene_ItemBase {
 	}
 
 	onItemOk() {
-		$gameParty.setLastItem(this.item());
+		self.$gameParty.setLastItem(this.item());
 		this.determineItem();
 	}
 

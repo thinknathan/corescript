@@ -21,7 +21,7 @@ class Game_Variables {
 	}
 
 	setValue(variableId, value) {
-		if (variableId > 0 && variableId < $dataSystem.variables.length) {
+		if (variableId > 0 && variableId < self.$dataSystem.variables.length) {
 			if (typeof value === 'number') {
 				value = Math.floor(value);
 			}
@@ -31,7 +31,7 @@ class Game_Variables {
 	}
 
 	onChange() {
-		$gameMap.requestRefresh();
+		self.$gameMap.requestRefresh();
 	}
 }
 

@@ -40,7 +40,7 @@ class Game_Event extends Game_Character {
 	}
 
 	event() {
-		return $dataMap.events[this._eventId];
+		return self.$dataMap.events[this._eventId];
 	}
 
 	page() {
@@ -59,12 +59,12 @@ class Game_Event extends Game_Character {
 	}
 
 	isCollidedWithEvents(x, y) {
-		const events = $gameMap.eventsXyNt(x, y);
+		const events = self.$gameMap.eventsXyNt(x, y);
 		return events.length > 0;
 	}
 
 	isCollidedWithPlayerCharacters(x, y) {
-		return this.isNormalPriority() && $gamePlayer.isCollided(x, y);
+		return this.isNormalPriority() && self.$gamePlayer.isCollided(x, y);
 	}
 
 	lock() {
@@ -152,8 +152,8 @@ class Game_Event extends Game_Character {
 	}
 
 	isNearThePlayer() {
-		const sx = Math.abs(this.deltaXFrom($gamePlayer.x));
-		const sy = Math.abs(this.deltaYFrom($gamePlayer.y));
+		const sx = Math.abs(this.deltaXFrom(self.$gamePlayer.x));
+		const sy = Math.abs(this.deltaYFrom(self.$gamePlayer.y));
 		return sx + sy < 20;
 	}
 
@@ -213,35 +213,35 @@ class Game_Event extends Game_Character {
 	}) {
 		const c = conditions;
 		if (c.switch1Valid) {
-			if (!$gameSwitches.value(c.switch1Id)) {
+			if (!self.$gameSwitches.value(c.switch1Id)) {
 				return false;
 			}
 		}
 		if (c.switch2Valid) {
-			if (!$gameSwitches.value(c.switch2Id)) {
+			if (!self.$gameSwitches.value(c.switch2Id)) {
 				return false;
 			}
 		}
 		if (c.variableValid) {
-			if ($gameVariables.value(c.variableId) < c.variableValue) {
+			if (self.$gameVariables.value(c.variableId) < c.variableValue) {
 				return false;
 			}
 		}
 		if (c.selfSwitchValid) {
 			const key = [this._mapId, this._eventId, c.selfSwitchCh];
-			if ($gameSelfSwitches.value(key) !== true) {
+			if (self.$gameSelfSwitches.value(key) !== true) {
 				return false;
 			}
 		}
 		if (c.itemValid) {
-			const item = $dataItems[c.itemId];
-			if (!$gameParty.hasItem(item)) {
+			const item = self.$dataItems[c.itemId];
+			if (!self.$gameParty.hasItem(item)) {
 				return false;
 			}
 		}
 		if (c.actorValid) {
-			const actor = $gameActors.actor(c.actorId);
-			if (!$gameParty.members()
+			const actor = self.$gameActors.actor(c.actorId);
+			if (!self.$gameParty.members()
 				.contains(actor)) {
 				return false;
 			}
@@ -312,8 +312,8 @@ class Game_Event extends Game_Character {
 	}
 
 	checkEventTriggerTouch(x, y) {
-		if (!$gameMap.isEventRunning()) {
-			if (this._trigger === 2 && $gamePlayer.pos(x, y)) {
+		if (!self.$gameMap.isEventRunning()) {
+			if (this._trigger === 2 && self.$gamePlayer.pos(x, y)) {
 				if (!this.isJumping() && this.isNormalPriority()) {
 					this.start();
 				}

@@ -18,18 +18,18 @@ class Window_MenuActor extends Window_MenuStatus {
 
 	processOk() {
 		if (!this.cursorAll()) {
-			$gameParty.setTargetActor($gameParty.members()[this.index()]);
+			self.$gameParty.setTargetActor(self.$gameParty.members()[this.index()]);
 		}
 		this.callOkHandler();
 	}
 
 	selectLast() {
-		this.select($gameParty.targetActor()
+		this.select(self.$gameParty.targetActor()
 			.index() || 0);
 	}
 
 	selectForItem(item) {
-		const actor = $gameParty.menuActor();
+		const actor = self.$gameParty.menuActor();
 		const action = new Game_Action(actor);
 		action.setItemObject(item);
 		this.setCursorFixed(false);

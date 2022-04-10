@@ -179,14 +179,14 @@ class Game_Battler extends Game_BattlerBase {
 	}
 
 	isStateAddable(stateId) {
-		return (this.isAlive() && $dataStates[stateId] &&
+		return (this.isAlive() && self.$dataStates[stateId] &&
 			!this.isStateResist(stateId) &&
 			!this._result.isStateRemoved(stateId) &&
 			!this.isStateRestrict(stateId));
 	}
 
 	isStateRestrict(stateId) {
-		return $dataStates[stateId].removeByRestriction && this.isRestricted();
+		return self.$dataStates[stateId].removeByRestriction && this.isRestricted();
 	}
 
 	onRestrict() {
@@ -215,7 +215,7 @@ class Game_Battler extends Game_BattlerBase {
 	}
 
 	escape() {
-		if ($gameParty.inBattle()) {
+		if (self.$gameParty.inBattle()) {
 			this.hide();
 		}
 		this.clearActions();
@@ -367,7 +367,7 @@ class Game_Battler extends Game_BattlerBase {
 	}
 
 	consumeItem(item) {
-		$gameParty.consumeItem(item);
+		self.$gameParty.consumeItem(item);
 	}
 
 	gainHp(value) {
@@ -412,7 +412,7 @@ class Game_Battler extends Game_BattlerBase {
 	}
 
 	maxSlipDamage() {
-		return $dataSystem.optSlipDeath ? this.hp : Math.max(this.hp - 1, 0);
+		return self.$dataSystem.optSlipDeath ? this.hp : Math.max(this.hp - 1, 0);
 	}
 
 	regenerateMp() {

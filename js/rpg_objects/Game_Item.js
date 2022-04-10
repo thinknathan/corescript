@@ -51,13 +51,13 @@ class Game_Item {
 
 	object() {
 		if (this.isSkill()) {
-			return $dataSkills[this._itemId];
+			return self.$dataSkills[this._itemId];
 		} else if (this.isItem()) {
-			return $dataItems[this._itemId];
+			return self.$dataItems[this._itemId];
 		} else if (this.isWeapon()) {
-			return $dataWeapons[this._itemId];
+			return self.$dataWeapons[this._itemId];
 		} else if (this.isArmor()) {
-			return $dataArmors[this._itemId];
+			return self.$dataArmors[this._itemId];
 		} else {
 			return null;
 		}

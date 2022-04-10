@@ -42,7 +42,7 @@ class Game_Actor extends Game_Battler {
 	}
 
 	setup(actorId) {
-		const actor = $dataActors[actorId];
+		const actor = self.$dataActors[actorId];
 		this._actorId = actorId;
 		this._name = actor.name;
 		this._nickname = actor.nickname;
@@ -62,7 +62,7 @@ class Game_Actor extends Game_Battler {
 	}
 
 	actor() {
-		return $dataActors[this._actorId];
+		return self.$dataActors[this._actorId];
 	}
 
 	name() {
@@ -121,7 +121,7 @@ class Game_Actor extends Game_Battler {
 
 	resetStateCounts(stateId) {
 		super.resetStateCounts(stateId);
-		this._stateSteps[stateId] = $dataStates[stateId].stepsToRemove;
+		this._stateSteps[stateId] = self.$dataStates[stateId].stepsToRemove;
 	}
 
 	initImages() {
@@ -203,7 +203,7 @@ class Game_Actor extends Game_Battler {
 
 	equipSlots() {
 		const slots = [];
-		for (let i = 1; i < $dataSystem.equipTypes.length; i++) {
+		for (let i = 1; i < self.$dataSystem.equipTypes.length; i++) {
 			slots.push(i);
 		}
 		if (slots.length >= 2 && this.isDualWield()) {
@@ -256,11 +256,11 @@ class Game_Actor extends Game_Battler {
 	}
 
 	tradeItemWithParty(newItem, oldItem) {
-		if (newItem && !$gameParty.hasItem(newItem)) {
+		if (newItem && !self.$gameParty.hasItem(newItem)) {
 			return false;
 		} else {
-			$gameParty.gainItem(oldItem, 1);
-			$gameParty.loseItem(newItem, 1);
+			self.$gameParty.gainItem(oldItem, 1);
+			self.$gameParty.loseItem(newItem, 1);
 			return true;
 		}
 	}
@@ -268,9 +268,9 @@ class Game_Actor extends Game_Battler {
 	changeEquipById(etypeId, itemId) {
 		const slotId = etypeId - 1;
 		if (this.equipSlots()[slotId] === 1) {
-			this.changeEquip(slotId, $dataWeapons[itemId]);
+			this.changeEquip(slotId, self.$dataWeapons[itemId]);
 		} else {
-			this.changeEquip(slotId, $dataArmors[itemId]);
+			this.changeEquip(slotId, self.$dataArmors[itemId]);
 		}
 	}
 
@@ -332,7 +332,7 @@ class Game_Actor extends Game_Battler {
 
 	bestEquipItem(slotId) {
 		const etypeId = this.equipSlots()[slotId];
-		const items = $gameParty.equipItems()
+		const items = self.$gameParty.equipItems()
 			.filter(function (item) {
 				return item.etypeId === etypeId && this.canEquip(item);
 			}, this);
@@ -384,20 +384,20 @@ class Game_Actor extends Game_Battler {
 	}
 
 	friendsUnit() {
-		return $gameParty;
+		return self.$gameParty;
 	}
 
 	opponentsUnit() {
-		return $gameTroop;
+		return self.$gameTroop;
 	}
 
 	index() {
-		return $gameParty.members()
+		return self.$gameParty.members()
 			.indexOf(this);
 	}
 
 	isBattleMember() {
-		return $gameParty.battleMembers()
+		return self.$gameParty.battleMembers()
 			.contains(this);
 	}
 
@@ -406,7 +406,7 @@ class Game_Actor extends Game_Battler {
 	}
 
 	currentClass() {
-		return $dataClasses[this._classId];
+		return self.$dataClasses[this._classId];
 	}
 
 	isClass(gameClass) {
@@ -417,8 +417,8 @@ class Game_Actor extends Game_Battler {
 		const list = [];
 		this._skills.concat(this.addedSkills())
 			.forEach(id => {
-				if (!list.contains($dataSkills[id])) {
-					list.push($dataSkills[id]);
+				if (!list.contains(self.$dataSkills[id])) {
+					list.push(self.$dataSkills[id]);
 				}
 			});
 		return list;
@@ -551,12 +551,12 @@ class Game_Actor extends Game_Battler {
 
 	displayLevelUp(newSkills) {
 		const text = TextManager.levelUp.format(this._name, TextManager.level, this._level);
-		$gameMessage.newPage();
-		$gameMessage.add(text);
+		self.$gameMessage.newPage();
+		self.$gameMessage.add(text);
 		newSkills.forEach(({
 			name
 		}) => {
-			$gameMessage.add(TextManager.obtainSkill.format(name));
+			self.$gameMessage.add(TextManager.obtainSkill.format(name));
 		});
 	}
 
@@ -570,7 +570,7 @@ class Game_Actor extends Game_Battler {
 	}
 
 	benchMembersExpRate() {
-		return $dataSystem.optExtraExp ? 1 : 0;
+		return self.$dataSystem.optExtraExp ? 1 : 0;
 	}
 
 	shouldDisplayLevelUp() {
@@ -602,7 +602,7 @@ class Game_Actor extends Game_Battler {
 
 	hasSkill(skillId) {
 		return this.skills()
-			.contains($dataSkills[skillId]);
+			.contains(self.$dataSkills[skillId]);
 	}
 
 	changeClass(classId, keepExp) {
@@ -629,7 +629,7 @@ class Game_Actor extends Game_Battler {
 	}
 
 	isSpriteVisible() {
-		return $gameSystem.isSideView();
+		return self.$gameSystem.isSideView();
 	}
 
 	startAnimation(animationId, mirror, delay) {
@@ -663,7 +663,7 @@ class Game_Actor extends Game_Battler {
 	performAttack() {
 		const weapons = this.weapons();
 		const wtypeId = weapons[0] ? weapons[0].wtypeId : 0;
-		const attackMotion = $dataSystem.attackMotions[wtypeId];
+		const attackMotion = self.$dataSystem.attackMotions[wtypeId];
 		if (attackMotion) {
 			if (attackMotion.type === 0) {
 				this.requestMotion('thrust');
@@ -681,7 +681,7 @@ class Game_Actor extends Game_Battler {
 		if (this.isSpriteVisible()) {
 			this.requestMotion('damage');
 		} else {
-			$gameScreen.startShake(5, 5, 10);
+			self.$gameScreen.startShake(5, 5, 10);
 		}
 		SoundManager.playActorDamage();
 	}
@@ -703,7 +703,7 @@ class Game_Actor extends Game_Battler {
 
 	performCollapse() {
 		super.performCollapse();
-		if ($gameParty.inBattle()) {
+		if (self.$gameParty.inBattle()) {
 			SoundManager.playActorCollapse();
 		}
 	}
@@ -776,7 +776,7 @@ class Game_Actor extends Game_Battler {
 	onPlayerWalk() {
 		this.clearResult();
 		this.checkFloorEffect();
-		if ($gamePlayer.isNormal()) {
+		if (self.$gamePlayer.isNormal()) {
 			this.turnEndOnMap();
 			this.states()
 				.forEach(function (state) {
@@ -807,7 +807,7 @@ class Game_Actor extends Game_Battler {
 				message1
 			}) {
 				if (message1) {
-					$gameMessage.add(this._name + message1);
+					self.$gameMessage.add(this._name + message1);
 				}
 			}, this);
 	}
@@ -819,7 +819,7 @@ class Game_Actor extends Game_Battler {
 				message4
 			}) {
 				if (message4) {
-					$gameMessage.add(this._name + message4);
+					self.$gameMessage.add(this._name + message4);
 				}
 			}, this);
 	}
@@ -829,7 +829,7 @@ class Game_Actor extends Game_Battler {
 	}
 
 	turnEndOnMap() {
-		if ($gameParty.steps() % this.stepsForTurn() === 0) {
+		if (self.$gameParty.steps() % this.stepsForTurn() === 0) {
 			this.onTurnEnd();
 			if (this.result()
 				.hpDamage > 0) {
@@ -839,7 +839,7 @@ class Game_Actor extends Game_Battler {
 	}
 
 	checkFloorEffect() {
-		if ($gamePlayer.isOnDamageFloor()) {
+		if (self.$gamePlayer.isOnDamageFloor()) {
 			this.executeFloorDamage();
 		}
 	}
@@ -858,12 +858,12 @@ class Game_Actor extends Game_Battler {
 	}
 
 	maxFloorDamage() {
-		return $dataSystem.optFloorDeath ? this.hp : Math.max(this.hp - 1, 0);
+		return self.$dataSystem.optFloorDeath ? this.hp : Math.max(this.hp - 1, 0);
 	}
 
 	performMapDamage() {
-		if (!$gameParty.inBattle()) {
-			$gameScreen.startFlashForDamage();
+		if (!self.$gameParty.inBattle()) {
+			self.$gameScreen.startFlashForDamage();
 		}
 	}
 
@@ -925,7 +925,7 @@ class Game_Actor extends Game_Battler {
 	}
 
 	meetsUsableItemConditions(item) {
-		if ($gameParty.inBattle() && !BattleManager.canEscape() && this.testEscape(item)) {
+		if (self.$gameParty.inBattle() && !BattleManager.canEscape() && this.testEscape(item)) {
 			return false;
 		}
 		return Game_BattlerBase.prototype.meetsUsableItemConditions.call(this, item);

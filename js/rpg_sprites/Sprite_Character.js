@@ -53,14 +53,14 @@ class Sprite_Character extends Sprite_Base {
 	}
 
 	tilesetBitmap(tileId) {
-		const tileset = $gameMap.tileset();
+		const tileset = self.$gameMap.tileset();
 		const setNumber = 5 + Math.floor(tileId / 256);
 		return ImageManager.loadTileset(tileset.tilesetNames[setNumber]);
 	}
 
 	updateBitmap() {
 		if (this.isImageChanged()) {
-			this._tilesetId = $gameMap.tilesetId();
+			this._tilesetId = self.$gameMap.tilesetId();
 			this._tileId = this._character.tileId();
 			this._characterName = this._character.characterName();
 			this._characterIndex = this._character.characterIndex();
@@ -73,7 +73,7 @@ class Sprite_Character extends Sprite_Base {
 	}
 
 	isImageChanged() {
-		return (this._tilesetId !== $gameMap.tilesetId() ||
+		return (this._tilesetId !== self.$gameMap.tilesetId() ||
 			this._tileId !== this._character.tileId() ||
 			this._characterName !== this._character.characterName() ||
 			this._characterIndex !== this._character.characterIndex());
@@ -148,7 +148,7 @@ class Sprite_Character extends Sprite_Base {
 
 	patternWidth() {
 		if (this._tileId > 0) {
-			return $gameMap.tileWidth();
+			return self.$gameMap.tileWidth();
 		} else if (this._isBigCharacter) {
 			return this.bitmap.width / 3;
 		} else {
@@ -158,7 +158,7 @@ class Sprite_Character extends Sprite_Base {
 
 	patternHeight() {
 		if (this._tileId > 0) {
-			return $gameMap.tileHeight();
+			return self.$gameMap.tileHeight();
 		} else if (this._isBigCharacter) {
 			return this.bitmap.height / 4;
 		} else {
@@ -224,7 +224,7 @@ class Sprite_Character extends Sprite_Base {
 
 	setupAnimation() {
 		if (this._character.animationId() > 0) {
-			const animation = $dataAnimations[this._character.animationId()];
+			const animation = self.$dataAnimations[this._character.animationId()];
 			this.startAnimation(animation, false, 0);
 			this._character.startAnimation();
 		}

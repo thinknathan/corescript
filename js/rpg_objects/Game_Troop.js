@@ -43,7 +43,7 @@ class Game_Troop extends Game_Unit {
 	}
 
 	troop() {
-		return $dataTroops[this._troopId];
+		return self.$dataTroops[this._troopId];
 	}
 
 	setup(troopId) {
@@ -52,7 +52,7 @@ class Game_Troop extends Game_Unit {
 		this._enemies = [];
 		this.troop()
 			.members.forEach(function (member) {
-				if ($dataEnemies[member.enemyId]) {
+				if (self.$dataEnemies[member.enemyId]) {
 					const enemyId = member.enemyId;
 					const x = member.x;
 					const y = member.y;
@@ -87,7 +87,7 @@ class Game_Troop extends Game_Unit {
 	}
 
 	letterTable() {
-		return $gameSystem.isCJK() ? Game_Troop.LETTER_TABLE_FULL :
+		return self.$gameSystem.isCJK() ? Game_Troop.LETTER_TABLE_FULL :
 			Game_Troop.LETTER_TABLE_HALF;
 	}
 
@@ -128,19 +128,19 @@ class Game_Troop extends Game_Unit {
 			}
 		}
 		if (c.enemyValid) {
-			const enemy = $gameTroop.members()[c.enemyIndex];
+			const enemy = self.$gameTroop.members()[c.enemyIndex];
 			if (!enemy || enemy.hpRate() * 100 > c.enemyHp) {
 				return false;
 			}
 		}
 		if (c.actorValid) {
-			const actor = $gameActors.actor(c.actorId);
+			const actor = self.$gameActors.actor(c.actorId);
 			if (!actor || actor.hpRate() * 100 > c.actorHp) {
 				return false;
 			}
 		}
 		if (c.switchValid) {
-			if (!$gameSwitches.value(c.switchId)) {
+			if (!self.$gameSwitches.value(c.switchId)) {
 				return false;
 			}
 		}
@@ -198,7 +198,7 @@ class Game_Troop extends Game_Unit {
 	}
 
 	goldRate() {
-		return $gameParty.hasGoldDouble() ? 2 : 1;
+		return self.$gameParty.hasGoldDouble() ? 2 : 1;
 	}
 
 	makeDropItems() {

@@ -277,7 +277,7 @@ class Scene_Base extends Stage {
 	 * @memberof Scene_Base
 	 */
 	checkGameover() {
-		if ($gameParty.isAllDead()) {
+		if (self.$gameParty.isAllDead()) {
 			SceneManager.goto(Scene_Gameover);
 		}
 	}

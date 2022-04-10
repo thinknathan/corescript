@@ -30,7 +30,7 @@ class Game_SelfSwitches {
 	}
 
 	onChange() {
-		$gameMap.requestRefresh();
+		self.$gameMap.requestRefresh();
 	}
 }
 

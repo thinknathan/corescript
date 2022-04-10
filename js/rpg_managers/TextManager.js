@@ -9,19 +9,19 @@ class TextManager {
 	}
 
 	static basic(basicId) {
-		return $dataSystem.terms.basic[basicId] || '';
+		return self.$dataSystem.terms.basic[basicId] || '';
 	}
 
 	static param(paramId) {
-		return $dataSystem.terms.params[paramId] || '';
+		return self.$dataSystem.terms.params[paramId] || '';
 	}
 
 	static command(commandId) {
-		return $dataSystem.terms.commands[commandId] || '';
+		return self.$dataSystem.terms.commands[commandId] || '';
 	}
 
 	static message(messageId) {
-		return $dataSystem.terms.messages[messageId] || '';
+		return self.$dataSystem.terms.messages[messageId] || '';
 	}
 
 	static getter(method, param) {
@@ -36,7 +36,7 @@ class TextManager {
 
 Object.defineProperty(TextManager, 'currencyUnit', {
 	get() {
-		return $dataSystem.currencyUnit;
+		return self.$dataSystem.currencyUnit;
 	},
 	configurable: true
 });

@@ -82,7 +82,7 @@ class Window_MenuCommand extends Window_Command {
 	}
 
 	needsCommand(name) {
-		const flags = $dataSystem.menuCommands;
+		const flags = self.$dataSystem.menuCommands;
 		if (flags) {
 			switch (name) {
 			case 'item':
@@ -103,11 +103,11 @@ class Window_MenuCommand extends Window_Command {
 	}
 
 	areMainCommandsEnabled() {
-		return $gameParty.exists();
+		return self.$gameParty.exists();
 	}
 
 	isFormationEnabled() {
-		return $gameParty.size() >= 2 && $gameSystem.isFormationEnabled();
+		return self.$gameParty.size() >= 2 && self.$gameSystem.isFormationEnabled();
 	}
 
 	isOptionsEnabled() {
@@ -115,7 +115,7 @@ class Window_MenuCommand extends Window_Command {
 	}
 
 	isSaveEnabled() {
-		return !DataManager.isEventTest() && $gameSystem.isSaveEnabled();
+		return !DataManager.isEventTest() && self.$gameSystem.isSaveEnabled();
 	}
 
 	isGameEndEnabled() {

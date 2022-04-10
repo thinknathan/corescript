@@ -21,14 +21,14 @@ class Game_Switches {
 	}
 
 	setValue(switchId, value) {
-		if (switchId > 0 && switchId < $dataSystem.switches.length) {
+		if (switchId > 0 && switchId < self.$dataSystem.switches.length) {
 			this._data[switchId] = value;
 			this.onChange();
 		}
 	}
 
 	onChange() {
-		$gameMap.requestRefresh();
+		self.$gameMap.requestRefresh();
 	}
 }
 

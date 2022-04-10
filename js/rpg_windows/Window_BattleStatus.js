@@ -34,7 +34,7 @@ class Window_BattleStatus extends Window_Selectable {
 	}
 
 	maxItems() {
-		return $gameParty.battleMembers()
+		return self.$gameParty.battleMembers()
 			.length;
 	}
 
@@ -44,7 +44,7 @@ class Window_BattleStatus extends Window_Selectable {
 	}
 
 	drawItem(index) {
-		const actor = $gameParty.battleMembers()[index];
+		const actor = self.$gameParty.battleMembers()[index];
 		this.drawBasicArea(this.basicAreaRect(index), actor);
 		this.drawGaugeArea(this.gaugeAreaRect(index), actor);
 	}
@@ -76,7 +76,7 @@ class Window_BattleStatus extends Window_Selectable {
 	}
 
 	drawGaugeArea(rect, actor) {
-		if ($dataSystem.optDisplayTp) {
+		if (self.$dataSystem.optDisplayTp) {
 			this.drawGaugeAreaWithTp(rect, actor);
 		} else {
 			this.drawGaugeAreaWithoutTp(rect, actor);

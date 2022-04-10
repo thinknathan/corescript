@@ -60,7 +60,7 @@ class Sprite_Enemy extends Sprite_Battler {
 	}
 
 	loadBitmap(name, hue) {
-		if ($gameSystem.isSideView()) {
+		if (self.$gameSystem.isSideView()) {
 			this.bitmap = ImageManager.loadSvEnemy(name, hue);
 		} else {
 			this.bitmap = ImageManager.loadEnemy(name, hue);

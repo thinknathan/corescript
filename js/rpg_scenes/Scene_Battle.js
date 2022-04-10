@@ -29,8 +29,8 @@ class Scene_Battle extends Scene_Base {
 
 	update() {
 		const active = this.isActive();
-		$gameTimer.update(active);
-		$gameScreen.update();
+		self.$gameTimer.update(active);
+		self.$gameScreen.update();
 		this.updateStatusWindow();
 		this.updateWindowPositions();
 		if (active && !this.isBusy()) {
@@ -82,8 +82,8 @@ class Scene_Battle extends Scene_Base {
 
 	terminate() {
 		super.terminate();
-		$gameParty.onBattleEnd();
-		$gameTroop.onBattleEnd();
+		self.$gameParty.onBattleEnd();
+		self.$gameTroop.onBattleEnd();
 		AudioManager.stopMe();
 
 		ImageManager.clearRequest();
@@ -95,7 +95,7 @@ class Scene_Battle extends Scene_Base {
 	}
 
 	updateStatusWindow() {
-		if ($gameMessage.isBusy()) {
+		if (self.$gameMessage.isBusy()) {
 			this._statusWindow.close();
 			this._partyCommandWindow.close();
 			this._actorCommandWindow.close();
@@ -381,7 +381,7 @@ class Scene_Battle extends Scene_Base {
 		const item = this._itemWindow.item();
 		const action = BattleManager.inputtingAction();
 		action.setItem(item.id);
-		$gameParty.setLastItem(item);
+		self.$gameParty.setLastItem(item);
 		this.onSelectAction();
 	}
 
