@@ -1,6 +1,6 @@
 import Window_ItemList from "./Window_ItemList.js";
 import Graphics from "../rpg_core/Graphics.js";
-import DataManager from "../rpg_managers/DataManager.js";
+import { DataManager } from "../rpg_managers/DataManager.js";
 
 //-----------------------------------------------------------------------------
 // Window_EventItem

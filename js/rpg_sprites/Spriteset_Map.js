@@ -1,4 +1,4 @@
-import Spriteset_Base from "../Spriteset_Base.js";
+import Spriteset_Base from "./Spriteset_Base.js";
 import Graphics from "../rpg_core/Graphics.js";
 import TilingSprite from "../rpg_core/TilingSprite.js";
 import ImageManager from "../rpg_managers/ImageManager.js";

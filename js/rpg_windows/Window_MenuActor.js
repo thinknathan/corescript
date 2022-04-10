@@ -1,5 +1,5 @@
 import Window_MenuStatus from "./Window_MenuStatus.js";
-import DataManager from "../rpg_managers/DataManager.js";
+import { DataManager } from "../rpg_managers/DataManager.js";
 import Game_Action from "../rpg_objects/Game_Action.js";
 
 //-----------------------------------------------------------------------------
