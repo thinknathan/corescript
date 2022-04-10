@@ -1830,9 +1830,9 @@ class Game_Interpreter {
 		// to be overridden by plugins
 	}
 
-	requestImagesByPluginCommand(command, args) {}
+	static requestImagesByPluginCommand(command, args) {}
 
-	requestImagesForCommand({
+	static requestImagesForCommand({
 		parameters,
 		code
 	}) {
@@ -1956,7 +1956,7 @@ class Game_Interpreter {
 		}
 	}
 
-	requestImagesByChildEvent({
+	static requestImagesByChildEvent({
 		parameters
 	}, commonList) {
 		const params = parameters;
@@ -1972,7 +1972,7 @@ class Game_Interpreter {
 		}
 	}
 
-	requestImages(list, commonList) {
+	static requestImages(list, commonList) {
 		if (!list) {
 			return;
 		}
