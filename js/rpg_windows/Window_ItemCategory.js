@@ -1,4 +1,6 @@
 import Window_HorzCommand from "./Window_HorzCommand.js";
+import TextManager from "../rpg_managers/TextManager.js";
+import Graphics from "../rpg_core/Graphics.js";
 
 //-----------------------------------------------------------------------------
 // Window_ItemCategory

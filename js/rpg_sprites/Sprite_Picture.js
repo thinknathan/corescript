@@ -1,4 +1,5 @@
 import Sprite from "../rpg_core/Sprite.js";
+import ImageManager from "../rpg_managers/ImageManager.js";
 
 //-----------------------------------------------------------------------------
 // Sprite_Picture

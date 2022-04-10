@@ -1,4 +1,5 @@
 import Window_Selectable from "./Window_Selectable.js";
+import DataManager from "../rpg_managers/DataManager.js";
 
 //-----------------------------------------------------------------------------
 // Window_ItemList

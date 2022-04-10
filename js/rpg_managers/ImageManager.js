@@ -2,6 +2,7 @@ import CacheMap from "../rpg_core/CacheMap.js";
 import ImageCache from "../rpg_core/ImageCache.js";
 import RequestQueue from "../rpg_core/RequestQueue.js";
 import Utils from "../rpg_core/Utils.js";
+import Bitmap from "../rpg_core/Bitmap.js";
 
 //-----------------------------------------------------------------------------
 // ImageManager

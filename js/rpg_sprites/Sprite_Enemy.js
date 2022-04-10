@@ -1,4 +1,8 @@
 import Sprite_Battler from "./Sprite_Battler.js";
+import Graphics from "../rpg_core/Graphics.js";
+import ImageManager from "../rpg_managers/ImageManager.js";
+import SoundManager from "../rpg_managers/SoundManager.js";
+import Sprite_StateIcon from "../rpg_sprites/Sprite_StateIcon.js";
 
 //-----------------------------------------------------------------------------
 // Sprite_Enemy

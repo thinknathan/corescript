@@ -1,4 +1,15 @@
 import Scene_Base from "./Scene_Base.js";
+import SceneManager from "../rpg_managers/SceneManager.js";
+import Sprite from "../rpg_core/Sprite.js";
+import { DataManager } from "../rpg_managers/DataManager.js";
+import ImageManager from "../rpg_managers/ImageManager.js";
+import AudioManager from "../rpg_managers/AudioManager.js";
+import Bitmap from "../rpg_core/Bitmap.js";
+import Graphics from "../rpg_core/Graphics.js";
+import Scene_Map from "../rpg_scenes/Scene_Map.js";
+import Scene_Options from "../rpg_scenes/Scene_Options.js";
+import Scene_Load from "../rpg_scenes/Scene_Load.js";
+import Window_TitleCommand from "../rpg_windows/Window_TitleCommand.js";
 
 //-----------------------------------------------------------------------------
 // Scene_Title

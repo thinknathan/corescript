@@ -1,4 +1,6 @@
 import Window_Command from "./Window_Command.js";
+import TextManager from "../rpg_managers/TextManager.js";
+import DataManager from "../rpg_managers/DataManager.js";
 
 //-----------------------------------------------------------------------------
 // Window_MenuCommand

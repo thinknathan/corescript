@@ -1,4 +1,7 @@
 import Sprite from "../rpg_core/Sprite.js";
+import ImageManager from "../rpg_managers/ImageManager.js";
+import AudioManager from "../rpg_managers/AudioManager.js";
+import ScreenSprite from "../rpg_core/ScreenSprite.js";
 
 //-----------------------------------------------------------------------------
 // Sprite_Animation

@@ -1,3 +1,6 @@
+import StorageManager from "../rpg_managers/StorageManager.js";
+import AudioManager from "../rpg_managers/AudioManager.js";
+
 //-----------------------------------------------------------------------------
 // ConfigManager
 //

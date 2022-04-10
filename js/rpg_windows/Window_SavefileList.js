@@ -1,4 +1,6 @@
 import Window_Selectable from "./Window_Selectable.js";
+import { DataManager } from "../rpg_managers/DataManager.js";
+import TextManager from "../rpg_managers/TextManager.js";
 
 //-----------------------------------------------------------------------------
 // Window_SavefileList

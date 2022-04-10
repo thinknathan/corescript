@@ -1,4 +1,13 @@
 import Window_Base from "./Window_Base.js";
+import Graphics from "../rpg_core/Graphics.js";
+import Utils from "../rpg_core/Utils.js";
+import Input from "../rpg_core/Input.js";
+import TouchInput from "../rpg_core/TouchInput.js";
+import ImageManager from "../rpg_managers/ImageManager.js";
+import Window_Gold from "../rpg_windows/Window_Gold.js";
+import Window_ChoiceList from "../rpg_windows/Window_ChoiceList.js";
+import Window_NumberInput from "../rpg_windows/Window_NumberInput.js";
+import Window_EventItem from "../rpg_windows/Window_EventItem.js";
 
 //-----------------------------------------------------------------------------
 // Window_Message

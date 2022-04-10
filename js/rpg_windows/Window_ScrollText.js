@@ -1,4 +1,7 @@
 import Window_Base from "./Window_Base.js";
+import Graphics from "../rpg_core/Graphics.js";
+import Input from "../rpg_core/Input.js";
+import TouchInput from "../rpg_core/TouchInput.js";
 
 //-----------------------------------------------------------------------------
 // Window_ScrollText

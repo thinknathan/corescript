@@ -1,4 +1,6 @@
 import Window_Selectable from "./Window_Selectable.js";
+import Input from "../rpg_core/Input.js";
+import SoundManager from "../rpg_managers/SoundManager.js";
 
 //-----------------------------------------------------------------------------
 // Window_DebugEdit

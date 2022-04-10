@@ -1,4 +1,5 @@
 import Sprite_Base from "./Sprite_Base.js";
+import Sprite_Damage from "../rpg_sprites/Sprite_Damage.js";
 
 //-----------------------------------------------------------------------------
 // Sprite_Battler

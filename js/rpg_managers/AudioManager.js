@@ -1,3 +1,8 @@
+import WebAudio from "../rpg_core/WebAudio.js";
+import Decrypter from "../rpg_core/Decrypter.js";
+import Utils from "../rpg_core/Utils.js";
+import Graphics from "../rpg_core/Graphics.js";
+
 //-----------------------------------------------------------------------------
 // AudioManager
 //

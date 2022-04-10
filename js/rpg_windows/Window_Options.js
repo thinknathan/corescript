@@ -1,4 +1,8 @@
 import Window_Command from "./Window_Command.js";
+import Graphics from "../rpg_core/Graphics.js";
+import TextManager from "../rpg_managers/TextManager.js";
+import SoundManager from "../rpg_managers/SoundManager.js";
+import ConfigManager from "../rpg_managers/ConfigManager.js";
 
 //-----------------------------------------------------------------------------
 // Window_Options

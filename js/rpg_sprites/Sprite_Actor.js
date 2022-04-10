@@ -1,4 +1,11 @@
 import Sprite_Battler from "./Sprite_Battler.js";
+import Sprite from "../rpg_core/Sprite.js";
+import ImageManager from "../rpg_managers/ImageManager.js";
+import BattleManager from "../rpg_managers/BattleManager.js";
+import Sprite_Base from "../rpg_sprites/Sprite_Base.js";
+import Sprite_Weapon from "../rpg_sprites/Sprite_Weapon.js";
+import Sprite_StateOverlay from "../rpg_sprites/Sprite_StateOverlay.js";
+
 
 //-----------------------------------------------------------------------------
 // Sprite_Actor

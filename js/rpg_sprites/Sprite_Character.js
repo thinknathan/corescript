@@ -1,4 +1,7 @@
 import Sprite_Base from "./Sprite_Base.js";
+import ImageManager from "../rpg_managers/ImageManager.js";
+import Sprite from "../rpg_core/Sprite.js";
+import Sprite_Balloon from "../rpg_sprites/Sprite_Balloon.js";
 
 //-----------------------------------------------------------------------------
 // Sprite_Character

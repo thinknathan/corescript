@@ -1,4 +1,12 @@
 import Window_Selectable from "./Window_Selectable.js";
+import Graphics from "../rpg_core/Graphics.js";
+import Input from "../rpg_core/Input.js";
+import Sprite from "../rpg_core/Sprite.js";
+import Bitmap from "../rpg_core/Bitmap.js";
+import TouchInput from "../rpg_core/TouchInput.js";
+import { DataManager } from "../rpg_managers/DataManager.js";
+import SoundManager from "../rpg_managers/SoundManager.js";
+import TextManager from "../rpg_managers/TextManager.js";
 
 //-----------------------------------------------------------------------------
 // Window_BattleLog

@@ -1,4 +1,11 @@
 import Sprite from "../rpg_core/Sprite.js";
+import Graphics from "../rpg_core/Graphics.js";
+import ScreenSprite from "../rpg_core/ScreenSprite.js";
+import Sprite_Picture from "../rpg_sprites/Sprite_Picture.js";
+import Sprite_Timer from "../rpg_sprites/Sprite_Timer.js";
+import Rectangle from "../rpg_core/Rectangle.js";
+import ToneFilter from "../rpg_core/ToneFilter.js";
+import ToneSprite from "../rpg_core/ToneSprite.js";
 
 //-----------------------------------------------------------------------------
 // Spriteset_Base

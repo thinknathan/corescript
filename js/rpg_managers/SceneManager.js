@@ -1,4 +1,13 @@
 import Utils from "../rpg_core/Utils.js";
+import Graphics from "../rpg_core/Graphics.js";
+import AudioManager from "../rpg_managers/AudioManager.js";
+import Bitmap from "../rpg_core/Bitmap.js";
+import Input from "../rpg_core/Input.js";
+import ImageManager from "../rpg_managers/ImageManager.js";
+import PluginManager from "../rpg_managers/PluginManager.js";
+import TouchInput from "../rpg_core/TouchInput.js";
+import ProgressWatcher from "../rpg_core/ProgressWatcher.js";
+import WebAudio from "../rpg_core/WebAudio.js";
 
 //-----------------------------------------------------------------------------
 // SceneManager

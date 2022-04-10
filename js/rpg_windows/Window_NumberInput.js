@@ -1,4 +1,10 @@
 import Window_Selectable from "./Window_Selectable.js";
+import Graphics from "../rpg_core/Graphics.js";
+import ImageManager from "../rpg_managers/ImageManager.js";
+import SoundManager from "../rpg_managers/SoundManager.js";
+import TouchInput from "../rpg_core/TouchInput.js";
+import Input from "../rpg_core/Input.js";
+import Sprite_Button from "../rpg_sprites/Sprite_Button.js";
 
 //-----------------------------------------------------------------------------
 // Window_NumberInput

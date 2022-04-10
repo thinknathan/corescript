@@ -1,3 +1,5 @@
+import AudioManager from "../rpg_managers/AudioManager.js";
+
 //-----------------------------------------------------------------------------
 // SoundManager
 //

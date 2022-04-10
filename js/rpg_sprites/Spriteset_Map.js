@@ -1,4 +1,13 @@
-import Spriteset_Base from "./Spriteset_Base.js";
+import Spriteset_Base from "../Spriteset_Base.js";
+import Graphics from "../rpg_core/Graphics.js";
+import TilingSprite from "../rpg_core/TilingSprite.js";
+import ImageManager from "../rpg_managers/ImageManager.js";
+import Sprite from "../rpg_core/Sprite.js";
+import Sprite_Character from "../rpg_sprites/Sprite_Character.js";
+import Sprite_Destination from "../rpg_sprites/Sprite_Destination.js";
+import Tilemap from "../rpg_core/Tilemap.js";
+import ShaderTilemap from "../rpg_core/ShaderTilemap.js";
+import Weather from "../rpg_core/Weather.js";
 
 //-----------------------------------------------------------------------------
 // Spriteset_Map

@@ -1,4 +1,12 @@
 import Spriteset_Base from "./Spriteset_Base.js";
+import Graphics from "../rpg_core/Graphics.js";
+import Sprite from "../rpg_core/Sprite.js";
+import TilingSprite from "../rpg_core/TilingSprite.js";
+import Sprite_Enemy from "../rpg_sprites/Sprite_Enemy.js";
+import Sprite_Actor from "../rpg_sprites/Sprite_Actor.js";
+import ImageManager from "../rpg_managers/ImageManager.js";
+import SceneManager from "../rpg_managers/SceneManager.js";
+import BattleManager from "../rpg_managers/BattleManager.js";
 
 //-----------------------------------------------------------------------------
 // Spriteset_Battle

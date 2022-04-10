@@ -1,4 +1,8 @@
 import Window_Selectable from "./Window_Selectable.js";
+import Window_Base from "./Window_Base.js";
+import Graphics from "../rpg_core/Graphics.js";
+import ImageManager from "../rpg_managers/ImageManager.js";
+
 
 //-----------------------------------------------------------------------------
 // Window_MenuStatus

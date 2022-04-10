@@ -1,4 +1,5 @@
 import Sprite_Base from "./Sprite_Base.js";
+import ImageManager from "../rpg_managers/ImageManager.js";
 
 //-----------------------------------------------------------------------------
 // Sprite_StateOverlay

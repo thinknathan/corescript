@@ -1,4 +1,5 @@
 import Window_Base from "./Window_Base.js";
+import TextManager from "../rpg_managers/TextManager.js";
 
 //-----------------------------------------------------------------------------
 // Window_EquipStatus

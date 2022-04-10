@@ -1,4 +1,5 @@
 import Window_ItemList from "./Window_ItemList.js";
+import JsonEx from "../rpg_core/JsonEx.js";
 
 //-----------------------------------------------------------------------------
 // Window_EquipItem

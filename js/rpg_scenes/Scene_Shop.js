@@ -1,4 +1,14 @@
 import Scene_MenuBase from "./Scene_MenuBase.js";
+import Graphics from "../rpg_core/Graphics.js";
+import SoundManager from "../rpg_managers/SoundManager.js";
+import Window_Base from "../rpg_windows/Window_Base.js";
+import Window_Gold from "../rpg_windows/Window_Gold.js";
+import Window_ItemCategory from "../rpg_windows/Window_ItemCategory.js";
+import Window_ShopCommand from "../rpg_windows/Window_ShopCommand.js";
+import Window_ShopBuy from "../rpg_windows/Window_ShopBuy.js";
+import Window_ShopSell from "../rpg_windows/Window_ShopSell.js";
+import Window_ShopNumber from "../rpg_windows/Window_ShopNumber.js";
+import Window_ShopStatus from "../rpg_windows/Window_ShopStatus.js";
 
 //-----------------------------------------------------------------------------
 // Scene_Shop

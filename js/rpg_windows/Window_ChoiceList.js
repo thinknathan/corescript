@@ -1,4 +1,6 @@
 import Window_Command from "./Window_Command.js";
+import Graphics from "../rpg_core/Graphics.js";
+import Input from "../rpg_core/Input.js";
 
 //-----------------------------------------------------------------------------
 // Window_ChoiceList

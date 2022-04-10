@@ -1,4 +1,5 @@
 import Scene_MenuBase from "./Scene_MenuBase.js";
+import Window_Status from "../rpg_windows/Window_Status.js";
 
 //-----------------------------------------------------------------------------
 // Scene_Status

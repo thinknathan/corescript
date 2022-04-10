@@ -1,3 +1,10 @@
+import TextManager from "../rpg_managers/TextManager.js";
+import AudioManager from "../rpg_managers/AudioManager.js";
+import SceneManager from "../rpg_managers/SceneManager.js";
+import SoundManager from "../rpg_managers/SoundManager.js";
+import Game_Action from "../rpg_objects/Game_Action.js";
+import Scene_Gameover from "../rpg_scenes/Scene_Gameover.js";
+
 //-----------------------------------------------------------------------------
 // BattleManager
 //

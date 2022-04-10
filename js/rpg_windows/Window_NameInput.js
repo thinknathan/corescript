@@ -1,4 +1,6 @@
 import Window_Selectable from "./Window_Selectable.js";
+import SoundManager from "../rpg_managers/SoundManager.js";
+import Input from "../rpg_core/Input.js";
 
 //-----------------------------------------------------------------------------
 // Window_NameInput

@@ -1,4 +1,9 @@
 import Window from "../rpg_core/Window.js";
+import Bitmap from "../rpg_core/Bitmap.js";
+import BitmapPIXI from "../rpg_core/BitmapPIXI.js";
+import ImageManager from "../rpg_managers/ImageManager.js";
+import TextManager from "../rpg_managers/TextManager.js";
+import Sprite from "../rpg_core/Sprite.js";
 
 //-----------------------------------------------------------------------------
 // Window_Base

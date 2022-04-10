@@ -1,3 +1,27 @@
+import Graphics from "../rpg_core/Graphics.js";
+import Decrypter from "../rpg_core/Decrypter.js";
+import ResourceHandler from "../rpg_core/ResourceHandler.js";
+import StorageManager from "../rpg_managers/StorageManager.js";
+import SceneManager from "../rpg_managers/SceneManager.js";
+import BattleManager from "../rpg_managers/BattleManager.js";
+import ImageManager from "../rpg_managers/ImageManager.js";
+import JsonEx from "../rpg_core/JsonEx.js";
+import Scene_Boot from "../rpg_scenes/Scene_Boot.js";
+import Utils from "../rpg_core/Utils.js";
+import Game_Temp from "../rpg_objects/Game_Temp.js";
+import Game_System from "../rpg_objects/Game_System.js";
+import Game_Screen from "../rpg_objects/Game_Screen.js";
+import Game_Timer from "../rpg_objects/Game_Timer.js";
+import Game_Message from "../rpg_objects/Game_Message.js";
+import Game_Switches from "../rpg_objects/Game_Switches.js";
+import Game_Variables from "../rpg_objects/Game_Variables.js";
+import Game_SelfSwitches from "../rpg_objects/Game_SelfSwitches.js";
+import Game_Actors from "../rpg_objects/Game_Actors.js";
+import Game_Party from "../rpg_objects/Game_Party.js";
+import Game_Troop from "../rpg_objects/Game_Troop.js";
+import Game_Map from "../rpg_objects/Game_Map.js";
+import Game_Player from "../rpg_objects/Game_Player.js";
+
 //-----------------------------------------------------------------------------
 // DataManager
 //
