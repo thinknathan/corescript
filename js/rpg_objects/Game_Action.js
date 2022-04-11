@@ -514,12 +514,21 @@ class Game_Action {
 				result.critical = this.processItemCriFormula(result, target);
 				const value = this.makeDamageValue(target, result.critical);
 				this.executeDamage(target, value);
+				this.subject().onApplyDamage(this, target, value);
+				target.onReceiveDamage(this, this.subject(), value);
+				if (result.critical) {
+					this.subject().onApplyCritical(this, target, value);
+					target.onReceiveCritical(this, this.subject(), value);
+				}
 			}
 			this.item()
 				.effects.forEach(function (effect) {
 					this.applyItemEffect(target, effect);
 				}, this);
 			this.applyItemUserEffect(target);
+		} else {
+			this.subject().onHitAction(this, target);
+			target.onEvadeAction(this, this.subject());
 		}
 	}
 
@@ -538,7 +547,7 @@ class Game_Action {
 	makeDamageValue(target, critical) {
 		const item = this.item();
 		const baseValue = this.evalDamageFormula(target);
-		let value = this.processElementalDamage(item, baseValue);
+		let value = this.processElementalDamage(item, baseValue, target, critical);
 		if (this.isPhysical()) {
 			value = this.processPhysicalDamage(item, value, target, critical);
 		}

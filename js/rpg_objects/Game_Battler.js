@@ -172,16 +172,35 @@ class Game_Battler extends Game_BattlerBase {
 		}
 	}
 
+	onApplyDamage(action, target, value) {}
+
+	onReceiveDamage(action, source, value) {}
+
+	onHitAction(action, target) {}
+
+	onEvadeAction(action, source) {}
+
+	onApplyCritical(action, target, value) {}
+
+	onReceiveCritical(action, source, value) {}
+
 	addState(stateId, source) {
 		if (this.isStateAddable(stateId)) {
 			if (!this.isStateAffected(stateId)) {
 				this.addNewState(stateId, source);
 				this.refresh();
 			}
+			source.onApplyStateSuccess(stateId, this);
 			this.resetStateCounts(stateId);
 			this._result.pushAddedState(stateId);
+		} else {
+			source.onApplyStateFailure(stateId, this);
 		}
 	}
+
+	onApplyStateSuccess(stateId, target) {}
+
+	onApplyStateFailure(stateId, target) {}
 
 	isStateAddable(stateId) {
 		return (this.isAlive() && self.$dataStates[stateId] &&
