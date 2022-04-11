@@ -504,14 +504,14 @@ class Game_Action {
 			.clearResult();
 		result.clear();
 		result.used = this.testApply(target);
-		result.missed = (result.used && Math.random() >= this.itemHit(target));
-		result.evaded = (!result.missed && Math.random() < this.itemEva(target));
+		result.missed = this.processItemHitFormula(result, target);
+		result.evaded = this.processItemEvaFormula(result, target);
 		result.physical = this.isPhysical();
 		result.drain = this.isDrain();
 		if (result.isHit()) {
 			if (this.item()
 				.damage.type > 0) {
-				result.critical = (Math.random() < this.itemCri(target));
+				result.critical = this.processItemCriFormula(result, target);
 				const value = this.makeDamageValue(target, result.critical);
 				this.executeDamage(target, value);
 			}
@@ -523,26 +523,70 @@ class Game_Action {
 		}
 	}
 
+	processItemHitFormula(result, target) {
+		return (result.used && Math.random() >= this.itemHit(target));
+	}
+
+	processItemEvaFormula(result, target) {
+		return (!result.missed && Math.random() < this.itemEva(target));
+	}
+
+	processItemCriFormula(result, target) {
+		return (Math.random() < this.itemCri(target));
+	}
+
 	makeDamageValue(target, critical) {
 		const item = this.item();
 		const baseValue = this.evalDamageFormula(target);
-		let value = baseValue * this.calcElementRate(target);
+		let value = this.processElementalDamage(item, baseValue);
 		if (this.isPhysical()) {
-			value *= target.pdr;
+			value = this.processPhysicalDamage(item, value, target, critical);
 		}
 		if (this.isMagical()) {
-			value *= target.mdr;
+			value = this.processMagicalDamage(item, value, target, critical);
 		}
 		if (baseValue < 0) {
-			value *= target.rec;
+			value = this.processRecoveryDamage(item, value, target, critical);
 		}
 		if (critical) {
-			value = this.applyCritical(value);
+			value = this.processCriticalDamage(item, value, target, critical);
 		}
-		value = this.applyVariance(value, item.damage.variance);
-		value = this.applyGuard(value, target);
-		value = Math.round(value);
+		value = this.processVarianceDamage(item, value, target, critical);
+		value = this.processGuardDamage(item, value, target, critical);
+		value = this.processDamageEnd(item, value, target, critical);
 		return value;
+	}
+
+	processElementalDamage(item, baseValue, target, critical) {
+		return baseValue * this.calcElementRate(target);
+	}
+
+	processPhysicalDamage(item, value, target, critical) {
+		return value *= target.pdr;
+	}
+
+	processMagicalDamage(item, value, target, critical) {
+		return value *= target.mdr;
+	}
+
+	processRecoveryDamage(item, value, target, critical) {
+		return value *= target.rec;
+	}
+
+	processCriticalDamage(item, value, target, critical) {
+		return this.applyCritical(value);
+	}
+
+	processVarianceDamage(item, value, target, critical) {
+		return this.applyVariance(value, item.damage.variance);
+	}
+
+	processGuardDamage(item, value, target, critical) {
+		return this.applyGuard(value, target);
+	}
+
+	processDamageEnd(item, value, target, critical) {
+		return Math.round(value);
 	}
 
 	evalDamageFormula(target) {
@@ -757,7 +801,7 @@ class Game_Action {
 					.attackStatesRate(stateId);
 				chance *= this.lukEffectRate(target);
 				if (Math.random() < chance) {
-					target.addState(stateId);
+					target.addState(stateId, this.subject());
 					this.makeSuccess(target);
 				}
 			}, target);
@@ -773,7 +817,7 @@ class Game_Action {
 			chance *= this.lukEffectRate(target);
 		}
 		if (Math.random() < chance) {
-			target.addState(dataId);
+			target.addState(dataId, this.subject());
 			this.makeSuccess(target);
 		}
 	}
