@@ -545,7 +545,7 @@ class Game_BattlerBase {
 			.concat(0));
 	}
 
-	addNewState(stateId) {
+	addNewState(stateId, source) {
 		if (stateId === this.deathStateId()) {
 			this.die();
 		}

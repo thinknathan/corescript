@@ -172,10 +172,10 @@ class Game_Battler extends Game_BattlerBase {
 		}
 	}
 
-	addState(stateId) {
+	addState(stateId, source) {
 		if (this.isStateAddable(stateId)) {
 			if (!this.isStateAffected(stateId)) {
-				this.addNewState(stateId);
+				this.addNewState(stateId, source);
 				this.refresh();
 			}
 			this.resetStateCounts(stateId);
