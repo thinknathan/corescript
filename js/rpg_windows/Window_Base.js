@@ -175,7 +175,10 @@ class Window_Base extends Window {
 	textColor(n) {
 		const px = 96 + (n % 8) * 12 + 6;
 		const py = 144 + Math.floor(n / 8) * 12 + 6;
-		return this.windowskin.getPixel(px, py);
+		if (this.windowskin) {
+			return this.windowskin.getPixel(px, py);
+		}
+		return '0x000000';
 	}
 
 	normalColor() {
