@@ -566,8 +566,8 @@ class Game_Action {
 		return value;
 	}
 
-	processElementalDamage(item, baseValue, target, critical) {
-		return baseValue * this.calcElementRate(target);
+	processElementalDamage(item, value, target, critical) {
+		return value * this.calcElementRate(target);
 	}
 
 	processPhysicalDamage(item, value, target, critical) {
