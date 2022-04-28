@@ -190,11 +190,11 @@ class Game_Battler extends Game_BattlerBase {
 				this.addNewState(stateId, source);
 				this.refresh();
 			}
-			source.onApplyStateSuccess(stateId, this);
+			if (source) source.onApplyStateSuccess(stateId, this);
 			this.resetStateCounts(stateId);
 			this._result.pushAddedState(stateId);
 		} else {
-			source.onApplyStateFailure(stateId, this);
+			if (source) source.onApplyStateFailure(stateId, this);
 		}
 	}
 
