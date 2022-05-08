@@ -9,11 +9,40 @@ This fork introduces opinionated changes and is not necessarily a drop-in replac
 - Uses PIXI equivalents whenever possible instead of the Bitmap object
 - Uses PIXI.BitmapText for fast, memory-efficient text
 - Allows windows to overlap each other
+- Added FPS check to switch on/off fluid timestep
+- Switched to the PIXI.App model
+- Gamestats (performance monitoring plugin) integration
 - REMOVED: Picture blend modes
 - REMOVED: Picture smooth scaling
 - REMOVED: HTML5Audio
 - REMOVED: Gradients in gauges
 - NOTE: "Window Color" in the System menu of the editor is now applied differently than the default scripts. The default value of (0, 0, 0) is black. Using pure white (255, 255, 255) will disable it.
+
+## Added hooks
+
+- Added Game_Battler.onApplyDamage(action, target, value)
+- Added Game_Battler.onReceiveDamage(action, source, value)
+- Added Game_Battler.onHitAction(action, target)
+- Added Game_Battler.onEvadeAction(action, source)
+- Added Game_Battler.onApplyStateSuccess(stateId, target)
+- Added Game_Battler.onApplyStateFailure(stateId, target)
+- Added Game_Battler.onApplyCritical(action, target, value)
+- Added Game_Battler.onReceiveCritical(action, source, value)
+
+## Split functions into smaller parts
+
+- Added Game_Action.processItemHitFormula(result, target)
+- Added Game_Action.processItemEvaFormula(result, target)
+- Added Game_Action.processItemCriFormula(result, target)
+- Added Game_Action.processElementalDamage(item, value, target, critical)
+- Added Game_Action.processPhysicalDamage(item, value, target, critical)
+- Added Game_Action.processMagicalDamage(item, value, target, critical)
+- Added Game_Action.processRecoveryDamage(item, value, target, critical)
+- Added Game_Action.processCriticalDamage(item, value, target, critical)
+- Added Game_Action.processVarianceDamage(item, value, target, critical)
+- Added Game_Action.processGuardDamage(item, value, target, critical)
+- Added Game_Action.processDamageEnd(item, value, target, critical)
+- Added BattleManager.processEscapeFormula (Function)
 
 ## Upgrading your project to this fork
 Download main.js from */dist/main.js*
