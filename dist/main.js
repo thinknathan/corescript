@@ -512,6 +512,17 @@
 		}
 
 		/**
+		 * Checks whether the platform is Tauri.
+		 *
+		 * @static
+		 * @method isTauri
+		 * @return {Boolean} True if the platform is Tauri
+		 */
+		static isTauri() {
+			return !!window.__TAURI__;
+		}
+
+		/**
 		 * Checks whether refresh rate > 60hz.
 		 *
 		 * @static
@@ -4790,7 +4801,7 @@
 		 * @private
 		 */
 		static _defaultStretchMode() {
-			return Utils.isNwjs() || Utils.isMobileDevice();
+			return Utils.isNwjs() || Utils.isMobileDevice() || Utils.isTauri();
 		}
 
 		/**
@@ -11943,8 +11954,8 @@
 			return value;
 		}
 
-		processElementalDamage(item, baseValue, target, critical) {
-			return baseValue * this.calcElementRate(target);
+		processElementalDamage(item, value, target, critical) {
+			return value * this.calcElementRate(target);
 		}
 
 		processPhysicalDamage(item, value, target, critical) {
