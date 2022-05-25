@@ -50,6 +50,17 @@ class Utils {
 	}
 
 	/**
+	 * Checks whether the platform is Tauri.
+	 *
+	 * @static
+	 * @method isTauri
+	 * @return {Boolean} True if the platform is Tauri
+	 */
+	static isTauri() {
+		return !!window.__TAURI__;
+	}
+
+	/**
 	 * Checks whether refresh rate > 60hz.
 	 *
 	 * @static

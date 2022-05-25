@@ -1171,7 +1171,7 @@ class Graphics {
 	 * @private
 	 */
 	static _defaultStretchMode() {
-		return Utils.isNwjs() || Utils.isMobileDevice();
+		return Utils.isNwjs() || Utils.isMobileDevice() || Utils.isTauri();
 	}
 
 	/**
