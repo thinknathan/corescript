@@ -600,16 +600,14 @@ class Game_Action {
 
 	evalDamageFormula(target) {
 		try {
-			/* jshint ignore:start */
 			const item = this.item();
 			const a = this.subject();
 			const b = target;
 			const v = self.$gameVariables._data;
 			const sign = ([3, 4].contains(item.damage.type) ? -1 : 1);
-			const value = Math.max(eval(item.damage.formula), 0) * sign;
+			let value = Math.max(eval(item.damage.formula), 0) * sign;
 			if (isNaN(value)) value = 0;
 			return value;
-			/* jshint ignore:end */
 		} catch (e) {
 			return 0;
 		}
