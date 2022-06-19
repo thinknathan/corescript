@@ -252,6 +252,15 @@ class DocumentProxy {
 		keyCode: e.keyCode,
 		shiftKey: e.shiftKey,
 	}));
+	document.addEventListener('keyup', (e) => Render_Thread.documentEventFired('keyup', {
+		key: e.key,
+		code: e.code,
+		altKey: e.altKey,
+		charCode: e.charCode,
+		ctrlKey: e.ctrlKey,
+		keyCode: e.keyCode,
+		shiftKey: e.shiftKey,
+	}));
 	document.addEventListener('mousedown', (e) => Render_Thread.documentEventFired('mousedown', {
 		clientX: e.clientX,
 		clientY: e.clientY,
@@ -267,13 +276,11 @@ class DocumentProxy {
 		x: e.x,
 		y: e.y,
 	}));
-	document.addEventListener('touchend', (e) => console.log(e));
-	// document.addEventListener('keyup', (e) => console.log(e));
-	// document.addEventListener('mousemove', (e) => console.log(e));
-	// document.addEventListener('mouseup', (e) => console.log(e));
-	// document.addEventListener('wheel', (e) => console.log(e), isSupportPassive ? {
-	// 			passive: false
-	// 		} : false);
+	document.addEventListener('touchend', (e) => Render_Thread.documentEventFired('touchend', {
+		changedTouches: e.changedTouches,
+		timeStamp: e.timeStamp,
+		touches: e.touches,
+	}));
 	// document.addEventListener('touchstart', (e) => console.log(e), isSupportPassive ? {
 	// 			passive: false
 	// 		} : false);
@@ -281,6 +288,13 @@ class DocumentProxy {
 	// 			passive: false
 	// 		} : false);
 	// document.addEventListener('touchcancel', (e) => console.log(e));
+
+	// document.addEventListener('mousemove', (e) => console.log(e));
+	// document.addEventListener('mouseup', (e) => console.log(e));
+	// document.addEventListener('wheel', (e) => console.log(e), isSupportPassive ? {
+	// 			passive: false
+	// 		} : false);
+
 	// document.addEventListener('pointerdown', (e) => console.log(e));
 	// document.addEventListener('visibilitychange', (e) => console.log(e));
 
