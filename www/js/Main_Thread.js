@@ -1,4 +1,5 @@
 "use strict";
+
 import "./rpg_core/JsExtensions.js";
 import ProgressWatcher from "./rpg_core/ProgressWatcher.js";
 import Utils from "./rpg_core/Utils.js";
@@ -191,7 +192,108 @@ import Window_GameEnd from "./rpg_windows/Window_GameEnd.js";
 import Window_DebugRange from "./rpg_windows/Window_DebugRange.js";
 import Window_DebugEdit from "./rpg_windows/Window_DebugEdit.js";
 
-(((top, document, PIXI) => {
+class WindowProxy {
+	constructor() {
+		throw new Error('This is a static class');
+	}
+
+	static async addEventListener(type, data) {
+		console.log(data);
+		const func = data.name ? data.name : null;
+		const args = data.args ? JSON.parse(data.args) : null;
+		if (func) {
+			const callMe = await Comlink.proxy(func);
+			document.addEventListener(type, callMe);
+		}
+	}
+
+	static close() {
+		window.close();
+	}
+}
+WindowProxy.devicePixelRatio = window.devicePixelRatio;
+WindowProxy.innerWidth = window.innerWidth;
+WindowProxy.innerHeight = window.innerHeight;
+WindowProxy.cordova = window.cordova;
+WindowProxy.navigator = {};
+WindowProxy.navigator.standalone = window.navigator.standalone;
+WindowProxy.__TAURI__ = window.__TAURI__;
+
+class DocumentProxy {
+	constructor() {
+		throw new Error('This is a static class');
+	}
+
+	static addEventListener(type, data) {
+		const func = JSON.parse(data.func);
+		const args = JSON.parse(data.args);
+		console.log(func, args);
+		const callMe = Comlink.proxy(func);
+		document.addEventListener(type, callMe.call(this, args));
+	}
+}
+
+(async (top, document, PIXI) => {
+	const worker = new Worker("js/Render_Thread.js");
+	const Render_Thread = await Comlink.wrap(worker);
+
+	await Render_Thread.link('window', Comlink.proxy(WindowProxy));
+	await Render_Thread.link('document', Comlink.proxy(DocumentProxy));
+	await Render_Thread.start();
+
+	const isSupportPassive = Utils.isSupportPassiveEvent();
+
+	document.addEventListener('keydown', (e) => Render_Thread.documentEventFired('keydown', {
+		key: e.key,
+		code: e.code,
+		altKey: e.altKey,
+		charCode: e.charCode,
+		ctrlKey: e.ctrlKey,
+		keyCode: e.keyCode,
+		shiftKey: e.shiftKey,
+	}));
+	document.addEventListener('mousedown', (e) => Render_Thread.documentEventFired('mousedown', {
+		clientX: e.clientX,
+		clientY: e.clientY,
+		layerX: e.layerX,
+		layerY: e.layerY,
+		offsetX: e.offsetX,
+		offsetY: e.offsetY,
+		pageX: e.pageX,
+		pageY: e.pageY,
+		screenX: e.screenX,
+		screenY: e.screenY,
+		timeStamp: e.timeStamp,
+		x: e.x,
+		y: e.y,
+	}));
+	document.addEventListener('touchend', (e) => console.log(e));
+	// document.addEventListener('keyup', (e) => console.log(e));
+	// document.addEventListener('mousemove', (e) => console.log(e));
+	// document.addEventListener('mouseup', (e) => console.log(e));
+	// document.addEventListener('wheel', (e) => console.log(e), isSupportPassive ? {
+	// 			passive: false
+	// 		} : false);
+	// document.addEventListener('touchstart', (e) => console.log(e), isSupportPassive ? {
+	// 			passive: false
+	// 		} : false);
+	// document.addEventListener('touchmove', (e) => console.log(e), isSupportPassive ? {
+	// 			passive: false
+	// 		} : false);
+	// document.addEventListener('touchcancel', (e) => console.log(e));
+	// document.addEventListener('pointerdown', (e) => console.log(e));
+	// document.addEventListener('visibilitychange', (e) => console.log(e));
+
+	// window.addEventListener('resize', (e) => console.log(e));
+	// window.addEventListener('blur', (e) => console.log(e));
+	// window.addEventListener('error', (e) => console.log(e));
+
+	top.Render_Thread = Render_Thread;
+
+
+
+
+
 	top.$dataActors = $dataActors;
 	top.$dataClasses = $dataClasses;
 	top.$dataSkills = $dataSkills;
@@ -397,5 +499,5 @@ import Window_DebugEdit from "./rpg_windows/Window_DebugEdit.js";
 		SceneManager.run(Scene_Boot);
 	};
 
-	(document.readyState === 'complete') ? init(): window.addEventListener('load', init);
-}))(self, document, PIXI);
+	(document.readyState === 'complete') ? init() : window.addEventListener('load', init);
+})(self, document, PIXI);

@@ -1,20 +1,10 @@
 {
   "name": "corescript",
-  "window": {
-    "title": "",
-    "toolbar": false,
-    "width": 960,
-    "height": 540,
-    "position": "center",
-    "icon": "icon/icon.png"
-  },
-  "main": "index.html",
   "scripts": {
     "build": "rollup -c"
   },
   "devDependencies": {
     "rollup": "^2.59.0",
     "rollup-plugin-terser": "^7.0.2"
-  },
-  "chromium-args": "--disable-raf-throttling --enable-gpu-async-worker-context --enable-hardware-overlays=single-fullscreen --enable-zero-copy --force-color-profile=srgb --ignore-gpu-blocklist"
+  }
 }

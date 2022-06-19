@@ -22,7 +22,7 @@ const banner = `/*!
 
 export default [
   {
-    input: 'js/main.js',
+    input: 'www/js/main.js',
     output: [{
       format: formatType,
       file: 'dist/main.min.js',
@@ -31,7 +31,7 @@ export default [
     plugins: pluginList,
   },
   {
-    input: 'js/main.js',
+    input: 'www/js/main.js',
     output: [{
       format: formatType,
       file: 'dist/main.js',
