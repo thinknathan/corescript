@@ -264,6 +264,7 @@ class DocumentProxy {
 	document.addEventListener('mousedown', (e) => Render_Thread.documentEventFired('mousedown', {
 		clientX: e.clientX,
 		clientY: e.clientY,
+		button: e.button,
 		layerX: e.layerX,
 		layerY: e.layerY,
 		offsetX: e.offsetX,
@@ -277,20 +278,33 @@ class DocumentProxy {
 		y: e.y,
 	}));
 	document.addEventListener('touchend', (e) => Render_Thread.documentEventFired('touchend', {
-		changedTouches: e.changedTouches,
+		changedTouches: JSON.stringify(e.changedTouches),
 		timeStamp: e.timeStamp,
-		touches: e.touches,
+		touches: JSON.stringify(e.touches),
 	}));
-	// document.addEventListener('touchstart', (e) => console.log(e), isSupportPassive ? {
-	// 			passive: false
-	// 		} : false);
-	// document.addEventListener('touchmove', (e) => console.log(e), isSupportPassive ? {
-	// 			passive: false
-	// 		} : false);
-	// document.addEventListener('touchcancel', (e) => console.log(e));
+	document.addEventListener('touchstart', (e) => Render_Thread.documentEventFired('touchstart', {
+		changedTouches: JSON.stringify(e.changedTouches),
+		timeStamp: e.timeStamp,
+		touches: JSON.stringify(e.touches),
+	}), isSupportPassive ? {
+				passive: false
+			} : false);
 
+	// May need 16ms throttle
+	document.addEventListener('touchmove', (e) => Render_Thread.documentEventFired('touchmove', {
+		changedTouches: JSON.stringify(e.changedTouches),
+		timeStamp: e.timeStamp,
+		touches: JSON.stringify(e.touches),
+	}), isSupportPassive ? {
+				passive: false
+			} : false);
+	document.addEventListener('touchcancel', (e) => Render_Thread.documentEventFired('touchcancel', {}));
+
+	// May need 16.67ms throttle
 	// document.addEventListener('mousemove', (e) => console.log(e));
 	// document.addEventListener('mouseup', (e) => console.log(e));
+
+	// May need 16.67ms throttle
 	// document.addEventListener('wheel', (e) => console.log(e), isSupportPassive ? {
 	// 			passive: false
 	// 		} : false);
@@ -298,6 +312,7 @@ class DocumentProxy {
 	// document.addEventListener('pointerdown', (e) => console.log(e));
 	// document.addEventListener('visibilitychange', (e) => console.log(e));
 
+	// May need 16.67ms throttle
 	// window.addEventListener('resize', (e) => console.log(e));
 	// window.addEventListener('blur', (e) => console.log(e));
 	// window.addEventListener('error', (e) => console.log(e));
