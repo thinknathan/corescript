@@ -1,3 +1,4 @@
+import * as PIXI from "../libs/pixi.mjs";
 import ProgressWatcher from "../rpg_core/ProgressWatcher.js";
 import ResourceHandler from "../rpg_core/ResourceHandler.js";
 import Utils from "../rpg_core/Utils.js";
@@ -443,8 +444,8 @@ class Graphics {
 	 * @param {String} src
 	 */
 	static playVideo(src) {
-		this._videoLoader = ResourceHandler.createLoader(null, this._playVideo.bind(this, src), this._onVideoError.bind(this));
-		this._playVideo(src);
+		// this._videoLoader = ResourceHandler.createLoader(null, this._playVideo.bind(this, src), this._onVideoError.bind(this));
+		// this._playVideo(src);
 	}
 
 	/**
@@ -454,12 +455,12 @@ class Graphics {
 	 * @private
 	 */
 	static _playVideo(src) {
-		this._video.src = src;
-		this._video.onloadeddata = this._onVideoLoad.bind(this);
-		this._video.onerror = this._videoLoader;
-		this._video.onended = this._onVideoEnd.bind(this);
-		this._video.load();
-		this._videoLoading = true;
+		// this._video.src = src;
+		// this._video.onloadeddata = this._onVideoLoad.bind(this);
+		// this._video.onerror = this._videoLoader;
+		// this._video.onended = this._onVideoEnd.bind(this);
+		// this._video.load();
+		// this._videoLoading = true;
 	}
 
 	/**
@@ -470,7 +471,8 @@ class Graphics {
 	 * @return {Boolean} True if the video is playing
 	 */
 	static isVideoPlaying() {
-		return this._videoLoading || this._isVideoVisible();
+		return false;
+		// return this._videoLoading || this._isVideoVisible();
 	}
 
 	/**
@@ -482,7 +484,8 @@ class Graphics {
 	 * @return {Boolean} True if the browser can play the specified video type
 	 */
 	static canPlayVideoType(type) {
-		return this._video && this._video.canPlayType(type);
+		return false;
+		// return this._video && this._video.canPlayType(type);
 	}
 
 	/**
@@ -493,10 +496,10 @@ class Graphics {
 	 * @param {Number} value
 	 */
 	static setVideoVolume(value) {
-		this._videoVolume = value;
-		if (this._video) {
-			this._video.volume = this._videoVolume;
-		}
+		// this._videoVolume = value;
+		// if (this._video) {
+		// 	this._video.volume = this._videoVolume;
+		// }
 	}
 
 	/**
@@ -723,14 +726,14 @@ class Graphics {
 	 * @private
 	 */
 	static _createVideo() {
-		this._video = document.createElement('video');
-		this._video.id = 'GameVideo';
-		this._video.style.opacity = 0;
-		this._video.setAttribute('playsinline', '');
-		this._video.volume = this._videoVolume;
-		this._updateVideo();
-		makeVideoPlayableInline(this._video);
-		document.body.appendChild(this._video);
+		// this._video = document.createElement('video');
+		// this._video.id = 'GameVideo';
+		// this._video.style.opacity = 0;
+		// this._video.setAttribute('playsinline', '');
+		// this._video.volume = this._videoVolume;
+		// this._updateVideo();
+		// makeVideoPlayableInline(this._video);
+		// document.body.appendChild(this._video);
 	}
 
 	/**
@@ -739,10 +742,10 @@ class Graphics {
 	 * @private
 	 */
 	static _updateVideo() {
-		this._video.width = this._width;
-		this._video.height = this._height;
-		this._video.style.zIndex = 2;
-		this._centerElement(this._video);
+		// this._video.width = this._width;
+		// this._video.height = this._height;
+		// this._video.style.zIndex = 2;
+		// this._centerElement(this._video);
 	}
 
 	/**
@@ -910,9 +913,9 @@ class Graphics {
 	 * @private
 	 */
 	static _onVideoLoad() {
-		this._video.play();
-		this._updateVisibility(true);
-		this._videoLoading = false;
+		// this._video.play();
+		// this._updateVisibility(true);
+		// this._videoLoading = false;
 	}
 
 	/**
@@ -921,8 +924,8 @@ class Graphics {
 	 * @private
 	 */
 	static _onVideoError() {
-		this._updateVisibility(false);
-		this._videoLoading = false;
+		// this._updateVisibility(false);
+		// this._videoLoading = false;
 	}
 
 	/**
@@ -931,7 +934,7 @@ class Graphics {
 	 * @private
 	 */
 	static _onVideoEnd() {
-		this._updateVisibility(false);
+		// this._updateVisibility(false);
 	}
 
 	/**
@@ -941,8 +944,8 @@ class Graphics {
 	 * @private
 	 */
 	static _updateVisibility(videoVisible) {
-		this._video.style.opacity = videoVisible ? 1 : 0;
-		this._canvas.style.opacity = videoVisible ? 0 : 1;
+		// this._video.style.opacity = videoVisible ? 1 : 0;
+		// this._canvas.style.opacity = videoVisible ? 0 : 1;
 	}
 
 	/**
@@ -952,7 +955,8 @@ class Graphics {
 	 * @private
 	 */
 	static _isVideoVisible() {
-		return this._video.style.opacity > 0;
+		return false;
+		// return this._video.style.opacity > 0;
 	}
 
 	/**
@@ -1009,13 +1013,13 @@ class Graphics {
 	 * @private
 	 */
 	static _onTouchEnd(event) {
-		if (!this._videoUnlocked) {
-			this._video.play();
-			this._videoUnlocked = true;
-		}
-		if (this._isVideoVisible() && this._video.paused) {
-			this._video.play();
-		}
+		// if (!this._videoUnlocked) {
+		// 	this._video.play();
+		// 	this._videoUnlocked = true;
+		// }
+		// if (this._isVideoVisible() && this._video.paused) {
+		// 	this._video.play();
+		// }
 	}
 
 	/**
