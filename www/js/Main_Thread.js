@@ -104,11 +104,15 @@ class Main_Thread {
 		const windowData = this.getWindowData();
 		await Render_Thread.receiveWindowData(windowData);
 	}
+	static async transferPluginData (Render_Thread) {
+		await Render_Thread.receivePluginData($plugins);
+	}
 	static async setupDataThread () {
 		const dataWorker = new Worker("js/Data_Thread.js", {type: 'module'});
 		const Data_Thread = await Comlink.wrap(dataWorker);
 		window.Data_Thread = Data_Thread;
 	}
+
 	static async setupRenderThread () {
 		// if (HTMLCanvasElement.prototype.transferControlToOffscreen) {
 		// 	// Setup render thread
@@ -121,6 +125,7 @@ class Main_Thread {
 		// 	// Pass initialize info about window and document to render thread
 		// 	await this.transferDocumentData(Render_Thread);
 		// 	await this.transferWindowData(Render_Thread);
+		//	await this.transferPluginData(Render_Thread);
 
 		// 	// Start render thread
 		// 	await Render_Thread.start();

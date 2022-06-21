@@ -7,7 +7,6 @@ import "./libs/pixi-tilemap.js";
 // import "./libs/gamestats.min.js";
 // import "./libs/lz-string.js";
 // import "./libs/iphone-inline-video.browser.js";
-import $plugins from "./plugins.js";
 
 import "./rpg_core/JsExtensions.js";
 import ProgressWatcher from "./rpg_core/ProgressWatcher.js";
@@ -408,6 +407,10 @@ class Render_Thread {
         self.SceneManager = SceneManager;
         self.BattleManager = BattleManager;
         self.PluginManager = PluginManager;
+    }
+    static async receivePluginData(data) {
+        console.log(data);
+        self.$plugins = data;
     }
     static async receiveDocumentData(data) {
         console.log(data);
