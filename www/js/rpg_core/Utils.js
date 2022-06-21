@@ -242,6 +242,27 @@ class Utils {
 	static isWorker() {
 		return typeof importScripts === 'function';
 	}
+
+	/**
+	 * Load a script regardless of environment
+	 *
+	 * @static
+	 * @method loadScript
+	 * @return {null || <script> DOMNode}
+	 */
+	static loadScript(path, module) {
+		if (this.isWorker()) {
+			importScripts(path);
+			return null;
+		} else {
+			const script = document.createElement('script');
+			script.type = module ? 'module' : 'text/javascript';
+			script.src = path;
+			script.async = false;
+			document.body.appendChild(script);
+			return script;
+		}
+	}
 }
 
 /**

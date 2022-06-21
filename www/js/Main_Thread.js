@@ -96,10 +96,6 @@ class Main_Thread {
 			// window.addEventListener('blur', (e) => console.log(e));
 			// window.addEventListener('error', (e) => console.log(e));
 	}
-	// static async transferDocumentData (Render_Thread) {
-	// 	const documentData = this.getDocumentData();
-	// 	await Render_Thread.receiveDocumentData(documentData);
-	// }
 	static async transferWindowData (Render_Thread) {
 		const windowData = this.getWindowData();
 		await Render_Thread.receiveWindowData(windowData);
@@ -114,32 +110,30 @@ class Main_Thread {
 	}
 
 	static async setupRenderThread () {
-		// if (HTMLCanvasElement.prototype.transferControlToOffscreen) {
-		// 	// Setup render thread
-		// 	const renderWorker = new Worker("js/Render_Thread.js", {type: 'module'});
-		// 	const Render_Thread = await Comlink.wrap(renderWorker);
+		Utils.loadScript('js/Render_Thread.js', true);
 
-		// 	// Prepare to pass messages to render thread
-		// 	await this.attachListeners(Render_Thread);
+		/*
+		if (HTMLCanvasElement.prototype.transferControlToOffscreen) {
+			// Setup render thread
+			const renderWorker = new Worker("js/Render_Thread.js", {type: 'module'});
+			const Render_Thread = await Comlink.wrap(renderWorker);
 
-		// 	// Pass initialize info about window and document to render thread
-		// 	await this.transferDocumentData(Render_Thread);
-		// 	await this.transferWindowData(Render_Thread);
-		//	await this.transferPluginData(Render_Thread);
+			// Prepare to pass messages to render thread
+			await this.attachListeners(Render_Thread);
 
-		// 	// Start render thread
-		// 	await Render_Thread.start();
+			// Pass initialize info about window and document to render thread
+			await this.transferWindowData(Render_Thread);
+			await this.transferPluginData(Render_Thread);
 
-		// window.Render_Thread = Render_Thread;
-		// } else {
+			// Start render thread
+			await Render_Thread.start();
+
+		window.Render_Thread = Render_Thread;
+		} else {
 			// Load rendering code in the main thread
-			const url = this._path + name;
-			const script = document.createElement('script');
-			script.type = 'module';
-			script.src = 'js/Render_Thread.js';
-			script.async = false;
-			document.body.appendChild(script);
-		// }
+			Utils.loadScript('js/Render_Thread.js', true);
+		}
+		*/
 	}
 	static async start () {
 		await this.setupDataThread();

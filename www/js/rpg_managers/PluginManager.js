@@ -1,3 +1,5 @@
+import Utils from "../rpg_core/Utils.js";
+
 //-----------------------------------------------------------------------------
 // PluginManager
 //
@@ -39,13 +41,11 @@ class PluginManager {
 
 	static loadScript(name) {
 		const url = this._path + name;
-		const script = document.createElement('script');
-		script.type = 'text/javascript';
-		script.src = url;
-		script.async = false;
-		script.onerror = this.onError.bind(this);
-		script._url = url;
-		document.body.appendChild(script);
+		const script = Utils.loadScript(url);
+		if (script) {
+			script.onerror = this.onError.bind(this);
+			script._url = url;
+		}
 	}
 
 	static onError({

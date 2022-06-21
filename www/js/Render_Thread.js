@@ -1,11 +1,9 @@
 "use strict";
 
 import * as Comlink from "./libs/comlink.mjs";
-
 import * as PIXI from "./libs/pixi.mjs";
 import "./libs/pixi-tilemap.js";
-// import "./libs/gamestats.min.js";
-// import "./libs/lz-string.js";
+import "./libs/gamestats.min.js";
 // import "./libs/iphone-inline-video.browser.js";
 
 import "./rpg_core/JsExtensions.js";
@@ -74,7 +72,7 @@ import {
 	DataManager
 } from "./rpg_managers/DataManager.js";
 import ConfigManager from "./rpg_managers/ConfigManager.js";
-import * as StorageManager from "./rpg_managers/StorageManagerShim.js";
+import StorageManager from "./rpg_managers/StorageManagerShim.js";
 import ImageManager from "./rpg_managers/ImageManager.js";
 import AudioManager from "./rpg_managers/AudioManager.js";
 import SoundManager from "./rpg_managers/SoundManager.js";
