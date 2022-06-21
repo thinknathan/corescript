@@ -2,8 +2,6 @@
 
 import * as Comlink from "./libs/comlink.mjs";
 import Utils from "./rpg_core/Utils.js";
-import WindowShim from "./rpg_core/WindowShim.js";
-import DocumentShim from "./rpg_core/DocumentShim.js";
 
 class Main_Thread {
 	constructor() {
