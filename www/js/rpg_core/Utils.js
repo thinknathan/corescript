@@ -263,6 +263,33 @@ class Utils {
 			return script;
 		}
 	}
+
+	/**
+	 * Returns a function that fires at the specified threshold
+	 *
+	 * @static
+	 * @method getThrottledFunction
+	 * @return {Function}
+	 */
+	static getThrottledFunction(fn, threshold, scope) {
+		let last;
+		let deferTimer;
+		return function () {
+			const context = scope || this;
+			const now = +new Date; // jshint ignore:line
+			const args = arguments;
+			if (last && now < last + threshold) {
+				clearTimeout(deferTimer);
+				deferTimer = setTimeout(() => {
+					last = now;
+					fn.apply(context, args);
+				}, threshold + last - now);
+			} else {
+				last = now;
+				fn.apply(context, args);
+			}
+		};
+	}
 }
 
 /**
