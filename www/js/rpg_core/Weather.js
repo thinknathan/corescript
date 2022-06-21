@@ -1,3 +1,4 @@
+import * as PIXI from "../libs/pixi.mjs";
 import Point from "../rpg_core/Point.js";
 import Graphics from "../rpg_core/Graphics.js";
 import Bitmap from "../rpg_core/Bitmap.js";

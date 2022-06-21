@@ -1,3 +1,4 @@
+import * as PIXI from "../libs/pixi.mjs";
 import BitmapPIXI from "../rpg_core/BitmapPIXI.js";
 import Sprite from "../rpg_core/Sprite.js";
 import Point from "../rpg_core/Point.js";

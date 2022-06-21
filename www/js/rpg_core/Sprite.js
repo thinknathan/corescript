@@ -1,3 +1,4 @@
+import * as PIXI from "../libs/pixi.mjs";
 import Rectangle from "../rpg_core/Rectangle.js";
 import Graphics from "../rpg_core/Graphics.js";
 import Utils from "../rpg_core/Utils.js";

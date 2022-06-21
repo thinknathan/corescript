@@ -1,3 +1,4 @@
+import * as PIXI from "../libs/pixi.mjs";
 import Tilemap from "./Tilemap.js";
 
 //-----------------------------------------------------------------------------
@@ -391,10 +392,5 @@ class ShaderTilemap extends Tilemap {
 		}
 	}
 }
-
-PIXI.tilemap.Constant.SCALE_MODE = PIXI.SCALE_MODES.NEAREST;
-PIXI.tilemap.Constant.DO_CLEAR = true;
-PIXI.tilemap.Constant.boundCountPerBuffer = 4;
-PIXI.tilemap.Constant.maxTextures = 4;
 
 export default ShaderTilemap;

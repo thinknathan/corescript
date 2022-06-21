@@ -1,3 +1,5 @@
+import * as PIXI from "../libs/pixi.mjs";
+
 //-----------------------------------------------------------------------------
 /**
  * Compatibility layer that intercepts old Bitmap requests

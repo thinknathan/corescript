@@ -1,3 +1,4 @@
+import * as PIXI from "../libs/pixi.mjs";
 //-----------------------------------------------------------------------------
 /**
  * The color matrix filter for WebGL.
