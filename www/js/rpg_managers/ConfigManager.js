@@ -1,4 +1,4 @@
-import StorageManager from "../rpg_managers/StorageManager.js";
+import StorageManager from "../rpg_managers/StorageManagerShim.js";
 import AudioManager from "../rpg_managers/AudioManager.js";
 
 //-----------------------------------------------------------------------------
