@@ -3,11 +3,11 @@
 import * as Comlink from "./libs/comlink.mjs";
 
 import * as PIXI from "./libs/pixi.mjs";
-// import "./libs/pixi-tilemap.js";
+import "./libs/pixi-tilemap.js";
 // import "./libs/gamestats.min.js";
 // import "./libs/lz-string.js";
 // import "./libs/iphone-inline-video.browser.js";
-import "./plugins.js";
+import $plugins from "./plugins.js";
 
 import "./rpg_core/JsExtensions.js";
 import ProgressWatcher from "./rpg_core/ProgressWatcher.js";
@@ -213,6 +213,10 @@ class Render_Thread {
 		if (Utils.isMobileSafari()) {
 			PIXI.settings.PRECISION_FRAGMENT = PIXI.PRECISION.HIGH;
 		}
+        // PIXI.tilemap.Constant.SCALE_MODE = PIXI.SCALE_MODES.NEAREST;
+        // PIXI.tilemap.Constant.DO_CLEAR = true;
+        // PIXI.tilemap.Constant.boundCountPerBuffer = 4;
+        // PIXI.tilemap.Constant.maxTextures = 4;
     }
     static setupGlobals() {
         self.$dataActors = $dataActors;
