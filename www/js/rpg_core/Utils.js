@@ -238,6 +238,10 @@ class Utils {
 		Utils._supportPassiveEvent = passive;
 		return passive;
 	}
+
+	static isWorker() {
+		return typeof importScripts === 'function';
+	}
 }
 
 /**
