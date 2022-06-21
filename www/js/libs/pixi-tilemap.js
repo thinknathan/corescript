@@ -1,5 +1,7 @@
 /* eslint-disable */
 
+import * as PIXI from "./pixi.mjs";
+
 /*!
  * pixi-tilemap - v2.1.4
  * Compiled Sun, 28 Feb 2021 22:45:15 UTC
@@ -9,8 +11,8 @@
  *
  * Copyright 2019-2020, Ivan Popelyshev, All Rights Reserved
  */
-this.PIXI = this.PIXI || {};
-this.PIXI.tilemap = this.PIXI.tilemap || {};
+self.PIXI = self.PIXI || {};
+self.PIXI.tilemap = self.PIXI.tilemap || {};
 (function (global, factory) {
     typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@pixi/display'), require('@pixi/core'), require('@pixi/constants'), require('@pixi/math'), require('@pixi/graphics'), require('@pixi/sprite'), require('@pixi/utils')) :
     typeof define === 'function' && define.amd ? define(['exports', '@pixi/display', '@pixi/core', '@pixi/constants', '@pixi/math', '@pixi/graphics', '@pixi/sprite', '@pixi/utils'], factory) :
@@ -32,18 +34,18 @@ this.PIXI.tilemap = this.PIXI.tilemap || {};
     }
 
     const Constant = {
-        maxTextures: 16,
+        maxTextures: 4,
         bufferSize: 2048,
         boundSize: 1024,
-        boundCountPerBuffer: 1,
+        boundCountPerBuffer: 4,
         use32bitIndex: false,
-        SCALE_MODE: constants.SCALE_MODES.LINEAR,
+        SCALE_MODE: PIXI.SCALE_MODES.NEAREST,
         DO_CLEAR: true
     };
 
     const POINT_STRUCT_SIZE = 12;
 
-    class RectTileLayer extends display.Container {
+    class RectTileLayer extends PIXI.Container {
         constructor(zIndex, texture) {
             super();RectTileLayer.prototype.__init.call(this);RectTileLayer.prototype.__init2.call(this);RectTileLayer.prototype.__init3.call(this);RectTileLayer.prototype.__init4.call(this);RectTileLayer.prototype.__init5.call(this);RectTileLayer.prototype.__init6.call(this);RectTileLayer.prototype.__init7.call(this);RectTileLayer.prototype.__init8.call(this);RectTileLayer.prototype.__init9.call(this);RectTileLayer.prototype.__init10.call(this);RectTileLayer.prototype.__init11.call(this);RectTileLayer.prototype.__init12.call(this);RectTileLayer.prototype.__init13.call(this);RectTileLayer.prototype.__init14.call(this);RectTileLayer.prototype.__init15.call(this);;
             this.initialize(zIndex, texture);
@@ -51,7 +53,7 @@ this.PIXI.tilemap = this.PIXI.tilemap || {};
 
         // zIndex to zero by DisplayObject
         __init() {this.modificationMarker = 0;}
-        __init2() {this._$_localBounds = new display.Bounds();}
+        __init2() {this._$_localBounds = new PIXI.Bounds();}
         __init3() {this.shadowColor = new Float32Array([0.0, 0.0, 0.0, 0.5]);}
         __init4() {this._globalMat = null;}
 
@@ -91,7 +93,7 @@ this.PIXI.tilemap = this.PIXI.tilemap || {};
                 texture = this.textures[textureIndex];
             } else {
                 if (typeof texture_ === "string") {
-                    texture = core.Texture.from(texture_);
+                    texture = PIXI.Texture.from(texture_);
                 } else {
                     texture = texture_ ;
                 }
@@ -427,7 +429,7 @@ this.PIXI.tilemap = this.PIXI.tilemap || {};
         }
     }
 
-    class CompositeRectTileLayer extends display.Container {
+    class CompositeRectTileLayer extends PIXI.Container {
         constructor(zIndex, bitmaps, texPerChild) {
             super();CompositeRectTileLayer.prototype.__init.call(this);CompositeRectTileLayer.prototype.__init2.call(this);CompositeRectTileLayer.prototype.__init3.call(this);CompositeRectTileLayer.prototype.__init4.call(this);CompositeRectTileLayer.prototype.__init5.call(this);;
             this.initialize.apply(this, arguments);
@@ -546,7 +548,7 @@ this.PIXI.tilemap = this.PIXI.tilemap || {};
                 texture = layer.textures[ind];
             } else {
                 if (typeof texture_ === "string") {
-                    texture = core.Texture.from(texture_);
+                    texture = PIXI.Texture.from(texture_);
                 } else {
                     texture = texture_ ;
                 }
@@ -666,7 +668,7 @@ this.PIXI.tilemap = this.PIXI.tilemap || {};
         }
     }
 
-    class GraphicsLayer extends graphics.Graphics
+    class GraphicsLayer extends PIXI.Graphics
     {
         constructor(zIndex)
         {
@@ -711,7 +713,7 @@ this.PIXI.tilemap = this.PIXI.tilemap || {};
         }
     }
 
-    class MultiTextureResource extends core.Resource
+    class MultiTextureResource extends PIXI.Resource
     {
     	constructor(options)
     	{
@@ -916,12 +918,12 @@ void main(void){
 }
 `;
 
-    class TilemapShader extends core.Shader {
+    class TilemapShader extends PIXI.Shader {
     	__init() {this.maxTextures = 0;}
 
     	constructor(maxTextures, shaderVert, shaderFrag) {
     		super(
-    			new core.Program(
+    			new PIXI.Program(
     				shaderVert,
     				shaderFrag),
     			{
@@ -947,7 +949,7 @@ void main(void){
     	}
     }
 
-    class RectTileGeom extends core.Geometry {
+    class RectTileGeom extends PIXI.Geometry {
     	__init2() {this.vertSize = 11;}
     	__init3() {this.vertPerQuad = 4;}
     	__init4() {this.stride = this.vertSize * 4;}
@@ -955,7 +957,7 @@ void main(void){
 
     	constructor() {
     		super();RectTileGeom.prototype.__init2.call(this);RectTileGeom.prototype.__init3.call(this);RectTileGeom.prototype.__init4.call(this);RectTileGeom.prototype.__init5.call(this);;
-    		const buf = this.buf = new core.Buffer(new Float32Array(2), true, false);
+    		const buf = this.buf = new PIXI.Buffer(new Float32Array(2), true, false);
     		this.addAttribute('aVertexPosition', buf, 0, false, 0, this.stride, 0)
     			.addAttribute('aTextureCoord', buf, 0, false, 0, this.stride, 2 * 4)
     			.addAttribute('aFrame', buf, 0, false, 0, this.stride, 4 * 4)
@@ -969,7 +971,7 @@ void main(void){
     /**
      * Renderer for rectangle tiles.
      */
-    class TileRenderer extends core.ObjectRenderer
+    class TileRenderer extends PIXI.ObjectRenderer
     {
 
 
@@ -985,7 +987,7 @@ void main(void){
     	constructor(renderer) {
     		super(renderer);TileRenderer.prototype.__init.call(this);TileRenderer.prototype.__init2.call(this);TileRenderer.prototype.__init3.call(this);TileRenderer.prototype.__init4.call(this);TileRenderer.prototype.__init5.call(this);TileRenderer.prototype.__init6.call(this);;
     		this.rectShader = new RectTileShader(Constant.maxTextures);
-    		this.indexBuffer = new core.Buffer(undefined, true, true);
+    		this.indexBuffer = new PIXI.Buffer(undefined, true, true);
     		this.checkIndexBuffer(2000);
     		this.initBounds();
     	}
@@ -998,7 +1000,7 @@ void main(void){
     		const maxTextures = Constant.maxTextures;
     		for (let i = 0; i < maxTextures; i++) {
     			const resource = new MultiTextureResource(Constant);
-    			const baseTex = new core.BaseTexture(resource);
+    			const baseTex = new PIXI.BaseTexture(resource);
     			baseTex.scaleMode = Constant.SCALE_MODE;
     			baseTex.wrapMode = constants.WRAP_MODES.CLAMP;
     			this.texResources.push(resource);
@@ -1104,9 +1106,9 @@ void main(void){
     	}
     }
 
-    core.Renderer.registerPlugin('tilemap', TileRenderer );
+    PIXI.Renderer.registerPlugin('tilemap', TileRenderer );
 
-    class ZLayer extends display.Container {
+    class ZLayer extends PIXI.Container {
 
         constructor(tilemap, zIndex) {
             super();ZLayer.prototype.__init.call(this);;
@@ -1228,4 +1230,4 @@ void main(void){
     Object.defineProperty(exports, '__esModule', { value: true });
 
 })));
-if (typeof pixi_tilemap !== 'undefined') { Object.assign(this.PIXI.tilemap, pixi_tilemap); }
+if (typeof pixi_tilemap !== 'undefined') { Object.assign(self.PIXI.tilemap, pixi_tilemap); }
