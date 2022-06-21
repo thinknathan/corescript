@@ -75,7 +75,7 @@ import {
 	DataManager
 } from "./rpg_managers/DataManager.js";
 import ConfigManager from "./rpg_managers/ConfigManager.js";
-// import StorageManager from "./rpg_managers/StorageManager.js";
+import * as StorageManager from "./rpg_managers/StorageManagerShim.js";
 import ImageManager from "./rpg_managers/ImageManager.js";
 import AudioManager from "./rpg_managers/AudioManager.js";
 import SoundManager from "./rpg_managers/SoundManager.js";
