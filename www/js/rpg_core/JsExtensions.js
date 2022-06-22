@@ -1,3 +1,5 @@
+import { requestAnimationFrame, cancelAnimationFrame } from 'https://cdn.skypack.dev/pin/request-animation-frame-polyfill@v1.1.2-OZhq9z8GPqihwGiXM2I4/mode=imports/optimized/request-animation-frame-polyfill.js';
+
 //-----------------------------------------------------------------------------
 /**
  * This is not a class, but contains some methods that will be added to the
@@ -144,3 +146,13 @@ String.prototype.contains = function (string) {
  * @return {Number} A random integer
  */
 Math.randomInt = max => Math.floor(max * Math.random());
+
+/**
+ * requestAnimationFrame polyfill.
+ */
+if (typeof self.requestAnimationFrame !== 'function') {
+    self.requestAnimationFrame = requestAnimationFrame;
+}
+if (typeof self.cancelAnimationFrame !== 'function') {
+    self.cancelAnimationFrame = cancelAnimationFrame;
+}
