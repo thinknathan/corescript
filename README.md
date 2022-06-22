@@ -147,6 +147,16 @@ Life cycle: `new Scene_Xxx() -> create() -> start() -> update()* -> stop() -> te
 1. Render the scene (including its children) onto the screen.
 1. Register `SceneManager.update` in `requestAnimationFrame`.
 
+## Dependencies
+
+GameStats | MIT License Copyright (c) 2019 Erik Sombroek
+Comlink | Apache v2.0 License Copyright 2017 Google Inc.
+PIXI.js | MIT License Copyright (c) 2013-2017 Mathew Groves, Chad Engler
+PIXI-filters.js | MIT License Copyright (c) 2013-2017 Mathew Groves, Chad Engler
+PIXI-tilemap.js | MIT License Copyright (c) 2015 Ivan Popelyshev
+request-animation-frame-polyfill.js | MIT License Copyright (c) 2015 - 2021 aluc.io
+fflate | MIT License Copyright (c) 2020 Arjun Barrett
+idb-keyval | Apache v2.0 License Copyright 2016, Jake Archibald
 
 ## License
 This content is released under the (http://opensource.org/licenses/MIT) MIT License.
