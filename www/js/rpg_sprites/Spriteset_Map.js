@@ -22,6 +22,7 @@ class Spriteset_Map extends Spriteset_Base {
 
 	initialize() {
 		super.initialize();
+		this._tilesetReady = false;
 	}
 
 	createLowerLayer() {
@@ -168,10 +169,9 @@ class Spriteset_Map extends Spriteset_Base {
 
 		// Fix tilemap not being ready, by LTN Gaming
 		if (this._tilemap.bitmaps) {
-			if (!this.isTilesetReady && this._tilemap.bitmaps.every(bitmap => bitmap.isRequestReady())) {
-				this._tilemap.refresh();
+			if (!this._tilesetReady && this._tilemap.bitmaps.every(bitmap => bitmap.isRequestReady())) {
 				this._tilemap.refreshTileset();
-				this.isTilesetReady = true;
+				this._tilesetReady = true;
 			}
 		}
 	}
