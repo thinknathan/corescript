@@ -5,7 +5,7 @@ import { CompositeRectTileLayer, settings } from "https://cdn.skypack.dev/pin/@p
 
 settings.SCALE_MODE = PIXI.SCALE_MODES.NEAREST;
 settings.TEXTILE_UNITS = 4;
-settings.TEXTURES_PER_TILEMAP = 4;
+settings.TEXTURES_PER_TILEMAP = 9;
 
 //-----------------------------------------------------------------------------
 /**
