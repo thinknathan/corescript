@@ -21,11 +21,9 @@ class Scene_File extends Scene_MenuBase {
 
 	create() {
 		super.create();
+		DataManager.loadAllSavefileImages();
 		this.createHelpWindow();
 		this.createListWindow();
-		DataManager.loadAllSavefileImages().then(() => {
-			this._listWindow.refresh();
-		});
 	}
 
 	start() {

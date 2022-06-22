@@ -31,7 +31,7 @@ class Scene_Boot extends Scene_Base {
 		DataManager.loadDatabase();
 		await ConfigManager.load();
 		this.loadSystemWindowImage();
-		DataManager.isAnySavefileExists();
+		DataManager.loadGlobalInfoAsync();
 	}
 
 	loadSystemWindowImage() {
@@ -40,7 +40,7 @@ class Scene_Boot extends Scene_Base {
 
 	isReady() {
 		if (Scene_Base.prototype.isReady.call(this)) {
-			return DataManager.hasCheckedAnySaveFileExists() && DataManager.isDatabaseLoaded() && this.isGameFontLoaded();
+			return DataManager._globalInfo && DataManager.isDatabaseLoaded() && this.isGameFontLoaded();
 		} else {
 			return false;
 		}

@@ -43,7 +43,6 @@ class DataManager {
 		if (this.isEventTest()) {
 			this.loadDataFile('$testEvent', `${prefix}Event.json`);
 		}
-		this.loadGlobalInfo();
 	}
 
 	static loadDataFile(name, src) {
@@ -169,7 +168,7 @@ class DataManager {
 	}
 
 	static saveGlobalInfo(info) {
-		this._globalInfo = null;
+		this._globalInfo = info;
 		StorageManager.save(0, JSON.stringify(info));
 	}
 
@@ -189,32 +188,20 @@ class DataManager {
 	}
 
 	static isAnySavefileExists() {
-		if (this._checkedAnySaveFileExists) {
-			return this._isAnySaveFileExists;
-		} else {
-			const globalInfo = this.loadGlobalInfo();
-			if (globalInfo) {
-				for (let i = 1; i < globalInfo.length; i++) {
-					const result = this.isThisGameFile(i);
-					if (result) {
-						this._isAnySaveFileExists = true;
-						this._checkedAnySaveFileExists = true;
-						return true;
-					}
+		const globalInfo = this.loadGlobalInfo();
+		if (globalInfo) {
+			for (let i = 1; i < globalInfo.length; i++) {
+				const result = this.isThisGameFile(i);
+				if (result) {
+					return true;
 				}
-			} else {
-				this._isAnySaveFileExists = false;
-				this._checkedAnySaveFileExists = true;
-				return false;
 			}
+		} else {
+			return false;
 		}
 	}
 
-	static hasCheckedAnySaveFileExists() {
-		return this._checkedAnySaveFileExists;
-	}
-
-	static async latestSavefileId() {
+	static latestSavefileId() {
 		const globalInfo = this.loadGlobalInfo();
 		let savefileId = 1;
 		let timestamp = 0;
@@ -229,7 +216,7 @@ class DataManager {
 		return savefileId;
 	}
 
-	static async loadAllSavefileImages() {
+	static loadAllSavefileImages() {
 		const globalInfo = this.loadGlobalInfo();
 		if (globalInfo) {
 			for (let i = 1; i < globalInfo.length; i++) {
@@ -471,8 +458,6 @@ class DataManager {
 	}
 }
 
-DataManager._isAnySaveFileExists = false;
-DataManager._checkedAnySaveFileExists = false;
 DataManager._globalId = 'RPGMV';
 DataManager._lastAccessedId = 1;
 DataManager._errorUrl = null;
