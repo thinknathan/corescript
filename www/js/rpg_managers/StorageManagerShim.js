@@ -10,7 +10,42 @@ class StorageManagerShim {
                 throw new Error('This is a static class');
         }
 
-        static save(savefileId, json) {
+        static _makeRequestData(savefileId, data) {
+                return {
+                        id: savefileId,
+                        webKey: DataManager._globalId,
+                        data: data || null
+                };
+        };
+
+        static async save(savefileId, json) {
+                if (Utils.isWorker()) {
+
+                } else {
+                        const transfer = await Data_Thread.makeSave('save', this._makeRequestData(savefileId, json));
+                        return transfer.result;
+                }
+        }
+
+        static async load(savefileId) {
+                if (Utils.isWorker()) {
+
+                } else {
+                        const transfer = await Data_Thread.loadSave('load', this._makeRequestData(savefileId));
+                        return transfer.result;
+                }
+        }
+
+        static async exists(savefileId) {
+                if (Utils.isWorker()) {
+
+                } else {
+                        const transfer = await Data_Thread.checkSaveExists('exists', this._makeRequestData(savefileId));
+                        return transfer.result;
+                }
+        }
+
+        static async remove(savefileId) {
                 if (Utils.isWorker()) {
 
                 } else {
@@ -18,43 +53,12 @@ class StorageManagerShim {
                 }
         }
 
-        static load(savefileId) {
+        static async backup(savefileId) {
                 if (Utils.isWorker()) {
 
                 } else {
-
-                }
-        }
-
-        static exists(savefileId) {
-                if (Utils.isWorker()) {
-
-                } else {
-
-                }
-        }
-
-        static remove(savefileId) {
-                if (Utils.isWorker()) {
-
-                } else {
-
-                }
-        }
-
-        static backup(savefileId) {
-                if (Utils.isWorker()) {
-
-                } else {
-
-                }
-        }
-
-        static backupExists(savefileId) {
-                if (Utils.isWorker()) {
-
-                } else {
-
+                        const transfer = await Data_Thread.backupSave('backup', this._makeRequestData(savefileId));
+                        return transfer.result;
                 }
         }
 
@@ -74,133 +78,43 @@ class StorageManagerShim {
                 }
         }
 
-        static saveToLocalFile(savefileId, json) {
-                if (Utils.isWorker()) {
-
-                } else {
-
-                }
-        }
-
-        static loadFromLocalFile(savefileId) {
-                if (Utils.isWorker()) {
-
-                } else {
-
-                }
-        }
-
-        static loadFromLocalBackupFile(savefileId) {
-                if (Utils.isWorker()) {
-
-                } else {
-
-                }
-        }
-
-        static localFileBackupExists(savefileId) {
-                if (Utils.isWorker()) {
-
-                } else {
-
-                }
-        }
-
-        static localFileExists(savefileId) {
-                if (Utils.isWorker()) {
-
-                } else {
-
-                }
-        }
-
-        static removeLocalFile(savefileId) {
-                if (Utils.isWorker()) {
-
-                } else {
-
-                }
-        }
-
-        static saveToWebStorage(savefileId, json) {
-                if (Utils.isWorker()) {
-
-                } else {
-
-                }
-        }
-
-        static loadFromWebStorage(savefileId) {
-                if (Utils.isWorker()) {
-
-                } else {
-
-                }
-        }
-
-        static loadFromWebStorageBackup(savefileId) {
-                if (Utils.isWorker()) {
-
-                } else {
-
-                }
-        }
-
-        static webStorageBackupExists(savefileId) {
-                if (Utils.isWorker()) {
-
-                } else {
-
-                }
-        }
-
-        static webStorageExists(savefileId) {
-                if (Utils.isWorker()) {
-
-                } else {
-
-                }
-        }
-
-        static removeWebStorage(savefileId) {
-                if (Utils.isWorker()) {
-
-                } else {
-
-                }
-        }
-
-        static localFileDirectoryPath() {
-                if (Utils.isWorker()) {
-
-                } else {
-
-                }
-        }
-
-        static localFilePath(savefileId) {
-                if (Utils.isWorker()) {
-
-                } else {
-
-                }
-        }
-
-        static canMakeWwwSaveDirectory() {
-                if (Utils.isWorker()) {
-
-                } else {
-
-                }
-        }
-
         static isLocalMode() {
-                return Utils.isNwjs();
+                return false;
         }
 
-        static webStorageKey(savefileId) {
+        static backupExists(savefileId) { }
 
-        }
+        static saveToLocalFile(savefileId, json) { }
+
+        static loadFromLocalFile(savefileId) { }
+
+        static loadFromLocalBackupFile(savefileId) { }
+
+        static localFileBackupExists(savefileId) { }
+
+        static localFileExists(savefileId) { }
+
+        static removeLocalFile(savefileId) { }
+
+        static saveToWebStorage(savefileId, json) { }
+
+        static loadFromWebStorage(savefileId) { }
+
+        static loadFromWebStorageBackup(savefileId) { }
+
+        static webStorageBackupExists(savefileId) { }
+
+        static webStorageExists(savefileId) { }
+
+        static removeWebStorage(savefileId) { }
+
+        static localFileDirectoryPath() { }
+
+        static localFilePath(savefileId) { }
+
+        static canMakeWwwSaveDirectory() { }
+
+        static webStorageKey(savefileId) { }
 }
 
 export default StorageManagerShim;

@@ -26,11 +26,12 @@ class Scene_Boot extends Scene_Base {
 		this._startDate = Date.now();
 	}
 
-	create() {
+	async create() {
 		super.create();
 		DataManager.loadDatabase();
-		ConfigManager.load();
+		await ConfigManager.load();
 		this.loadSystemWindowImage();
+		DataManager.isAnySavefileExists();
 	}
 
 	loadSystemWindowImage() {
@@ -39,7 +40,7 @@ class Scene_Boot extends Scene_Base {
 
 	isReady() {
 		if (Scene_Base.prototype.isReady.call(this)) {
-			return DataManager.isDatabaseLoaded() && this.isGameFontLoaded();
+			return DataManager.hasCheckedAnySaveFileExists() && DataManager.isDatabaseLoaded() && this.isGameFontLoaded();
 		} else {
 			return false;
 		}

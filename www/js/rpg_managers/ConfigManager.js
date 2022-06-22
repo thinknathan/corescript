@@ -11,11 +11,11 @@ class ConfigManager {
 		throw new Error('This is a static class');
 	}
 
-	static load() {
+	static async load() {
 		let json;
 		let config = {};
 		try {
-			json = StorageManager.load(-1);
+			json = await StorageManager.load(-1);
 		} catch (e) {
 			console.error(e);
 		}

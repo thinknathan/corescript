@@ -22,7 +22,7 @@ class Main_Thread {
 		const throttleThreshold = 33.34;
 
 		/* Keyboard Events */
-		document.addEventListener('keydown', (e) => Render_Thread.receiveDocumentEvent('keydown', {
+		document.addEventListener('keydown', (e) => Render_Thread.receiveEvent('keydown', {
 			key: e.key,
 			code: e.code,
 			altKey: e.altKey,
@@ -31,7 +31,7 @@ class Main_Thread {
 			keyCode: e.keyCode,
 			shiftKey: e.shiftKey,
 		}));
-		document.addEventListener('keyup', (e) => Render_Thread.receiveDocumentEvent('keyup', {
+		document.addEventListener('keyup', (e) => Render_Thread.receiveEvent('keyup', {
 			key: e.key,
 			code: e.code,
 			altKey: e.altKey,
@@ -42,7 +42,7 @@ class Main_Thread {
 		}));
 
 		/* Mouse Events */
-		document.addEventListener('mousedown', (e) => Render_Thread.receiveDocumentEvent('mousedown', {
+		document.addEventListener('mousedown', (e) => Render_Thread.receiveEvent('mousedown', {
 			clientX: e.clientX,
 			clientY: e.clientY,
 			button: e.button,
@@ -58,7 +58,7 @@ class Main_Thread {
 			x: e.x,
 			y: e.y,
 		}));
-		document.addEventListener('mouseup', (e) => Render_Thread.receiveDocumentEvent('mouseup', {
+		document.addEventListener('mouseup', (e) => Render_Thread.receiveEvent('mouseup', {
 			clientX: e.clientX,
 			clientY: e.clientY,
 			button: e.button,
@@ -74,7 +74,7 @@ class Main_Thread {
 			x: e.x,
 			y: e.y,
 		}));
-		const mousemoveFunc = (e) => Render_Thread.receiveDocumentEvent('mousemove', {
+		const mousemoveFunc = (e) => Render_Thread.receiveEvent('mousemove', {
 			clientX: e.clientX,
 			clientY: e.clientY,
 			button: e.button,
@@ -93,7 +93,7 @@ class Main_Thread {
 		const mousemoveThrottled = Utils.getThrottledFunction(mousemoveFunc, throttleThreshold);
 		document.addEventListener('mousemove', (e) => mousemoveThrottled(e));
 
-		const wheelFunc = (e) => Render_Thread.receiveDocumentEvent('wheel', {
+		const wheelFunc = (e) => Render_Thread.receiveEvent('wheel', {
 			deltaX: e.deltaX,
 			deltaY: e.deltaY,
 			deltaZ: e.deltaZ,
@@ -104,19 +104,19 @@ class Main_Thread {
 		} : false);
 
 		/* Touch Events */
-		document.addEventListener('touchend', (e) => Render_Thread.receiveDocumentEvent('touchend', {
+		document.addEventListener('touchend', (e) => Render_Thread.receiveEvent('touchend', {
 			changedTouches: JSON.stringify(e.changedTouches),
 			timeStamp: e.timeStamp,
 			touches: JSON.stringify(e.touches),
 		}));
-		document.addEventListener('touchstart', (e) => Render_Thread.receiveDocumentEvent('touchstart', {
+		document.addEventListener('touchstart', (e) => Render_Thread.receiveEvent('touchstart', {
 			changedTouches: JSON.stringify(e.changedTouches),
 			timeStamp: e.timeStamp,
 			touches: JSON.stringify(e.touches),
 		}), isSupportPassive ? {
 			passive: false
 		} : false);
-		const touchmoveFunc = (e) => Render_Thread.receiveDocumentEvent('touchmove', {
+		const touchmoveFunc = (e) => Render_Thread.receiveEvent('touchmove', {
 			changedTouches: JSON.stringify(e.changedTouches),
 			timeStamp: e.timeStamp,
 			touches: JSON.stringify(e.touches),
@@ -125,10 +125,10 @@ class Main_Thread {
 		document.addEventListener('touchmove', (e) => touchmoveThrottled(e), isSupportPassive ? {
 			passive: false
 		} : false);
-		document.addEventListener('touchcancel', (e) => Render_Thread.receiveDocumentEvent('touchcancel', {}));
+		document.addEventListener('touchcancel', (e) => Render_Thread.receiveEvent('touchcancel', {}));
 
 		/* Other Events */
-		document.addEventListener('pointerdown', (e) => Render_Thread.receiveDocumentEvent('pointerdown', {
+		document.addEventListener('pointerdown', (e) => Render_Thread.receiveEvent('pointerdown', {
 			clientX: e.clientX,
 			clientY: e.clientY,
 			button: e.button,
@@ -145,11 +145,11 @@ class Main_Thread {
 			y: e.y,
 		}));
 
-		document.addEventListener('visibilitychange', (e) => Render_Thread.receiveDocumentEvent('visibilitychange', {
+		document.addEventListener('visibilitychange', (e) => Render_Thread.receiveEvent('visibilitychange', {
 			timeStamp: e.timeStamp,
 		}));
 
-		const resizeFunc = (e) => Render_Thread.receiveWindowEvent('resize', {
+		const resizeFunc = (e) => Render_Thread.receiveEvent('resize', {
 			innerWidth: window.innerWidth,
 			innerHeight: window.innerHeight,
 			timeStamp: e.timeStamp,
@@ -157,11 +157,11 @@ class Main_Thread {
 		const resizeThrottled = Utils.getThrottledFunction(resizeFunc, throttleThreshold);
 		window.addEventListener('resize', (e) => resizeThrottled(e));
 
-		window.addEventListener('blur', (e) => Render_Thread.receiveWindowEvent('blur', {
+		window.addEventListener('blur', (e) => Render_Thread.receiveEvent('blur', {
 			timeStamp: e.timeStamp,
 		}));
 
-		window.addEventListener('error', (e) => Render_Thread.receiveWindowEvent('error', {
+		window.addEventListener('error', (e) => Render_Thread.receiveEvent('error', {
 			timeStamp: e.timeStamp,
 			message: e.message,
 			filename: e.filename,
@@ -169,14 +169,15 @@ class Main_Thread {
 	}
 	static async transferWindowData(Render_Thread) {
 		const windowData = this.getWindowData();
-		await Render_Thread.receiveWindowData(windowData);
+		await Render_Thread.updateData('window', { data: windowData });
 	}
 	static async transferPluginData(Render_Thread) {
-		await Render_Thread.receivePluginData($plugins);
+		await Render_Thread.updateData('plugins', { data: $plugins });
 	}
 	static async setupDataThread() {
 		const dataWorker = new Worker("js/Data_Thread.js", { type: 'module' });
 		const Data_Thread = await Comlink.wrap(dataWorker);
+		await Data_Thread.start();
 		window.Data_Thread = Data_Thread;
 	}
 
@@ -199,7 +200,7 @@ class Main_Thread {
 			// Start render thread
 			await Render_Thread.start();
 
-		window.Render_Thread = Render_Thread;
+			window.Render_Thread = Render_Thread;
 		} else {
 			// Load rendering code in the main thread
 			Utils.loadScript('js/Render_Thread.js', true);
@@ -209,6 +210,7 @@ class Main_Thread {
 	static async start() {
 		await this.setupDataThread();
 		await this.setupRenderThread();
+		return true;
 	}
 }
 Main_Thread.start();

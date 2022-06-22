@@ -201,7 +201,10 @@ import Window_DebugRange from "./rpg_windows/Window_DebugRange.js";
 import Window_DebugEdit from "./rpg_windows/Window_DebugEdit.js";
 
 class Render_Thread {
-    static setupPixiSettings() {
+    constructor() {
+		throw new Error('This is a static class');
+	}
+    static _setupPixiSettings() {
         PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.NEAREST;
         PIXI.settings.ROUND_PIXELS = true;
         PIXI.settings.GC_MAX_IDLE = 600;
@@ -211,7 +214,7 @@ class Render_Thread {
             PIXI.settings.PRECISION_FRAGMENT = PIXI.PRECISION.HIGH;
         }
     }
-    static setupGlobals() {
+    static _setupGlobals() {
         self.$dataActors = $dataActors;
         self.$dataClasses = $dataClasses;
         self.$dataSkills = $dataSkills;
@@ -402,27 +405,24 @@ class Render_Thread {
         self.BattleManager = BattleManager;
         self.PluginManager = PluginManager;
     }
-    static async receivePluginData(data) {
-        console.log(data);
-        self.$plugins = data;
+
+    static async updateData(type, payload) {
+        console.log(type, payload);
+        if (type === 'plugins') {
+            self.$plugins = payload.data;
+        } else if (type === 'window') {
+            Object.entries(payload.data).forEach(([key, value]) => self.window[key] = value);
+        }
     }
-    static async receiveDocumentData(data) {
-        console.log(data);
-        self.document = DocumentShim;
+
+    static async receiveEvent(type, payload) {
+        console.log(type, payload);
     }
-    static async receiveDocumentEvent(type, data) {
-        console.log('document', type, data);
-    }
-    static async receiveWindowData(data) {
-        console.log(data);
-        self.window = WindowShim;
-    }
-    static async receiveWindowEvent(type, data) {
-        console.log('window', type, data);
-    }
+
     static async start() {
-        this.setupGlobals();
-        this.setupPixiSettings();
+        console.log('[Render_Thread.start]');
+        this._setupGlobals();
+        this._setupPixiSettings();
         PluginManager.setup($plugins);
         if (Utils.isWorker()) {
             SceneManager.run(Scene_Boot);

@@ -1,5 +1,5 @@
-import Utils from "../rpg_core/Utils.js";
-import * as fflate from 'https://cdn.skypack.dev/pin/fflate@v0.7.3-x0OS7MYd1pAJyCyfqyxe/mode=imports/optimized/fflate.js';
+import { strToU8, inflateSync, deflateSync, strFromU8 } from 'https://cdn.skypack.dev/pin/fflate@v0.7.3-x0OS7MYd1pAJyCyfqyxe/mode=imports/optimized/fflate.js';
+import { set, get, del, keys } from 'https://cdn.skypack.dev/pin/idb-keyval@v6.2.0-JnrT8KDKaQ7ZsLcm1DXx/mode=imports/optimized/idb-keyval.js'
 
 //-----------------------------------------------------------------------------
 // StorageManager
@@ -11,242 +11,126 @@ class StorageManager {
 		throw new Error('This is a static class');
 	}
 
-	static save(savefileId, json) {
-		if (this.isLocalMode()) {
-			this.saveToLocalFile(savefileId, json);
-		} else {
-			this.saveToWebStorage(savefileId, json);
-		}
+	static successCallback() {
+		return true;
 	}
 
-	static load(savefileId) {
-		if (this.isLocalMode()) {
-			return this.loadFromLocalFile(savefileId);
-		} else {
-			return this.loadFromWebStorage(savefileId);
-		}
+	static failureCallback(e) {
+		console.error(e);
+		return false;
 	}
 
-	static exists(savefileId) {
-		if (this.isLocalMode()) {
-			return this.localFileExists(savefileId);
-		} else {
-			return this.webStorageExists(savefileId);
-		}
-	}
-
-	static remove(savefileId) {
-		if (this.isLocalMode()) {
-			this.removeLocalFile(savefileId);
-		} else {
-			this.removeWebStorage(savefileId);
-		}
-	}
-
-	static backup(savefileId) {
-		if (this.exists(savefileId)) {
-			if (this.isLocalMode()) {
-				const data = this.loadFromLocalFile(savefileId);
-				const compressed = LZString.compressToBase64(data);
-				const fs = require('fs');
-				const dirPath = this.localFileDirectoryPath();
-				const filePath = `${this.localFilePath(savefileId)}.bak`;
-				if (!fs.existsSync(dirPath)) {
-					fs.mkdirSync(dirPath);
-				}
-				fs.writeFileSync(filePath, compressed);
-			} else {
-				const data = this.loadFromWebStorage(savefileId);
-				const compressed = LZString.compressToBase64(data);
-				const key = `${this.webStorageKey(savefileId)}bak`;
-				localStorage.setItem(key, compressed);
-			}
-		}
-	}
-
-	static backupExists(savefileId) {
-		if (this.isLocalMode()) {
-			return this.localFileBackupExists(savefileId);
-		} else {
-			return this.webStorageBackupExists(savefileId);
-		}
-	}
-
-	static cleanBackup(savefileId) {
-		if (this.backupExists(savefileId)) {
-			if (this.isLocalMode()) {
-				const fs = require('fs');
-				const filePath = this.localFilePath(savefileId);
-				fs.unlinkSync(`${filePath}.bak`);
-			} else {
-				const key = this.webStorageKey(savefileId);
-				localStorage.removeItem(`${key}bak`);
-			}
-		}
-	}
-
-	static restoreBackup(savefileId) {
-		if (this.backupExists(savefileId)) {
-			if (this.isLocalMode()) {
-				const data = this.loadFromLocalBackupFile(savefileId);
-				const compressed = LZString.compressToBase64(data);
-				const fs = require('fs');
-				const dirPath = this.localFileDirectoryPath();
-				const filePath = this.localFilePath(savefileId);
-				if (!fs.existsSync(dirPath)) {
-					fs.mkdirSync(dirPath);
-				}
-				fs.writeFileSync(filePath, compressed);
-				fs.unlinkSync(`${filePath}.bak`);
-			} else {
-				const data = this.loadFromWebStorageBackup(savefileId);
-				const compressed = LZString.compressToBase64(data);
-				const key = this.webStorageKey(savefileId);
-				localStorage.setItem(key, compressed);
-				localStorage.removeItem(`${key}bak`);
-			}
-		}
-	}
-
-	static saveToLocalFile(savefileId, json) {
-		const data = LZString.compressToBase64(json);
-		const fs = require('fs');
-		const dirPath = this.localFileDirectoryPath();
-		const filePath = this.localFilePath(savefileId);
-		if (!fs.existsSync(dirPath)) {
-			fs.mkdirSync(dirPath);
-		}
-		fs.writeFileSync(filePath, data);
-	}
-
-	static loadFromLocalFile(savefileId) {
-		let data = null;
-		const fs = require('fs');
-		const filePath = this.localFilePath(savefileId);
-		if (fs.existsSync(filePath)) {
-			data = fs.readFileSync(filePath, {
-				encoding: 'utf8'
-			});
-		}
-		return LZString.decompressFromBase64(data);
-	}
-
-	static loadFromLocalBackupFile(savefileId) {
-		let data = null;
-		const fs = require('fs');
-		const filePath = `${this.localFilePath(savefileId)}.bak`;
-		if (fs.existsSync(filePath)) {
-			data = fs.readFileSync(filePath, {
-				encoding: 'utf8'
-			});
-		}
-		return LZString.decompressFromBase64(data);
-	}
-
-	static localFileBackupExists(savefileId) {
-		const fs = require('fs');
-		return fs.existsSync(`${this.localFilePath(savefileId)}.bak`);
-	}
-
-	static localFileExists(savefileId) {
-		const fs = require('fs');
-		return fs.existsSync(this.localFilePath(savefileId));
-	}
-
-	static removeLocalFile(savefileId) {
-		const fs = require('fs');
-		const filePath = this.localFilePath(savefileId);
-		if (fs.existsSync(filePath)) {
-			fs.unlinkSync(filePath);
-		}
-	}
-
-	static saveToWebStorage(savefileId, json) {
-		const key = this.webStorageKey(savefileId);
-		const data = LZString.compressToBase64(json);
-		localStorage.setItem(key, data);
-	}
-
-	static loadFromWebStorage(savefileId) {
-		const key = this.webStorageKey(savefileId);
-		const data = localStorage.getItem(key);
-		return LZString.decompressFromBase64(data);
-	}
-
-	static loadFromWebStorageBackup(savefileId) {
-		const key = `${this.webStorageKey(savefileId)}bak`;
-		const data = localStorage.getItem(key);
-		return LZString.decompressFromBase64(data);
-	}
-
-	static webStorageBackupExists(savefileId) {
-		const key = `${this.webStorageKey(savefileId)}bak`;
-		return !!localStorage.getItem(key);
-	}
-
-	static webStorageExists(savefileId) {
-		const key = this.webStorageKey(savefileId);
-		return !!localStorage.getItem(key);
-	}
-
-	static removeWebStorage(savefileId) {
-		const key = this.webStorageKey(savefileId);
-		localStorage.removeItem(key);
-	}
-
-	static localFileDirectoryPath() {
-		const path = require('path');
-
-		const base = path.dirname(process.mainModule.filename);
-		if (this.canMakeWwwSaveDirectory()) {
-			return path.join(base, 'save/');
-		} else {
-			return path.join(path.dirname(base), 'save/');
-		}
-	}
-
-	static localFilePath(savefileId) {
-		let name = '';
-		if (savefileId < 0) {
-			name = 'config.rpgsave';
-		} else if (savefileId === 0) {
-			name = 'global.rpgsave';
-		} else {
-			name = 'file%1.rpgsave'.format(savefileId);
-		}
-		return this.localFileDirectoryPath() + name;
-	}
-
-	// Enigma Virtual Box cannot make www/save directory
-	static canMakeWwwSaveDirectory() {
-		if (this._canMakeWwwSaveDirectory === undefined) {
-			const fs = require('fs');
-			const path = require('path');
-			const base = path.dirname(process.mainModule.filename);
-			const testPath = path.join(base, 'testDirectory/');
+	static async compress(data) {
+		if (data) {
 			try {
-				fs.mkdirSync(testPath);
-				fs.rmdirSync(testPath);
-				this._canMakeWwwSaveDirectory = true;
+				const u8array = strToU8(data);
+				return deflateSync(u8array, {
+					level: 1
+				});
 			} catch (e) {
-				this._canMakeWwwSaveDirectory = false;
+				console.error(e);
+				return null;
 			}
-		}
-		return this._canMakeWwwSaveDirectory;
-	}
-
-	static isLocalMode() {
-		return Utils.isNwjs();
-	}
-
-	static webStorageKey(savefileId) {
-		if (savefileId < 0) {
-			return 'RPG Config';
-		} else if (savefileId === 0) {
-			return 'RPG Global';
 		} else {
-			return 'RPG File%1'.format(savefileId);
+			return null;
 		}
+	}
+
+	static async decompress(data) {
+		if (data) {
+			try {
+				const inflated = inflateSync(data);
+				return strFromU8(inflated);
+			} catch (e) {
+				console.error(e);
+				return null;
+			}
+		} else {
+			return null;
+		}
+	}
+
+	static storageKey(savefileId, gameTitle) {
+		if (savefileId < 0) {
+			return gameTitle + ' Config';
+		} else if (savefileId === 0) {
+			return gameTitle + ' Global';
+		} else {
+			return gameTitle + ' File' + savefileId;
+		}
+	}
+
+	static async save(savefileId, incoming, gameTitle) {
+		const key = this.storageKey(savefileId, gameTitle);
+		const data = await this.compress(incoming);
+		return await set(key, data)
+			.then(this.successCallback)
+			.catch(this.failureCallback);
+	}
+
+	static async load(savefileId, gameTitle) {
+		const key = this.storageKey(savefileId, gameTitle);
+		const data = await get(key)
+			.catch(this.failureCallback);
+		const result = await this.decompress(data);
+		if (result) {
+			return result;
+		} else {
+			if (savefileId > 0) {
+				console.warn('[StorageManager.load] Loading failed. Restoring backup.');
+				const backup = await this.loadBackup(savefileId, gameTitle);
+				await this.restoreBackup(savefileId, gameTitle);
+				return backup;
+			}
+			console.warn('[StorageManager.load] Loading failed. File broken or missing.');
+			return false;
+		}
+	}
+
+	static async deleteSave(savefileId, gameTitle) {
+		const key = this.storageKey(savefileId, gameTitle);
+		return await del(key)
+			.then(this.successCallback)
+			.catch(this.failureCallback);
+	}
+
+	static async saveExists(savefileId, gameTitle) {
+		const key = this.storageKey(savefileId, gameTitle);
+		return await keys()
+			.then(function (keys) {
+				return keys.includes(key);
+			});
+	}
+
+	static async restoreBackup(savefileId, gameTitle) {
+		const key = this.storageKey(savefileId, gameTitle);
+		const backupKey = key + "bak";
+		const data = await this.loadBackup(savefileId, gameTitle);
+		await this.save(savefileId, data, gameTitle);
+		return await del(backupKey)
+			.then(this.successCallback)
+			.catch(this.failureCallback);
+	}
+
+	static async backupSave(savefileId, gameTitle) {
+		const key = this.storageKey(savefileId, gameTitle);
+		const backupKey = key + "bak";
+		const data = await get(key)
+			.catch(this.failureCallback);
+		if (data) {
+			return await set(backupKey, data)
+				.then(this.successCallback)
+				.catch(this.failureCallback);
+		} else {
+			return false;
+		}
+	}
+
+	static async loadBackup(savefileId, gameTitle) {
+		const key = this.storageKey(savefileId, gameTitle);
+		const backupKey = key + "bak";
+		const compressed = await get(backupKey);
+		return await this.decompress(compressed);
 	}
 }
 

@@ -40,9 +40,9 @@ class Scene_Load extends Scene_File {
 		return DataManager.latestSavefileId() - 1;
 	}
 
-	onSavefileOk() {
+	async onSavefileOk() {
 		super.onSavefileOk();
-		if (DataManager.loadGame(this.savefileId())) {
+		if (await DataManager.loadGame(this.savefileId())) {
 			this.onLoadSuccess();
 		} else {
 			this.onLoadFailure();

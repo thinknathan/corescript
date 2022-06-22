@@ -43,6 +43,7 @@ class DataManager {
 		if (this.isEventTest()) {
 			this.loadDataFile('$testEvent', `${prefix}Event.json`);
 		}
+		this.loadGlobalInfo();
 	}
 
 	static loadDataFile(name, src) {
@@ -139,10 +140,17 @@ class DataManager {
 	static loadGlobalInfo() {
 		if (this._globalInfo) {
 			return this._globalInfo;
+		} else {
+			this.loadGlobalInfoAsync();
+			console.warn('Returning null DataManager.loadGlobalInfo');
+			return null;
 		}
+	}
+
+	static async loadGlobalInfoAsync() {
 		let json;
 		try {
-			json = StorageManager.load(0);
+			json = await StorageManager.load(0);
 		} catch (e) {
 			console.error(e);
 			return [];
@@ -150,14 +158,13 @@ class DataManager {
 		if (json) {
 			this._globalInfo = JSON.parse(json);
 			for (let i = 1; i <= this.maxSavefiles(); i++) {
-				if (!StorageManager.exists(i)) {
+				const exists = await StorageManager.exists(i);
+				if (!exists) {
 					delete this._globalInfo[i];
 				}
 			}
-			return this._globalInfo;
 		} else {
 			this._globalInfo = [];
-			return this._globalInfo;
 		}
 	}
 
@@ -169,31 +176,45 @@ class DataManager {
 	static isThisGameFile(savefileId) {
 		const globalInfo = this.loadGlobalInfo();
 		if (globalInfo && globalInfo[savefileId]) {
-			if (StorageManager.isLocalMode()) {
-				return true;
-			} else {
-				const savefile = globalInfo[savefileId];
-				return (savefile.globalId === this._globalId &&
-					savefile.title === self.$dataSystem.gameTitle);
-			}
+			// if (StorageManager.isLocalMode()) {
+			return true;
+			// } else {
+			// 	const savefile = globalInfo[savefileId];
+			// 	return (savefile.globalId === this._globalId &&
+			// 		savefile.title === self.$dataSystem.gameTitle);
+			// }
 		} else {
 			return false;
 		}
 	}
 
 	static isAnySavefileExists() {
-		const globalInfo = this.loadGlobalInfo();
-		if (globalInfo) {
-			for (let i = 1; i < globalInfo.length; i++) {
-				if (this.isThisGameFile(i)) {
-					return true;
+		if (this._checkedAnySaveFileExists) {
+			return this._isAnySaveFileExists;
+		} else {
+			const globalInfo = this.loadGlobalInfo();
+			if (globalInfo) {
+				for (let i = 1; i < globalInfo.length; i++) {
+					const result = this.isThisGameFile(i);
+					if (result) {
+						this._isAnySaveFileExists = true;
+						this._checkedAnySaveFileExists = true;
+						return true;
+					}
 				}
+			} else {
+				this._isAnySaveFileExists = false;
+				this._checkedAnySaveFileExists = true;
+				return false;
 			}
 		}
-		return false;
 	}
 
-	static latestSavefileId() {
+	static hasCheckedAnySaveFileExists() {
+		return this._checkedAnySaveFileExists;
+	}
+
+	static async latestSavefileId() {
 		const globalInfo = this.loadGlobalInfo();
 		let savefileId = 1;
 		let timestamp = 0;
@@ -208,7 +229,7 @@ class DataManager {
 		return savefileId;
 	}
 
-	static loadAllSavefileImages() {
+	static async loadAllSavefileImages() {
 		const globalInfo = this.loadGlobalInfo();
 		if (globalInfo) {
 			for (let i = 1; i < globalInfo.length; i++) {
@@ -220,23 +241,23 @@ class DataManager {
 		}
 	}
 
-	static saveGame(savefileId) {
+	static async saveGame(savefileId) {
 		try {
-			StorageManager.backup(savefileId);
-			return this.saveGameWithoutRescue(savefileId);
+			await StorageManager.backup(savefileId);
+			return await this.saveGameWithoutRescue(savefileId);
 		} catch (e) {
 			console.error(e);
-			try {
-				StorageManager.remove(savefileId);
-				StorageManager.restoreBackup(savefileId);
-			} catch (e2) {}
+			// try {
+			// 	StorageManager.remove(savefileId);
+			// 	StorageManager.restoreBackup(savefileId);
+			// } catch (e2) {}
 			return false;
 		}
 	}
 
-	static loadGame(savefileId) {
+	static async loadGame(savefileId) {
 		try {
-			return this.loadGameWithoutRescue(savefileId);
+			return await this.loadGameWithoutRescue(savefileId);
 		} catch (e) {
 			console.error(e);
 			return false;
@@ -252,22 +273,22 @@ class DataManager {
 		return this._lastAccessedId;
 	}
 
-	static saveGameWithoutRescue(savefileId) {
+	static async saveGameWithoutRescue(savefileId) {
 		const json = JsonEx.stringify(this.makeSaveContents());
 		if (json.length >= 200000) {
 			console.warn('[DataManager.saveGameWithoutRescue] Save data length %i is larger than suggested 200000.', json.length);
 		}
-		StorageManager.save(savefileId, json);
+		await StorageManager.save(savefileId, json);
 		this._lastAccessedId = savefileId;
 		const globalInfo = this.loadGlobalInfo() || [];
 		globalInfo[savefileId] = this.makeSavefileInfo();
-		this.saveGlobalInfo(globalInfo);
+		await this.saveGlobalInfo(globalInfo);
 		return true;
 	}
 
-	static loadGameWithoutRescue(savefileId) {
+	static async loadGameWithoutRescue(savefileId) {
 		if (this.isThisGameFile(savefileId)) {
-			const json = StorageManager.load(savefileId);
+			const json = await StorageManager.load(savefileId);
 			this.createGameObjects();
 			this.extractSaveContents(JsonEx.parse(json));
 			this._lastAccessedId = savefileId;
@@ -340,7 +361,7 @@ class DataManager {
 	static extractMetadata(data) {
 		const re = /<([^<>:]+)(:?)([^>]*)>/g;
 		data.meta = {};
-		for (;;) {
+		for (; ;) {
 			const match = re.exec(data.note);
 			if (match) {
 				if (match[2] === ':') {
@@ -450,6 +471,8 @@ class DataManager {
 	}
 }
 
+DataManager._isAnySaveFileExists = false;
+DataManager._checkedAnySaveFileExists = false;
 DataManager._globalId = 'RPGMV';
 DataManager._lastAccessedId = 1;
 DataManager._errorUrl = null;
