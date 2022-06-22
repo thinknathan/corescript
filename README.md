@@ -5,23 +5,43 @@
 
 This fork introduces opinionated changes and is not necessarily a drop-in replacement for the default RPG Maker MV scripts.
 
-- Attempts to run the engine in its own worker thread
-    - Plugins that rely on the existance of window or document may fail
-- Passes save data to its own worker thread to compress and store/retrieve and decompress
-    - Plugins that modify the SaveManager may fail
-- Updated to use PIXI v6.x and PIXI-Tilemap v3.x
-- Uses PIXI equivalents whenever possible instead of the Bitmap object
-- Uses PIXI.BitmapText for fast, memory-efficient text
-- Allows windows to overlap each other
-- Added FPS check to switch on/off fluid timestep
-- Switched to the PIXI.App model
-- Gamestats (performance monitoring plugin) integration
+- Runs the engine in its own worker thread if OffscreenCanvas is supported.
+- Passes savefile data to its own worker thread to compress and store or retrieve and decompress.
+- Updated to use PIXI v6.x and PIXI-Tilemap v3.x.
+- Uses PIXI equivalents whenever possible instead of the Bitmap object.
+- Uses PIXI.BitmapText for fast, memory-efficient text.
+- Allows windows to overlap each other.
+- Added FPS check to switch on/off fluid timestep automatically.
+- Switched to the PIXI.App model.
+- Gamestats (performance monitoring plugin) integration.
+
+## Compatibility
+
+- File structure has changed.
+    - Take Data_Thread.js, Main_Thread.js and Render_Thread.js from /dist and put them in your /js folder.
+    - Remove all <script> tags in your HTML except one to load js/Main_Thread.js.
+- Plugins that modify the StorageManager may fail due to it being rewritten completely.
+- Plugins that rely on the existance of window or document may fail due to running in a worker context.
+- "Window Color" in the System menu of the editor is now applied differently than the default scripts. The default value of (0, 0, 0) is black. Using pure white (255, 255, 255) will disable it.
+- Some functions have been made asynchronous. Plugins that overwrite these functions may fail.
+    - Scene_Load onSavefileOk
+    - Scene_Boot create
+    - StorageManager save
+    - StorageManager load
+    - StorageManager exists
+    - StorageManager remove
+    - StorageManager backup
+    - DataManager saveGame
+    - DataManager loadGame
+    - DataManager saveGameWithoutRescue
+    - DataManager loadGameWithoutRescue
+    - ConfigManager load
 - REMOVED: Picture blend modes
 - REMOVED: Picture smooth scaling
 - REMOVED: HTML5Audio
 - REMOVED: Gradients in gauges
-- REMOVED: Autoshadow feature of maps
-- NOTE: "Window Color" in the System menu of the editor is now applied differently than the default scripts. The default value of (0, 0, 0) is black. Using pure white (255, 255, 255) will disable it.
+- REMOVED: Shadow pen feature (all shadows on tilemaps)
+- REMOVED: Playing video
 
 ## Added hooks
 
