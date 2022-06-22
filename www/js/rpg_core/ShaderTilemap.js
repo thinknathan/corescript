@@ -385,17 +385,17 @@ class ShaderTilemap extends Tilemap {
 	 * @private
 	 */
 	_drawShadow(layer, shadowBits, dx, dy) {
-		if (shadowBits & 0x0f) {
-			const w1 = this._tileWidth / 2;
-			const h1 = this._tileHeight / 2;
-			for (let i = 0; i < 4; i++) {
-				if (shadowBits & (1 << i)) {
-					const dx1 = dx + (i % 2) * w1;
-					const dy1 = dy + Math.floor(i / 2) * h1;
-					layer.addRect(-1, 0, 0, dx1, dy1, w1, h1);
-				}
-			}
-		}
+		// if (shadowBits & 0x0f) {
+		// 	const w1 = this._tileWidth / 2;
+		// 	const h1 = this._tileHeight / 2;
+		// 	for (let i = 0; i < 4; i++) {
+		// 		if (shadowBits & (1 << i)) {
+		// 			const dx1 = dx + (i % 2) * w1;
+		// 			const dy1 = dy + Math.floor(i / 2) * h1;
+		// 			layer.addRect(-1, 0, 0, dx1, dy1, w1, h1);
+		// 		}
+		// 	}
+		// }
 	}
 }
 

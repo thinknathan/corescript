@@ -662,18 +662,18 @@ class Tilemap extends PIXI.Container {
 	 * @private
 	 */
 	_drawShadow(bitmap, shadowBits, dx, dy) {
-		if (shadowBits & 0x0f) {
-			const w1 = this._tileWidth / 2;
-			const h1 = this._tileHeight / 2;
-			const color = 'rgba(0,0,0,0.5)';
-			for (let i = 0; i < 4; i++) {
-				if (shadowBits & (1 << i)) {
-					const dx1 = dx + (i % 2) * w1;
-					const dy1 = dy + Math.floor(i / 2) * h1;
-					bitmap.fillRect(dx1, dy1, w1, h1, color);
-				}
-			}
-		}
+		// if (shadowBits & 0x0f) {
+		// 	const w1 = this._tileWidth / 2;
+		// 	const h1 = this._tileHeight / 2;
+		// 	const color = 'rgba(0,0,0,0.5)';
+		// 	for (let i = 0; i < 4; i++) {
+		// 		if (shadowBits & (1 << i)) {
+		// 			const dx1 = dx + (i % 2) * w1;
+		// 			const dy1 = dy + Math.floor(i / 2) * h1;
+		// 			bitmap.fillRect(dx1, dy1, w1, h1, color);
+		// 		}
+		// 	}
+		// }
 	}
 
 	/**
