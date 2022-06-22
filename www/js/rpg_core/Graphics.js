@@ -1,4 +1,4 @@
-import * as PIXI from "../libs/pixi.mjs";
+import * as PIXI from "../libs/pixi.js";
 import ProgressWatcher from "../rpg_core/ProgressWatcher.js";
 import ResourceHandler from "../rpg_core/ResourceHandler.js";
 import Utils from "../rpg_core/Utils.js";

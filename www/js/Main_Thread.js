@@ -1,6 +1,6 @@
 "use strict";
 
-import * as Comlink from "./libs/comlink.mjs";
+import * as Comlink from "https://cdn.skypack.dev/pin/comlink@v4.3.1-ebLSsXPUzhGrZgtPT5jX/mode=imports/optimized/comlink.js";
 import Utils from "./rpg_core/Utils.js";
 
 class Main_Thread {
@@ -9,13 +9,13 @@ class Main_Thread {
 	}
 	static getWindowData() {
 		return {
-            devicePixelRatio: window.devicePixelRatio,
-            innerWidth: window.innerWidth,
-            innerHeight: window.innerHeight,
-            cordova: !!window.cordova,
-            navigatorStandalone: !!window.navigator.standalone,
-            __TAURI__: !!window.__TAURI__,
-        }
+			devicePixelRatio: window.devicePixelRatio,
+			innerWidth: window.innerWidth,
+			innerHeight: window.innerHeight,
+			cordova: !!window.cordova,
+			navigatorStandalone: !!window.navigator.standalone,
+			__TAURI__: !!window.__TAURI__,
+		}
 	}
 	static async attachListeners(Render_Thread) {
 		const isSupportPassive = Utils.isSupportPassiveEvent();
@@ -100,8 +100,8 @@ class Main_Thread {
 		});
 		const wheelThrottled = Utils.getThrottledFunction(wheelFunc, throttleThreshold);
 		document.addEventListener('wheel', (e) => wheelThrottled(e), isSupportPassive ? {
-					passive: false
-				} : false);
+			passive: false
+		} : false);
 
 		/* Touch Events */
 		document.addEventListener('touchend', (e) => Render_Thread.receiveDocumentEvent('touchend', {
@@ -114,8 +114,8 @@ class Main_Thread {
 			timeStamp: e.timeStamp,
 			touches: JSON.stringify(e.touches),
 		}), isSupportPassive ? {
-					passive: false
-				} : false);
+			passive: false
+		} : false);
 		const touchmoveFunc = (e) => Render_Thread.receiveDocumentEvent('touchmove', {
 			changedTouches: JSON.stringify(e.changedTouches),
 			timeStamp: e.timeStamp,
@@ -123,8 +123,8 @@ class Main_Thread {
 		});
 		const touchmoveThrottled = Utils.getThrottledFunction(touchmoveFunc, throttleThreshold);
 		document.addEventListener('touchmove', (e) => touchmoveThrottled(e), isSupportPassive ? {
-					passive: false
-				} : false);
+			passive: false
+		} : false);
 		document.addEventListener('touchcancel', (e) => Render_Thread.receiveDocumentEvent('touchcancel', {}));
 
 		/* Other Events */
@@ -151,7 +151,7 @@ class Main_Thread {
 
 		const resizeFunc = (e) => Render_Thread.receiveWindowEvent('resize', {
 			innerWidth: window.innerWidth,
-            innerHeight: window.innerHeight,
+			innerHeight: window.innerHeight,
 			timeStamp: e.timeStamp,
 		});
 		const resizeThrottled = Utils.getThrottledFunction(resizeFunc, throttleThreshold);
@@ -167,20 +167,20 @@ class Main_Thread {
 			filename: e.filename,
 		}));
 	}
-	static async transferWindowData (Render_Thread) {
+	static async transferWindowData(Render_Thread) {
 		const windowData = this.getWindowData();
 		await Render_Thread.receiveWindowData(windowData);
 	}
-	static async transferPluginData (Render_Thread) {
+	static async transferPluginData(Render_Thread) {
 		await Render_Thread.receivePluginData($plugins);
 	}
-	static async setupDataThread () {
-		const dataWorker = new Worker("js/Data_Thread.js", {type: 'module'});
+	static async setupDataThread() {
+		const dataWorker = new Worker("js/Data_Thread.js", { type: 'module' });
 		const Data_Thread = await Comlink.wrap(dataWorker);
 		window.Data_Thread = Data_Thread;
 	}
 
-	static async setupRenderThread () {
+	static async setupRenderThread() {
 		Utils.loadScript('js/Render_Thread.js', true);
 
 		/*
@@ -206,7 +206,7 @@ class Main_Thread {
 		}
 		*/
 	}
-	static async start () {
+	static async start() {
 		await this.setupDataThread();
 		await this.setupRenderThread();
 	}

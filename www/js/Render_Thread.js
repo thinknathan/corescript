@@ -1,10 +1,10 @@
 "use strict";
 
-import * as Comlink from "./libs/comlink.mjs";
-import * as PIXI from "./libs/pixi.mjs";
-import "./libs/pixi-tilemap.js";
-import "./libs/gamestats.min.js";
-// import "./libs/iphone-inline-video.browser.js";
+import * as Comlink from "https://cdn.skypack.dev/pin/comlink@v4.3.1-ebLSsXPUzhGrZgtPT5jX/mode=imports/optimized/comlink.js";
+import * as PIXI from "./libs/pixi.js";
+import GameStats from "https://cdn.skypack.dev/-/gamestats.js@v1.0.3-FI1CU3PkCi2MgwIBR5jn/dist=es2019,mode=imports/optimized/gamestatsjs.js";
+// import "https://cdn.skypack.dev/pin/gamestats.js@v1.0.3-FI1CU3PkCi2MgwIBR5jn/mode=raw/gamestats-pixi.module.js";
+// import "https://cdn.skypack.dev/pin/iphone-inline-video@v2.2.2-UGQTdOARhJvH2uY0Ic3l/mode=imports/optimized/iphone-inline-video.js";
 
 import "./rpg_core/JsExtensions.js";
 import ProgressWatcher from "./rpg_core/ProgressWatcher.js";
@@ -40,36 +40,36 @@ import WindowShim from "./rpg_core/WindowShim.js";
 import DocumentShim from "./rpg_core/DocumentShim.js";
 
 import {
-	$dataActors,
-	$dataClasses,
-	$dataSkills,
-	$dataItems,
-	$dataWeapons,
-	$dataArmors,
-	$dataEnemies,
-	$dataTroops,
-	$dataStates,
-	$dataAnimations,
-	$dataTilesets,
-	$dataCommonEvents,
-	$dataSystem,
-	$dataMapInfos,
-	$dataMap,
-	$gameTemp,
-	$gameSystem,
-	$gameScreen,
-	$gameTimer,
-	$gameMessage,
-	$gameSwitches,
-	$gameVariables,
-	$gameSelfSwitches,
-	$gameActors,
-	$gameParty,
-	$gameTroop,
-	$gameMap,
-	$gamePlayer,
-	$testEvent,
-	DataManager
+    $dataActors,
+    $dataClasses,
+    $dataSkills,
+    $dataItems,
+    $dataWeapons,
+    $dataArmors,
+    $dataEnemies,
+    $dataTroops,
+    $dataStates,
+    $dataAnimations,
+    $dataTilesets,
+    $dataCommonEvents,
+    $dataSystem,
+    $dataMapInfos,
+    $dataMap,
+    $gameTemp,
+    $gameSystem,
+    $gameScreen,
+    $gameTimer,
+    $gameMessage,
+    $gameSwitches,
+    $gameVariables,
+    $gameSelfSwitches,
+    $gameActors,
+    $gameParty,
+    $gameTroop,
+    $gameMap,
+    $gamePlayer,
+    $testEvent,
+    DataManager
 } from "./rpg_managers/DataManager.js";
 import ConfigManager from "./rpg_managers/ConfigManager.js";
 import StorageManager from "./rpg_managers/StorageManagerShim.js";
@@ -203,17 +203,13 @@ import Window_DebugEdit from "./rpg_windows/Window_DebugEdit.js";
 class Render_Thread {
     static setupPixiSettings() {
         PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.NEAREST;
-		PIXI.settings.ROUND_PIXELS = true;
-		PIXI.settings.GC_MAX_IDLE = 600;
-		PIXI.settings.MIPMAP_TEXTURES = PIXI.MIPMAP_MODES.OFF;
-		PIXI.settings.RESOLUTION = window.devicePixelRatio;
-		if (Utils.isMobileSafari()) {
-			PIXI.settings.PRECISION_FRAGMENT = PIXI.PRECISION.HIGH;
-		}
-        // PIXI.tilemap.Constant.SCALE_MODE = PIXI.SCALE_MODES.NEAREST;
-        // PIXI.tilemap.Constant.DO_CLEAR = true;
-        // PIXI.tilemap.Constant.boundCountPerBuffer = 4;
-        // PIXI.tilemap.Constant.maxTextures = 4;
+        PIXI.settings.ROUND_PIXELS = true;
+        PIXI.settings.GC_MAX_IDLE = 600;
+        PIXI.settings.MIPMAP_TEXTURES = PIXI.MIPMAP_MODES.OFF;
+        PIXI.settings.RESOLUTION = window.devicePixelRatio;
+        if (Utils.isMobileSafari()) {
+            PIXI.settings.PRECISION_FRAGMENT = PIXI.PRECISION.HIGH;
+        }
     }
     static setupGlobals() {
         self.$dataActors = $dataActors;

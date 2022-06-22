@@ -1,4 +1,5 @@
 import Utils from "../rpg_core/Utils.js";
+import * as fflate from 'https://cdn.skypack.dev/pin/fflate@v0.7.3-x0OS7MYd1pAJyCyfqyxe/mode=imports/optimized/fflate.js';
 
 //-----------------------------------------------------------------------------
 // StorageManager
