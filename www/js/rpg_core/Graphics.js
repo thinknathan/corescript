@@ -2,7 +2,9 @@ import * as PIXI from "../libs/pixi.js";
 import ProgressWatcher from "../rpg_core/ProgressWatcher.js";
 import ResourceHandler from "../rpg_core/ResourceHandler.js";
 import Utils from "../rpg_core/Utils.js";
+import UpperCanvas from "../rpg_core/UpperCanvasShim.js";
 import SceneManager from "../rpg_managers/SceneManager.js";
+import GameStats from "https://cdn.skypack.dev/-/gamestats.js@v1.0.3-FI1CU3PkCi2MgwIBR5jn/dist=es2019,mode=imports/optimized/gamestatsjs.js";
 
 //-----------------------------------------------------------------------------
 /**
@@ -48,6 +50,7 @@ class Graphics {
 		this._maxSkip = 3;
 		this._rendered = false;
 		this._loadingImage = null;
+		this._loadingImageSprite = null;
 		this._loadingCount = 0;
 		this._fpsMeterToggled = false;
 		this._stretchEnabled = this._defaultStretchMode();
@@ -57,8 +60,8 @@ class Graphics {
 		this._hiddenCanvas = null;
 		this._app = null;
 
-		this._testCanvasBlendModes();
-		this._modifyExistingElements();
+		// this._testCanvasBlendModes();
+		// this._modifyExistingElements();
 		this._updateRealScale();
 		this._createAllElements();
 		this._disableTextSelection();
@@ -123,7 +126,7 @@ class Graphics {
 	 * @method setLoadingImage
 	 */
 	static setLoadingImage(src) {
-		this._loadingImage = new Image();
+		this._loadingImage = {};
 		this._loadingImage.src = src;
 	}
 
@@ -360,10 +363,11 @@ class Graphics {
 	 * @method showFps
 	 */
 	static showFps() {
+		if (Utils.isWorker()) return;
 		if (this._fpsMeter) {
-			if (!this._fpsMeter.extensions.pixi) {
-				this._fpsMeter.enableExtension('pixi', [PIXI, this._app]);
-			}
+			// if (!this._fpsMeter.extensions.pixi) {
+			// 	this._fpsMeter.enableExtension('pixi', [PIXI, this._app]);
+			// }
 			document.body.appendChild(this._fpsMeter.dom);
 			this._fpsMeter.show(true);
 		}
@@ -376,6 +380,7 @@ class Graphics {
 	 * @method hideFps
 	 */
 	static hideFps() {
+		if (Utils.isWorker()) return;
 		if (this._fpsMeter) {
 			if (document.body.contains(this._fpsMeter.dom)) {
 				document.body.removeChild(this._fpsMeter.dom);
@@ -560,9 +565,9 @@ class Graphics {
 		this._createErrorPrinter();
 		this._createCanvas();
 		this._createVideo();
-		this._createUpperCanvas();
 		this._createRenderer();
 		this._createPixiApp();
+		this._createUpperCanvas();
 		this._createFPSMeter();
 		this._createModeBox();
 		this._createGameFontLoader();
@@ -607,30 +612,30 @@ class Graphics {
 	 * @private
 	 */
 	static _testCanvasBlendModes() {
-		let canvas;
-		let context;
-		let imageData1;
-		let imageData2;
-		canvas = document.createElement('canvas');
-		canvas.width = 1;
-		canvas.height = 1;
-		context = canvas.getContext('2d');
-		context.globalCompositeOperation = 'source-over';
-		context.fillStyle = 'white';
-		context.fillRect(0, 0, 1, 1);
-		context.globalCompositeOperation = 'difference';
-		context.fillStyle = 'white';
-		context.fillRect(0, 0, 1, 1);
-		imageData1 = context.getImageData(0, 0, 1, 1);
-		context.globalCompositeOperation = 'source-over';
-		context.fillStyle = 'black';
-		context.fillRect(0, 0, 1, 1);
-		context.globalCompositeOperation = 'saturation';
-		context.fillStyle = 'white';
-		context.fillRect(0, 0, 1, 1);
-		imageData2 = context.getImageData(0, 0, 1, 1);
-		this._canUseDifferenceBlend = imageData1.data[0] === 0;
-		this._canUseSaturationBlend = imageData2.data[0] === 0;
+		// let canvas;
+		// let context;
+		// let imageData1;
+		// let imageData2;
+		// canvas = document.createElement('canvas');
+		// canvas.width = 1;
+		// canvas.height = 1;
+		// context = canvas.getContext('2d');
+		// context.globalCompositeOperation = 'source-over';
+		// context.fillStyle = 'white';
+		// context.fillRect(0, 0, 1, 1);
+		// context.globalCompositeOperation = 'difference';
+		// context.fillStyle = 'white';
+		// context.fillRect(0, 0, 1, 1);
+		// imageData1 = context.getImageData(0, 0, 1, 1);
+		// context.globalCompositeOperation = 'source-over';
+		// context.fillStyle = 'black';
+		// context.fillRect(0, 0, 1, 1);
+		// context.globalCompositeOperation = 'saturation';
+		// context.fillStyle = 'white';
+		// context.fillRect(0, 0, 1, 1);
+		// imageData2 = context.getImageData(0, 0, 1, 1);
+		// this._canUseDifferenceBlend = imageData1.data[0] === 0;
+		// this._canUseSaturationBlend = imageData2.data[0] === 0;
 	}
 
 	/**
@@ -702,10 +707,14 @@ class Graphics {
 	 * @private
 	 */
 	static _createCanvas() {
-		this._canvas = document.createElement('canvas');
-		this._canvas.id = 'GameCanvas';
-		this._updateCanvas();
-		document.body.appendChild(this._canvas);
+		if (Utils.isWorker()) {
+			// Get this._canvas via message passing
+		} else {
+			this._canvas = document.createElement('canvas');
+			this._canvas.id = 'GameCanvas';
+			this._updateCanvas();
+			document.body.appendChild(this._canvas);
+		}
 	}
 
 	/**
@@ -754,10 +763,11 @@ class Graphics {
 	 * @private
 	 */
 	static _createUpperCanvas() {
-		this._upperCanvas = document.createElement('canvas');
-		this._upperCanvas.id = 'UpperCanvas';
+		this._upperCanvas = new UpperCanvas();
 		this._updateUpperCanvas();
-		document.body.appendChild(this._upperCanvas);
+		if (this._app.stage) {
+			this._app.stage.addChild(this._upperCanvas);
+		}
 	}
 
 	/**
@@ -766,10 +776,7 @@ class Graphics {
 	 * @private
 	 */
 	static _updateUpperCanvas() {
-		this._upperCanvas.width = this._width;
-		this._upperCanvas.height = this._height;
-		this._upperCanvas.style.zIndex = 3;
-		this._centerElement(this._upperCanvas);
+		// this._centerElement(this._upperCanvas);
 	}
 
 	/**
@@ -778,8 +785,9 @@ class Graphics {
 	 * @private
 	 */
 	static _clearUpperCanvas() {
-		const context = this._upperCanvas.getContext('2d');
-		context.clearRect(0, 0, this._width, this._height);
+		if (this._upperCanvas) {
+			this._upperCanvas.removeChildren();
+		}
 	}
 
 	/**
@@ -790,15 +798,10 @@ class Graphics {
 	static _paintUpperCanvas() {
 		this._clearUpperCanvas();
 		if (this._loadingImage && this._loadingCount >= 20) {
-			const context = this._upperCanvas.getContext('2d');
-			const dx = (this._width - this._loadingImage.width) / 2;
-			const dy = (this._height - this._loadingImage.height) / 2;
-			const alpha = ((this._loadingCount - 20) / 30)
-				.clamp(0, 1);
-			context.save();
-			context.globalAlpha = alpha;
-			context.drawImage(this._loadingImage, dx, dy);
-			context.restore();
+			if (!this._loadingImageSprite) {
+				this._loadingImageSprite = new PIXI.Sprite.from(this._loadingImage.src);
+			}
+			this._upperCanvas.addChild(this._loadingImageSprite);
 		}
 	}
 
@@ -819,14 +822,13 @@ class Graphics {
 	 * @private
 	 */
 	static _createFPSMeter() {
+		if (Utils.isWorker()) return;
 		if (typeof GameStats == 'function') {
 			this._fpsMeter = new GameStats({
 				autoPlace: false,
 			});
 			this._fpsMeter.show(false);
 			this._fpsMeter.dom.style.zIndex = 1;
-		} else {
-			console.warn('GameStats is not a function. Is gamestats.js installed?');
 		}
 	}
 
@@ -902,8 +904,8 @@ class Graphics {
 	static _applyCanvasFilter() {
 		if (this._canvas) {
 			this._canvas.style.opacity = 0.5;
-			this._canvas.style.filter = 'blur(8px)';
 			this._canvas.style.webkitFilter = 'blur(8px)';
+			this._canvas.style.filter = 'blur(8px)';
 		}
 	}
 
@@ -1028,6 +1030,7 @@ class Graphics {
 	 * @private
 	 */
 	static _switchFPSMeter() {
+		if (Utils.isWorker()) return;
 		if (this._fpsMeter && this._fpsMeterToggled) {
 			this.hideFps();
 			this._fpsMeterToggled = false;
@@ -1184,12 +1187,12 @@ class Graphics {
 	 * @private
 	 */
 	static _modifyExistingElements() {
-		const elements = document.getElementsByTagName('*');
-		for (let i = 0; i < elements.length; i++) {
-			if (elements[i].style.zIndex > 0) {
-				elements[i].style.zIndex = 0;
-			}
-		}
+		// const elements = document.getElementsByTagName('*');
+		// for (let i = 0; i < elements.length; i++) {
+		// 	if (elements[i].style.zIndex > 0) {
+		// 		elements[i].style.zIndex = 0;
+		// 	}
+		// }
 	}
 
 	/**
