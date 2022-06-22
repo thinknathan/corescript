@@ -196,9 +196,8 @@ class DataManager {
 					return true;
 				}
 			}
-		} else {
-			return false;
 		}
+		return false;
 	}
 
 	static latestSavefileId() {
