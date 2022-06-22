@@ -2,8 +2,6 @@
 
 import * as Comlink from "https://cdn.skypack.dev/pin/comlink@v4.3.1-ebLSsXPUzhGrZgtPT5jX/mode=imports/optimized/comlink.js";
 import * as PIXI from "./libs/pixi.js";
-// import GameStats from "https://cdn.skypack.dev/-/gamestats.js@v1.0.3-FI1CU3PkCi2MgwIBR5jn/dist=es2019,mode=imports/optimized/gamestatsjs.js";
-// import "https://cdn.skypack.dev/pin/gamestats.js@v1.0.3-FI1CU3PkCi2MgwIBR5jn/mode=raw/gamestats-pixi.module.js";
 // import "https://cdn.skypack.dev/pin/iphone-inline-video@v2.2.2-UGQTdOARhJvH2uY0Ic3l/mode=imports/optimized/iphone-inline-video.js";
 
 import "./rpg_core/JsExtensions.js";
