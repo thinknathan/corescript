@@ -1363,7 +1363,7 @@ class Graphics {
 	}
 }
 
-Graphics._cssFontLoading = document.fonts && document.fonts.ready && document.fonts.ready.then;
+Graphics._cssFontLoading = !Utils.isWorker() && (document.fonts && document.fonts.ready && document.fonts.ready.then);
 Graphics._fontLoaded = null;
 Graphics._videoVolume = 1;
 
