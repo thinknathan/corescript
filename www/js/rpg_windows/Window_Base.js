@@ -1,6 +1,5 @@
 import Window from "../rpg_core/Window.js";
 import Bitmap from "../rpg_core/Bitmap.js";
-import BitmapPIXI from "../rpg_core/BitmapPIXI.js";
 import ImageManager from "../rpg_managers/ImageManager.js";
 import TextManager from "../rpg_managers/TextManager.js";
 import Sprite from "../rpg_core/Sprite.js";
@@ -90,7 +89,7 @@ class Window_Base extends Window {
 
 	createContents() {
 		if (!this.contents) {
-			this.contents = new BitmapPIXI(this.contentsWidth(), this.contentsHeight());
+			this.contents = new Bitmap(this.contentsWidth(), this.contentsHeight());
 			this._windowContentsSprite.addChild(this.contents);
 		} else {
 			this.contents.clear();

@@ -1,5 +1,5 @@
 import * as PIXI from "../libs/pixi.js";
-import BitmapPIXI from "../rpg_core/BitmapPIXI.js";
+import Bitmap from "../rpg_core/Bitmap.js";
 import Sprite from "../rpg_core/Sprite.js";
 import Point from "../rpg_core/Point.js";
 import Rectangle from "../rpg_core/Rectangle.js";
@@ -369,8 +369,8 @@ class Window extends PIXI.Container {
 	 */
 	_createAllParts() {
 		this._windowSpriteContainer = new PIXI.Container();
-		this._windowBackSprite = new BitmapPIXI();
-		this._windowCursorSprite = new BitmapPIXI();
+		this._windowBackSprite = new Bitmap();
+		this._windowCursorSprite = new Bitmap();
 		this._windowFrameSprite = new PIXI.Container();
 		this._windowContentsSprite = new Sprite();
 		this._downArrowSprite = new Sprite();
@@ -456,7 +456,7 @@ class Window extends PIXI.Container {
 			if (cachedFrame) {
 				texture = cachedFrame;
 			} else {
-				const container = new BitmapPIXI();
+				const container = new Bitmap();
 				const skin = this._windowskin;
 				const p = 96;
 				const q = 96;

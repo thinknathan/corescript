@@ -463,9 +463,9 @@ class Sprite extends PIXI.Sprite {
 		}
 
 		if (this.texture.frame.width > 0 && this.texture.frame.height > 0) {
-			if (this._bitmap) {
-				this._bitmap.checkDirty();
-			}
+			// if (this._bitmap) {
+			// 	this._bitmap.checkDirty();
+			// }
 
 			this._render_PIXI(renderer);
 		}

@@ -13,96 +13,24 @@ import ResourceHandler from "../rpg_core/ResourceHandler.js";
  * @param {Number} width The width of the bitmap
  * @param {Number} height The height of the bitmap
  */
-class Bitmap {
+class Bitmap extends PIXI.Container {
 	constructor(...args) {
+		super(...args);
 		this.initialize(...args);
 	}
 
-	/**
-	 * Bitmap states(Bitmap._loadingState):
-	 *
-	 * none:
-	 * Empty Bitmap
-	 *
-	 * pending:
-	 * Url requested, but pending to load until startRequest called
-	 *
-	 * purged:
-	 * Url request completed and purged.
-	 *
-	 * requesting:
-	 * Requesting supplied URI now.
-	 *
-	 * requestCompleted:
-	 * Request completed
-	 *
-	 * decrypting:
-	 * requesting encrypted data from supplied URI or decrypting it.
-	 *
-	 * decryptCompleted:
-	 * Decrypt completed
-	 *
-	 * loaded:
-	 * loaded. isReady() === true, so It's usable.
-	 *
-	 * error:
-	 * error occurred
-	 *
-	 */
-
-
-	_createCanvas(width, height) {
-		this.__canvas = this.__canvas || document.createElement('canvas');
-		this.__context = this.__canvas.getContext('2d');
-
-		this.__canvas.width = Math.max(width || 0, 1);
-		this.__canvas.height = Math.max(height || 0, 1);
-
-		if (this._image) {
-			const w = Math.max(this._image.width || 0, 1);
-			const h = Math.max(this._image.height || 0, 1);
-			this.__canvas.width = w;
-			this.__canvas.height = h;
-			this._createBaseTexture(this._canvas);
-
-			console.info('[Bitmap._createCanvas] Drawing %o to canvas is slow.', this._image);
-			this.__context.drawImage(this._image, 0, 0);
-		}
-
-		this._setDirty();
-	}
-
-	_createBaseTexture(source) {
-		this.__baseTexture = new PIXI.BaseTexture(source);
-		this.__baseTexture.mipmap = false;
-		this.__baseTexture.width = source.width;
-		this.__baseTexture.height = source.height;
-		this._baseTexture.scaleMode = PIXI.SCALE_MODES.NEAREST;
-	}
-
-	_clearImgInstance() {
-		this._image.src = "";
-		this._image.onload = null;
-		this._image.onerror = null;
-		this._errorListener = null;
-		this._loadListener = null;
-
-		Bitmap._reuseImages.push(this._image);
-		this._image = null;
-	}
-
-	_renewCanvas() {
-		const newImage = this._image;
-		if (newImage && this.__canvas && (this.__canvas.width < newImage.width || this.__canvas.height < newImage.height)) {
-			this._createCanvas();
-		}
-	}
-
 	initialize(width, height) {
+		PIXI.Container.call(this);
+		width = Math.max(width || 0, 1);
+		height = Math.max(height || 0, 1);
+
 		if (!this._defer) {
 			this._createCanvas(width, height);
 		}
 
+		this._loader = new PIXI.Loader;
+		this._width = width;
+		this._height = height;
 		this._image = null;
 		this._url = '';
 		this._paintOpacity = 255;
@@ -110,6 +38,10 @@ class Bitmap {
 		this._loadListeners = [];
 		this._loadingState = 'none';
 		this._decodeAfterRequest = false;
+		this.textPadding = 2; // Adjust this if text is cut-off
+		this.wordWrap = false;
+		this.wordWrapWidth = 0;
+		this.textCache = [];
 
 		/**
 		 * Cache entry, for images. In all cases _url is the same as cacheEntry.key
@@ -164,36 +96,133 @@ class Bitmap {
 		 * @type Number
 		 */
 		this.outlineWidth = 4;
+
+		this.on('removed', this.onRemoveAsAChild);
 	}
 
 	/**
-	 * Checks whether the bitmap is ready to render.
+	 * Make sure the text cache is emptied and all children are destroyed
 	 *
-	 * @method isReady
-	 * @return {Boolean} True if the bitmap is ready to render
+	 * @method _onRemoveAsAChild
+	 * @private
 	 */
-	isReady() {
-		return this._loadingState === 'loaded' || this._loadingState === 'none';
-	}
-
-	/**
-	 * Checks whether a loading error has occurred.
-	 *
-	 * @method isError
-	 * @return {Boolean} True if a loading error has occurred
-	 */
-	isError() {
-		return this._loadingState === 'error';
-	}
-
-	/**
-	 * touch the resource
-	 * @method touch
-	 */
-	touch() {
-		if (this.cacheEntry) {
-			this.cacheEntry.touch();
+	onRemoveAsAChild() {
+		this.textCache = [];
+		for (let i = this.children.length - 1; i >= 0; i--) {
+			this.children[i].destroy({
+				children: true,
+				texture: true,
+			});
+			this.removeChild(this.children[i]);
 		}
+	}
+
+	/**
+	 * The opacity of the drawing object in the range (0, 255).
+	 *
+	 * @property paintOpacity
+	 * @type Number
+	 */
+	get paintOpacity() {
+		return this._paintOpacity;
+	}
+
+	set paintOpacity(value) {
+		if (this._paintOpacity !== value) {
+			this._paintOpacity = value;
+		}
+	}
+
+	/**
+	 * [read-only] The width of the bitmap.
+	 *
+	 * @property width
+	 * @type Number
+	 */
+	get width() {
+		return this._width;
+	}
+
+	set width(value) {
+		if (this._width !== value) {
+			this._width = value;
+		}
+	}
+
+	/**
+	 * [read-only] The height of the bitmap.
+	 *
+	 * @property height
+	 * @type Number
+	 */
+	get height() {
+		return this._height;
+	}
+
+	set height(value) {
+		if (this._height !== value) {
+			this._height = value;
+		}
+	}
+
+	/**
+	 * Resizes the bitmap.
+	 *
+	 * @method resize
+	 * @param {Number} width The new width of the bitmap
+	 * @param {Number} height The new height of the bitmap
+	 */
+	resize(width, height) {
+		width = Math.max(width || 0, 1);
+		height = Math.max(height || 0, 1);
+		this._width = width;
+		this._height = height;
+	}
+
+	/**
+	 * Ignores the 2nd colour and returns a solid-colour rectangle.
+	 *
+	 * @method gradientFillRect
+	 * @param {Number} x The x coordinate for the upper-left corner
+	 * @param {Number} y The y coordinate for the upper-left corner
+	 * @param {Number} width The width of the rectangle to fill
+	 * @param {Number} height The height of the rectangle to fill
+	 * @param {String} color1 The gradient starting color
+	 * @param {String} color2 The gradient ending color
+	 * @param {Boolean} vertical Wether the gradient should be draw as vertical or not
+	 */
+	gradientFillRect(x, y, width, height, color1, color2, vertical) {
+		return this.fillRect(x, y, width, height, color1);
+	}
+
+	/**
+	 * Draw a shape in the shape of a circle
+	 *
+	 * @method drawCircle
+	 * @param {Number} x The x coordinate based on the circle center
+	 * @param {Number} y The y coordinate based on the circle center
+	 * @param {Number} radius The radius of the circle
+	 * @param {String} color The color of the circle in CSS format
+	 */
+	drawCircle(x, y, radius, color) {
+		x = Math.floor(x);
+		y = Math.floor(y);
+		const circle = new PIXI.Graphics();
+		color = PIXI.utils.string2hex(color);
+		circle.beginFill(color);
+		circle.drawCircle(
+			0,
+			0,
+			radius
+		);
+		circle.endFill();
+		if (circle) {
+			circle.x = x;
+			circle.y = y;
+			circle.alpha = this._paintOpacity / 255;
+			this.addChild(circle);
+		}
+		return circle;
 	}
 
 	/**
@@ -233,35 +262,14 @@ class Bitmap {
 	 * @type CanvasRenderingContext2D
 	 */
 	get context() {
-		return this._context;
-	}
-
-	/**
-	 * [read-only] The width of the bitmap.
-	 *
-	 * @property width
-	 * @type Number
-	 */
-	get width() {
-		if (this.isReady()) {
-			return this._image ? this._image.width : this._canvas.width;
-		}
-
-		return 0;
-	}
-
-	/**
-	 * [read-only] The height of the bitmap.
-	 *
-	 * @property height
-	 * @type Number
-	 */
-	get height() {
-		if (this.isReady()) {
-			return this._image ? this._image.height : this._canvas.height;
-		}
-
-		return 0;
+		console.error('Trying to get context on Bitmap');
+		return {
+			clearRect: () => { },
+			save: () => { },
+			drawImage: () => { },
+			restore: () => { },
+			getImageData: () => { },
+		};
 	}
 
 	/**
@@ -291,40 +299,251 @@ class Bitmap {
 	}
 
 	/**
-	 * The opacity of the drawing object in the range (0, 255).
+	 * Clear text and destroy children.
 	 *
-	 * @property paintOpacity
-	 * @type Number
+	 * @method clear
 	 */
-	get paintOpacity() {
-		return this._paintOpacity;
-	}
+	clear() {
+		for (let i = this.children.length - 1; i >= 0; i--) {
 
-	set paintOpacity(value) {
-		if (this._paintOpacity !== value) {
-			this._paintOpacity = value;
-			this._context.globalAlpha = this._paintOpacity / 255;
+			if (this.children[i].isBitmapText) {
+				this.children[i].text = '';
+				continue;
+			}
+
+			this.children[i].destroy({
+				children: true,
+				texture: true,
+			});
+			this.removeChild(this.children[i]);
 		}
 	}
 
 	/**
-	 * Resizes the bitmap.
+	 * Clear text and destroy children in a given area.
 	 *
-	 * @method resize
-	 * @param {Number} width The new width of the bitmap
-	 * @param {Number} height The new height of the bitmap
+	 * @method clearRect
+	 * @param {Number} x Horizontal coordinate of area to clear
+	 * @param {Number} y Vertical coordinate of area to clear
+	 * @param {Number} width The width of area to clear
+	 * @param {Number} height The height of area to clear
 	 */
-	resize(width, height) {
-		width = Math.max(width || 0, 1);
-		height = Math.max(height || 0, 1);
-		this._canvas.width = width;
-		this._canvas.height = height;
-		this._baseTexture.width = width;
-		this._baseTexture.height = height;
+	clearRect(x, y, width, height) {
+		const self = this;
+		const toRemove = [];
+
+		this.children.forEach(child => {
+			if (child &&
+				(child.x >= x && child.x < x + width) &&
+				(child.y >= y && child.y < y + height)
+			) {
+				if (child.isBitmapText) {
+					child.text = '';
+				} else {
+					toRemove.push(child);
+				}
+			}
+		});
+
+		toRemove.forEach(child => {
+			child.destroy({
+				children: true,
+				texture: true,
+			});
+			self.removeChild(child);
+		});
 	}
 
 	/**
-	 * Performs a block transfer.
+	 * Draws PIXI BitmapText.
+	 *
+	 * @method drawText
+	 * @param {String} text The text that will be drawn
+	 * @param {Number} x The x coordinate for the left of the text
+	 * @param {Number} y The y coordinate for the top of the text
+	 * @param {Number} maxWidth The maximum allowed width of the text
+	 * @param {Number} lineHeight The height of the text line
+	 * @param {String} align The alignment of the text
+	 */
+	drawText(text, x, y, maxWidth, lineHeight, align) {
+		if (text === undefined) return;
+		const alpha = this._paintOpacity / 255;
+		maxWidth = Math.floor(maxWidth) || 0xffffffff;
+		lineHeight = Math.floor(lineHeight);
+		// [note] Non-String values crash BitmapText updates in PIXI 5.3.3
+		// since they use {text}.replace
+		text = String(text);
+
+		if (align === 'center') {
+			x = x + (maxWidth / 2);
+		} else if (align === 'right') {
+			x = x + maxWidth;
+		}
+		y = y + lineHeight - this.fontSize * 1.25;
+
+		x = Math.floor(x);
+		y = Math.floor(y);
+
+		// Try to updating existing text object at the same X and Y position
+		const updateExisting = this._updateExistingText(text, x, y, alpha);
+		// If no text object exists, create a new one
+		if (!updateExisting) {
+			this._drawNewText(text, x, y, alpha, maxWidth, lineHeight, align);
+		}
+	}
+
+	/**
+	 * Updates instance of PIXI BitmapText.
+	 *
+	 * @method _updateExistingText
+	 * @return {Boolean} Returns true if update was successful
+	 * @private
+	 */
+	_updateExistingText(text, x, y, alpha) {
+		for (const bitmapTextInstance of this.textCache) {
+			if (bitmapTextInstance.x === x && bitmapTextInstance.y === y) {
+				const newTint = PIXI.utils.string2hex(this.textColor);
+				if (bitmapTextInstance._tint !== newTint) bitmapTextInstance.tint = newTint;
+				if (bitmapTextInstance.text !== text) bitmapTextInstance.text = text;
+				if (bitmapTextInstance.alpha !== alpha) bitmapTextInstance.alpha = alpha;
+				this.addChild(bitmapTextInstance);
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	/**
+	 * Creates instances of PIXI BitmapText.
+	 *
+	 * @method _drawNewText
+	 * @private
+	 */
+	_drawNewText(text, x, y, alpha, maxWidth, lineHeight, align) {
+		const style = {
+			fontFamily: this.fontFace,
+			fontSize: this.fontSize,
+			fill: 0xffffff,
+			lineHeight,
+			wordWrap: this.wordWrap,
+			wordWrapWidth: this.wordWrapWidth,
+			padding: this.textPadding,
+			fontStyle: this.fontItalic ? 'italic' : 'normal',
+			stroke: this.outlineColor,
+			strokeThickness: this.outlineWidth,
+		};
+
+		if (!PIXI.BitmapFont.available[style.fontFamily]) {
+			this._makeBitmapFont(style);
+		}
+
+		const pixiText = new PIXI.BitmapText(text, {
+			fontName: style.fontFamily,
+			fontSize: style.fontSize,
+		});
+
+		if (!style.wordWrap && pixiText.width > maxWidth) {
+			pixiText.scale.x = maxWidth / pixiText.width;
+		}
+
+		if (align === 'center') {
+			pixiText.anchor.set(0.5, 0);
+		} else if (align === 'right') {
+			pixiText.anchor.set(1, 0);
+		}
+
+		if (pixiText) {
+			pixiText.x = x;
+			pixiText.y = y;
+			pixiText.tint = PIXI.utils.string2hex(this.textColor);
+			pixiText.alpha = alpha;
+			pixiText.isBitmapText = true;
+			this.textCache.push(pixiText);
+			this.addChild(pixiText);
+		}
+	}
+
+	/**
+	 * Creates a bitmap font.
+	 *
+	 * @method _makeBitmapFont
+	 * @private
+	 */
+	_makeBitmapFont(style) {
+		const bitmapOptions = {
+			chars: [
+				[" ", "~"],
+				'\u2192',
+				'’',
+			]
+		};
+		PIXI.BitmapFont.from(style.fontFamily, style, bitmapOptions);
+	}
+
+	/**
+	 * Returns the width of the specified text.
+	 *
+	 * @method measureTextWidth
+	 * @param {String} text The text to be measured
+	 * @return {Number} The width of the text in pixels
+	 */
+	measureTextWidth(text) {
+		text = String(text);
+		const style = new PIXI.TextStyle({
+			fontFamily: this.fontFace,
+			fontSize: this.fontSize,
+			padding: this.textPadding,
+		});
+		const textMetrics = PIXI.TextMetrics.measureText(text, style);
+		return textMetrics.width;
+	}
+
+	/**
+	 * Creates a nine slice plane.
+	 *
+	 * @method create9Slice
+	 */
+	create9Slice(source, x, y, w, h, tl, tr, br, bl) {
+		return new PIXI.NineSlicePlane(
+			new PIXI.Texture(
+				source,
+				new PIXI.Rectangle(x, y, w, h)
+			), tl, tr, br, bl
+		);
+	}
+
+	/**
+	 * Creates a tiling sprite.
+	 *
+	 * @method createTilingSprite
+	 */
+	createTilingSprite(source, x, y, w, h, tileWidth, tileHeight) {
+		return new PIXI.TilingSprite(
+			new PIXI.Texture(
+				source,
+				new PIXI.Rectangle(x, y, w, h)
+			), tileWidth, tileHeight
+		);
+	}
+
+	/**
+	 * Creates a sprite by cropping a texture.
+	 *
+	 * @method createCroppedSprite
+	 */
+	createCroppedSprite(source, x, y, w, h) {
+		return new PIXI.Sprite(
+			new PIXI.Texture(
+				source,
+				new PIXI.Rectangle(x, y, w, h)
+			)
+		);
+	}
+
+	/**
+	 * Equivalent to a block transfer.
+	 * Create a sprite and adds it as a child.
 	 *
 	 * @method blt
 	 * @param {Bitmap} source The bitmap to draw
@@ -340,9 +559,8 @@ class Bitmap {
 	blt({
 		width,
 		height,
-		_canvas
+		baseTexture
 	}, sx, sy, sw, sh, dx, dy, dw, dh) {
-		console.info('[Bitmap.blt] Canvas block transfer is slow.');
 		dw = dw || sw;
 		dh = dh || sh;
 		sx = Math.floor(sx);
@@ -355,10 +573,51 @@ class Bitmap {
 		dh = Math.floor(dh);
 		if (sx >= 0 && sy >= 0 && sw > 0 && sh > 0 && dw > 0 && dh > 0 &&
 			sx + sw <= width && sy + sh <= height) {
-			this._context.globalCompositeOperation = 'source-over';
-			this._context.drawImage(_canvas, sx, sy, sw, sh, dx, dy, dw, dh);
-			this._setDirty();
+			const sprite = this.createCroppedSprite(baseTexture, sx, sy, sw, sh);
+			if (sprite) {
+				sprite.x = dx;
+				sprite.y = dy;
+				sprite.width = dw;
+				sprite.height = dh;
+				sprite.alpha = this._paintOpacity / 255;
+				this.addChild(sprite);
+				return sprite;
+			}
 		}
+	}
+
+	/**
+	 * Fills the specified rectangle.
+	 *
+	 * @method fillRect
+	 * @param {Number} x The x coordinate for the upper-left corner
+	 * @param {Number} y The y coordinate for the upper-left corner
+	 * @param {Number} width The width of the rectangle to fill
+	 * @param {Number} height The height of the rectangle to fill
+	 * @param {String} color The color of the rectangle in CSS format
+	 */
+	fillRect(x, y, width, height, color) {
+		x = Math.floor(x);
+		y = Math.floor(y);
+		width = Math.floor(width);
+		height = Math.floor(height);
+		const rectangle = new PIXI.Graphics();
+		color = PIXI.utils.string2hex(color);
+		rectangle.beginFill(color);
+		rectangle.drawRect(
+			0,
+			0,
+			width,
+			height
+		);
+		rectangle.endFill();
+		if (rectangle) {
+			rectangle.x = x;
+			rectangle.y = y;
+			rectangle.alpha = this._paintOpacity / 255;
+			this.addChild(rectangle);
+		}
+		return rectangle;
 	}
 
 	/**
@@ -380,93 +639,11 @@ class Bitmap {
 		height,
 		_image
 	}, sx, sy, sw, sh, dx, dy, dw, dh) {
-		dw = dw || sw;
-		dh = dh || sh;
-		if (sx >= 0 && sy >= 0 && sw > 0 && sh > 0 && dw > 0 && dh > 0 &&
-			sx + sw <= width && sy + sh <= height) {
-			this._context.globalCompositeOperation = 'source-over';
-			this._context.drawImage(_image, sx, sy, sw, sh, dx, dy, dw, dh);
-			this._setDirty();
-		}
-	}
-
-	/**
-	 * Returns pixel color at the specified point.
-	 *
-	 * @method getPixel
-	 * @param {Number} x The x coordinate of the pixel in the bitmap
-	 * @param {Number} y The y coordinate of the pixel in the bitmap
-	 * @return {String} The pixel color (hex format)
-	 */
-	getPixel(x, y) {
-		const data = this._context.getImageData(x, y, 1, 1)
-			.data;
-		let result = '#';
-		for (let i = 0; i < 3; i++) {
-			result += data[i].toString(16)
-				.padZero(2);
-		}
-		return result;
-	}
-
-	/**
-	 * Returns alpha pixel value at the specified point.
-	 *
-	 * @method getAlphaPixel
-	 * @param {Number} x The x coordinate of the pixel in the bitmap
-	 * @param {Number} y The y coordinate of the pixel in the bitmap
-	 * @return {String} The alpha value
-	 */
-	getAlphaPixel(x, y) {
-		const data = this._context.getImageData(x, y, 1, 1)
-			.data;
-		return data[3];
-	}
-
-	/**
-	 * Clears the specified rectangle.
-	 *
-	 * @method clearRect
-	 * @param {Number} x The x coordinate for the upper-left corner
-	 * @param {Number} y The y coordinate for the upper-left corner
-	 * @param {Number} width The width of the rectangle to clear
-	 * @param {Number} height The height of the rectangle to clear
-	 */
-	clearRect(x, y, width, height) {
-		this._context.clearRect(x, y, width, height);
-		this._setDirty();
-	}
-
-	/**
-	 * Clears the entire bitmap.
-	 *
-	 * @method clear
-	 */
-	clear() {
-		this.clearRect(0, 0, this.width, this.height);
-	}
-
-	/**
-	 * Fills the specified rectangle.
-	 *
-	 * @method fillRect
-	 * @param {Number} x The x coordinate for the upper-left corner
-	 * @param {Number} y The y coordinate for the upper-left corner
-	 * @param {Number} width The width of the rectangle to fill
-	 * @param {Number} height The height of the rectangle to fill
-	 * @param {String} color The color of the rectangle in CSS format
-	 */
-	fillRect(x, y, width, height, color) {
-		x = Math.floor(x);
-		y = Math.floor(y);
-		width = Math.floor(width);
-		height = Math.floor(height);
-		const context = this._context;
-		context.save();
-		context.fillStyle = color;
-		context.fillRect(x, y, width, height);
-		context.restore();
-		this._setDirty();
+		return this.blt({
+			width,
+			height,
+			_image
+		}, sx, sy, sw, sh, dx, dy, dw, dh);
 	}
 
 	/**
@@ -480,253 +657,11 @@ class Bitmap {
 	}
 
 	/**
-	 * Draws the rectangle with a gradation.
-	 *
-	 * @method gradientFillRect
-	 * @param {Number} x The x coordinate for the upper-left corner
-	 * @param {Number} y The y coordinate for the upper-left corner
-	 * @param {Number} width The width of the rectangle to fill
-	 * @param {Number} height The height of the rectangle to fill
-	 * @param {String} color1 The gradient starting color
-	 * @param {String} color2 The gradient ending color
-	 * @param {Boolean} vertical Wether the gradient should be draw as vertical or not
-	 */
-	gradientFillRect(x, y, width, height, color1, color2, vertical) {
-		const context = this._context;
-		let grad;
-		if (vertical) {
-			grad = context.createLinearGradient(x, y, x, y + height);
-		} else {
-			grad = context.createLinearGradient(x, y, x + width, y);
-		}
-		grad.addColorStop(0, color1);
-		grad.addColorStop(1, color2);
-		context.save();
-		context.fillStyle = grad;
-		context.fillRect(x, y, width, height);
-		context.restore();
-		this._setDirty();
-	}
-
-	/**
-	 * Draw a bitmap in the shape of a circle
-	 *
-	 * @method drawCircle
-	 * @param {Number} x The x coordinate based on the circle center
-	 * @param {Number} y The y coordinate based on the circle center
-	 * @param {Number} radius The radius of the circle
-	 * @param {String} color The color of the circle in CSS format
-	 */
-	drawCircle(x, y, radius, color) {
-		x = Math.floor(x);
-		y = Math.floor(y);
-		const context = this._context;
-		context.save();
-		context.fillStyle = color;
-		context.beginPath();
-		context.arc(x, y, radius, 0, Math.PI * 2, false);
-		context.fill();
-		context.restore();
-		this._setDirty();
-	}
-
-	/**
-	 * Draws the outline text to the bitmap.
-	 *
-	 * @method drawText
-	 * @param {String} text The text that will be drawn
-	 * @param {Number} x The x coordinate for the left of the text
-	 * @param {Number} y The y coordinate for the top of the text
-	 * @param {Number} maxWidth The maximum allowed width of the text
-	 * @param {Number} lineHeight The height of the text line
-	 * @param {String} align The alignment of the text
-	 */
-	drawText(text, x, y, maxWidth, lineHeight, align) {
-		// Note: Firefox has a bug with textBaseline: Bug 737852
-		//       So we use 'alphabetic' here.
-		if (text !== undefined) {
-			x = Math.floor(x);
-			y = Math.floor(y);
-			maxWidth = Math.floor(maxWidth) || 0xffffffff;
-			lineHeight = Math.floor(lineHeight);
-			let tx = x;
-			const ty = y + lineHeight - Math.round((lineHeight - this.fontSize * 0.7) / 2);
-			const context = this._context;
-			const alpha = context.globalAlpha;
-			if (align === 'center') {
-				tx += maxWidth / 2;
-			}
-			if (align === 'right') {
-				tx += maxWidth;
-			}
-			context.save();
-			context.font = this._makeFontNameText();
-			context.textAlign = align;
-			context.textBaseline = 'alphabetic';
-			context.globalAlpha = 1;
-			this._drawTextOutline(text, tx, ty, maxWidth);
-			context.globalAlpha = alpha;
-			this._drawTextBody(text, tx, ty, maxWidth);
-			context.restore();
-			this._setDirty();
-		}
-	}
-
-	/**
 	 * Deprecated function.
 	 *
 	 * @method drawSmallText
 	 */
-	drawSmallText(text, x, y, maxWidth, lineHeight, align) {}
-
-	/**
-	 * Returns the width of the specified text.
-	 *
-	 * @method measureTextWidth
-	 * @param {String} text The text to be measured
-	 * @return {Number} The width of the text in pixels
-	 */
-	measureTextWidth(text) {
-		const context = this._context;
-		context.save();
-		context.font = this._makeFontNameText();
-		const width = context.measureText(text)
-			.width;
-		context.restore();
-		return width;
-	}
-
-	/**
-	 * Changes the color tone of the entire bitmap.
-	 *
-	 * @method adjustTone
-	 * @param {Number} r The red strength in the range (-255, 255)
-	 * @param {Number} g The green strength in the range (-255, 255)
-	 * @param {Number} b The blue strength in the range (-255, 255)
-	 */
-	adjustTone(r, g, b) {
-		if ((r || g || b) && this.width > 0 && this.height > 0) {
-			const context = this._context;
-			const imageData = context.getImageData(0, 0, this.width, this.height);
-			const pixels = imageData.data;
-			for (let i = 0; i < pixels.length; i += 4) {
-				pixels[i + 0] += r;
-				pixels[i + 1] += g;
-				pixels[i + 2] += b;
-			}
-			context.putImageData(imageData, 0, 0);
-			this._setDirty();
-		}
-	}
-
-	/**
-	 * Rotates the hue of the entire bitmap.
-	 *
-	 * @method rotateHue
-	 * @param {Number} offset The hue offset in 360 degrees
-	 */
-	rotateHue(offset) {
-		if (!offset) return;
-
-		function rgbToHsl(r, g, b) {
-			const cmin = Math.min(r, g, b);
-			const cmax = Math.max(r, g, b);
-			let h = 0;
-			let s = 0;
-			const l = (cmin + cmax) / 2;
-			const delta = cmax - cmin;
-
-			if (delta > 0) {
-				if (r === cmax) {
-					h = 60 * (((g - b) / delta + 6) % 6);
-				} else if (g === cmax) {
-					h = 60 * ((b - r) / delta + 2);
-				} else {
-					h = 60 * ((r - g) / delta + 4);
-				}
-				s = delta / (255 - Math.abs(2 * l - 255));
-			}
-			return [h, s, l];
-		}
-
-		function hslToRgb(h, s, l) {
-			const c = (255 - Math.abs(2 * l - 255)) * s;
-			const x = c * (1 - Math.abs((h / 60) % 2 - 1));
-			const m = l - c / 2;
-			const cm = c + m;
-			const xm = x + m;
-
-			if (h < 60) {
-				return [cm, xm, m];
-			} else if (h < 120) {
-				return [xm, cm, m];
-			} else if (h < 180) {
-				return [m, cm, xm];
-			} else if (h < 240) {
-				return [m, xm, cm];
-			} else if (h < 300) {
-				return [xm, m, cm];
-			} else {
-				return [cm, m, xm];
-			}
-		}
-
-		if (offset && this.width > 0 && this.height > 0) {
-			offset = ((offset % 360) + 360) % 360;
-			const context = this._context;
-			const imageData = context.getImageData(0, 0, this.width, this.height);
-			const pixels = imageData.data;
-			for (let i = 0; i < pixels.length; i += 4) {
-				const hsl = rgbToHsl(pixels[i + 0], pixels[i + 1], pixels[i + 2]);
-				const h = (hsl[0] + offset) % 360;
-				const s = hsl[1];
-				const l = hsl[2];
-				const rgb = hslToRgb(h, s, l);
-				pixels[i + 0] = rgb[0];
-				pixels[i + 1] = rgb[1];
-				pixels[i + 2] = rgb[2];
-			}
-			console.info('[Bitmap.rotateHue] Rotate hue on canvas is slow.');
-			context.putImageData(imageData, 0, 0);
-			this._setDirty();
-		}
-	}
-
-	/**
-	 * Applies a blur effect to the bitmap.
-	 *
-	 * @method blur
-	 */
-	blur() {
-		for (let i = 0; i < 2; i++) {
-			const w = this.width;
-			const h = this.height;
-			const canvas = this._canvas;
-			const context = this._context;
-			const tempCanvas = document.createElement('canvas');
-			const tempContext = tempCanvas.getContext('2d');
-			console.info('[Bitmap.blur] Blur on canvas is slow.');
-			tempCanvas.width = w + 2;
-			tempCanvas.height = h + 2;
-			tempContext.drawImage(canvas, 0, 0, w, h, 1, 1, w, h);
-			tempContext.drawImage(canvas, 0, 0, w, 1, 1, 0, w, 1);
-			tempContext.drawImage(canvas, 0, 0, 1, h, 0, 1, 1, h);
-			tempContext.drawImage(canvas, 0, h - 1, w, 1, 1, h + 1, w, 1);
-			tempContext.drawImage(canvas, w - 1, 0, 1, h, w + 1, 1, 1, h);
-			context.save();
-			context.fillStyle = 'black';
-			context.fillRect(0, 0, w, h);
-			context.globalCompositeOperation = 'lighter';
-			context.globalAlpha = 1 / 9;
-			for (let y = 0; y < 3; y++) {
-				for (let x = 0; x < 3; x++) {
-					context.drawImage(tempCanvas, x, y, w, h, 0, 0, w, h);
-				}
-			}
-			context.restore();
-		}
-		this._setDirty();
-	}
+	drawSmallText(text, x, y, maxWidth, lineHeight, align) { }
 
 	/**
 	 * Add a callback function that will be called when the bitmap is loaded.
@@ -738,7 +673,7 @@ class Bitmap {
 		if (!this.isReady()) {
 			this._loadListeners.push(listner);
 		} else {
-			listner(this);
+			if (this._image) listner(this); // Never returns if this._image is null - not intended
 		}
 	}
 
@@ -748,7 +683,335 @@ class Bitmap {
 	 */
 	_makeFontNameText() {
 		return `${(this.fontItalic ? 'Italic ' : '') +
-    this.fontSize}px ${this.fontFace}`;
+			this.fontSize}px ${this.fontFace}`;
+	}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	/**
+	 * Bitmap states(Bitmap._loadingState):
+	 *
+	 * none:
+	 * Empty Bitmap
+	 *
+	 * pending:
+	 * Url requested, but pending to load until startRequest called
+	 *
+	 * purged:
+	 * Url request completed and purged.
+	 *
+	 * requesting:
+	 * Requesting supplied URI now.
+	 *
+	 * requestCompleted:
+	 * Request completed
+	 *
+	 * decrypting:
+	 * requesting encrypted data from supplied URI or decrypting it.
+	 *
+	 * decryptCompleted:
+	 * Decrypt completed
+	 *
+	 * loaded:
+	 * loaded. isReady() === true, so It's usable.
+	 *
+	 * error:
+	 * error occurred
+	 *
+	 */
+
+	_createCanvas(width, height) {
+		this.__canvas = {};
+		// this.__canvas = this.__canvas || document.createElement('canvas');
+		// this.__context = this.__canvas.getContext('2d');
+
+		// this.__canvas.width = Math.max(width || 0, 1);
+		// this.__canvas.height = Math.max(height || 0, 1);
+
+		// if (this._image) {
+		// 	const w = Math.max(this._image.width || 0, 1);
+		// 	const h = Math.max(this._image.height || 0, 1);
+		// 	this.__canvas.width = w;
+		// 	this.__canvas.height = h;
+		// 	this._createBaseTexture(this._canvas);
+
+		// 	console.info('[Bitmap._createCanvas] Drawing %o to canvas is slow.', this._image);
+		// 	this.__context.drawImage(this._image, 0, 0);
+		// }
+
+		// this._setDirty();
+
+		if (this._image) {
+			const w = Math.max(this._image.width || 0, 1);
+			const h = Math.max(this._image.height || 0, 1);
+			this.__canvas.width = w;
+			this.__canvas.height = h;
+			this._createBaseTexture(this._image);
+		}
+		this._setDirty();
+	}
+
+	_createBaseTexture(source) {
+		if (source) {
+			this.__baseTexture = source.baseTexture;
+			this.__baseTexture.mipmap = false;
+			this.__baseTexture.width = source.width;
+			this.__baseTexture.height = source.height;
+			this.__baseTexture.scaleMode = PIXI.SCALE_MODES.NEAREST;
+		} else {
+			console.error('Bitmap._createBaseTexture missing source', source, this);
+		}
+
+		// this.__baseTexture = new PIXI.BaseTexture(source);
+		// this.__baseTexture.mipmap = false;
+		// this.__baseTexture.width = source.width;
+		// this.__baseTexture.height = source.height;
+		// this.__baseTexture.scaleMode = PIXI.SCALE_MODES.NEAREST;
+	}
+
+	_clearImgInstance() {
+		// this._image.src = "";
+		// this._image.onload = null;
+		// this._image.onerror = null;
+		// this._errorListener = null;
+		// this._loadListener = null;
+
+		// Bitmap._reuseImages.push(this._image);
+		this._image = null;
+	}
+
+	_renewCanvas() {
+		const newImage = this._image;
+		if (newImage && this.__canvas && (this.__canvas.width < newImage.width || this.__canvas.height < newImage.height)) {
+			this._createCanvas();
+		}
+	}
+
+	/**
+	 * Checks whether the bitmap is ready to render.
+	 *
+	 * @method isReady
+	 * @return {Boolean} True if the bitmap is ready to render
+	 */
+	isReady() {
+		return this._loadingState === 'loaded' || this._loadingState === 'none';
+	}
+
+	/**
+	 * Checks whether a loading error has occurred.
+	 *
+	 * @method isError
+	 * @return {Boolean} True if a loading error has occurred
+	 */
+	isError() {
+		return this._loadingState === 'error';
+	}
+
+	/**
+	 * touch the resource
+	 * @method touch
+	 */
+	touch() {
+		if (this.cacheEntry) {
+			this.cacheEntry.touch();
+		}
+	}
+
+	/**
+	 * Returns pixel color at the specified point.
+	 *
+	 * @method getPixel
+	 * @param {Number} x The x coordinate of the pixel in the bitmap
+	 * @param {Number} y The y coordinate of the pixel in the bitmap
+	 * @return {String} The pixel color (hex format)
+	 */
+	getPixel(x, y) {
+		// const data = this._context.getImageData(x, y, 1, 1)
+		// 	.data;
+		// let result = '#';
+		// for (let i = 0; i < 3; i++) {
+		// 	result += data[i].toString(16)
+		// 		.padZero(2);
+		// }
+		// return result;
+		return '#ffffff';
+	}
+
+	/**
+	 * Returns alpha pixel value at the specified point.
+	 *
+	 * @method getAlphaPixel
+	 * @param {Number} x The x coordinate of the pixel in the bitmap
+	 * @param {Number} y The y coordinate of the pixel in the bitmap
+	 * @return {String} The alpha value
+	 */
+	getAlphaPixel(x, y) {
+		// const data = this._context.getImageData(x, y, 1, 1)
+		// 	.data;
+		// return data[3];
+		return 1;
+	}
+
+	/**
+	 * Changes the color tone of the entire bitmap.
+	 *
+	 * @method adjustTone
+	 * @param {Number} r The red strength in the range (-255, 255)
+	 * @param {Number} g The green strength in the range (-255, 255)
+	 * @param {Number} b The blue strength in the range (-255, 255)
+	 */
+	adjustTone(r, g, b) {
+		// if ((r || g || b) && this.width > 0 && this.height > 0) {
+		// 	const context = this._context;
+		// 	const imageData = context.getImageData(0, 0, this.width, this.height);
+		// 	const pixels = imageData.data;
+		// 	for (let i = 0; i < pixels.length; i += 4) {
+		// 		pixels[i + 0] += r;
+		// 		pixels[i + 1] += g;
+		// 		pixels[i + 2] += b;
+		// 	}
+		// 	context.putImageData(imageData, 0, 0);
+		// 	this._setDirty();
+		// }
+	}
+
+	/**
+	 * Rotates the hue of the entire bitmap.
+	 *
+	 * @method rotateHue
+	 * @param {Number} offset The hue offset in 360 degrees
+	 */
+	rotateHue(offset) {
+		// if (!offset) return;
+
+		// function rgbToHsl(r, g, b) {
+		// 	const cmin = Math.min(r, g, b);
+		// 	const cmax = Math.max(r, g, b);
+		// 	let h = 0;
+		// 	let s = 0;
+		// 	const l = (cmin + cmax) / 2;
+		// 	const delta = cmax - cmin;
+
+		// 	if (delta > 0) {
+		// 		if (r === cmax) {
+		// 			h = 60 * (((g - b) / delta + 6) % 6);
+		// 		} else if (g === cmax) {
+		// 			h = 60 * ((b - r) / delta + 2);
+		// 		} else {
+		// 			h = 60 * ((r - g) / delta + 4);
+		// 		}
+		// 		s = delta / (255 - Math.abs(2 * l - 255));
+		// 	}
+		// 	return [h, s, l];
+		// }
+
+		// function hslToRgb(h, s, l) {
+		// 	const c = (255 - Math.abs(2 * l - 255)) * s;
+		// 	const x = c * (1 - Math.abs((h / 60) % 2 - 1));
+		// 	const m = l - c / 2;
+		// 	const cm = c + m;
+		// 	const xm = x + m;
+
+		// 	if (h < 60) {
+		// 		return [cm, xm, m];
+		// 	} else if (h < 120) {
+		// 		return [xm, cm, m];
+		// 	} else if (h < 180) {
+		// 		return [m, cm, xm];
+		// 	} else if (h < 240) {
+		// 		return [m, xm, cm];
+		// 	} else if (h < 300) {
+		// 		return [xm, m, cm];
+		// 	} else {
+		// 		return [cm, m, xm];
+		// 	}
+		// }
+
+		// if (offset && this.width > 0 && this.height > 0) {
+		// 	offset = ((offset % 360) + 360) % 360;
+		// 	const context = this._context;
+		// 	const imageData = context.getImageData(0, 0, this.width, this.height);
+		// 	const pixels = imageData.data;
+		// 	for (let i = 0; i < pixels.length; i += 4) {
+		// 		const hsl = rgbToHsl(pixels[i + 0], pixels[i + 1], pixels[i + 2]);
+		// 		const h = (hsl[0] + offset) % 360;
+		// 		const s = hsl[1];
+		// 		const l = hsl[2];
+		// 		const rgb = hslToRgb(h, s, l);
+		// 		pixels[i + 0] = rgb[0];
+		// 		pixels[i + 1] = rgb[1];
+		// 		pixels[i + 2] = rgb[2];
+		// 	}
+		// 	console.info('[Bitmap.rotateHue] Rotate hue on canvas is slow.');
+		// 	context.putImageData(imageData, 0, 0);
+		// 	this._setDirty();
+		// }
+	}
+
+	/**
+	 * Applies a blur effect to the bitmap.
+	 *
+	 * @method blur
+	 */
+	blur() {
+		// for (let i = 0; i < 2; i++) {
+		// 	const w = this.width;
+		// 	const h = this.height;
+		// 	const canvas = this._canvas;
+		// 	const context = this._context;
+		// 	const tempCanvas = document.createElement('canvas');
+		// 	const tempContext = tempCanvas.getContext('2d');
+		// 	console.info('[Bitmap.blur] Blur on canvas is slow.');
+		// 	tempCanvas.width = w + 2;
+		// 	tempCanvas.height = h + 2;
+		// 	tempContext.drawImage(canvas, 0, 0, w, h, 1, 1, w, h);
+		// 	tempContext.drawImage(canvas, 0, 0, w, 1, 1, 0, w, 1);
+		// 	tempContext.drawImage(canvas, 0, 0, 1, h, 0, 1, 1, h);
+		// 	tempContext.drawImage(canvas, 0, h - 1, w, 1, 1, h + 1, w, 1);
+		// 	tempContext.drawImage(canvas, w - 1, 0, 1, h, w + 1, 1, 1, h);
+		// 	context.save();
+		// 	context.fillStyle = 'black';
+		// 	context.fillRect(0, 0, w, h);
+		// 	context.globalCompositeOperation = 'lighter';
+		// 	context.globalAlpha = 1 / 9;
+		// 	for (let y = 0; y < 3; y++) {
+		// 		for (let x = 0; x < 3; x++) {
+		// 			context.drawImage(tempCanvas, x, y, w, h, 0, 0, w, h);
+		// 		}
+		// 	}
+		// 	context.restore();
+		// }
+		// this._setDirty();
 	}
 
 	/**
@@ -760,11 +1023,11 @@ class Bitmap {
 	 * @private
 	 */
 	_drawTextOutline(text, tx, ty, maxWidth) {
-		const context = this._context;
-		context.strokeStyle = this.outlineColor;
-		context.lineWidth = this.outlineWidth;
-		context.lineJoin = 'round';
-		context.strokeText(text, tx, ty, maxWidth);
+		// const context = this._context;
+		// context.strokeStyle = this.outlineColor;
+		// context.lineWidth = this.outlineWidth;
+		// context.lineJoin = 'round';
+		// context.strokeText(text, tx, ty, maxWidth);
 	}
 
 	/**
@@ -776,9 +1039,9 @@ class Bitmap {
 	 * @private
 	 */
 	_drawTextBody(text, tx, ty, maxWidth) {
-		const context = this._context;
-		context.fillStyle = this.textColor;
-		context.fillText(text, tx, ty, maxWidth);
+		// const context = this._context;
+		// context.fillStyle = this.textColor;
+		// context.fillText(text, tx, ty, maxWidth);
 	}
 
 	/**
@@ -786,62 +1049,46 @@ class Bitmap {
 	 * @private
 	 */
 	_onLoad() {
-		this._image.removeEventListener('load', this._loadListener);
-		this._image.removeEventListener('error', this._errorListener);
-
 		this._renewCanvas();
 
 		switch (this._loadingState) {
-		case 'requesting':
-			this._loadingState = 'requestCompleted';
-			if (this._decodeAfterRequest) {
-				this.decode();
-			} else {
-				this._loadingState = 'purged';
-				this._clearImgInstance();
-			}
-			break;
+			case 'requesting':
+				this._loadingState = 'requestCompleted';
 
-		case 'decrypting':
-			window.URL.revokeObjectURL(this._image.src);
-			this._loadingState = 'decryptCompleted';
-			if (this._decodeAfterRequest) {
-				this.decode();
-			} else {
-				this._loadingState = 'purged';
-				this._clearImgInstance();
-			}
-			break;
+				if (this._decodeAfterRequest) {
+					this.decode();
+				} else {
+					this._loadingState = 'purged';
+					this._clearImgInstance();
+				}
+				break;
 		}
 	}
 
 	decode() {
 		switch (this._loadingState) {
-		case 'requestCompleted':
-		case 'decryptCompleted':
-			this._loadingState = 'loaded';
+			case 'requestCompleted':
+				this._loadingState = 'loaded';
+				this._createBaseTexture(this._image);
+				this._setDirty();
+				this._callLoadListeners();
+				break;
 
-			if (!this.__canvas) this._createBaseTexture(this._image);
-			this._setDirty();
-			this._callLoadListeners();
-			break;
+			case 'requesting':
+				this._decodeAfterRequest = true;
+				// 		if (!this._loader) {
+				// 			this._loader = ResourceHandler.createLoader(this._url, this._requestImage.bind(this, this._url), this._onError.bind(this));
+				// 			this._image.removeEventListener('error', this._errorListener);
+				// 			this._image.addEventListener('error', this._errorListener = this._loader);
+				// 		}
+				break;
 
-		case 'requesting':
-		case 'decrypting':
-			this._decodeAfterRequest = true;
-			if (!this._loader) {
-				this._loader = ResourceHandler.createLoader(this._url, this._requestImage.bind(this, this._url), this._onError.bind(this));
-				this._image.removeEventListener('error', this._errorListener);
-				this._image.addEventListener('error', this._errorListener = this._loader);
-			}
-			break;
-
-		case 'pending':
-		case 'purged':
-		case 'error':
-			this._decodeAfterRequest = true;
-			this._requestImage(this._url);
-			break;
+			case 'pending':
+			case 'purged':
+			case 'error':
+				this._decodeAfterRequest = true;
+				this._requestImage(this._url);
+				break;
 		}
 	}
 
@@ -861,8 +1108,8 @@ class Bitmap {
 	 * @private
 	 */
 	_onError() {
-		this._image.removeEventListener('load', this._loadListener);
-		this._image.removeEventListener('error', this._errorListener);
+		// this._image.removeEventListener('load', this._loadListener);
+		// this._image.removeEventListener('error', this._errorListener);
 		this._loadingState = 'error';
 	}
 
@@ -890,28 +1137,53 @@ class Bitmap {
 	}
 
 	_requestImage(url) {
-		if (Bitmap._reuseImages.length !== 0) {
-			this._image = Bitmap._reuseImages.pop();
+		if (this._loader.resources && this._loader.resources[url]) {
+			this._image = this._loader.resources[url].texture;
+			this._width = this._image.width;
+			this._height = this._image.height;
+			Bitmap.prototype._onLoad.call(this);
 		} else {
-			this._image = new Image();
+			this._loader.add(url, url);
+			this._url = url;
+			this._loadingState = 'requesting';
+
+			const context = this;
+
+			this._loader.load((loader, resources) => {
+				this._image = resources[url].texture;
+				this._width = this._image.width;
+				this._height = this._image.height;
+				Bitmap.prototype._onLoad.call(context);
+			});
+
+			this._loader.onError.add(() => {
+				Bitmap.prototype._onError.call(context);
+			});
+
+			// this._loader.onLoad.add(() => {
+			// 	console.log('this._loader.onLoad.add');
+			// });
 		}
 
-		if (this._decodeAfterRequest && !this._loader) {
-			this._loader = ResourceHandler.createLoader(url, this._requestImage.bind(this, url), this._onError.bind(this));
-		}
+		// if (Bitmap._reuseImages.length !== 0) {
+		// 	this._image = Bitmap._reuseImages.pop();
+		// } else {
+		// 	this._image = new Image();
+		// }
 
-		this._url = url;
-		this._loadingState = 'requesting';
+		// if (this._decodeAfterRequest && !this._loader) {
+		// 	this._loader = ResourceHandler.createLoader(url, this._requestImage.bind(this, url), this._onError.bind(this));
+		// }
 
-		if (!Decrypter.checkImgIgnore(url) && Decrypter.hasEncryptedImages) {
-			this._loadingState = 'decrypting';
-			Decrypter.decryptImg(url, this);
-		} else {
-			this._image.src = url;
+		// if (!Decrypter.checkImgIgnore(url) && Decrypter.hasEncryptedImages) {
+		// 	this._loadingState = 'decrypting';
+		// 	Decrypter.decryptImg(url, this);
+		// } else {
+		// this._image.src = url;
 
-			this._image.addEventListener('load', this._loadListener = Bitmap.prototype._onLoad.bind(this));
-			this._image.addEventListener('error', this._errorListener = this._loader || Bitmap.prototype._onError.bind(this));
-		}
+		// this._image.addEventListener('load', this._loadListener = Bitmap.prototype._onLoad.bind(this));
+		// this._image.addEventListener('error', this._errorListener = this._loader || Bitmap.prototype._onError.bind(this));
+		// }
 	}
 
 	isRequestOnly() {
@@ -939,7 +1211,7 @@ class Bitmap {
 	 * @param {String} url The image url of the texture
 	 * @return Bitmap
 	 */
-	static load (url) {
+	static load(url) {
 		const bitmap = Object.create(Bitmap.prototype);
 		bitmap._defer = true;
 		bitmap.initialize();
@@ -958,38 +1230,38 @@ class Bitmap {
 	 * @param {Stage} stage The stage object
 	 * @return Bitmap
 	 */
-	static snap (stage) {
+	static snap(stage) {
 		const width = Graphics.width;
 		const height = Graphics.height;
 		const bitmap = new Bitmap(width, height);
-		const context = bitmap._context;
-		const renderTexture = PIXI.RenderTexture.create({
-			width,
-			height
-		});
-		if (stage) {
-			Graphics._renderer.render(stage, {
-				renderTexture
-			});
-			stage.worldTransform.identity();
-			let canvas = null;
-			if (Graphics.isWebGL()) {
-				canvas = Graphics._renderer.plugins.extract.canvas(renderTexture);
-			} else {
-				canvas = renderTexture.baseTexture._canvasRenderTarget.canvas;
-			}
-			context.drawImage(canvas, 0, 0);
-		} else {
+		// const context = bitmap._context;
+		// const renderTexture = PIXI.RenderTexture.create({
+		// 	width,
+		// 	height
+		// });
+		// if (stage) {
+		// 	Graphics._renderer.render(stage, {
+		// 		renderTexture
+		// 	});
+		// 	stage.worldTransform.identity();
+		// 	let canvas = null;
+		// 	if (Graphics.isWebGL()) {
+		// 		canvas = Graphics._renderer.plugins.extract.canvas(renderTexture);
+		// 	} else {
+		// 		canvas = renderTexture.baseTexture._canvasRenderTarget.canvas;
+		// 	}
+		// 	context.drawImage(canvas, 0, 0);
+		// } else {
 
-		}
-		renderTexture.destroy({
-			destroyBase: true
-		});
-		bitmap._setDirty();
+		// }
+		// renderTexture.destroy({
+		// 	destroyBase: true
+		// });
+		// bitmap._setDirty();
 		return bitmap;
 	}
 
-	static request (url) {
+	static request(url) {
 		const bitmap = Object.create(Bitmap.prototype);
 		bitmap._defer = true;
 		bitmap.initialize();
@@ -1023,7 +1295,7 @@ Object.defineProperties(Bitmap.prototype, {
 
 	_baseTexture: {
 		get() {
-			if (!this.__baseTexture) this._createBaseTexture(this._image || this.__canvas);
+			if (!this.__baseTexture) this._createBaseTexture(this._image);
 			return this.__baseTexture;
 		}
 	}

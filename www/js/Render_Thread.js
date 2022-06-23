@@ -14,7 +14,6 @@ import RequestQueue from "./rpg_core/RequestQueue.js";
 import Point from "./rpg_core/Point.js";
 import Rectangle from "./rpg_core/Rectangle.js";
 import Bitmap from "./rpg_core/Bitmap.js";
-import BitmapPIXI from "./rpg_core/BitmapPIXI.js";
 import Graphics from "./rpg_core/Graphics.js";
 import Input from "./rpg_core/Input.js";
 import TouchInput from "./rpg_core/TouchInput.js";
@@ -371,7 +370,6 @@ class Render_Thread {
         self.Point = Point;
         self.Rectangle = Rectangle;
         self.Bitmap = Bitmap;
-        self.BitmapPIXI = BitmapPIXI;
         self.Graphics = Graphics;
         self.Input = Input;
         self.TouchInput = TouchInput;
