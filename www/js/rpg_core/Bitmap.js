@@ -755,8 +755,8 @@ class Bitmap extends PIXI.Container {
 		// this.__canvas = this.__canvas || document.createElement('canvas');
 		// this.__context = this.__canvas.getContext('2d');
 
-		// this.__canvas.width = Math.max(width || 0, 1);
-		// this.__canvas.height = Math.max(height || 0, 1);
+		this.__canvas.width = Math.max(width || 0, 1);
+		this.__canvas.height = Math.max(height || 0, 1);
 
 		// if (this._image) {
 		// 	const w = Math.max(this._image.width || 0, 1);
@@ -777,19 +777,25 @@ class Bitmap extends PIXI.Container {
 			this.__canvas.width = w;
 			this.__canvas.height = h;
 			this._createBaseTexture(this._image);
+		} else {
+			this._createBaseTexture(new PIXI.Resource(
+				this.__canvas.width,
+				this.__canvas.height
+			));
 		}
 		this._setDirty();
 	}
 
 	_createBaseTexture(source) {
-		if (source) {
+		if (source && source.baseTexture) {
 			this.__baseTexture = source.baseTexture;
-			this.__baseTexture.mipmap = false;
 			this.__baseTexture.width = source.width;
 			this.__baseTexture.height = source.height;
+			this.__baseTexture.mipmap = false;
 			this.__baseTexture.scaleMode = PIXI.SCALE_MODES.NEAREST;
 		} else {
-			console.error('Bitmap._createBaseTexture missing source', source, this);
+			this.__baseTexture = new PIXI.BaseTexture(source);
+			// console.error('Bitmap._createBaseTexture missing source', source, this);
 		}
 
 		// this.__baseTexture = new PIXI.BaseTexture(source);
