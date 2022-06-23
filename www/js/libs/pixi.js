@@ -16,6 +16,7 @@ export * from 'https://cdn.skypack.dev/pin/@pixi/canvas-extract@v6.4.2-4qhsX4AwF
 export * from 'https://cdn.skypack.dev/pin/@pixi/app@v6.4.2-mDml1ZEiWNC1Y4mr3CSr/mode=imports/optimized/@pixi/app.js';
 export * from 'https://cdn.skypack.dev/pin/@pixi/graphics@v6.4.2-YO0nFPF4nt7tAe6dEXWM/mode=imports/optimized/@pixi/graphics.js';
 export * from 'https://cdn.skypack.dev/pin/@pixi/mesh-extras@v6.4.2-vmni2X2NE1JRHiZX66qs/mode=imports/optimized/@pixi/mesh-extras.js';
+export * from 'https://cdn.skypack.dev/pin/@pixi/loaders@v6.4.2-kSH5X3gU5sNTsHvj9rLG/mode=imports/optimized/@pixi/loaders.js';
 import 'https://cdn.skypack.dev/pin/@pixi/mixin-cache-as-bitmap@v6.4.2-QANCt3kYjAbICTljCEFE/mode=imports/optimized/@pixi/mixin-cache-as-bitmap.js';
 export * from 'https://cdn.skypack.dev/pin/@pixi/sprite-tiling@v6.4.2-JeJLVzDVYDtXCHI3rF5H/mode=imports/optimized/@pixi/sprite-tiling.js';
 export * from 'https://cdn.skypack.dev/pin/@pixi/canvas-sprite@v6.4.2-Dc4l6KhaPzPQ6UGyvmvx/mode=imports/optimized/@pixi/canvas-sprite.js';
