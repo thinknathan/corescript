@@ -1,6 +1,13 @@
 import * as PIXI from "../libs/pixi.js";
 import { CanvasTileRenderer } from "https://cdn.skypack.dev/pin/@pixi/tilemap@v3.2.2-2dMlZoW3YNxu69J1N1DJ/mode=imports/optimized/@pixi/tilemap.js";
 
+//-----------------------------------------------------------------------------
+/**
+ * ZLayer
+ *
+ * API copied from @pixi/tilemap
+ */
+
 class ZLayer extends PIXI.Container {
 	constructor(tilemap, zIndex) {
 		super();
