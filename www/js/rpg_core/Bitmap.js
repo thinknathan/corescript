@@ -646,13 +646,6 @@ class Bitmap extends PIXI.Container {
 	}
 
 	/**
-	 * Deprecated function.
-	 *
-	 * @method drawSmallText
-	 */
-	drawSmallText(text, x, y, maxWidth, lineHeight, align) { }
-
-	/**
 	 * Add a callback function that will be called when the bitmap is loaded.
 	 *
 	 * @method addLoadListener
@@ -674,38 +667,6 @@ class Bitmap extends PIXI.Container {
 		return `${(this.fontItalic ? 'Italic ' : '') +
 			this.fontSize}px ${this.fontFace}`;
 	}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 	/**
 	 * Bitmap states(Bitmap._loadingState):
@@ -747,19 +708,6 @@ class Bitmap extends PIXI.Container {
 		this.__canvas.width = Math.max(width || 0, 1);
 		this.__canvas.height = Math.max(height || 0, 1);
 
-		// if (this._image) {
-		// 	const w = Math.max(this._image.width || 0, 1);
-		// 	const h = Math.max(this._image.height || 0, 1);
-		// 	this.__canvas.width = w;
-		// 	this.__canvas.height = h;
-		// 	this._createBaseTexture(this._canvas);
-
-		// 	console.info('[Bitmap._createCanvas] Drawing %o to canvas is slow.', this._image);
-		// 	this.__context.drawImage(this._image, 0, 0);
-		// }
-
-		// this._setDirty();
-
 		if (this._image) {
 			const w = Math.max(this._image.width || 0, 1);
 			const h = Math.max(this._image.height || 0, 1);
@@ -784,24 +732,10 @@ class Bitmap extends PIXI.Container {
 			this.__baseTexture.scaleMode = PIXI.SCALE_MODES.NEAREST;
 		} else {
 			this.__baseTexture = new PIXI.BaseTexture(source);
-			// console.error('Bitmap._createBaseTexture missing source', source, this);
 		}
-
-		// this.__baseTexture = new PIXI.BaseTexture(source);
-		// this.__baseTexture.mipmap = false;
-		// this.__baseTexture.width = source.width;
-		// this.__baseTexture.height = source.height;
-		// this.__baseTexture.scaleMode = PIXI.SCALE_MODES.NEAREST;
 	}
 
 	_clearImgInstance() {
-		// this._image.src = "";
-		// this._image.onload = null;
-		// this._image.onerror = null;
-		// this._errorListener = null;
-		// this._loadListener = null;
-
-		// Bitmap._reuseImages.push(this._image);
 		this._image = null;
 	}
 
@@ -899,126 +833,8 @@ class Bitmap extends PIXI.Container {
 	 * @param {Number} b The blue strength in the range (-255, 255)
 	 */
 	adjustTone(r, g, b) {
-		// if ((r || g || b) && this.width > 0 && this.height > 0) {
-		// 	const context = this._context;
-		// 	const imageData = context.getImageData(0, 0, this.width, this.height);
-		// 	const pixels = imageData.data;
-		// 	for (let i = 0; i < pixels.length; i += 4) {
-		// 		pixels[i + 0] += r;
-		// 		pixels[i + 1] += g;
-		// 		pixels[i + 2] += b;
-		// 	}
-		// 	context.putImageData(imageData, 0, 0);
-		// 	this._setDirty();
-		// }
+		this.tint = PIXI.utils.rgb2hex(r, g, b);
 	}
-
-	/**
-	 * Rotates the hue of the entire bitmap.
-	 *
-	 * @method rotateHue
-	 * @param {Number} offset The hue offset in 360 degrees
-	 */
-	rotateHue(offset) {
-		// if (!offset) return;
-
-		// function rgbToHsl(r, g, b) {
-		// 	const cmin = Math.min(r, g, b);
-		// 	const cmax = Math.max(r, g, b);
-		// 	let h = 0;
-		// 	let s = 0;
-		// 	const l = (cmin + cmax) / 2;
-		// 	const delta = cmax - cmin;
-
-		// 	if (delta > 0) {
-		// 		if (r === cmax) {
-		// 			h = 60 * (((g - b) / delta + 6) % 6);
-		// 		} else if (g === cmax) {
-		// 			h = 60 * ((b - r) / delta + 2);
-		// 		} else {
-		// 			h = 60 * ((r - g) / delta + 4);
-		// 		}
-		// 		s = delta / (255 - Math.abs(2 * l - 255));
-		// 	}
-		// 	return [h, s, l];
-		// }
-
-		// function hslToRgb(h, s, l) {
-		// 	const c = (255 - Math.abs(2 * l - 255)) * s;
-		// 	const x = c * (1 - Math.abs((h / 60) % 2 - 1));
-		// 	const m = l - c / 2;
-		// 	const cm = c + m;
-		// 	const xm = x + m;
-
-		// 	if (h < 60) {
-		// 		return [cm, xm, m];
-		// 	} else if (h < 120) {
-		// 		return [xm, cm, m];
-		// 	} else if (h < 180) {
-		// 		return [m, cm, xm];
-		// 	} else if (h < 240) {
-		// 		return [m, xm, cm];
-		// 	} else if (h < 300) {
-		// 		return [xm, m, cm];
-		// 	} else {
-		// 		return [cm, m, xm];
-		// 	}
-		// }
-
-		// if (offset && this.width > 0 && this.height > 0) {
-		// 	offset = ((offset % 360) + 360) % 360;
-		// 	const context = this._context;
-		// 	const imageData = context.getImageData(0, 0, this.width, this.height);
-		// 	const pixels = imageData.data;
-		// 	for (let i = 0; i < pixels.length; i += 4) {
-		// 		const hsl = rgbToHsl(pixels[i + 0], pixels[i + 1], pixels[i + 2]);
-		// 		const h = (hsl[0] + offset) % 360;
-		// 		const s = hsl[1];
-		// 		const l = hsl[2];
-		// 		const rgb = hslToRgb(h, s, l);
-		// 		pixels[i + 0] = rgb[0];
-		// 		pixels[i + 1] = rgb[1];
-		// 		pixels[i + 2] = rgb[2];
-		// 	}
-		// 	console.info('[Bitmap.rotateHue] Rotate hue on canvas is slow.');
-		// 	context.putImageData(imageData, 0, 0);
-		// 	this._setDirty();
-		// }
-	}
-
-	/**
-	 * Applies a blur effect to the bitmap.
-	 *
-	 * @method blur
-	 */
-	blur() {
-		if (Graphics.isWebGL()) {
-			const filter = new PIXI.filters.PixelateFilter(12, 12);
-			this.filters = this.filters || [];
-			this.filters.push(filter);
-			this.cacheAsBitmap = true;
-		}
-	}
-
-	/**
-	 * @method _drawTextOutline
-	 * @param {String} text
-	 * @param {Number} tx
-	 * @param {Number} ty
-	 * @param {Number} maxWidth
-	 * @private
-	 */
-	_drawTextOutline(text, tx, ty, maxWidth) {}
-
-	/**
-	 * @method _drawTextBody
-	 * @param {String} text
-	 * @param {Number} tx
-	 * @param {Number} ty
-	 * @param {Number} maxWidth
-	 * @private
-	 */
-	_drawTextBody(text, tx, ty, maxWidth) {}
 
 	/**
 	 * @method _onLoad
@@ -1032,10 +848,10 @@ class Bitmap extends PIXI.Container {
 				this._loadingState = 'requestCompleted';
 
 				// if (this._decodeAfterRequest) {
-					this.decode();
+				this.decode();
 				// } else {
-					// this._loadingState = 'purged';
-					// this._clearImgInstance();
+				// this._loadingState = 'purged';
+				// this._clearImgInstance();
 				// }
 				break;
 		}
@@ -1245,6 +1061,33 @@ class Bitmap extends PIXI.Container {
 
 		return bitmap;
 	}
+
+	/**
+	 * Deprecated function
+	 */
+	rotateHue(offset) { }
+
+	/**
+	 * Deprecated function
+	 */
+	blur() { }
+
+	/**
+	 * Deprecated function
+	 */
+	_drawTextOutline(text, tx, ty, maxWidth) { }
+
+	/**
+	 * Deprecated function
+	 */
+	_drawTextBody(text, tx, ty, maxWidth) { }
+
+	/**
+	 * Deprecated function.
+	 *
+	 * @method drawSmallText
+	 */
+	drawSmallText(text, x, y, maxWidth, lineHeight, align) { }
 }
 
 //for iOS. img consumes memory. so reuse it.
