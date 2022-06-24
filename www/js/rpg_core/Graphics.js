@@ -2,7 +2,7 @@ import * as PIXI from "../libs/pixi.js";
 import ProgressWatcher from "../rpg_core/ProgressWatcher.js";
 import ResourceHandler from "../rpg_core/ResourceHandler.js";
 import Utils from "../rpg_core/Utils.js";
-import UpperCanvas from "../rpg_core/UpperCanvasShim.js";
+import UpperCanvas from "./CanvasShim.js";
 import SceneManager from "../rpg_managers/SceneManager.js";
 import GameStats from "https://cdn.skypack.dev/-/gamestats.js@v1.0.3-FI1CU3PkCi2MgwIBR5jn/dist=es2019,mode=imports/optimized/gamestatsjs.js";
 
