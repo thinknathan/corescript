@@ -1,3 +1,4 @@
+import * as PIXI from "../libs/pixi.js";
 import Spriteset_Base from "./Spriteset_Base.js";
 import Graphics from "../rpg_core/Graphics.js";
 import Sprite from "../rpg_core/Sprite.js";
@@ -34,8 +35,14 @@ class Spriteset_Battle extends Spriteset_Base {
 	}
 
 	createBackground() {
-		this._backgroundSprite = new Sprite();
-		this._backgroundSprite.bitmap = SceneManager.backgroundBitmap();
+		// this._backgroundSprite = new Sprite();
+		// this._backgroundSprite.bitmap = SceneManager.backgroundBitmap();
+		this._backgroundSprite = new PIXI.Sprite(new PIXI.Texture(SceneManager.backgroundBitmap().baseTexture));
+		if (Graphics.isWebGL()) {
+			const filter = new PIXI.filters.PixelateFilter(12, 12);
+			this._backgroundSprite.filters = [filter];
+			this._backgroundSprite.cacheAsBitmap = true;
+		}
 		this._baseSprite.addChild(this._backgroundSprite);
 	}
 

@@ -1061,12 +1061,12 @@ class Bitmap extends PIXI.Container {
 			case 'requesting':
 				this._loadingState = 'requestCompleted';
 
-				if (this._decodeAfterRequest) {
+				// if (this._decodeAfterRequest) {
 					this.decode();
-				} else {
-					this._loadingState = 'purged';
-					this._clearImgInstance();
-				}
+				// } else {
+					// this._loadingState = 'purged';
+					// this._clearImgInstance();
+				// }
 				break;
 		}
 	}
@@ -1240,30 +1240,28 @@ class Bitmap extends PIXI.Container {
 		const width = Graphics.width;
 		const height = Graphics.height;
 		const bitmap = new Bitmap(width, height);
-		// const context = bitmap._context;
-		// const renderTexture = PIXI.RenderTexture.create({
-		// 	width,
-		// 	height
-		// });
-		// if (stage) {
-		// 	Graphics._renderer.render(stage, {
-		// 		renderTexture
-		// 	});
-		// 	stage.worldTransform.identity();
-		// 	let canvas = null;
-		// 	if (Graphics.isWebGL()) {
-		// 		canvas = Graphics._renderer.plugins.extract.canvas(renderTexture);
-		// 	} else {
-		// 		canvas = renderTexture.baseTexture._canvasRenderTarget.canvas;
-		// 	}
-		// 	context.drawImage(canvas, 0, 0);
-		// } else {
-
-		// }
-		// renderTexture.destroy({
-		// 	destroyBase: true
-		// });
-		// bitmap._setDirty();
+		if (stage) {
+			const renderTexture = PIXI.RenderTexture.create({
+				width,
+				height
+			});
+			Graphics._renderer.render(stage, {
+				renderTexture: renderTexture
+			});
+			if (Graphics.hasWebGL()) {
+				bitmap.__baseTexture = renderTexture.baseTexture;
+				// We aren't destroying the base texture here - check for memory leak
+			} else {
+				const context = bitmap._context;
+				stage.worldTransform.identity();
+				let canvas = renderTexture.baseTexture._canvasRenderTarget.canvas;
+				context.drawImage(canvas, 0, 0);
+				renderTexture.destroy({
+					destroyBase: true
+				});
+			}
+		}
+		bitmap._setDirty();
 		return bitmap;
 	}
 
