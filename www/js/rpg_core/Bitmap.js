@@ -37,6 +37,7 @@ class Bitmap extends PIXI.Container {
 		this._loadListeners = [];
 		this._loadingState = 'none';
 		this._decodeAfterRequest = false;
+		this._tint = '0xffffff';
 		this.textPadding = 2; // Adjust this if text is cut-off
 		this.wordWrap = false;
 		this.wordWrapWidth = 0;
@@ -98,6 +99,11 @@ class Bitmap extends PIXI.Container {
 
 		this.on('removed', this.onRemoveAsAChild);
 	}
+
+	//-----------------------------------------------------------------------------
+	/**
+	 * Methods relating to Bitmap's nature as a container.
+	 */
 
 	/**
 	 * Make sure the text cache is emptied and all children are destroyed
@@ -179,123 +185,11 @@ class Bitmap extends PIXI.Container {
 	}
 
 	/**
-	 * Ignores the 2nd colour and returns a solid-colour rectangle.
-	 *
-	 * @method gradientFillRect
-	 * @param {Number} x The x coordinate for the upper-left corner
-	 * @param {Number} y The y coordinate for the upper-left corner
-	 * @param {Number} width The width of the rectangle to fill
-	 * @param {Number} height The height of the rectangle to fill
-	 * @param {String} color1 The gradient starting color
-	 * @param {String} color2 The gradient ending color
-	 * @param {Boolean} vertical Wether the gradient should be draw as vertical or not
-	 */
-	gradientFillRect(x, y, width, height, color1, color2, vertical) {
-		return this.fillRect(x, y, width, height, color1);
-	}
-
-	/**
-	 * Draw a shape in the shape of a circle
-	 *
-	 * @method drawCircle
-	 * @param {Number} x The x coordinate based on the circle center
-	 * @param {Number} y The y coordinate based on the circle center
-	 * @param {Number} radius The radius of the circle
-	 * @param {String} color The color of the circle in CSS format
-	 */
-	drawCircle(x, y, radius, color) {
-		x = Math.floor(x);
-		y = Math.floor(y);
-		const circle = new PIXI.Graphics();
-		color = PIXI.utils.string2hex(color);
-		circle.beginFill(color);
-		circle.drawCircle(
-			0,
-			0,
-			radius
-		);
-		circle.endFill();
-		if (circle) {
-			circle.x = x;
-			circle.y = y;
-			circle.alpha = this._paintOpacity / 255;
-			this.addChild(circle);
-		}
-		return circle;
-	}
-
-	/**
-	 * [read-only] The url of the image file.
-	 *
-	 * @property url
-	 * @type String
-	 */
-	get url() {
-		return this._url;
-	}
-
-	/**
-	 * [read-only] The base texture that holds the image.
-	 *
-	 * @property baseTexture
-	 * @type PIXI.BaseTexture
-	 */
-	get baseTexture() {
-		return this._baseTexture;
-	}
-
-	/**
-	 * [read-only] The bitmap canvas.
-	 *
-	 * @property canvas
-	 * @type HTMLCanvasElement
-	 */
-	get canvas() {
-		return this._canvas;
-	}
-
-	/**
-	 * [read-only] The 2d context of the bitmap canvas.
-	 *
-	 * @property context
-	 * @type CanvasRenderingContext2D
-	 */
-	get context() {
-		return this._canvas.context;
-	}
-
-	/**
-	 * [read-only] The rectangle of the bitmap.
-	 *
-	 * @property rect
-	 * @type Rectangle
-	 */
-	get rect() {
-		return new Rectangle(0, 0, this.width, this.height);
-	}
-
-	/**
-	 * Whether the smooth scaling is applied.
-	 *
-	 * @property smooth
-	 * @type Boolean
-	 */
-	get smooth() {
-		return this._smooth;
-	}
-
-	set smooth(value) {
-		if (this._smooth !== false) {
-			this._smooth = false;
-		}
-	}
-
-	/**
 	 * Clear text and destroy children.
 	 *
 	 * @method clear
 	 */
-	clear() {
+	 clear() {
 		for (let i = this.children.length - 1; i >= 0; i--) {
 
 			if (this.children[i].isBitmapText) {
@@ -345,6 +239,431 @@ class Bitmap extends PIXI.Container {
 			self.removeChild(child);
 		});
 	}
+
+	//-----------------------------------------------------------------------------
+	/**
+	 * Methods relating to drawing images.
+	 */
+
+	/**
+	 * Creates a nine slice plane.
+	 *
+	 * @method create9Slice
+	 */
+	 create9Slice(source, x, y, w, h, tl, tr, br, bl) {
+		return new PIXI.NineSlicePlane(
+			new PIXI.Texture(
+				source,
+				new PIXI.Rectangle(x, y, w, h)
+			), tl, tr, br, bl
+		);
+	}
+
+	/**
+	 * Creates a tiling sprite.
+	 *
+	 * @method createTilingSprite
+	 */
+	createTilingSprite(source, x, y, w, h, tileWidth, tileHeight) {
+		return new PIXI.TilingSprite(
+			new PIXI.Texture(
+				source,
+				new PIXI.Rectangle(x, y, w, h)
+			), tileWidth, tileHeight
+		);
+	}
+
+	/**
+	 * Creates a sprite by cropping a texture.
+	 *
+	 * @method createCroppedSprite
+	 */
+	createCroppedSprite(source, x, y, w, h) {
+		return new PIXI.Sprite(
+			new PIXI.Texture(
+				source,
+				new PIXI.Rectangle(x, y, w, h)
+			)
+		);
+	}
+
+	/**
+	 * Equivalent to a block transfer.
+	 * Create a sprite and adds it as a child.
+	 *
+	 * @method blt
+	 * @param {Bitmap} source The bitmap to draw
+	 * @param {Number} sx The x coordinate in the source
+	 * @param {Number} sy The y coordinate in the source
+	 * @param {Number} sw The width of the source image
+	 * @param {Number} sh The height of the source image
+	 * @param {Number} dx The x coordinate in the destination
+	 * @param {Number} dy The y coordinate in the destination
+	 * @param {Number} [dw=sw] The width to draw the image in the destination
+	 * @param {Number} [dh=sh] The height to draw the image in the destination
+	 */
+	blt({
+		width,
+		height,
+		baseTexture
+	}, sx, sy, sw, sh, dx, dy, dw, dh) {
+		dw = dw || sw;
+		dh = dh || sh;
+		sx = Math.floor(sx);
+		sy = Math.floor(sy);
+		sw = Math.floor(sw);
+		sh = Math.floor(sh);
+		dx = Math.floor(dx);
+		dy = Math.floor(dy);
+		dw = Math.floor(dw);
+		dh = Math.floor(dh);
+		if (sx >= 0 && sy >= 0 && sw > 0 && sh > 0 && dw > 0 && dh > 0 &&
+			sx + sw <= width && sy + sh <= height) {
+			const sprite = this.createCroppedSprite(baseTexture, sx, sy, sw, sh);
+			if (sprite) {
+				sprite.x = dx;
+				sprite.y = dy;
+				sprite.width = dw;
+				sprite.height = dh;
+				sprite.alpha = this._paintOpacity / 255;
+				this.tint = this._tint;
+				this.addChild(sprite);
+				return sprite;
+			}
+		}
+	}
+
+	/**
+	 * Fills the specified rectangle.
+	 *
+	 * @method fillRect
+	 * @param {Number} x The x coordinate for the upper-left corner
+	 * @param {Number} y The y coordinate for the upper-left corner
+	 * @param {Number} width The width of the rectangle to fill
+	 * @param {Number} height The height of the rectangle to fill
+	 * @param {String} color The color of the rectangle in CSS format
+	 */
+	fillRect(x, y, width, height, color) {
+		x = Math.floor(x);
+		y = Math.floor(y);
+		width = Math.floor(width);
+		height = Math.floor(height);
+		const rectangle = new PIXI.Graphics();
+		color = PIXI.utils.string2hex(color);
+		rectangle.beginFill(color);
+		rectangle.drawRect(
+			0,
+			0,
+			width,
+			height
+		);
+		rectangle.endFill();
+		if (rectangle) {
+			rectangle.x = x;
+			rectangle.y = y;
+			rectangle.alpha = this._paintOpacity / 255;
+			rectangle.tint = this._tint;
+			this.addChild(rectangle);
+		}
+		return rectangle;
+	}
+
+	/**
+	 * Performs a block transfer, using assumption that original image was not modified (no hue)
+	 *
+	 * @method blt
+	 * @param {Bitmap} source The bitmap to draw
+	 * @param {Number} sx The x coordinate in the source
+	 * @param {Number} sy The y coordinate in the source
+	 * @param {Number} sw The width of the source image
+	 * @param {Number} sh The height of the source image
+	 * @param {Number} dx The x coordinate in the destination
+	 * @param {Number} dy The y coordinate in the destination
+	 * @param {Number} [dw=sw] The width to draw the image in the destination
+	 * @param {Number} [dh=sh] The height to draw the image in the destination
+	 */
+	bltImage({
+		width,
+		height,
+		_image
+	}, sx, sy, sw, sh, dx, dy, dw, dh) {
+		return this.blt({
+			width,
+			height,
+			_image
+		}, sx, sy, sw, sh, dx, dy, dw, dh);
+	}
+
+	/**
+	 * Fills the entire bitmap.
+	 *
+	 * @method fillAll
+	 * @param {String} color The color of the rectangle in CSS format
+	 */
+	fillAll(color) {
+		this.fillRect(0, 0, this.width, this.height, color);
+	}
+
+	/**
+	 * Ignores the 2nd colour and returns a solid-colour rectangle.
+	 *
+	 * @method gradientFillRect
+	 * @param {Number} x The x coordinate for the upper-left corner
+	 * @param {Number} y The y coordinate for the upper-left corner
+	 * @param {Number} width The width of the rectangle to fill
+	 * @param {Number} height The height of the rectangle to fill
+	 * @param {String} color1 The gradient starting color
+	 * @param {String} color2 The gradient ending color
+	 * @param {Boolean} vertical Wether the gradient should be draw as vertical or not
+	 */
+	gradientFillRect(x, y, width, height, color1, color2, vertical) {
+		return this.fillRect(x, y, width, height, color1);
+	}
+
+	/**
+	 * Draw a shape in the shape of a circle
+	 *
+	 * @method drawCircle
+	 * @param {Number} x The x coordinate based on the circle center
+	 * @param {Number} y The y coordinate based on the circle center
+	 * @param {Number} radius The radius of the circle
+	 * @param {String} color The color of the circle in CSS format
+	 */
+	drawCircle(x, y, radius, color) {
+		x = Math.floor(x);
+		y = Math.floor(y);
+		const circle = new PIXI.Graphics();
+		color = PIXI.utils.string2hex(color);
+		circle.beginFill(color);
+		circle.drawCircle(
+			0,
+			0,
+			radius
+		);
+		circle.endFill();
+		if (circle) {
+			circle.x = x;
+			circle.y = y;
+			circle.alpha = this._paintOpacity / 255;
+			circle.tint = this._tint;
+			this.addChild(circle);
+		}
+		return circle;
+	}
+
+	/**
+	 * [read-only] The base texture that holds the image.
+	 *
+	 * @property baseTexture
+	 * @type PIXI.BaseTexture
+	 */
+	 get baseTexture() {
+		return this._baseTexture;
+	}
+
+	/**
+	 * [read-only] The bitmap canvas.
+	 *
+	 * @property canvas
+	 * @type HTMLCanvasElement
+	 */
+	get canvas() {
+		return this._canvas;
+	}
+
+	/**
+	 * [read-only] The 2d context of the bitmap canvas.
+	 *
+	 * @property context
+	 * @type CanvasRenderingContext2D
+	 */
+	get context() {
+		return this._canvas.context;
+	}
+
+	/**
+	 * [read-only] The rectangle of the bitmap.
+	 *
+	 * @property rect
+	 * @type Rectangle
+	 */
+	get rect() {
+		return new Rectangle(0, 0, this.width, this.height);
+	}
+
+	/**
+	 * Bitmap states(Bitmap._loadingState):
+	 *
+	 * none:
+	 * Empty Bitmap
+	 *
+	 * pending:
+	 * Url requested, but pending to load until startRequest called
+	 *
+	 * purged:
+	 * Url request completed and purged.
+	 *
+	 * requesting:
+	 * Requesting supplied URI now.
+	 *
+	 * requestCompleted:
+	 * Request completed
+	 *
+	 * loaded:
+	 * loaded. isReady() === true, so It's usable.
+	 *
+	 * error:
+	 * error occurred
+	 *
+	 */
+
+	 _createCanvas(width, height) {
+		this.__canvas = {};
+		this.__canvas = new CanvasShim();
+		this.__context = this.__canvas.getContext('2d');
+
+		this.__canvas.width = Math.max(width || 0, 1);
+		this.__canvas.height = Math.max(height || 0, 1);
+
+		if (this._image) {
+			const w = Math.max(this._image.width || 0, 1);
+			const h = Math.max(this._image.height || 0, 1);
+			this.__canvas.width = w;
+			this.__canvas.height = h;
+			this._createBaseTexture(this._image);
+		} else {
+			this._createBaseTexture(new PIXI.Resource(
+				this.__canvas.width,
+				this.__canvas.height
+			));
+		}
+		// this._setDirty();
+	}
+
+	_createBaseTexture(source) {
+		if (source && source.baseTexture) {
+			this.__baseTexture = source.baseTexture;
+			this.__baseTexture.width = source.width;
+			this.__baseTexture.height = source.height;
+			this.__baseTexture.mipmap = false;
+			this.__baseTexture.scaleMode = PIXI.SCALE_MODES.NEAREST;
+		} else {
+			this.__baseTexture = new PIXI.BaseTexture(source);
+		}
+	}
+
+	_clearImgInstance() {
+		this._image = null;
+	}
+
+	_renewCanvas() {
+		const newImage = this._image;
+		if (newImage && this.__canvas && (this.__canvas.width < newImage.width || this.__canvas.height < newImage.height)) {
+			this._createCanvas();
+		}
+	}
+
+	/**
+	 * Takes a snapshot of the game screen and returns a new bitmap object.
+	 *
+	 * @static
+	 * @method snap
+	 * @param {Stage} stage The stage object
+	 * @return Bitmap
+	 */
+	 static snap(stage) {
+		const width = Graphics.width;
+		const height = Graphics.height;
+		const bitmap = new Bitmap(width, height);
+		if (stage) {
+			const renderTexture = PIXI.RenderTexture.create({
+				width,
+				height
+			});
+			Graphics._renderer.render(stage, {
+				renderTexture: renderTexture
+			});
+			if (Graphics.hasWebGL()) {
+				bitmap.__baseTexture = renderTexture.baseTexture;
+				// We aren't destroying the base texture here - check for memory leak
+			} else {
+				const context = bitmap._context;
+				stage.worldTransform.identity();
+				let canvas = renderTexture.baseTexture._canvasRenderTarget.canvas;
+				context.drawImage(canvas, 0, 0);
+				renderTexture.destroy({
+					destroyBase: true
+				});
+			}
+		}
+		// bitmap._setDirty();
+		return bitmap;
+	}
+
+	/**
+	 * Returns pixel color at the specified point.
+	 *
+	 * @method getPixel
+	 * @param {Number} x The x coordinate of the pixel in the bitmap
+	 * @param {Number} y The y coordinate of the pixel in the bitmap
+	 * @return {String} The pixel color (hex format)
+	 */
+	getPixel(x, y) {
+		if (!this.baseTexture) {
+			return '#ffffff';
+		}
+		const extract = Graphics._renderer.plugins.extract;
+		const pixels = extract.pixels(this.baseTexture, {
+			x: x,
+			y: y,
+			width: 1,
+			height: 1,
+			resolution: this.baseTexture.resolution,
+		});
+		const rgb = PIXI.utils.rgb2hex(pixels);
+		const result = PIXI.utils.hex2string(rgb);
+		return result;
+	}
+
+	/**
+	 * Returns alpha pixel value at the specified point.
+	 *
+	 * @method getAlphaPixel
+	 * @param {Number} x The x coordinate of the pixel in the bitmap
+	 * @param {Number} y The y coordinate of the pixel in the bitmap
+	 * @return {String} The alpha value
+	 */
+	getAlphaPixel(x, y) {
+		if (!this.baseTexture) {
+			return 1;
+		}
+		const extract = Graphics._renderer.plugins.extract;
+		const pixels = extract.pixels(this.baseTexture, {
+			x: x,
+			y: y,
+			width: 1,
+			height: 1,
+			resolution: this.baseTexture.resolution,
+		});
+		return pixels[3];
+	}
+
+	/**
+	 * Changes the color tone of children which support Tint.
+	 *
+	 * @method adjustTone
+	 * @param {Number} r The red strength in the range (-255, 255)
+	 * @param {Number} g The green strength in the range (-255, 255)
+	 * @param {Number} b The blue strength in the range (-255, 255)
+	 */
+	adjustTone(r, g, b) {
+		this._tint = PIXI.utils.rgb2hex(r, g, b);
+	}
+
+	//-----------------------------------------------------------------------------
+	/**
+	 * Methods relating to drawing text.
+	 */
 
 	/**
 	 * Draws PIXI BitmapText.
@@ -488,161 +807,19 @@ class Bitmap extends PIXI.Container {
 		return textMetrics.width;
 	}
 
+	//-----------------------------------------------------------------------------
 	/**
-	 * Creates a nine slice plane.
-	 *
-	 * @method create9Slice
+	 * Methods relating to loading and listeners.
 	 */
-	create9Slice(source, x, y, w, h, tl, tr, br, bl) {
-		return new PIXI.NineSlicePlane(
-			new PIXI.Texture(
-				source,
-				new PIXI.Rectangle(x, y, w, h)
-			), tl, tr, br, bl
-		);
-	}
 
 	/**
-	 * Creates a tiling sprite.
+	 * [read-only] The url of the image file.
 	 *
-	 * @method createTilingSprite
+	 * @property url
+	 * @type String
 	 */
-	createTilingSprite(source, x, y, w, h, tileWidth, tileHeight) {
-		return new PIXI.TilingSprite(
-			new PIXI.Texture(
-				source,
-				new PIXI.Rectangle(x, y, w, h)
-			), tileWidth, tileHeight
-		);
-	}
-
-	/**
-	 * Creates a sprite by cropping a texture.
-	 *
-	 * @method createCroppedSprite
-	 */
-	createCroppedSprite(source, x, y, w, h) {
-		return new PIXI.Sprite(
-			new PIXI.Texture(
-				source,
-				new PIXI.Rectangle(x, y, w, h)
-			)
-		);
-	}
-
-	/**
-	 * Equivalent to a block transfer.
-	 * Create a sprite and adds it as a child.
-	 *
-	 * @method blt
-	 * @param {Bitmap} source The bitmap to draw
-	 * @param {Number} sx The x coordinate in the source
-	 * @param {Number} sy The y coordinate in the source
-	 * @param {Number} sw The width of the source image
-	 * @param {Number} sh The height of the source image
-	 * @param {Number} dx The x coordinate in the destination
-	 * @param {Number} dy The y coordinate in the destination
-	 * @param {Number} [dw=sw] The width to draw the image in the destination
-	 * @param {Number} [dh=sh] The height to draw the image in the destination
-	 */
-	blt({
-		width,
-		height,
-		baseTexture
-	}, sx, sy, sw, sh, dx, dy, dw, dh) {
-		dw = dw || sw;
-		dh = dh || sh;
-		sx = Math.floor(sx);
-		sy = Math.floor(sy);
-		sw = Math.floor(sw);
-		sh = Math.floor(sh);
-		dx = Math.floor(dx);
-		dy = Math.floor(dy);
-		dw = Math.floor(dw);
-		dh = Math.floor(dh);
-		if (sx >= 0 && sy >= 0 && sw > 0 && sh > 0 && dw > 0 && dh > 0 &&
-			sx + sw <= width && sy + sh <= height) {
-			const sprite = this.createCroppedSprite(baseTexture, sx, sy, sw, sh);
-			if (sprite) {
-				sprite.x = dx;
-				sprite.y = dy;
-				sprite.width = dw;
-				sprite.height = dh;
-				sprite.alpha = this._paintOpacity / 255;
-				this.addChild(sprite);
-				return sprite;
-			}
-		}
-	}
-
-	/**
-	 * Fills the specified rectangle.
-	 *
-	 * @method fillRect
-	 * @param {Number} x The x coordinate for the upper-left corner
-	 * @param {Number} y The y coordinate for the upper-left corner
-	 * @param {Number} width The width of the rectangle to fill
-	 * @param {Number} height The height of the rectangle to fill
-	 * @param {String} color The color of the rectangle in CSS format
-	 */
-	fillRect(x, y, width, height, color) {
-		x = Math.floor(x);
-		y = Math.floor(y);
-		width = Math.floor(width);
-		height = Math.floor(height);
-		const rectangle = new PIXI.Graphics();
-		color = PIXI.utils.string2hex(color);
-		rectangle.beginFill(color);
-		rectangle.drawRect(
-			0,
-			0,
-			width,
-			height
-		);
-		rectangle.endFill();
-		if (rectangle) {
-			rectangle.x = x;
-			rectangle.y = y;
-			rectangle.alpha = this._paintOpacity / 255;
-			this.addChild(rectangle);
-		}
-		return rectangle;
-	}
-
-	/**
-	 * Performs a block transfer, using assumption that original image was not modified (no hue)
-	 *
-	 * @method blt
-	 * @param {Bitmap} source The bitmap to draw
-	 * @param {Number} sx The x coordinate in the source
-	 * @param {Number} sy The y coordinate in the source
-	 * @param {Number} sw The width of the source image
-	 * @param {Number} sh The height of the source image
-	 * @param {Number} dx The x coordinate in the destination
-	 * @param {Number} dy The y coordinate in the destination
-	 * @param {Number} [dw=sw] The width to draw the image in the destination
-	 * @param {Number} [dh=sh] The height to draw the image in the destination
-	 */
-	bltImage({
-		width,
-		height,
-		_image
-	}, sx, sy, sw, sh, dx, dy, dw, dh) {
-		return this.blt({
-			width,
-			height,
-			_image
-		}, sx, sy, sw, sh, dx, dy, dw, dh);
-	}
-
-	/**
-	 * Fills the entire bitmap.
-	 *
-	 * @method fillAll
-	 * @param {String} color The color of the rectangle in CSS format
-	 */
-	fillAll(color) {
-		this.fillRect(0, 0, this.width, this.height, color);
+	 get url() {
+		return this._url;
 	}
 
 	/**
@@ -656,87 +833,6 @@ class Bitmap extends PIXI.Container {
 			this._loadListeners.push(listner);
 		} else {
 			if (this._image) listner(this); // Never returns if this._image is null - not intended
-		}
-	}
-
-	/**
-	 * @method _makeFontNameText
-	 * @private
-	 */
-	_makeFontNameText() {
-		return `${(this.fontItalic ? 'Italic ' : '') +
-			this.fontSize}px ${this.fontFace}`;
-	}
-
-	/**
-	 * Bitmap states(Bitmap._loadingState):
-	 *
-	 * none:
-	 * Empty Bitmap
-	 *
-	 * pending:
-	 * Url requested, but pending to load until startRequest called
-	 *
-	 * purged:
-	 * Url request completed and purged.
-	 *
-	 * requesting:
-	 * Requesting supplied URI now.
-	 *
-	 * requestCompleted:
-	 * Request completed
-	 *
-	 * loaded:
-	 * loaded. isReady() === true, so It's usable.
-	 *
-	 * error:
-	 * error occurred
-	 *
-	 */
-
-	_createCanvas(width, height) {
-		this.__canvas = {};
-		this.__canvas = new CanvasShim();
-		this.__context = this.__canvas.getContext('2d');
-
-		this.__canvas.width = Math.max(width || 0, 1);
-		this.__canvas.height = Math.max(height || 0, 1);
-
-		if (this._image) {
-			const w = Math.max(this._image.width || 0, 1);
-			const h = Math.max(this._image.height || 0, 1);
-			this.__canvas.width = w;
-			this.__canvas.height = h;
-			this._createBaseTexture(this._image);
-		} else {
-			this._createBaseTexture(new PIXI.Resource(
-				this.__canvas.width,
-				this.__canvas.height
-			));
-		}
-		this._setDirty();
-	}
-
-	_createBaseTexture(source) {
-		if (source && source.baseTexture) {
-			this.__baseTexture = source.baseTexture;
-			this.__baseTexture.width = source.width;
-			this.__baseTexture.height = source.height;
-			this.__baseTexture.mipmap = false;
-			this.__baseTexture.scaleMode = PIXI.SCALE_MODES.NEAREST;
-		} else {
-			this.__baseTexture = new PIXI.BaseTexture(source);
-		}
-	}
-
-	_clearImgInstance() {
-		this._image = null;
-	}
-
-	_renewCanvas() {
-		const newImage = this._image;
-		if (newImage && this.__canvas && (this.__canvas.width < newImage.width || this.__canvas.height < newImage.height)) {
-			this._createCanvas();
 		}
 	}
 
@@ -771,66 +867,6 @@ class Bitmap extends PIXI.Container {
 	}
 
 	/**
-	 * Returns pixel color at the specified point.
-	 *
-	 * @method getPixel
-	 * @param {Number} x The x coordinate of the pixel in the bitmap
-	 * @param {Number} y The y coordinate of the pixel in the bitmap
-	 * @return {String} The pixel color (hex format)
-	 */
-	getPixel(x, y) {
-		if (!this.baseTexture) {
-			return '#ffffff';
-		}
-		const extract = Graphics._renderer.plugins.extract;
-		const pixels = extract.pixels(this.baseTexture, {
-			x: x,
-			y: y,
-			width: 1,
-			height: 1,
-			resolution: this.baseTexture.resolution,
-		});
-		const rgb = PIXI.utils.rgb2hex(pixels);
-		const result = PIXI.utils.hex2string(rgb);
-		return result;
-	}
-
-	/**
-	 * Returns alpha pixel value at the specified point.
-	 *
-	 * @method getAlphaPixel
-	 * @param {Number} x The x coordinate of the pixel in the bitmap
-	 * @param {Number} y The y coordinate of the pixel in the bitmap
-	 * @return {String} The alpha value
-	 */
-	getAlphaPixel(x, y) {
-		if (!this.baseTexture) {
-			return 1;
-		}
-		const extract = Graphics._renderer.plugins.extract;
-		const pixels = extract.pixels(this.baseTexture, {
-			x: x,
-			y: y,
-			width: 1,
-			height: 1,
-			resolution: this.baseTexture.resolution,
-		});
-		return pixels[3];
-	}
-
-	/**
-	 * Changes the color tone of the entire bitmap.
-	 *
-	 * @method adjustTone
-	 * @param {Number} r The red strength in the range (-255, 255)
-	 * @param {Number} g The green strength in the range (-255, 255)
-	 * @param {Number} b The blue strength in the range (-255, 255)
-	 */
-	adjustTone(r, g, b) {
-		this.tint = PIXI.utils.rgb2hex(r, g, b);
-	}
-
-	/**
 	 * @method _onLoad
 	 * @private
 	 */
@@ -856,7 +892,7 @@ class Bitmap extends PIXI.Container {
 			case 'requestCompleted':
 				this._loadingState = 'loaded';
 				this._createBaseTexture(this._image);
-				this._setDirty();
+				// this._setDirty();
 				this._callLoadListeners();
 				break;
 
@@ -894,32 +930,7 @@ class Bitmap extends PIXI.Container {
 	 * @private
 	 */
 	_onError() {
-		// this._image.removeEventListener('load', this._loadListener);
-		// this._image.removeEventListener('error', this._errorListener);
 		this._loadingState = 'error';
-	}
-
-	/**
-	 * @method _setDirty
-	 * @private
-	 */
-	_setDirty() {
-		this._dirty = true;
-	}
-
-	/**
-	 * updates texture is bitmap was dirty
-	 * @method checkDirty
-	 */
-	checkDirty() {
-		if (this._dirty) {
-			this._baseTexture.update();
-			const baseTexture = this._baseTexture;
-			setTimeout(() => {
-				baseTexture.update();
-			}, 0);
-			this._dirty = false;
-		}
 	}
 
 	_requestImage(url) {
@@ -1002,43 +1013,6 @@ class Bitmap extends PIXI.Container {
 		return bitmap;
 	}
 
-	/**
-	 * Takes a snapshot of the game screen and returns a new bitmap object.
-	 *
-	 * @static
-	 * @method snap
-	 * @param {Stage} stage The stage object
-	 * @return Bitmap
-	 */
-	static snap(stage) {
-		const width = Graphics.width;
-		const height = Graphics.height;
-		const bitmap = new Bitmap(width, height);
-		if (stage) {
-			const renderTexture = PIXI.RenderTexture.create({
-				width,
-				height
-			});
-			Graphics._renderer.render(stage, {
-				renderTexture: renderTexture
-			});
-			if (Graphics.hasWebGL()) {
-				bitmap.__baseTexture = renderTexture.baseTexture;
-				// We aren't destroying the base texture here - check for memory leak
-			} else {
-				const context = bitmap._context;
-				stage.worldTransform.identity();
-				let canvas = renderTexture.baseTexture._canvasRenderTarget.canvas;
-				context.drawImage(canvas, 0, 0);
-				renderTexture.destroy({
-					destroyBase: true
-				});
-			}
-		}
-		bitmap._setDirty();
-		return bitmap;
-	}
-
 	static request(url) {
 		const bitmap = Object.create(Bitmap.prototype);
 		bitmap._defer = true;
@@ -1051,22 +1025,22 @@ class Bitmap extends PIXI.Container {
 	}
 
 	/**
-	 * Deprecated function
+	 * Deprecated function.
 	 */
 	rotateHue(offset) { }
 
 	/**
-	 * Deprecated function
+	 * Deprecated function.
 	 */
 	blur() { }
 
 	/**
-	 * Deprecated function
+	 * Deprecated function.
 	 */
 	_drawTextOutline(text, tx, ty, maxWidth) { }
 
 	/**
-	 * Deprecated function
+	 * Deprecated function.
 	 */
 	_drawTextBody(text, tx, ty, maxWidth) { }
 
@@ -1076,6 +1050,33 @@ class Bitmap extends PIXI.Container {
 	 * @method drawSmallText
 	 */
 	drawSmallText(text, x, y, maxWidth, lineHeight, align) { }
+
+	/**
+	 * Deprecated function.
+	 */
+	 _setDirty() { }
+
+	 /**
+	  * Deprecated function.
+	  * @method checkDirty
+	  */
+	 checkDirty() { }
+
+	/**
+	 * Deprecated property.
+	 *
+	 * @property smooth
+	 * @type Boolean
+	 */
+	 get smooth() {
+		return this._smooth;
+	}
+
+	set smooth(value) {
+		if (this._smooth !== false) {
+			this._smooth = false;
+		}
+	}
 }
 
 //for iOS. img consumes memory. so reuse it.
