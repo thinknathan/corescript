@@ -3,6 +3,7 @@ import Graphics from "../rpg_core/Graphics.js";
 import Decrypter from "../rpg_core/Decrypter.js";
 import Rectangle from "../rpg_core/Rectangle.js";
 import ResourceHandler from "../rpg_core/ResourceHandler.js";
+import CanvasShim from "./CanvasShim.js";
 
 //-----------------------------------------------------------------------------
 /**
@@ -262,14 +263,7 @@ class Bitmap extends PIXI.Container {
 	 * @type CanvasRenderingContext2D
 	 */
 	get context() {
-		console.error('Trying to get context on Bitmap');
-		return {
-			clearRect: () => { },
-			save: () => { },
-			drawImage: () => { },
-			restore: () => { },
-			getImageData: () => { },
-		};
+		return this._canvas.context;
 	}
 
 	/**
@@ -370,9 +364,6 @@ class Bitmap extends PIXI.Container {
 		const alpha = this._paintOpacity / 255;
 		maxWidth = Math.floor(maxWidth) || 0xffffffff;
 		lineHeight = Math.floor(lineHeight);
-		// [note] Non-String values crash BitmapText updates in PIXI 5.3.3
-		// since they use {text}.replace
-		text = String(text);
 
 		if (align === 'center') {
 			x = x + (maxWidth / 2);
@@ -752,8 +743,8 @@ class Bitmap extends PIXI.Container {
 
 	_createCanvas(width, height) {
 		this.__canvas = {};
-		// this.__canvas = this.__canvas || document.createElement('canvas');
-		// this.__context = this.__canvas.getContext('2d');
+		this.__canvas = new CanvasShim();
+		this.__context = this.__canvas.getContext('2d');
 
 		this.__canvas.width = Math.max(width || 0, 1);
 		this.__canvas.height = Math.max(height || 0, 1);
@@ -862,15 +853,20 @@ class Bitmap extends PIXI.Container {
 	 * @return {String} The pixel color (hex format)
 	 */
 	getPixel(x, y) {
-		// const data = this._context.getImageData(x, y, 1, 1)
-		// 	.data;
-		// let result = '#';
-		// for (let i = 0; i < 3; i++) {
-		// 	result += data[i].toString(16)
-		// 		.padZero(2);
-		// }
-		// return result;
-		return '#ffffff';
+		if (!this.baseTexture) {
+			return '#ffffff';
+		}
+		const extract = Graphics._renderer.plugins.extract;
+		const pixels = extract.pixels(this.baseTexture, {
+			x: x,
+			y: y,
+			width: 1,
+			height: 1,
+			resolution: this.baseTexture.resolution,
+		});
+		const rgb = PIXI.utils.rgb2hex(pixels);
+		const result = PIXI.utils.hex2string(rgb);
+		return result;
 	}
 
 	/**
@@ -882,10 +878,18 @@ class Bitmap extends PIXI.Container {
 	 * @return {String} The alpha value
 	 */
 	getAlphaPixel(x, y) {
-		// const data = this._context.getImageData(x, y, 1, 1)
-		// 	.data;
-		// return data[3];
-		return 1;
+		if (!this.baseTexture) {
+			return 1;
+		}
+		const extract = Graphics._renderer.plugins.extract;
+		const pixels = extract.pixels(this.baseTexture, {
+			x: x,
+			y: y,
+			width: 1,
+			height: 1,
+			resolution: this.baseTexture.resolution,
+		});
+		return pixels[3];
 	}
 
 	/**
@@ -990,34 +994,12 @@ class Bitmap extends PIXI.Container {
 	 * @method blur
 	 */
 	blur() {
-		// for (let i = 0; i < 2; i++) {
-		// 	const w = this.width;
-		// 	const h = this.height;
-		// 	const canvas = this._canvas;
-		// 	const context = this._context;
-		// 	const tempCanvas = document.createElement('canvas');
-		// 	const tempContext = tempCanvas.getContext('2d');
-		// 	console.info('[Bitmap.blur] Blur on canvas is slow.');
-		// 	tempCanvas.width = w + 2;
-		// 	tempCanvas.height = h + 2;
-		// 	tempContext.drawImage(canvas, 0, 0, w, h, 1, 1, w, h);
-		// 	tempContext.drawImage(canvas, 0, 0, w, 1, 1, 0, w, 1);
-		// 	tempContext.drawImage(canvas, 0, 0, 1, h, 0, 1, 1, h);
-		// 	tempContext.drawImage(canvas, 0, h - 1, w, 1, 1, h + 1, w, 1);
-		// 	tempContext.drawImage(canvas, w - 1, 0, 1, h, w + 1, 1, 1, h);
-		// 	context.save();
-		// 	context.fillStyle = 'black';
-		// 	context.fillRect(0, 0, w, h);
-		// 	context.globalCompositeOperation = 'lighter';
-		// 	context.globalAlpha = 1 / 9;
-		// 	for (let y = 0; y < 3; y++) {
-		// 		for (let x = 0; x < 3; x++) {
-		// 			context.drawImage(tempCanvas, x, y, w, h, 0, 0, w, h);
-		// 		}
-		// 	}
-		// 	context.restore();
-		// }
-		// this._setDirty();
+		if (Graphics.isWebGL()) {
+			const filter = new PIXI.filters.PixelateFilter(12, 12);
+			this.filters = this.filters || [];
+			this.filters.push(filter);
+			this.cacheAsBitmap = true;
+		}
 	}
 
 	/**
@@ -1028,13 +1010,7 @@ class Bitmap extends PIXI.Container {
 	 * @param {Number} maxWidth
 	 * @private
 	 */
-	_drawTextOutline(text, tx, ty, maxWidth) {
-		// const context = this._context;
-		// context.strokeStyle = this.outlineColor;
-		// context.lineWidth = this.outlineWidth;
-		// context.lineJoin = 'round';
-		// context.strokeText(text, tx, ty, maxWidth);
-	}
+	_drawTextOutline(text, tx, ty, maxWidth) {}
 
 	/**
 	 * @method _drawTextBody
@@ -1044,11 +1020,7 @@ class Bitmap extends PIXI.Container {
 	 * @param {Number} maxWidth
 	 * @private
 	 */
-	_drawTextBody(text, tx, ty, maxWidth) {
-		// const context = this._context;
-		// context.fillStyle = this.textColor;
-		// context.fillText(text, tx, ty, maxWidth);
-	}
+	_drawTextBody(text, tx, ty, maxWidth) {}
 
 	/**
 	 * @method _onLoad
@@ -1304,6 +1276,5 @@ Object.defineProperties(Bitmap.prototype, {
 		}
 	}
 });
-
 
 export default Bitmap;
