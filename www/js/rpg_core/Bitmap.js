@@ -609,7 +609,11 @@ class Bitmap extends PIXI.Container {
 			height: 1,
 			resolution: this.baseTexture.resolution,
 		});
-		const rgb = PIXI.utils.rgb2hex(pixels);
+		const rgb = PIXI.utils.rgb2hex([
+			pixels[0] / 255,
+			pixels[1] / 255,
+			pixels[2] / 255,
+		]);
 		const result = PIXI.utils.hex2string(rgb);
 		sprite.destroy({
 			children: true,
@@ -680,14 +684,14 @@ class Bitmap extends PIXI.Container {
 		if (text === undefined) return;
 		const alpha = this._paintOpacity / 255;
 		maxWidth = Math.floor(maxWidth) || 0xffffffff;
-		lineHeight = Math.floor(lineHeight);
+		lineHeight = Math.floor(lineHeight * 1.75);
 
 		if (align === 'center') {
 			x = x + (maxWidth / 2);
 		} else if (align === 'right') {
 			x = x + maxWidth;
 		}
-		y = y + lineHeight - this.fontSize * 1.25;
+		y = y + lineHeight - this.fontSize * 2.25;
 
 		x = Math.floor(x);
 		y = Math.floor(y);
