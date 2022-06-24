@@ -189,7 +189,7 @@ class Bitmap extends PIXI.Container {
 	 *
 	 * @method clear
 	 */
-	 clear() {
+	clear() {
 		for (let i = this.children.length - 1; i >= 0; i--) {
 
 			if (this.children[i].isBitmapText) {
@@ -215,7 +215,7 @@ class Bitmap extends PIXI.Container {
 	 * @param {Number} height The height of area to clear
 	 */
 	clearRect(x, y, width, height) {
-		const self = this;
+		const context = this;
 		const toRemove = [];
 
 		this.children.forEach(child => {
@@ -236,7 +236,7 @@ class Bitmap extends PIXI.Container {
 				children: true,
 				texture: true,
 			});
-			self.removeChild(child);
+			context.removeChild(child);
 		});
 	}
 
@@ -250,7 +250,7 @@ class Bitmap extends PIXI.Container {
 	 *
 	 * @method create9Slice
 	 */
-	 create9Slice(source, x, y, w, h, tl, tr, br, bl) {
+	create9Slice(source, x, y, w, h, tl, tr, br, bl) {
 		return new PIXI.NineSlicePlane(
 			new PIXI.Texture(
 				source,
@@ -348,8 +348,8 @@ class Bitmap extends PIXI.Container {
 		y = Math.floor(y);
 		width = Math.floor(width);
 		height = Math.floor(height);
-		const rectangle = new PIXI.Graphics();
 		color = PIXI.utils.string2hex(color);
+		const rectangle = new PIXI.Graphics();
 		rectangle.beginFill(color);
 		rectangle.drawRect(
 			0,
@@ -457,7 +457,7 @@ class Bitmap extends PIXI.Container {
 	 * @property baseTexture
 	 * @type PIXI.BaseTexture
 	 */
-	 get baseTexture() {
+	get baseTexture() {
 		return this._baseTexture;
 	}
 
@@ -517,7 +517,7 @@ class Bitmap extends PIXI.Container {
 	 *
 	 */
 
-	 _createCanvas(width, height) {
+	_createCanvas(width, height) {
 		this.__canvas = {};
 		this.__canvas = new CanvasShim();
 		this.__context = this.__canvas.getContext('2d');
@@ -571,7 +571,7 @@ class Bitmap extends PIXI.Container {
 	 * @param {Stage} stage The stage object
 	 * @return Bitmap
 	 */
-	 static snap(stage) {
+	static snap(stage) {
 		const width = Graphics.width;
 		const height = Graphics.height;
 		const bitmap = new Bitmap(width, height);
@@ -583,18 +583,7 @@ class Bitmap extends PIXI.Container {
 			Graphics._renderer.render(stage, {
 				renderTexture: renderTexture
 			});
-			if (Graphics.hasWebGL()) {
-				bitmap.__baseTexture = renderTexture.baseTexture;
-				// We aren't destroying the base texture here - check for memory leak
-			} else {
-				const context = bitmap._context;
-				stage.worldTransform.identity();
-				let canvas = renderTexture.baseTexture._canvasRenderTarget.canvas;
-				context.drawImage(canvas, 0, 0);
-				renderTexture.destroy({
-					destroyBase: true
-				});
-			}
+			bitmap.__baseTexture = renderTexture.baseTexture;
 		}
 		// bitmap._setDirty();
 		return bitmap;
@@ -818,7 +807,7 @@ class Bitmap extends PIXI.Container {
 	 * @property url
 	 * @type String
 	 */
-	 get url() {
+	get url() {
 		return this._url;
 	}
 
@@ -938,7 +927,7 @@ class Bitmap extends PIXI.Container {
 			this._image = this._loader.resources[url].texture;
 			this._width = this._image.width;
 			this._height = this._image.height;
-			Bitmap.prototype._onLoad.call(this);
+			this._onLoad();
 		} else {
 			this._loader.add(url, url);
 			this._url = url;
@@ -950,32 +939,17 @@ class Bitmap extends PIXI.Container {
 				this._image = resources[url].texture;
 				this._width = this._image.width;
 				this._height = this._image.height;
-				Bitmap.prototype._onLoad.call(context);
+				this._onLoad();
 			});
 
 			this._loader.onError.add(() => {
-				Bitmap.prototype._onError.call(context);
+				this._onError();
 			});
-
-			// this._loader.onLoad.add(() => {
-			// 	console.log('this._loader.onLoad.add');
-			// });
 		}
-
-		// if (Bitmap._reuseImages.length !== 0) {
-		// 	this._image = Bitmap._reuseImages.pop();
-		// } else {
-		// 	this._image = new Image();
-		// }
 
 		// if (this._decodeAfterRequest && !this._loader) {
 		// 	this._loader = ResourceHandler.createLoader(url, this._requestImage.bind(this, url), this._onError.bind(this));
 		// }
-
-		// this._image.src = url;
-
-		// this._image.addEventListener('load', this._loadListener = Bitmap.prototype._onLoad.bind(this));
-		// this._image.addEventListener('error', this._errorListener = this._loader || Bitmap.prototype._onError.bind(this));
 	}
 
 	isRequestOnly() {
@@ -1054,13 +1028,13 @@ class Bitmap extends PIXI.Container {
 	/**
 	 * Deprecated function.
 	 */
-	 _setDirty() { }
+	_setDirty() { }
 
-	 /**
-	  * Deprecated function.
-	  * @method checkDirty
-	  */
-	 checkDirty() { }
+	/**
+	 * Deprecated function.
+	 * @method checkDirty
+	 */
+	checkDirty() { }
 
 	/**
 	 * Deprecated property.
@@ -1068,7 +1042,7 @@ class Bitmap extends PIXI.Container {
 	 * @property smooth
 	 * @type Boolean
 	 */
-	 get smooth() {
+	get smooth() {
 		return this._smooth;
 	}
 
