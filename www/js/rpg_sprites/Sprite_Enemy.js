@@ -73,11 +73,13 @@ class Sprite_Enemy extends Sprite_Battler {
 
 	updateFrame() {
 		super.updateFrame();
-		let frameHeight = this.bitmap.height;
-		if (this._effectType === 'bossCollapse') {
-			frameHeight = this._effectDuration;
+		if (this.bitmap._image) {
+			let frameHeight = this.bitmap.height;
+			if (this._effectType === 'bossCollapse') {
+				frameHeight = this._effectDuration;
+			}
+			this.setFrame(0, 0, this.bitmap.width, frameHeight);
 		}
-		this.setFrame(0, 0, this.bitmap.width, frameHeight);
 	}
 
 	updatePosition() {
