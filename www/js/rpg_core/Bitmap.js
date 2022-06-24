@@ -1,8 +1,6 @@
 import * as PIXI from "../libs/pixi.js";
 import Graphics from "../rpg_core/Graphics.js";
-import Decrypter from "../rpg_core/Decrypter.js";
 import Rectangle from "../rpg_core/Rectangle.js";
-import ResourceHandler from "../rpg_core/ResourceHandler.js";
 import CanvasShim from "./CanvasShim.js";
 
 //-----------------------------------------------------------------------------

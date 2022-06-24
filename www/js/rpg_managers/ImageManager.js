@@ -74,7 +74,6 @@ class ImageManager {
 		if (filename) {
 			const path = `${folder + encodeURIComponent(filename)}.png`;
 			const bitmap = this.loadNormalBitmap(path, hue || 0);
-			bitmap.smooth = false;
 			return bitmap;
 		} else {
 			return this.loadEmptyBitmap();
@@ -178,7 +177,6 @@ class ImageManager {
 		if (filename) {
 			const path = `${folder + encodeURIComponent(filename)}.png`;
 			const bitmap = this.reserveNormalBitmap(path, hue || 0, reservationId || this._defaultReservationId);
-			bitmap.smooth = false;
 			return bitmap;
 		} else {
 			return this.loadEmptyBitmap();
@@ -260,7 +258,6 @@ class ImageManager {
 		if (filename) {
 			const path = `${folder + encodeURIComponent(filename)}.png`;
 			const bitmap = this.requestNormalBitmap(path, hue || 0);
-			bitmap.smooth = false;
 			return bitmap;
 		} else {
 			return this.loadEmptyBitmap();

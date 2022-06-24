@@ -8,7 +8,10 @@ class ZLayer extends PIXI.Container {
 		this.tilemap = tilemap;
 		this.z = zIndex;
 	}
-	__init() { this._lastAnimationFrame = -1; }
+
+	__init() {
+		this._lastAnimationFrame = -1;
+	}
 
 	clear() {
 		let layers = this.children;
@@ -26,7 +29,6 @@ class ZLayer extends PIXI.Container {
 		let tempRender = this._tempRender;
 		if (!buf) {
 			buf = this.canvasBuffer = document.createElement('canvas');
-
 			(canvasRenderer.constructor).registerPlugin('tilemap', CanvasTileRenderer);
 			tempRender = this._tempRender = new (canvasRenderer.constructor)({ width: 100, height: 100, view: buf });
 			tempRender.context = tempRender.rootContext;
@@ -76,7 +78,6 @@ class ZLayer extends PIXI.Container {
 			wt.tx * renderer.resolution,
 			wt.ty * renderer.resolution
 		);
-		// let tilemap = this.tilemap;
 		renderer.context.drawImage(this.canvasBuffer, 0, 0);
 	}
 }

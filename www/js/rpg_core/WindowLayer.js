@@ -1,4 +1,5 @@
 import * as PIXI from "../libs/pixi.js";
+
 //-----------------------------------------------------------------------------
 /**
  * The layer which contains game windows.

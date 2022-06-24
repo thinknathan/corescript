@@ -137,13 +137,7 @@ class DataManager {
 	}
 
 	static loadGlobalInfo() {
-		if (this._globalInfo) {
-			return this._globalInfo;
-		} else {
-			this.loadGlobalInfoAsync();
-			console.warn('Returning null DataManager.loadGlobalInfo');
-			return null;
-		}
+		return this._globalInfo;
 	}
 
 	static async loadGlobalInfoAsync() {
@@ -175,13 +169,13 @@ class DataManager {
 	static isThisGameFile(savefileId) {
 		const globalInfo = this.loadGlobalInfo();
 		if (globalInfo && globalInfo[savefileId]) {
-			// if (StorageManager.isLocalMode()) {
-			return true;
-			// } else {
-			// 	const savefile = globalInfo[savefileId];
-			// 	return (savefile.globalId === this._globalId &&
-			// 		savefile.title === self.$dataSystem.gameTitle);
-			// }
+			if (StorageManager.isLocalMode()) {
+				return true;
+			} else {
+				const savefile = globalInfo[savefileId];
+				return (savefile.globalId === this._globalId &&
+					savefile.title === self.$dataSystem.gameTitle);
+			}
 		} else {
 			return false;
 		}

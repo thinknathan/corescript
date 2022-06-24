@@ -6,7 +6,6 @@ import Sprite_Base from "../rpg_sprites/Sprite_Base.js";
 import Sprite_Weapon from "../rpg_sprites/Sprite_Weapon.js";
 import Sprite_StateOverlay from "../rpg_sprites/Sprite_StateOverlay.js";
 
-
 //-----------------------------------------------------------------------------
 // Sprite_Actor
 //
