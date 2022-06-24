@@ -44,6 +44,7 @@ This fork introduces opinionated changes and is not necessarily a drop-in replac
 - REMOVED: Playing video
 - REMOVED: Rotate hue
 - REMOVED: Decryption (support for encrypted exports)
+- Weather is not currently working.
 
 ## Added hooks
 
