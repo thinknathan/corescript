@@ -83,9 +83,8 @@ class ImageCache {
 	}
 
 	isReady() {
-		const items = this._items;
-		return !Object.keys(items)
-			.some(key => !items[key].bitmap.isRequestOnly() && !items[key].bitmap.isReady());
+		return !Object.keys(this._items)
+			.some(key => !this._items[key].bitmap.isRequestOnly() && !this._items[key].bitmap.isReady());
 	}
 
 	getErrorBitmap() {
