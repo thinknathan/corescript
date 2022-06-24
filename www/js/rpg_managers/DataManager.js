@@ -1,5 +1,4 @@
 import Graphics from "../rpg_core/Graphics.js";
-import Decrypter from "../rpg_core/Decrypter.js";
 import ResourceHandler from "../rpg_core/ResourceHandler.js";
 import StorageManager from "../rpg_managers/StorageManagerShim.js";
 import SceneManager from "../rpg_managers/SceneManager.js";
@@ -104,8 +103,6 @@ class DataManager {
 			}
 		}
 		if (object === self.$dataSystem) {
-			Decrypter.hasEncryptedImages = !!object.hasEncryptedImages;
-			Decrypter.hasEncryptedAudio = !!object.hasEncryptedAudio;
 			Scene_Boot.loadSystemImages();
 		}
 	}

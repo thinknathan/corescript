@@ -686,12 +686,6 @@ class Bitmap extends PIXI.Container {
 	 * requestCompleted:
 	 * Request completed
 	 *
-	 * decrypting:
-	 * requesting encrypted data from supplied URI or decrypting it.
-	 *
-	 * decryptCompleted:
-	 * Decrypt completed
-	 *
 	 * loaded:
 	 * loaded. isReady() === true, so It's usable.
 	 *
@@ -967,15 +961,10 @@ class Bitmap extends PIXI.Container {
 		// 	this._loader = ResourceHandler.createLoader(url, this._requestImage.bind(this, url), this._onError.bind(this));
 		// }
 
-		// if (!Decrypter.checkImgIgnore(url) && Decrypter.hasEncryptedImages) {
-		// 	this._loadingState = 'decrypting';
-		// 	Decrypter.decryptImg(url, this);
-		// } else {
 		// this._image.src = url;
 
 		// this._image.addEventListener('load', this._loadListener = Bitmap.prototype._onLoad.bind(this));
 		// this._image.addEventListener('error', this._errorListener = this._loader || Bitmap.prototype._onError.bind(this));
-		// }
 	}
 
 	isRequestOnly() {
@@ -984,8 +973,7 @@ class Bitmap extends PIXI.Container {
 
 	isRequestReady() {
 		return this._loadingState !== 'pending' &&
-			this._loadingState !== 'requesting' &&
-			this._loadingState !== 'decrypting';
+			this._loadingState !== 'requesting';
 	}
 
 	startRequest() {

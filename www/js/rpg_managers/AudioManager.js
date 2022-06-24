@@ -1,5 +1,4 @@
 import WebAudio from "../rpg_core/WebAudio.js";
-import Decrypter from "../rpg_core/Decrypter.js";
 import Utils from "../rpg_core/Utils.js";
 import Graphics from "../rpg_core/Graphics.js";
 
@@ -31,21 +30,9 @@ class AudioManager {
 
 	static playEncryptedBgm({
 		name
-	}, pos) {
-		const ext = this.audioFileExt();
-		let url = `${this._path}bgm/${encodeURIComponent(name)}${ext}`;
-		url = Decrypter.extToEncryptExt(url);
-	}
+	}, pos) { }
 
-	static createDecryptBuffer(url, bgm, pos) {
-		this._blobUrl = url;
-		this._bgmBuffer = this.createBuffer('bgm', bgm.name);
-		this.updateBgmParameters(bgm);
-		if (!this._meBuffer) {
-			this._bgmBuffer.play(true, pos || 0);
-		}
-		this.updateCurrentBgm(bgm, pos);
-	}
+	static createDecryptBuffer(url, bgm, pos) { }
 
 	static replayBgm(bgm) {
 		if (this.isCurrentBgm(bgm)) {
@@ -342,9 +329,6 @@ class AudioManager {
 	}
 
 	static shouldUseHtml5Audio() {
-		// The only case where we wanted html5audio was android/ no encrypt
-		// Atsuma-ru asked to force webaudio there too, so just return false for ALL
-		// return Utils.isAndroidChrome() && !Decrypter.hasEncryptedAudio;
 		return false;
 	}
 

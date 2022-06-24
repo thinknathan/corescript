@@ -1,5 +1,4 @@
 import ResourceHandler from "./ResourceHandler.js";
-import Decrypter from "./Decrypter.js";
 import Utils from "./Utils.js";
 
 //-----------------------------------------------------------------------------
@@ -480,7 +479,6 @@ class WebAudio {
 	_load(url) {
 		if (WebAudio._context) {
 			const xhr = new XMLHttpRequest();
-			if (Decrypter.hasEncryptedAudio) url = Decrypter.extToEncryptExt(url);
 			xhr.open('GET', url);
 			xhr.responseType = 'arraybuffer';
 			xhr.onload = () => {
@@ -504,7 +502,6 @@ class WebAudio {
 		response
 	}) {
 		let array = response;
-		if (Decrypter.hasEncryptedAudio) array = Decrypter.decryptArrayBuffer(array);
 		this._readLoopComments(new Uint8Array(array));
 		WebAudio._context.decodeAudioData(array, buffer => {
 			this._buffer = buffer;

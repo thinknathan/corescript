@@ -42,6 +42,8 @@ This fork introduces opinionated changes and is not necessarily a drop-in replac
 - REMOVED: Gradients in gauges
 - REMOVED: Shadow pen feature (all shadows on tilemaps)
 - REMOVED: Playing video
+- REMOVED: Rotate hue
+- REMOVED: Decryption (support for encrypted exports)
 
 ## Added hooks
 

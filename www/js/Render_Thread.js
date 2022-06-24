@@ -31,7 +31,6 @@ import ToneSprite from "./rpg_core/ToneSprite.js";
 import Stage from "./rpg_core/Stage.js";
 import WebAudio from "./rpg_core/WebAudio.js";
 import JsonEx from "./rpg_core/JsonEx.js";
-import Decrypter from "./rpg_core/Decrypter.js";
 import ResourceHandler from "./rpg_core/ResourceHandler.js";
 import WindowShim from "./rpg_core/WindowShim.js";
 import DocumentShim from "./rpg_core/DocumentShim.js";
@@ -387,7 +386,6 @@ class Render_Thread {
         self.Stage = Stage;
         self.WebAudio = WebAudio;
         self.JsonEx = JsonEx;
-        self.Decrypter = Decrypter;
         self.ResourceHandler = ResourceHandler;
 
         self.DataManager = DataManager;
