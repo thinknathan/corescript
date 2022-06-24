@@ -1091,6 +1091,7 @@ class Graphics {
 			resolution: window.devicePixelRatio,
 			powerPreference: "high-performance",
 			autoStart: true,
+			forceCanvas: (SceneManager.preferableRendererType() === 'canvas')
 		};
 		try {
 			this._app = new PIXI.Application(options);
