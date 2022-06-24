@@ -601,8 +601,8 @@ class Bitmap extends PIXI.Container {
 		if (!this.baseTexture) {
 			return '#ffffff';
 		}
-		const extract = Graphics._renderer.plugins.extract;
-		const pixels = extract.pixels(this.baseTexture, {
+		const sprite = new PIXI.Sprite.from(this.baseTexture);
+		const pixels = Graphics._renderer.plugins.extract.pixels(sprite, {
 			x: x,
 			y: y,
 			width: 1,
@@ -611,6 +611,11 @@ class Bitmap extends PIXI.Container {
 		});
 		const rgb = PIXI.utils.rgb2hex(pixels);
 		const result = PIXI.utils.hex2string(rgb);
+		sprite.destroy({
+			children: true,
+			texture: true,
+			baseTexture: false
+		});
 		return result;
 	}
 
@@ -624,17 +629,23 @@ class Bitmap extends PIXI.Container {
 	 */
 	getAlphaPixel(x, y) {
 		if (!this.baseTexture) {
-			return 1;
+			return '1';
 		}
-		const extract = Graphics._renderer.plugins.extract;
-		const pixels = extract.pixels(this.baseTexture, {
+		const sprite = new PIXI.Sprite.from(this.baseTexture);
+		const pixels = Graphics._renderer.plugins.extract.pixels(sprite, {
 			x: x,
 			y: y,
 			width: 1,
 			height: 1,
 			resolution: this.baseTexture.resolution,
 		});
-		return pixels[3];
+		const result = String(pixels[3]);
+		sprite.destroy({
+			children: true,
+			texture: true,
+			baseTexture: false
+		});
+		return result;
 	}
 
 	/**
