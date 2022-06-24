@@ -30,7 +30,6 @@ class CanvasShim extends PIXI.Container {
 	}
 
 	getContext(type) {
-		console.log('Attempted getContext request on CanvasShim. This is not a canvas DOM element.');
 		return this.context;
 	}
 }
