@@ -85,9 +85,6 @@ class WindowLayer extends PIXI.Container {
 
 WindowLayer.voidFilter = new PIXI.filters.AlphaFilter();
 
-WindowLayer.prototype.render = PIXI.Container.prototype.render;
-WindowLayer.prototype.renderCanvas = PIXI.Container.prototype.renderCanvas;
-
 // The important members from Pixi.js
 
 /**
