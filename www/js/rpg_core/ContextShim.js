@@ -7,31 +7,38 @@ class ContextShim {
 
 	clearRect() {
 		console.log('ContextShim clearRect');
-	 }
+	}
 
 	save() {
 		console.log('ContextShim save');
-	 }
+	}
 
 	drawImage() {
 		console.log('ContextShim drawImage');
-	 }
+	}
 
 	restore() {
 		console.log('ContextShim restore');
-	 }
+	}
 
 	fillRect() {
 		console.log('ContextShim fillRect');
-	 }
-
-	restore() {
-		console.log('ContextShim restore');
-	 }
+	}
 
 	setTransform() {
 		console.log('ContextShim setTransform');
-	 }
+	}
+
+	putImageData() {
+		console.log('ContextShim putImageData');
+	}
+
+	getImageData() {
+		console.log('ContextShim getImageData');
+		return {
+			data: [],
+		};
+	}
 }
 
 export default ContextShim;
