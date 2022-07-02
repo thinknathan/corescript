@@ -37,6 +37,17 @@ class Sprite extends PIXI.Sprite {
 		this.opaque = false;
 
 		this.bitmap = bitmap;
+		this.on('removed', this.onRemoveAsAChild);
+	}
+
+	/**
+	 * Nullify filters when the sprite is removed.
+	 *
+	 * @method _onRemoveAsAChild
+	 * @private
+	 */
+	 onRemoveAsAChild() {
+		this.filters = null;
 	}
 
 	/**
