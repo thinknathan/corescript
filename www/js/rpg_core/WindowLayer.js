@@ -84,8 +84,6 @@ class WindowLayer extends PIXI.Container {
 	}
 }
 
-WindowLayer.voidFilter = new PIXI.filters.AlphaFilter();
-
 // The important members from Pixi.js
 
 /**
