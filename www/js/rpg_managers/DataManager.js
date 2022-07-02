@@ -45,21 +45,18 @@ class DataManager {
 	}
 
 	static loadDataFile(name, src) {
-		const xhr = new XMLHttpRequest();
 		const url = `data/${src}`;
-		xhr.open('GET', url);
-		xhr.overrideMimeType('application/json');
-		xhr.onload = () => {
-			if (xhr.status < 400) {
-				window[name] = JSON.parse(xhr.responseText);
-				DataManager.onLoad(window[name]);
-			}
-		};
-		xhr.onerror = this._mapLoader || (() => {
-			DataManager._errorUrl = DataManager._errorUrl || url;
+		self[name] = null;
+		fetch(url)
+		.then(response => response.json())
+		.then(json => {
+			self[name] = json;
+			DataManager.onLoad(self[name]);
+		})
+		.catch(function (err) {
+			console.error(err);
+			DataManager._errorUrl = DataManager._errorUrl || src;
 		});
-		window[name] = null;
-		xhr.send();
 	}
 
 	static isDatabaseLoaded() {
