@@ -400,17 +400,32 @@ class Render_Thread {
         self.PluginManager = PluginManager;
     }
 
-    static async updateData(type, payload) {
-        console.log(type, payload);
-        if (type === 'plugins') {
+    static async updateData(payload) {
+        console.log(payload);
+        await this.initWindowAndDocument();
+        if (payload.type === 'plugins') {
             self.$plugins = payload.data;
-        } else if (type === 'window') {
+        } else if (payload.type === 'window') {
             Object.entries(payload.data).forEach(([key, value]) => self.window[key] = value);
         }
     }
 
-    static async receiveEvent(type, payload) {
-        console.log(type, payload);
+    static async initWindowAndDocument() {
+        if (!self.window) {
+            self.window = WindowShim;
+        }
+        if (!self.document) {
+           self.document = DocumentShim;
+        }
+        return true;
+    }
+
+    static async receiveEvent(payload) {
+        if (payload.shimType === 'window') {
+            self.window.triggerEvent(payload);
+        } else {
+            self.document.triggerEvent(payload);
+        }
     }
 
     static async start() {
@@ -419,8 +434,6 @@ class Render_Thread {
         this._setupPixiSettings();
         PluginManager.setup($plugins);
         if (Utils.isWorker()) {
-            self.window = WindowShim;
-            self.document = DocumentShim;
             SceneManager.run(Scene_Boot);
         } else {
             (document.readyState === 'complete') ? SceneManager.run(Scene_Boot) : window.addEventListener('load', () => SceneManager.run(Scene_Boot));
