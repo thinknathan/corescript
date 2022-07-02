@@ -126,7 +126,7 @@ class JsonEx {
 			if (value['@'] === null) {
 				value = this._resetPrototype(value, null);
 			} else if (value['@']) {
-				const constructor = window[value['@']];
+				const constructor = self[value['@']];
 				if (constructor) {
 					value = this._resetPrototype(value, constructor.prototype);
 				}

@@ -62,7 +62,7 @@ class DataManager {
 	static isDatabaseLoaded() {
 		this.checkError();
 		for (let i = 0; i < this._databaseFiles.length; i++) {
-			if (!window[this._databaseFiles[i].name]) {
+			if (!self[this._databaseFiles[i].name]) {
 				return false;
 			}
 		}
