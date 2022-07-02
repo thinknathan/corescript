@@ -419,6 +419,8 @@ class Render_Thread {
         this._setupPixiSettings();
         PluginManager.setup($plugins);
         if (Utils.isWorker()) {
+            self.window = WindowShim;
+            self.document = DocumentShim;
             SceneManager.run(Scene_Boot);
         } else {
             (document.readyState === 'complete') ? SceneManager.run(Scene_Boot) : window.addEventListener('load', () => SceneManager.run(Scene_Boot));
