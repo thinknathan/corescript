@@ -25,12 +25,31 @@ class ContextShim {
 		console.log('ContextShim fillRect');
 	}
 
+	beginPath() {
+		console.log('ContextShim beginPath');
+	}
+
+	arc() {
+		console.log('ContextShim arc');
+	}
+
+	stroke() {
+		console.log('ContextShim stroke');
+	}
+
 	setTransform() {
 		console.log('ContextShim setTransform');
 	}
 
 	putImageData() {
 		console.log('ContextShim putImageData');
+	}
+
+	createLinearGradient() {
+		console.log('ContextShim createLinearGradient');
+		return {
+			addColorStop: () => console.log('ContextShim createLinearGradient.addColorStop'),
+		}
 	}
 
 	getImageData() {
