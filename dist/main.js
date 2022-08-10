@@ -8,7 +8,7 @@
  * https://github.com/thinknathan/corescript/blob/master/LICENSE
  */
 (function () {
-  "use strict";
+  'use strict';
 
   //-----------------------------------------------------------------------------
 
@@ -506,8 +506,7 @@
       if (typeof Utils._nwjs === "boolean") {
         return Utils._nwjs;
       }
-      const result =
-        typeof require === "function" && typeof process === "object";
+      const result = typeof require === "function" && typeof process === "object";
       Utils._nwjs = result;
       return result;
     }
@@ -595,8 +594,7 @@
       if (typeof Utils._mobileDevice === "boolean") {
         return Utils._mobileDevice;
       }
-      const r =
-        /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i;
+      const r = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i;
       const result = !!navigator.userAgent.match(r);
       Utils._mobileDevice = result;
       return result;
@@ -761,9 +759,7 @@
 
       requestFile.onload = function () {
         if (this.status < Decrypter._xhrOk) {
-          const arrayBuffer = Decrypter.decryptArrayBuffer(
-            requestFile.response
-          );
+          const arrayBuffer = Decrypter.decryptArrayBuffer(requestFile.response);
           bitmap._image.src = Decrypter.createBlobUrl(arrayBuffer);
           bitmap._image.addEventListener(
             "load",
@@ -808,8 +804,7 @@
       if (arrayBuffer) {
         const byteArray = new Uint8Array(arrayBuffer);
         for (i = 0; i < this._headerlength; i++) {
-          byteArray[i] =
-            byteArray[i] ^ parseInt(Decrypter._encryptionKey[i], 16);
+          byteArray[i] = byteArray[i] ^ parseInt(Decrypter._encryptionKey[i], 16);
           view.setUint8(i, byteArray[i]);
         }
       }
@@ -1092,10 +1087,7 @@
         const gain = this._masterGainNode.gain;
         const currentTime = WebAudio._context.currentTime;
         gain.setValueAtTime(0, currentTime);
-        gain.linearRampToValueAtTime(
-          this._masterVolume,
-          currentTime + duration
-        );
+        gain.linearRampToValueAtTime(this._masterVolume, currentTime + duration);
       }
     }
 
@@ -1316,8 +1308,7 @@
      */
     seek() {
       if (WebAudio._context) {
-        let pos =
-          (WebAudio._context.currentTime - this._startTime) * this._pitch;
+        let pos = (WebAudio._context.currentTime - this._startTime) * this._pitch;
         if (this._loopLength > 0) {
           while (pos >= this._loopStart + this._loopLength) {
             pos -= this._loopLength;
@@ -1876,11 +1867,7 @@
       if (this._meBuffer) {
         this._meBuffer.stop();
         this._meBuffer = null;
-        if (
-          this._bgmBuffer &&
-          this._currentBgm &&
-          !this._bgmBuffer.isPlaying()
-        ) {
+        if (this._bgmBuffer && this._currentBgm && !this._bgmBuffer.isPlaying()) {
           this._bgmBuffer.play(true, this._currentBgm.pos);
           this._bgmBuffer.fadeIn(this._replayFadeTime);
         }
@@ -3808,9 +3795,7 @@
       this._loadingCount = 0;
 
       ProgressWatcher$1.truncateProgress();
-      ProgressWatcher$1.setProgressListener(
-        this._updateProgressCount.bind(this)
-      );
+      ProgressWatcher$1.setProgressListener(this._updateProgressCount.bind(this));
       this._progressTimeout = setTimeout(() => {
         Graphics._showProgress();
       }, 1500);
@@ -4837,8 +4822,8 @@
      */
     static _makeErrorHtml(name, message) {
       return `<font color="yellow"><b>${name}</b></font><br><font color="white">${decodeURIComponent(
-        message
-      )}</font><br>`;
+      message
+    )}</font><br>`;
     }
 
     /**
@@ -6009,8 +5994,8 @@
      */
     _makeFontNameText() {
       return `${(this.fontItalic ? "Italic " : "") + this.fontSize}px ${
-        this.fontFace
-      }`;
+      this.fontFace
+    }`;
     }
 
     /**
@@ -6475,13 +6460,7 @@
     }
 
     static reserveFace(filename, hue, reservationId) {
-      return this.reserveBitmap(
-        "img/faces/",
-        filename,
-        hue,
-        true,
-        reservationId
-      );
+      return this.reserveBitmap("img/faces/", filename, hue, true, reservationId);
     }
 
     static reserveParallax(filename, hue, reservationId) {
@@ -7572,9 +7551,7 @@
      */
     _needsTint() {
       const tone = this._colorTone;
-      return (
-        tone[0] || tone[1] || tone[2] || tone[3] || this._blendColor[3] > 0
-      );
+      return tone[0] || tone[1] || tone[2] || tone[3] || this._blendColor[3] > 0;
     }
 
     /**
@@ -10462,13 +10439,7 @@
           WindowSkinCache.setItem(this._windowskin._url, texture, "frame");
         }
 
-        this._windowFramePlane = new PIXI.NineSlicePlane(
-          texture,
-          12,
-          12,
-          12,
-          12
-        );
+        this._windowFramePlane = new PIXI.NineSlicePlane(texture, 12, 12, 12, 12);
         this._windowFrameSprite.addChild(this._windowFramePlane);
         this._windowFrameSprite._setupComplete = true;
       }
@@ -12306,9 +12277,7 @@
     }
 
     isValid() {
-      return (
-        (this._forcing && this.item()) || this.subject().canUse(this.item())
-      );
+      return (this._forcing && this.item()) || this.subject().canUse(this.item());
     }
 
     speed() {
@@ -12576,12 +12545,7 @@
     makeDamageValue(target, critical) {
       const item = this.item();
       const baseValue = this.evalDamageFormula(target);
-      let value = this.processElementalDamage(
-        item,
-        baseValue,
-        target,
-        critical
-      );
+      let value = this.processElementalDamage(item, baseValue, target, critical);
       if (this.isPhysical()) {
         value = this.processPhysicalDamage(item, value, target, critical);
       }
@@ -12634,16 +12598,14 @@
 
     evalDamageFormula(target) {
       try {
-        /* jshint ignore:start */
         const item = this.item();
         const a = this.subject();
         const b = target;
         const v = self.$gameVariables._data;
         const sign = [3, 4].contains(item.damage.type) ? -1 : 1;
-        const value = Math.max(eval(item.damage.formula), 0) * sign;
+        let value = Math.max(eval(item.damage.formula), 0) * sign;
         if (isNaN(value)) value = 0;
         return value;
-        /* jshint ignore:end */
       } catch (e) {
         return 0;
       }
@@ -15346,9 +15308,7 @@
     }
 
     isAnimationPlaying() {
-      return this.battlerSprites().some((sprite) =>
-        sprite.isAnimationPlaying()
-      );
+      return this.battlerSprites().some((sprite) => sprite.isAnimationPlaying());
     }
 
     isEffecting() {
@@ -15757,9 +15717,7 @@
     processEscapeCharacter(code, textState) {
       switch (code) {
         case "C":
-          this.changeTextColor(
-            this.textColor(this.obtainEscapeParam(textState))
-          );
+          this.changeTextColor(this.textColor(this.obtainEscapeParam(textState)));
           break;
         case "I":
           this.processDrawIcon(this.obtainEscapeParam(textState), textState);
@@ -16360,8 +16318,7 @@
       const maxCols = this.maxCols();
       rect.width = this.itemWidth();
       rect.height = this.itemHeight();
-      rect.x =
-        (index % maxCols) * (rect.width + this.spacing()) - this._scrollX;
+      rect.x = (index % maxCols) * (rect.width + this.spacing()) - this._scrollX;
       rect.y = Math.floor(index / maxCols) * rect.height - this._scrollY;
       return rect;
     }
@@ -16535,10 +16492,7 @@
           this.processOk();
         } else if (this.isCancelEnabled() && this.isCancelTriggered()) {
           this.processCancel();
-        } else if (
-          this.isHandled("pagedown") &&
-          Input.isTriggered("pagedown")
-        ) {
+        } else if (this.isHandled("pagedown") && Input.isTriggered("pagedown")) {
           this.processPagedown();
         } else if (this.isHandled("pageup") && Input.isTriggered("pageup")) {
           this.processPageup();
@@ -17038,8 +16992,7 @@
       let maxWidth = 96;
       const choices = self.$gameMessage.choices();
       for (let i = 0; i < choices.length; i++) {
-        const choiceWidth =
-          this.textWidthEx(choices[i]) + this.textPadding() * 2;
+        const choiceWidth = this.textWidthEx(choices[i]) + this.textPadding() * 2;
         if (maxWidth < choiceWidth) {
           maxWidth = choiceWidth;
         }
@@ -17807,11 +17760,7 @@
           }
           this._textSpeedCount = 0;
           this.processCharacter(this._textState);
-          if (
-            !this._showFast &&
-            !this._lineShowFast &&
-            this._textSpeed !== -1
-          ) {
+          if (!this._showFast && !this._lineShowFast && this._textSpeed !== -1) {
             break;
           }
           if (this.pause || this._waitCount > 0) {
@@ -18432,10 +18381,7 @@
       const numMethods = this._methods.length;
       if (DataManager.isSkill(item)) {
         if (item.message1) {
-          this.push(
-            "addText",
-            subject.name() + item.message1.format(item.name)
-          );
+          this.push("addText", subject.name() + item.message1.format(item.name));
         }
         if (item.message2) {
           this.push("addText", item.message2.format(item.name));
@@ -18515,9 +18461,7 @@
     displayMiss(target) {
       let fmt;
       if (target.result().physical) {
-        fmt = target.isActor()
-          ? TextManager.actorNoHit
-          : TextManager.enemyNoHit;
+        fmt = target.isActor() ? TextManager.actorNoHit : TextManager.enemyNoHit;
         this.push("performMiss", target);
       } else {
         fmt = TextManager.actionFailure;
@@ -19494,10 +19438,7 @@
 
     createPartyCommandWindow() {
       this._partyCommandWindow = new Window_PartyCommand();
-      this._partyCommandWindow.setHandler(
-        "fight",
-        this.commandFight.bind(this)
-      );
+      this._partyCommandWindow.setHandler("fight", this.commandFight.bind(this));
       this._partyCommandWindow.setHandler(
         "escape",
         this.commandEscape.bind(this)
@@ -19512,14 +19453,8 @@
         "attack",
         this.commandAttack.bind(this)
       );
-      this._actorCommandWindow.setHandler(
-        "skill",
-        this.commandSkill.bind(this)
-      );
-      this._actorCommandWindow.setHandler(
-        "guard",
-        this.commandGuard.bind(this)
-      );
+      this._actorCommandWindow.setHandler("skill", this.commandSkill.bind(this));
+      this._actorCommandWindow.setHandler("guard", this.commandGuard.bind(this));
       this._actorCommandWindow.setHandler("item", this.commandItem.bind(this));
       this._actorCommandWindow.setHandler(
         "cancel",
@@ -19537,12 +19472,7 @@
     createSkillWindow() {
       const wy = this._helpWindow.y + this._helpWindow.height;
       const wh = this._statusWindow.y - wy;
-      this._skillWindow = new Window_BattleSkill(
-        0,
-        wy,
-        Graphics$1.boxWidth,
-        wh
-      );
+      this._skillWindow = new Window_BattleSkill(0, wy, Graphics$1.boxWidth, wh);
       this._skillWindow.setHelpWindow(this._helpWindow);
       this._skillWindow.setHandler("ok", this.onSkillOk.bind(this));
       this._skillWindow.setHandler("cancel", this.onSkillCancel.bind(this));
@@ -19923,9 +19853,7 @@
     }
 
     isFormationEnabled() {
-      return (
-        self.$gameParty.size() >= 2 && self.$gameSystem.isFormationEnabled()
-      );
+      return self.$gameParty.size() >= 2 && self.$gameSystem.isFormationEnabled();
     }
 
     isOptionsEnabled() {
@@ -20934,10 +20862,7 @@
       this._commandWindow = new Window_EquipCommand(wx, wy, ww);
       this._commandWindow.setHelpWindow(this._helpWindow);
       this._commandWindow.setHandler("equip", this.commandEquip.bind(this));
-      this._commandWindow.setHandler(
-        "optimize",
-        this.commandOptimize.bind(this)
-      );
+      this._commandWindow.setHandler("optimize", this.commandOptimize.bind(this));
       this._commandWindow.setHandler("clear", this.commandClear.bind(this));
       this._commandWindow.setHandler("cancel", this.popScene.bind(this));
       this._commandWindow.setHandler("pagedown", this.nextActor.bind(this));
@@ -21012,10 +20937,7 @@
 
     onItemOk() {
       SoundManager.playEquip();
-      this.actor().changeEquip(
-        this._slotWindow.index(),
-        this._itemWindow.item()
-      );
+      this.actor().changeEquip(this._slotWindow.index(), this._itemWindow.item());
       this._slotWindow.activate();
       this._slotWindow.refresh();
       this._itemWindow.deselect();
@@ -21099,13 +21021,7 @@
     drawHorzLine(y) {
       const lineY = y + this.lineHeight() / 2 - 1;
       this.contents.paintOpacity = 48;
-      this.contents.fillRect(
-        0,
-        lineY,
-        this.contentsWidth(),
-        2,
-        this.lineColor()
-      );
+      this.contents.fillRect(0, lineY, this.contentsWidth(), 2, this.lineColor());
       this.contents.paintOpacity = 255;
     }
 
@@ -21261,13 +21177,7 @@
       const titleWidth = rect.width - statusWidth;
       this.resetTextColor();
       this.changePaintOpacity(this.isCommandEnabled(index));
-      this.drawText(
-        this.commandName(index),
-        rect.x,
-        rect.y,
-        titleWidth,
-        "left"
-      );
+      this.drawText(this.commandName(index), rect.x, rect.y, titleWidth, "left");
       this.drawText(
         this.statusText(index),
         rect.x + titleWidth,
@@ -21772,10 +21682,7 @@
       this._statusWindow.selectLast();
       this._statusWindow.activate();
       this._statusWindow.setHandler("ok", this.onFormationOk.bind(this));
-      this._statusWindow.setHandler(
-        "cancel",
-        this.onFormationCancel.bind(this)
-      );
+      this._statusWindow.setHandler("cancel", this.onFormationCancel.bind(this));
     }
 
     commandOptions() {
@@ -21914,9 +21821,7 @@
     }
 
     initialize(x, y) {
-      this._maxSwitches = Math.ceil(
-        (self.$dataSystem.switches.length - 1) / 10
-      );
+      this._maxSwitches = Math.ceil((self.$dataSystem.switches.length - 1) / 10);
       this._maxVariables = Math.ceil(
         (self.$dataSystem.variables.length - 1) / 10
       );
@@ -23148,9 +23053,7 @@
     }
 
     isMenuEnabled() {
-      return (
-        self.$gameSystem.isMenuEnabled() && !self.$gameMap.isEventRunning()
-      );
+      return self.$gameSystem.isMenuEnabled() && !self.$gameMap.isEventRunning();
     }
 
     isMenuCalled() {
@@ -23361,8 +23264,7 @@
 
     isBusy() {
       return (
-        this._commandWindow.isClosing() ||
-        Scene_Base.prototype.isBusy.call(this)
+        this._commandWindow.isClosing() || Scene_Base.prototype.isBusy.call(this)
       );
     }
 
@@ -23413,10 +23315,7 @@
     createCommandWindow() {
       this._commandWindow = new Window_TitleCommand();
       this._commandWindow.setHandler("newGame", this.commandNewGame.bind(this));
-      this._commandWindow.setHandler(
-        "continue",
-        this.commandContinue.bind(this)
-      );
+      this._commandWindow.setHandler("continue", this.commandContinue.bind(this));
       this._commandWindow.setHandler("options", this.commandOptions.bind(this));
       this.addWindow(this._commandWindow);
     }
@@ -24966,10 +24865,7 @@
       if (this._shakeDuration > 0 || this._shake !== 0) {
         const delta =
           (this._shakePower * this._shakeSpeed * this._shakeDirection) / 10;
-        if (
-          this._shakeDuration <= 1 &&
-          this._shake * (this._shake + delta) < 0
-        ) {
+        if (this._shakeDuration <= 1 && this._shake * (this._shake + delta) < 0) {
           this._shake = 0;
         } else {
           this._shake += delta;
@@ -25047,16 +24943,7 @@
     ) {
       const picture = this.picture(pictureId);
       if (picture) {
-        picture.move(
-          origin,
-          x,
-          y,
-          scaleX,
-          scaleY,
-          opacity,
-          blendMode,
-          duration
-        );
+        picture.move(origin, x, y, scaleX, scaleY, opacity, blendMode, duration);
       }
     }
 
@@ -25620,10 +25507,7 @@
     }
 
     allTraits() {
-      return this.traitObjects().reduce(
-        (r, { traits }) => r.concat(traits),
-        []
-      );
+      return this.traitObjects().reduce((r, { traits }) => r.concat(traits), []);
     }
 
     traits(code) {
@@ -25739,10 +25623,7 @@
     }
 
     attackTimesAdd() {
-      return Math.max(
-        this.traitsSumAll(Game_BattlerBase.TRAIT_ATTACK_TIMES),
-        0
-      );
+      return Math.max(this.traitsSumAll(Game_BattlerBase.TRAIT_ATTACK_TIMES), 0);
     }
 
     addedSkillTypes() {
@@ -25750,9 +25631,7 @@
     }
 
     isSkillTypeSealed(stypeId) {
-      return this.traitsSet(Game_BattlerBase.TRAIT_STYPE_SEAL).contains(
-        stypeId
-      );
+      return this.traitsSet(Game_BattlerBase.TRAIT_STYPE_SEAL).contains(stypeId);
     }
 
     addedSkills() {
@@ -25760,33 +25639,23 @@
     }
 
     isSkillSealed(skillId) {
-      return this.traitsSet(Game_BattlerBase.TRAIT_SKILL_SEAL).contains(
-        skillId
-      );
+      return this.traitsSet(Game_BattlerBase.TRAIT_SKILL_SEAL).contains(skillId);
     }
 
     isEquipWtypeOk(wtypeId) {
-      return this.traitsSet(Game_BattlerBase.TRAIT_EQUIP_WTYPE).contains(
-        wtypeId
-      );
+      return this.traitsSet(Game_BattlerBase.TRAIT_EQUIP_WTYPE).contains(wtypeId);
     }
 
     isEquipAtypeOk(atypeId) {
-      return this.traitsSet(Game_BattlerBase.TRAIT_EQUIP_ATYPE).contains(
-        atypeId
-      );
+      return this.traitsSet(Game_BattlerBase.TRAIT_EQUIP_ATYPE).contains(atypeId);
     }
 
     isEquipTypeLocked(etypeId) {
-      return this.traitsSet(Game_BattlerBase.TRAIT_EQUIP_LOCK).contains(
-        etypeId
-      );
+      return this.traitsSet(Game_BattlerBase.TRAIT_EQUIP_LOCK).contains(etypeId);
     }
 
     isEquipTypeSealed(etypeId) {
-      return this.traitsSet(Game_BattlerBase.TRAIT_EQUIP_SEAL).contains(
-        etypeId
-      );
+      return this.traitsSet(Game_BattlerBase.TRAIT_EQUIP_SEAL).contains(etypeId);
     }
 
     slotType() {
@@ -26024,8 +25893,7 @@
 
     canPaySkillCost(skill) {
       return (
-        this._tp >= this.skillTpCost(skill) &&
-        this._mp >= this.skillMpCost(skill)
+        this._tp >= this.skillTpCost(skill) && this._mp >= this.skillMpCost(skill)
       );
     }
 
@@ -26677,9 +26545,7 @@
     }
 
     isStateRestrict(stateId) {
-      return (
-        self.$dataStates[stateId].removeByRestriction && this.isRestricted()
-      );
+      return self.$dataStates[stateId].removeByRestriction && this.isRestricted();
     }
 
     onRestrict() {
@@ -27581,9 +27447,7 @@
     }
 
     finalExpRate() {
-      return (
-        this.exr * (this.isBattleMember() ? 1 : this.benchMembersExpRate())
-      );
+      return this.exr * (this.isBattleMember() ? 1 : this.benchMembersExpRate());
     }
 
     benchMembersExpRate() {
@@ -27861,9 +27725,7 @@
     }
 
     maxFloorDamage() {
-      return self.$dataSystem.optFloorDeath
-        ? this.hp
-        : Math.max(this.hp - 1, 0);
+      return self.$dataSystem.optFloorDeath ? this.hp : Math.max(this.hp - 1, 0);
     }
 
     performMapDamage() {
@@ -28481,9 +28343,7 @@
     }
 
     partyAbility(abilityId) {
-      return this.battleMembers().some((actor) =>
-        actor.partyAbility(abilityId)
-      );
+      return this.battleMembers().some((actor) => actor.partyAbility(abilityId));
     }
 
     hasEncounterHalf() {
@@ -28619,9 +28479,7 @@
     }
 
     traitObjects() {
-      return Game_Battler.prototype.traitObjects
-        .call(this)
-        .concat(this.enemy());
+      return Game_Battler.prototype.traitObjects.call(this).concat(this.enemy());
     }
 
     paramBase(paramId) {
@@ -28637,16 +28495,13 @@
     }
 
     makeDropItems() {
-      return this.enemy().dropItems.reduce(
-        (r, { kind, denominator, dataId }) => {
-          if (kind > 0 && Math.random() * denominator < this.dropItemRate()) {
-            return r.concat(this.itemObject(kind, dataId));
-          } else {
-            return r;
-          }
-        },
-        []
-      );
+      return this.enemy().dropItems.reduce((r, { kind, denominator, dataId }) => {
+        if (kind > 0 && Math.random() * denominator < this.dropItemRate()) {
+          return r.concat(this.itemObject(kind, dataId));
+        } else {
+          return r;
+        }
+      }, []);
     }
 
     dropItemRate() {
@@ -28838,9 +28693,7 @@
       const ratingZero = ratingMax - 3;
       actionList = actionList.filter(({ rating }) => rating > ratingZero);
       for (let i = 0; i < this.numActions(); i++) {
-        this.action(i).setEnemyAction(
-          this.selectAction(actionList, ratingZero)
-        );
+        this.action(i).setEnemyAction(this.selectAction(actionList, ratingZero));
       }
     }
 
@@ -29045,15 +28898,12 @@
       const y2 = self.$gameMap.roundYWithDirection(y, d);
       const d2 = this.reverseDir(d);
       return (
-        self.$gameMap.isPassable(x, y, d) &&
-        self.$gameMap.isPassable(x2, y2, d2)
+        self.$gameMap.isPassable(x, y, d) && self.$gameMap.isPassable(x2, y2, d2)
       );
     }
 
     isCollidedWithCharacters(x, y) {
-      return (
-        this.isCollidedWithEvents(x, y) || this.isCollidedWithVehicles(x, y)
-      );
+      return this.isCollidedWithEvents(x, y) || this.isCollidedWithVehicles(x, y);
     }
 
     isCollidedWithEvents(x, y) {
@@ -29062,9 +28912,7 @@
     }
 
     isCollidedWithVehicles(x, y) {
-      return (
-        self.$gameMap.boat().posNt(x, y) || self.$gameMap.ship().posNt(x, y)
-      );
+      return self.$gameMap.boat().posNt(x, y) || self.$gameMap.ship().posNt(x, y);
     }
 
     setPosition(x, y) {
@@ -30368,13 +30216,7 @@
     drawTotalPrice() {
       const total = this._price * this._number;
       const width = this.contentsWidth() - this.textPadding();
-      this.drawCurrencyValue(
-        total,
-        this._currencyUnit,
-        0,
-        this.priceY(),
-        width
-      );
+      this.drawCurrencyValue(total, this._currencyUnit, 0, this.priceY(), width);
     }
 
     itemY() {
@@ -30505,9 +30347,7 @@
     }
 
     isEquipItem() {
-      return (
-        DataManager.isWeapon(this._item) || DataManager.isArmor(this._item)
-      );
+      return DataManager.isWeapon(this._item) || DataManager.isArmor(this._item);
     }
 
     drawPossession(x, y) {
@@ -30522,11 +30362,7 @@
     drawEquipInfo(x, y) {
       const members = this.statusMembers();
       for (let i = 0; i < members.length; i++) {
-        this.drawActorEquipInfo(
-          x,
-          y + this.lineHeight() * (i * 2.4),
-          members[i]
-        );
+        this.drawActorEquipInfo(x, y + this.lineHeight() * (i * 2.4), members[i]);
       }
     }
 
@@ -30729,10 +30565,7 @@
       this._categoryWindow.hide();
       this._categoryWindow.deactivate();
       this._categoryWindow.setHandler("ok", this.onCategoryOk.bind(this));
-      this._categoryWindow.setHandler(
-        "cancel",
-        this.onCategoryCancel.bind(this)
-      );
+      this._categoryWindow.setHandler("cancel", this.onCategoryCancel.bind(this));
       this.addWindow(this._categoryWindow);
     }
 
@@ -30916,8 +30749,7 @@
       const width = this.windowWidth();
       const height = this.windowHeight();
       const x = (Graphics$1.boxWidth - width) / 2;
-      const y =
-        (Graphics$1.boxHeight - (height + this.fittingHeight(9) + 8)) / 2;
+      const y = (Graphics$1.boxHeight - (height + this.fittingHeight(9) + 8)) / 2;
       super.initialize(x, y, width, height);
       this._actor = actor;
       this._name = actor.name().slice(0, this._maxLength);
@@ -31118,13 +30950,7 @@
         const rect = this.itemRect(i);
         rect.x += 3;
         rect.width -= 6;
-        this.drawText(
-          table[this._page][i],
-          rect.x,
-          rect.y,
-          rect.width,
-          "center"
-        );
+        this.drawText(table[this._page][i], rect.x, rect.y, rect.width, "center");
       }
     }
 
@@ -32301,8 +32127,7 @@
       switch (this._params[0]) {
         case 0: // Switch
           result =
-            self.$gameSwitches.value(this._params[1]) ===
-            (this._params[2] === 0);
+            self.$gameSwitches.value(this._params[1]) === (this._params[2] === 0);
           break;
         case 1: // Variable
           const value1 = self.$gameVariables.value(this._params[1]);
@@ -32439,8 +32264,7 @@
           break;
         case 13: // Vehicle
           result =
-            self.$gamePlayer.vehicle() ===
-            self.$gameMap.vehicle(this._params[1]);
+            self.$gamePlayer.vehicle() === self.$gameMap.vehicle(this._params[1]);
           break;
       }
       this._branch[this._indent] = result;
@@ -33281,10 +33105,7 @@
     }
 
     videoFileExt() {
-      if (
-        Graphics$1.canPlayVideoType("video/webm") &&
-        !Utils.isMobileDevice()
-      ) {
+      if (Graphics$1.canPlayVideoType("video/webm") && !Utils.isMobileDevice()) {
         return ".webm";
       } else {
         return ".mp4";
@@ -35708,12 +35529,8 @@
     }
 
     refresh() {
-      const characterName = this.isVisible()
-        ? this.actor().characterName()
-        : "";
-      const characterIndex = this.isVisible()
-        ? this.actor().characterIndex()
-        : 0;
+      const characterName = this.isVisible() ? this.actor().characterName() : "";
+      const characterIndex = this.isVisible() ? this.actor().characterIndex() : 0;
       this.setImage(characterName, characterIndex);
     }
 
@@ -35866,10 +35683,7 @@
     }
 
     isSomeoneCollided(x, y) {
-      return this.visibleFollowers().some(
-        (follower) => follower.pos(x, y),
-        this
-      );
+      return this.visibleFollowers().some((follower) => follower.pos(x, y), this);
     }
   }
 
@@ -36031,10 +35845,7 @@
     }
 
     center(x, y) {
-      return self.$gameMap.setDisplayPos(
-        x - this.centerX(),
-        y - this.centerY()
-      );
+      return self.$gameMap.setDisplayPos(x - this.centerX(), y - this.centerY());
     }
 
     locate(x, y) {
@@ -36329,10 +36140,7 @@
     }
 
     triggerTouchActionD2(x2, y2) {
-      if (
-        self.$gameMap.boat().pos(x2, y2) ||
-        self.$gameMap.ship().pos(x2, y2)
-      ) {
+      if (self.$gameMap.boat().pos(x2, y2) || self.$gameMap.ship().pos(x2, y2)) {
         if (TouchInput.isTriggered() && this.getOnVehicle()) {
           return true;
         }
@@ -36749,9 +36557,7 @@
 
     static loadSavefileInfo(savefileId) {
       const globalInfo = this.loadGlobalInfo();
-      return globalInfo && globalInfo[savefileId]
-        ? globalInfo[savefileId]
-        : null;
+      return globalInfo && globalInfo[savefileId] ? globalInfo[savefileId] : null;
     }
 
     static lastAccessedSavefileId() {
@@ -37264,4 +37070,5 @@
       ? init()
       : window.addEventListener("load", init);
   })(self, document, PIXI);
+
 })();
