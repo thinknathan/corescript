@@ -708,7 +708,7 @@ class Graphics {
 	 */
 	static _createCanvas() {
 		if (Utils.isWorker()) {
-			// Get this._canvas via message passing
+			this._updateCanvas();
 		} else {
 			this._canvas = document.createElement('canvas');
 			this._canvas.id = 'GameCanvas';

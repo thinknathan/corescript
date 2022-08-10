@@ -1,6 +1,7 @@
 "use strict";
 
 import * as Comlink from "https://cdn.skypack.dev/pin/comlink@v4.3.1-ebLSsXPUzhGrZgtPT5jX/mode=imports/optimized/comlink.js";
+// import postMe from "https://cdn.skypack.dev/pin/post-me@v0.4.5-y0XpddbrtdQz6AmbiUsy/mode=imports/optimized/post-me.js";
 import * as PIXI from "./libs/pixi.js";
 // import "https://cdn.skypack.dev/pin/iphone-inline-video@v2.2.2-UGQTdOARhJvH2uY0Ic3l/mode=imports/optimized/iphone-inline-video.js";
 
@@ -195,6 +196,8 @@ import Window_TitleCommand from "./rpg_windows/Window_TitleCommand.js";
 import Window_GameEnd from "./rpg_windows/Window_GameEnd.js";
 import Window_DebugRange from "./rpg_windows/Window_DebugRange.js";
 import Window_DebugEdit from "./rpg_windows/Window_DebugEdit.js";
+
+console.log('hello?');
 
 class Render_Thread {
     constructor() {
@@ -405,9 +408,12 @@ class Render_Thread {
         await this.initWindowAndDocument();
         if (payload.type === 'plugins') {
             self.$plugins = payload.data;
+            return true;
         } else if (payload.type === 'window') {
             Object.entries(payload.data).forEach(([key, value]) => self.window[key] = value);
+            return true;
         }
+        return false;
     }
 
     static async initWindowAndDocument() {
@@ -426,6 +432,13 @@ class Render_Thread {
         } else {
             self.document.triggerEvent(payload);
         }
+        return true;
+    }
+
+    static async receiveCanvas(offscreenCanvas) {
+        console.log(offscreenCanvas);
+        self.Graphics._canvas = offscreenCanvas;
+        return true;
     }
 
     static async start() {
@@ -433,15 +446,28 @@ class Render_Thread {
         this._setupGlobals();
         this._setupPixiSettings();
         PluginManager.setup($plugins);
-        if (Utils.isWorker()) {
-            SceneManager.run(Scene_Boot);
-        } else {
-            (document.readyState === 'complete') ? SceneManager.run(Scene_Boot) : window.addEventListener('load', () => SceneManager.run(Scene_Boot));
-        }
+        setTimeout(() => {
+            if (Utils.isWorker()) {
+                SceneManager.run(Scene_Boot);
+            } else {
+                (document.readyState === 'complete') ? SceneManager.run(Scene_Boot) : window.addEventListener('load', () => SceneManager.run(Scene_Boot));
+            }
+        }, 100);
+
     }
 };
 
+onmessage = function(payload) {
+    console.log(payload);
+    if (payload && payload.data && payload.data.canvas) {
+        self.Graphics._canvas = payload.data.canvas;
+    }
+  };
+
+self.PIXI = PIXI;
+
 if (Utils.isWorker()) {
+    console.log('expose');
     Comlink.expose(Render_Thread);
 } else {
     Render_Thread.start();

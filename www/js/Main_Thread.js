@@ -1,6 +1,7 @@
 "use strict";
 
 import * as Comlink from "https://cdn.skypack.dev/pin/comlink@v4.3.1-ebLSsXPUzhGrZgtPT5jX/mode=imports/optimized/comlink.js";
+// import postMe from "https://cdn.skypack.dev/pin/post-me@v0.4.5-y0XpddbrtdQz6AmbiUsy/mode=imports/optimized/post-me.js";
 import Utils from "./rpg_core/Utils.js";
 
 class Main_Thread {
@@ -22,11 +23,12 @@ class Main_Thread {
 		const throttleThreshold = 33.34;
 
 		/* Listen for request to quit game */
-		Render_Thread.addEventListener('message', payload => {
+		document.addEventListener('message', payload => {
 			if (payload.type === 'close') {
+				console.log('Close window request');
 				window.close();
 			} else if (payload.type === 'audio') {
-
+				console.log('Web audio request');
 			}
 		});
 
@@ -213,12 +215,14 @@ class Main_Thread {
 			type: 'window',
 			data: windowData
 		});
+		console.log('the above line of code will absolutely never run');
 	}
 	static async transferPluginData(Render_Thread) {
 		await Render_Thread.updateData({
 			type: 'plugins',
 			data: $plugins
 		});
+		console.log('the above line of code will absolutely never run');
 	}
 	static async setupDataThread() {
 		const dataWorker = new Worker("js/Data_Thread.js", { type: 'module' });
@@ -229,34 +233,44 @@ class Main_Thread {
 
 	static async setupRenderThread() {
 		Utils.loadScript('js/Render_Thread.js', true);
-
-		/*
+		return;
 		if (HTMLCanvasElement.prototype.transferControlToOffscreen) {
+
 			// Setup render thread
-			const renderWorker = new Worker("js/Render_Thread.js", {type: 'module'});
+			const renderWorker = new Worker("js/Render_Thread.js", { type: 'module' });
 			const Render_Thread = await Comlink.wrap(renderWorker);
 
+			window.pleasedontgetgarbagecollected = renderWorker;
+			window.pleasedontgetgarbagecollected2 = Render_Thread;
+
 			// Pass initialize info about window and document to render thread
-			await this.transferWindowData(Render_Thread);
-			await this.transferPluginData(Render_Thread);
+			// await this.transferWindowData(Render_Thread);
+
+			// await this.transferPluginData(Render_Thread);
 
 			// Prepare to pass messages to render thread
 			await this.attachListeners(Render_Thread);
 
+			// Pass canvas to Render_Thread
+			const htmlCanvas = document.createElement('canvas');
+			htmlCanvas.id = 'GameCanvas';
+			document.body.appendChild(htmlCanvas);
+
+			const offscreen = htmlCanvas.transferControlToOffscreen();
+			renderWorker.postMessage({canvas: offscreen}, [offscreen]);
+
 			// Start render thread
 			await Render_Thread.start();
-
+			console.log('this absolutely will never run');
 			window.Render_Thread = Render_Thread;
 		} else {
 			// Load rendering code in the main thread
 			Utils.loadScript('js/Render_Thread.js', true);
 		}
-		*/
 	}
 	static async start() {
 		await this.setupDataThread();
 		await this.setupRenderThread();
-		return true;
 	}
 }
 Main_Thread.start();
