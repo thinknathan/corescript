@@ -21,12 +21,12 @@
  * @default 2000
  */
 
-((() => {
-	const parameters = PluginManager.parameters('Debug_ThrottleImage');
-	const delay = +parameters['Delay'] || 2000;
+(() => {
+  const parameters = PluginManager.parameters("Debug_ThrottleImage");
+  const delay = +parameters["Delay"] || 2000;
 
-	const Bitmap_prototype_onLoad = Bitmap.prototype._onLoad;
-	Bitmap.prototype._onLoad = function () {
-		setTimeout(Bitmap_prototype_onLoad.bind(this), delay);
-	}
-}))();
+  const Bitmap_prototype_onLoad = Bitmap.prototype._onLoad;
+  Bitmap.prototype._onLoad = function () {
+    setTimeout(Bitmap_prototype_onLoad.bind(this), delay);
+  };
+})();

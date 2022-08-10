@@ -31,36 +31,36 @@ import Decrypter from "./rpg_core/Decrypter.js";
 import ResourceHandler from "./rpg_core/ResourceHandler.js";
 
 import {
-	$dataActors,
-	$dataClasses,
-	$dataSkills,
-	$dataItems,
-	$dataWeapons,
-	$dataArmors,
-	$dataEnemies,
-	$dataTroops,
-	$dataStates,
-	$dataAnimations,
-	$dataTilesets,
-	$dataCommonEvents,
-	$dataSystem,
-	$dataMapInfos,
-	$dataMap,
-	$gameTemp,
-	$gameSystem,
-	$gameScreen,
-	$gameTimer,
-	$gameMessage,
-	$gameSwitches,
-	$gameVariables,
-	$gameSelfSwitches,
-	$gameActors,
-	$gameParty,
-	$gameTroop,
-	$gameMap,
-	$gamePlayer,
-	$testEvent,
-	DataManager
+  $dataActors,
+  $dataClasses,
+  $dataSkills,
+  $dataItems,
+  $dataWeapons,
+  $dataArmors,
+  $dataEnemies,
+  $dataTroops,
+  $dataStates,
+  $dataAnimations,
+  $dataTilesets,
+  $dataCommonEvents,
+  $dataSystem,
+  $dataMapInfos,
+  $dataMap,
+  $gameTemp,
+  $gameSystem,
+  $gameScreen,
+  $gameTimer,
+  $gameMessage,
+  $gameSwitches,
+  $gameVariables,
+  $gameSelfSwitches,
+  $gameActors,
+  $gameParty,
+  $gameTroop,
+  $gameMap,
+  $gamePlayer,
+  $testEvent,
+  DataManager,
 } from "./rpg_managers/DataManager.js";
 import ConfigManager from "./rpg_managers/ConfigManager.js";
 import StorageManager from "./rpg_managers/StorageManager.js";
@@ -191,211 +191,213 @@ import Window_GameEnd from "./rpg_windows/Window_GameEnd.js";
 import Window_DebugRange from "./rpg_windows/Window_DebugRange.js";
 import Window_DebugEdit from "./rpg_windows/Window_DebugEdit.js";
 
-(((top, document, PIXI) => {
-	top.$dataActors = $dataActors;
-	top.$dataClasses = $dataClasses;
-	top.$dataSkills = $dataSkills;
-	top.$dataItems = $dataItems;
-	top.$dataWeapons = $dataWeapons;
-	top.$dataArmors = $dataArmors;
-	top.$dataEnemies = $dataEnemies;
-	top.$dataTroops = $dataTroops;
-	top.$dataStates = $dataStates;
-	top.$dataAnimations = $dataAnimations;
-	top.$dataTilesets = $dataTilesets;
-	top.$dataCommonEvents = $dataCommonEvents;
-	top.$dataSystem = $dataSystem;
-	top.$dataMapInfos = $dataMapInfos;
-	top.$dataMap = $dataMap;
-	top.$gameTemp = $gameTemp;
-	top.$gameSystem = $gameSystem;
-	top.$gameScreen = $gameScreen;
-	top.$gameTimer = $gameTimer;
-	top.$gameMessage = $gameMessage;
-	top.$gameSwitches = $gameSwitches;
-	top.$gameVariables = $gameVariables;
-	top.$gameSelfSwitches = $gameSelfSwitches;
-	top.$gameActors = $gameActors;
-	top.$gameParty = $gameParty;
-	top.$gameTroop = $gameTroop;
-	top.$gameMap = $gameMap;
-	top.$gamePlayer = $gamePlayer;
-	top.$testEvent = $testEvent;
+((top, document, PIXI) => {
+  top.$dataActors = $dataActors;
+  top.$dataClasses = $dataClasses;
+  top.$dataSkills = $dataSkills;
+  top.$dataItems = $dataItems;
+  top.$dataWeapons = $dataWeapons;
+  top.$dataArmors = $dataArmors;
+  top.$dataEnemies = $dataEnemies;
+  top.$dataTroops = $dataTroops;
+  top.$dataStates = $dataStates;
+  top.$dataAnimations = $dataAnimations;
+  top.$dataTilesets = $dataTilesets;
+  top.$dataCommonEvents = $dataCommonEvents;
+  top.$dataSystem = $dataSystem;
+  top.$dataMapInfos = $dataMapInfos;
+  top.$dataMap = $dataMap;
+  top.$gameTemp = $gameTemp;
+  top.$gameSystem = $gameSystem;
+  top.$gameScreen = $gameScreen;
+  top.$gameTimer = $gameTimer;
+  top.$gameMessage = $gameMessage;
+  top.$gameSwitches = $gameSwitches;
+  top.$gameVariables = $gameVariables;
+  top.$gameSelfSwitches = $gameSelfSwitches;
+  top.$gameActors = $gameActors;
+  top.$gameParty = $gameParty;
+  top.$gameTroop = $gameTroop;
+  top.$gameMap = $gameMap;
+  top.$gamePlayer = $gamePlayer;
+  top.$testEvent = $testEvent;
 
-	top.Game_Temp = Game_Temp;
-	top.Game_System = Game_System;
-	top.Game_Timer = Game_Timer;
-	top.Game_Message = Game_Message;
-	top.Game_Switches = Game_Switches;
-	top.Game_Variables = Game_Variables;
-	top.Game_SelfSwitches = Game_SelfSwitches;
-	top.Game_Screen = Game_Screen;
-	top.Game_Picture = Game_Picture;
-	top.Game_Item = Game_Item;
-	top.Game_Action = Game_Action;
-	top.Game_ActionResult = Game_ActionResult;
-	top.Game_BattlerBase = Game_BattlerBase;
-	top.Game_Battler = Game_Battler;
-	top.Game_Actor = Game_Actor;
-	top.Game_Enemy = Game_Enemy;
-	top.Game_Actors = Game_Actors;
-	top.Game_Unit = Game_Unit;
-	top.Game_Party = Game_Party;
-	top.Game_Troop = Game_Troop;
-	top.Game_Map = Game_Map;
-	top.Game_CommonEvent = Game_CommonEvent;
-	top.Game_CharacterBase = Game_CharacterBase;
-	top.Game_Character = Game_Character;
-	top.Game_Player = Game_Player;
-	top.Game_Follower = Game_Follower;
-	top.Game_Followers = Game_Followers;
-	top.Game_Vehicle = Game_Vehicle;
-	top.Game_Event = Game_Event;
-	top.Game_Interpreter = Game_Interpreter;
+  top.Game_Temp = Game_Temp;
+  top.Game_System = Game_System;
+  top.Game_Timer = Game_Timer;
+  top.Game_Message = Game_Message;
+  top.Game_Switches = Game_Switches;
+  top.Game_Variables = Game_Variables;
+  top.Game_SelfSwitches = Game_SelfSwitches;
+  top.Game_Screen = Game_Screen;
+  top.Game_Picture = Game_Picture;
+  top.Game_Item = Game_Item;
+  top.Game_Action = Game_Action;
+  top.Game_ActionResult = Game_ActionResult;
+  top.Game_BattlerBase = Game_BattlerBase;
+  top.Game_Battler = Game_Battler;
+  top.Game_Actor = Game_Actor;
+  top.Game_Enemy = Game_Enemy;
+  top.Game_Actors = Game_Actors;
+  top.Game_Unit = Game_Unit;
+  top.Game_Party = Game_Party;
+  top.Game_Troop = Game_Troop;
+  top.Game_Map = Game_Map;
+  top.Game_CommonEvent = Game_CommonEvent;
+  top.Game_CharacterBase = Game_CharacterBase;
+  top.Game_Character = Game_Character;
+  top.Game_Player = Game_Player;
+  top.Game_Follower = Game_Follower;
+  top.Game_Followers = Game_Followers;
+  top.Game_Vehicle = Game_Vehicle;
+  top.Game_Event = Game_Event;
+  top.Game_Interpreter = Game_Interpreter;
 
-	top.Scene_Base = Scene_Base;
-	top.Scene_Boot = Scene_Boot;
-	top.Scene_Title = Scene_Title;
-	top.Scene_Map = Scene_Map;
-	top.Scene_MenuBase = Scene_MenuBase;
-	top.Scene_Menu = Scene_Menu;
-	top.Scene_ItemBase = Scene_ItemBase;
-	top.Scene_Item = Scene_Item;
-	top.Scene_Skill = Scene_Skill;
-	top.Scene_Equip = Scene_Equip;
-	top.Scene_Status = Scene_Status;
-	top.Scene_Options = Scene_Options;
-	top.Scene_File = Scene_File;
-	top.Scene_Save = Scene_Save;
-	top.Scene_Load = Scene_Load;
-	top.Scene_GameEnd = Scene_GameEnd;
-	top.Scene_Shop = Scene_Shop;
-	top.Scene_Name = Scene_Name;
-	top.Scene_Debug = Scene_Debug;
-	top.Scene_Battle = Scene_Battle;
-	top.Scene_Gameover = Scene_Gameover;
+  top.Scene_Base = Scene_Base;
+  top.Scene_Boot = Scene_Boot;
+  top.Scene_Title = Scene_Title;
+  top.Scene_Map = Scene_Map;
+  top.Scene_MenuBase = Scene_MenuBase;
+  top.Scene_Menu = Scene_Menu;
+  top.Scene_ItemBase = Scene_ItemBase;
+  top.Scene_Item = Scene_Item;
+  top.Scene_Skill = Scene_Skill;
+  top.Scene_Equip = Scene_Equip;
+  top.Scene_Status = Scene_Status;
+  top.Scene_Options = Scene_Options;
+  top.Scene_File = Scene_File;
+  top.Scene_Save = Scene_Save;
+  top.Scene_Load = Scene_Load;
+  top.Scene_GameEnd = Scene_GameEnd;
+  top.Scene_Shop = Scene_Shop;
+  top.Scene_Name = Scene_Name;
+  top.Scene_Debug = Scene_Debug;
+  top.Scene_Battle = Scene_Battle;
+  top.Scene_Gameover = Scene_Gameover;
 
-	top.Sprite_Base = Sprite_Base;
-	top.Sprite_Button = Sprite_Button;
-	top.Sprite_Character = Sprite_Character;
-	top.Sprite_Battler = Sprite_Battler;
-	top.Sprite_Actor = Sprite_Actor;
-	top.Sprite_Enemy = Sprite_Enemy;
-	top.Sprite_Animation = Sprite_Animation;
-	top.Sprite_Damage = Sprite_Damage;
-	top.Sprite_StateIcon = Sprite_StateIcon;
-	top.Sprite_StateOverlay = Sprite_StateOverlay;
-	top.Sprite_Weapon = Sprite_Weapon;
-	top.Sprite_Balloon = Sprite_Balloon;
-	top.Sprite_Picture = Sprite_Picture;
-	top.Sprite_Timer = Sprite_Timer;
-	top.Sprite_Destination = Sprite_Destination;
-	top.Spriteset_Base = Spriteset_Base;
-	top.Spriteset_Map = Spriteset_Map;
-	top.Spriteset_Battle = Spriteset_Battle;
+  top.Sprite_Base = Sprite_Base;
+  top.Sprite_Button = Sprite_Button;
+  top.Sprite_Character = Sprite_Character;
+  top.Sprite_Battler = Sprite_Battler;
+  top.Sprite_Actor = Sprite_Actor;
+  top.Sprite_Enemy = Sprite_Enemy;
+  top.Sprite_Animation = Sprite_Animation;
+  top.Sprite_Damage = Sprite_Damage;
+  top.Sprite_StateIcon = Sprite_StateIcon;
+  top.Sprite_StateOverlay = Sprite_StateOverlay;
+  top.Sprite_Weapon = Sprite_Weapon;
+  top.Sprite_Balloon = Sprite_Balloon;
+  top.Sprite_Picture = Sprite_Picture;
+  top.Sprite_Timer = Sprite_Timer;
+  top.Sprite_Destination = Sprite_Destination;
+  top.Spriteset_Base = Spriteset_Base;
+  top.Spriteset_Map = Spriteset_Map;
+  top.Spriteset_Battle = Spriteset_Battle;
 
-	top.Window_Base = Window_Base;
-	top.Window_Selectable = Window_Selectable;
-	top.Window_Command = Window_Command;
-	top.Window_HorzCommand = Window_HorzCommand;
-	top.Window_Help = Window_Help;
-	top.Window_Gold = Window_Gold;
-	top.Window_MenuCommand = Window_MenuCommand;
-	top.Window_MenuStatus = Window_MenuStatus;
-	top.Window_MenuActor = Window_MenuActor;
-	top.Window_ItemCategory = Window_ItemCategory;
-	top.Window_ItemList = Window_ItemList;
-	top.Window_SkillType = Window_SkillType;
-	top.Window_SkillStatus = Window_SkillStatus;
-	top.Window_SkillList = Window_SkillList;
-	top.Window_EquipStatus = Window_EquipStatus;
-	top.Window_EquipCommand = Window_EquipCommand;
-	top.Window_EquipSlot = Window_EquipSlot;
-	top.Window_EquipItem = Window_EquipItem;
-	top.Window_Status = Window_Status;
-	top.Window_Options = Window_Options;
-	top.Window_SavefileList = Window_SavefileList;
-	top.Window_ShopCommand = Window_ShopCommand;
-	top.Window_ShopBuy = Window_ShopBuy;
-	top.Window_ShopSell = Window_ShopSell;
-	top.Window_ShopNumber = Window_ShopNumber;
-	top.Window_ShopStatus = Window_ShopStatus;
-	top.Window_NameEdit = Window_NameEdit;
-	top.Window_NameInput = Window_NameInput;
-	top.Window_ChoiceList = Window_ChoiceList;
-	top.Window_NumberInput = Window_NumberInput;
-	top.Window_EventItem = Window_EventItem;
-	top.Window_Message = Window_Message;
-	top.Window_ScrollText = Window_ScrollText;
-	top.Window_MapName = Window_MapName;
-	top.Window_BattleLog = Window_BattleLog;
-	top.Window_PartyCommand = Window_PartyCommand;
-	top.Window_ActorCommand = Window_ActorCommand;
-	top.Window_BattleStatus = Window_BattleStatus;
-	top.Window_BattleActor = Window_BattleActor;
-	top.Window_BattleEnemy = Window_BattleEnemy;
-	top.Window_BattleSkill = Window_BattleSkill;
-	top.Window_BattleItem = Window_BattleItem;
-	top.Window_TitleCommand = Window_TitleCommand;
-	top.Window_GameEnd = Window_GameEnd;
-	top.Window_DebugRange = Window_DebugRange;
-	top.Window_DebugEdit = Window_DebugEdit;
+  top.Window_Base = Window_Base;
+  top.Window_Selectable = Window_Selectable;
+  top.Window_Command = Window_Command;
+  top.Window_HorzCommand = Window_HorzCommand;
+  top.Window_Help = Window_Help;
+  top.Window_Gold = Window_Gold;
+  top.Window_MenuCommand = Window_MenuCommand;
+  top.Window_MenuStatus = Window_MenuStatus;
+  top.Window_MenuActor = Window_MenuActor;
+  top.Window_ItemCategory = Window_ItemCategory;
+  top.Window_ItemList = Window_ItemList;
+  top.Window_SkillType = Window_SkillType;
+  top.Window_SkillStatus = Window_SkillStatus;
+  top.Window_SkillList = Window_SkillList;
+  top.Window_EquipStatus = Window_EquipStatus;
+  top.Window_EquipCommand = Window_EquipCommand;
+  top.Window_EquipSlot = Window_EquipSlot;
+  top.Window_EquipItem = Window_EquipItem;
+  top.Window_Status = Window_Status;
+  top.Window_Options = Window_Options;
+  top.Window_SavefileList = Window_SavefileList;
+  top.Window_ShopCommand = Window_ShopCommand;
+  top.Window_ShopBuy = Window_ShopBuy;
+  top.Window_ShopSell = Window_ShopSell;
+  top.Window_ShopNumber = Window_ShopNumber;
+  top.Window_ShopStatus = Window_ShopStatus;
+  top.Window_NameEdit = Window_NameEdit;
+  top.Window_NameInput = Window_NameInput;
+  top.Window_ChoiceList = Window_ChoiceList;
+  top.Window_NumberInput = Window_NumberInput;
+  top.Window_EventItem = Window_EventItem;
+  top.Window_Message = Window_Message;
+  top.Window_ScrollText = Window_ScrollText;
+  top.Window_MapName = Window_MapName;
+  top.Window_BattleLog = Window_BattleLog;
+  top.Window_PartyCommand = Window_PartyCommand;
+  top.Window_ActorCommand = Window_ActorCommand;
+  top.Window_BattleStatus = Window_BattleStatus;
+  top.Window_BattleActor = Window_BattleActor;
+  top.Window_BattleEnemy = Window_BattleEnemy;
+  top.Window_BattleSkill = Window_BattleSkill;
+  top.Window_BattleItem = Window_BattleItem;
+  top.Window_TitleCommand = Window_TitleCommand;
+  top.Window_GameEnd = Window_GameEnd;
+  top.Window_DebugRange = Window_DebugRange;
+  top.Window_DebugEdit = Window_DebugEdit;
 
-	top.ProgressWatcher = ProgressWatcher;
-	top.Utils = Utils;
-	top.CacheEntry = CacheEntry;
-	top.CacheMap = CacheMap;
-	top.ImageCache = ImageCache;
-	top.RequestQueue = RequestQueue;
-	top.Point = Point;
-	top.Rectangle = Rectangle;
-	top.Bitmap = Bitmap;
-	top.BitmapPIXI = BitmapPIXI;
-	top.Graphics = Graphics;
-	top.Input = Input;
-	top.TouchInput = TouchInput;
-	top.Sprite = Sprite;
-	top.Tilemap = Tilemap;
-	top.ShaderTilemap = ShaderTilemap;
-	top.TilingSprite = TilingSprite;
-	top.ScreenSprite = ScreenSprite;
-	top.WindowSkinCache = WindowSkinCache;
-	top.Window = Window;
-	top.WindowLayer = WindowLayer;
-	top.Weather = Weather;
-	top.ToneFilter = ToneFilter;
-	top.ToneSprite = ToneSprite;
-	top.Stage = Stage;
-	top.WebAudio = WebAudio;
-	top.JsonEx = JsonEx;
-	top.Decrypter = Decrypter;
-	top.ResourceHandler = ResourceHandler;
+  top.ProgressWatcher = ProgressWatcher;
+  top.Utils = Utils;
+  top.CacheEntry = CacheEntry;
+  top.CacheMap = CacheMap;
+  top.ImageCache = ImageCache;
+  top.RequestQueue = RequestQueue;
+  top.Point = Point;
+  top.Rectangle = Rectangle;
+  top.Bitmap = Bitmap;
+  top.BitmapPIXI = BitmapPIXI;
+  top.Graphics = Graphics;
+  top.Input = Input;
+  top.TouchInput = TouchInput;
+  top.Sprite = Sprite;
+  top.Tilemap = Tilemap;
+  top.ShaderTilemap = ShaderTilemap;
+  top.TilingSprite = TilingSprite;
+  top.ScreenSprite = ScreenSprite;
+  top.WindowSkinCache = WindowSkinCache;
+  top.Window = Window;
+  top.WindowLayer = WindowLayer;
+  top.Weather = Weather;
+  top.ToneFilter = ToneFilter;
+  top.ToneSprite = ToneSprite;
+  top.Stage = Stage;
+  top.WebAudio = WebAudio;
+  top.JsonEx = JsonEx;
+  top.Decrypter = Decrypter;
+  top.ResourceHandler = ResourceHandler;
 
-	top.DataManager = DataManager;
-	top.ConfigManager = ConfigManager;
-	top.StorageManager = StorageManager;
-	top.ImageManager = ImageManager;
-	top.AudioManager = AudioManager;
-	top.SoundManager = SoundManager;
-	top.TextManager = TextManager;
-	top.SceneManager = SceneManager;
-	top.BattleManager = BattleManager;
-	top.PluginManager = PluginManager;
+  top.DataManager = DataManager;
+  top.ConfigManager = ConfigManager;
+  top.StorageManager = StorageManager;
+  top.ImageManager = ImageManager;
+  top.AudioManager = AudioManager;
+  top.SoundManager = SoundManager;
+  top.TextManager = TextManager;
+  top.SceneManager = SceneManager;
+  top.BattleManager = BattleManager;
+  top.PluginManager = PluginManager;
 
-	PluginManager.setup($plugins);
+  PluginManager.setup($plugins);
 
-	const init = () => {
-		document.body.classList.remove('is-loading');
-		PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.NEAREST;
-		PIXI.settings.ROUND_PIXELS = true;
-		PIXI.settings.GC_MAX_IDLE = 600;
-		PIXI.settings.MIPMAP_TEXTURES = PIXI.MIPMAP_MODES.OFF;
-		PIXI.settings.RESOLUTION = window.devicePixelRatio;
-		if (Utils.isMobileSafari()) {
-			PIXI.settings.PRECISION_FRAGMENT = PIXI.PRECISION.HIGH;
-		}
-		SceneManager.run(Scene_Boot);
-	};
+  const init = () => {
+    document.body.classList.remove("is-loading");
+    PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.NEAREST;
+    PIXI.settings.ROUND_PIXELS = true;
+    PIXI.settings.GC_MAX_IDLE = 600;
+    PIXI.settings.MIPMAP_TEXTURES = PIXI.MIPMAP_MODES.OFF;
+    PIXI.settings.RESOLUTION = window.devicePixelRatio;
+    if (Utils.isMobileSafari()) {
+      PIXI.settings.PRECISION_FRAGMENT = PIXI.PRECISION.HIGH;
+    }
+    SceneManager.run(Scene_Boot);
+  };
 
-	(document.readyState === 'complete') ? init(): window.addEventListener('load', init);
-}))(self, document, PIXI);
+  document.readyState === "complete"
+    ? init()
+    : window.addEventListener("load", init);
+})(self, document, PIXI);
