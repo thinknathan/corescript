@@ -1,6 +1,6 @@
-import Graphics from "../rpg_core/Graphics.js";
-import AudioManager from "../rpg_managers/AudioManager.js";
-import SceneManager from "../rpg_managers/SceneManager.js";
+import Graphics from '../rpg_core/Graphics.js';
+import AudioManager from '../rpg_managers/AudioManager.js';
+import SceneManager from '../rpg_managers/SceneManager.js';
 
 //-----------------------------------------------------------------------------
 // Game_System

@@ -1,5 +1,5 @@
-import ImageManager from "../rpg_managers/ImageManager.js";
-import AudioManager from "../rpg_managers/AudioManager.js";
+import ImageManager from '../rpg_managers/ImageManager.js';
+import AudioManager from '../rpg_managers/AudioManager.js';
 
 class ProgressWatcher {
 	constructor() {
@@ -16,7 +16,8 @@ class ProgressWatcher {
 		this._countLoading++;
 		bitmap.addLoadListener(() => {
 			this._countLoaded++;
-			if (this._progressListener) this._progressListener(this._countLoaded, this._countLoading);
+			if (this._progressListener)
+				this._progressListener(this._countLoaded, this._countLoading);
 		});
 	}
 
@@ -24,7 +25,8 @@ class ProgressWatcher {
 		this._countLoading++;
 		audio.addLoadListener(() => {
 			this._countLoaded++;
-			if (this._progressListener) this._progressListener(this._countLoaded, this._countLoading);
+			if (this._progressListener)
+				this._progressListener(this._countLoaded, this._countLoading);
 		});
 	}
 

@@ -1,11 +1,11 @@
-import Game_Character from "./Game_Character.js";
-import Game_Followers from "../rpg_objects/Game_Followers.js";
-import Input from "../rpg_core/Input.js";
-import TouchInput from "../rpg_core/TouchInput.js";
-import Graphics from "../rpg_core/Graphics.js";
-import ConfigManager from "../rpg_managers/ConfigManager.js";
-import BattleManager from "../rpg_managers/BattleManager.js";
-import { DataManager } from "../rpg_managers/DataManager.js";
+import Game_Character from './Game_Character.js';
+import Game_Followers from '../rpg_objects/Game_Followers.js';
+import Input from '../rpg_core/Input.js';
+import TouchInput from '../rpg_core/TouchInput.js';
+import Graphics from '../rpg_core/Graphics.js';
+import ConfigManager from '../rpg_managers/ConfigManager.js';
+import BattleManager from '../rpg_managers/BattleManager.js';
+import { DataManager } from '../rpg_managers/DataManager.js';
 
 //-----------------------------------------------------------------------------
 // Game_Player
@@ -173,8 +173,7 @@ class Game_Player extends Game_Character {
 		this.center(x, y);
 		this.makeEncounterCount();
 		if (this.isInVehicle()) {
-			this.vehicle()
-				.refresh();
+			this.vehicle().refresh();
 		}
 		this._followers.synchronize(x, y, this.direction());
 	}
@@ -194,13 +193,12 @@ class Game_Player extends Game_Character {
 	makeEncounterTroopId() {
 		const encounterList = [];
 		let weightSum = 0;
-		self.$gameMap.encounterList()
-			.forEach(function (encounter) {
-				if (this.meetsEncounterConditions(encounter)) {
-					encounterList.push(encounter);
-					weightSum += encounter.weight;
-				}
-			}, this);
+		self.$gameMap.encounterList().forEach(function (encounter) {
+			if (this.meetsEncounterConditions(encounter)) {
+				encounterList.push(encounter);
+				weightSum += encounter.weight;
+			}
+		}, this);
 		if (weightSum > 0) {
 			let value = Math.randomInt(weightSum);
 			for (let i = 0; i < encounterList.length; i++) {
@@ -213,11 +211,8 @@ class Game_Player extends Game_Character {
 		return 0;
 	}
 
-	meetsEncounterConditions({
-		regionSet
-	}) {
-		return regionSet.length === 0 ||
-			regionSet.contains(this.regionId());
+	meetsEncounterConditions({ regionSet }) {
+		return regionSet.length === 0 || regionSet.contains(this.regionId());
 	}
 
 	executeEncounter() {
@@ -238,12 +233,14 @@ class Game_Player extends Game_Character {
 
 	startMapEvent(x, y, triggers, normal) {
 		if (!self.$gameMap.isEventRunning()) {
-			self.$gameMap.eventsXy(x, y)
-				.forEach(event => {
-					if (event.isTriggerIn(triggers) && event.isNormalPriority() === normal) {
-						event.start();
-					}
-				});
+			self.$gameMap.eventsXy(x, y).forEach((event) => {
+				if (
+					event.isTriggerIn(triggers) &&
+					event.isNormalPriority() === normal
+				) {
+					event.start();
+				}
+			});
 		}
 	}
 
@@ -273,8 +270,7 @@ class Game_Player extends Game_Character {
 		if (this._vehicleGettingOn || this._vehicleGettingOff) {
 			return false;
 		}
-		if (this.isInVehicle() && !this.vehicle()
-			.canMove()) {
+		if (this.isInVehicle() && !this.vehicle().canMove()) {
 			return false;
 		}
 		return true;
@@ -309,8 +305,13 @@ class Game_Player extends Game_Character {
 		if (this.isMoving()) {
 			return;
 		}
-		if (this.canMove() && !this.isInVehicle() && !self.$gameMap.isDashDisabled()) {
-			this._dashing = this.isDashButtonPressed() || self.$gameTemp.isDestinationValid();
+		if (
+			this.canMove() &&
+			!this.isInVehicle() &&
+			!self.$gameMap.isDashDisabled()
+		) {
+			this._dashing =
+				this.isDashButtonPressed() || self.$gameTemp.isDestinationValid();
 		} else {
 			this._dashing = false;
 		}
@@ -351,31 +352,26 @@ class Game_Player extends Game_Character {
 			} else if (this._vehicleGettingOff) {
 				this.updateVehicleGetOff();
 			} else {
-				this.vehicle()
-					.syncWithPlayer();
+				this.vehicle().syncWithPlayer();
 			}
 		}
 	}
 
 	updateVehicleGetOn() {
 		if (!this.areFollowersGathering() && !this.isMoving()) {
-			this.setDirection(this.vehicle()
-				.direction());
-			this.setMoveSpeed(this.vehicle()
-				.moveSpeed());
+			this.setDirection(this.vehicle().direction());
+			this.setMoveSpeed(this.vehicle().moveSpeed());
 			this._vehicleGettingOn = false;
 			this.setTransparent(true);
 			if (this.isInAirship()) {
 				this.setThrough(true);
 			}
-			this.vehicle()
-				.getOn();
+			this.vehicle().getOn();
 		}
 	}
 
 	updateVehicleGetOff() {
-		if (!this.areFollowersGathering() && this.vehicle()
-			.isLowest()) {
+		if (!this.areFollowersGathering() && this.vehicle().isLowest()) {
 			this._vehicleGettingOff = false;
 			this._vehicleType = 'walk';
 			this.setTransparent(false);
@@ -454,8 +450,7 @@ class Game_Player extends Game_Character {
 	}
 
 	triggerTouchActionD1(x1, y1) {
-		if (self.$gameMap.airship()
-			.pos(x1, y1)) {
+		if (self.$gameMap.airship().pos(x1, y1)) {
 			if (TouchInput.isTriggered() && this.getOnOffVehicle()) {
 				return true;
 			}
@@ -465,9 +460,7 @@ class Game_Player extends Game_Character {
 	}
 
 	triggerTouchActionD2(x2, y2) {
-		if (self.$gameMap.boat()
-			.pos(x2, y2) || self.$gameMap.ship()
-			.pos(x2, y2)) {
+		if (self.$gameMap.boat().pos(x2, y2) || self.$gameMap.ship().pos(x2, y2)) {
 			if (TouchInput.isTriggered() && this.getOnVehicle()) {
 				return true;
 			}
@@ -495,8 +488,13 @@ class Game_Player extends Game_Character {
 	}
 
 	canEncounter() {
-		return (!self.$gameParty.hasEncounterNone() && self.$gameSystem.isEncounterEnabled() &&
-			!this.isInAirship() && !this.isMoveRouteForcing() && !this.isDebugThrough());
+		return (
+			!self.$gameParty.hasEncounterNone() &&
+			self.$gameSystem.isEncounterEnabled() &&
+			!this.isInAirship() &&
+			!this.isMoveRouteForcing() &&
+			!this.isDebugThrough()
+		);
 	}
 
 	encounterProgressValue() {
@@ -524,7 +522,10 @@ class Game_Player extends Game_Character {
 			const x2 = self.$gameMap.roundXWithDirection(x1, direction);
 			const y2 = self.$gameMap.roundYWithDirection(y1, direction);
 			this.startMapEvent(x2, y2, triggers, true);
-			if (!self.$gameMap.isAnyEventStarting() && self.$gameMap.isCounter(x2, y2)) {
+			if (
+				!self.$gameMap.isAnyEventStarting() &&
+				self.$gameMap.isCounter(x2, y2)
+			) {
 				const x3 = self.$gameMap.roundXWithDirection(x2, direction);
 				const y3 = self.$gameMap.roundYWithDirection(y2, direction);
 				this.startMapEvent(x3, y3, triggers, true);
@@ -556,14 +557,11 @@ class Game_Player extends Game_Character {
 		const y1 = this.y;
 		const x2 = self.$gameMap.roundXWithDirection(x1, direction);
 		const y2 = self.$gameMap.roundYWithDirection(y1, direction);
-		if (self.$gameMap.airship()
-			.pos(x1, y1)) {
+		if (self.$gameMap.airship().pos(x1, y1)) {
 			this._vehicleType = 'airship';
-		} else if (self.$gameMap.ship()
-			.pos(x2, y2)) {
+		} else if (self.$gameMap.ship().pos(x2, y2)) {
 			this._vehicleType = 'ship';
-		} else if (self.$gameMap.boat()
-			.pos(x2, y2)) {
+		} else if (self.$gameMap.boat().pos(x2, y2)) {
 			this._vehicleType = 'boat';
 		}
 		if (this.isInVehicle()) {
@@ -577,14 +575,12 @@ class Game_Player extends Game_Character {
 	}
 
 	getOffVehicle() {
-		if (this.vehicle()
-			.isLandOk(this.x, this.y, this.direction())) {
+		if (this.vehicle().isLandOk(this.x, this.y, this.direction())) {
 			if (this.isInAirship()) {
 				this.setDirection(2);
 			}
 			this._followers.synchronize(this.x, this.y, this.direction());
-			this.vehicle()
-				.getOff();
+			this.vehicle().getOff();
 			if (!this.isInAirship()) {
 				this.forceMoveForward();
 				this.setTransparent(false);

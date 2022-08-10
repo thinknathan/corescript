@@ -1,25 +1,25 @@
-import Graphics from "../rpg_core/Graphics.js";
-import ResourceHandler from "../rpg_core/ResourceHandler.js";
-import StorageManager from "../rpg_managers/StorageManagerShim.js";
-import SceneManager from "../rpg_managers/SceneManager.js";
-import BattleManager from "../rpg_managers/BattleManager.js";
-import ImageManager from "../rpg_managers/ImageManager.js";
-import JsonEx from "../rpg_core/JsonEx.js";
-import Scene_Boot from "../rpg_scenes/Scene_Boot.js";
-import Utils from "../rpg_core/Utils.js";
-import Game_Temp from "../rpg_objects/Game_Temp.js";
-import Game_System from "../rpg_objects/Game_System.js";
-import Game_Screen from "../rpg_objects/Game_Screen.js";
-import Game_Timer from "../rpg_objects/Game_Timer.js";
-import Game_Message from "../rpg_objects/Game_Message.js";
-import Game_Switches from "../rpg_objects/Game_Switches.js";
-import Game_Variables from "../rpg_objects/Game_Variables.js";
-import Game_SelfSwitches from "../rpg_objects/Game_SelfSwitches.js";
-import Game_Actors from "../rpg_objects/Game_Actors.js";
-import Game_Party from "../rpg_objects/Game_Party.js";
-import Game_Troop from "../rpg_objects/Game_Troop.js";
-import Game_Map from "../rpg_objects/Game_Map.js";
-import Game_Player from "../rpg_objects/Game_Player.js";
+import Graphics from '../rpg_core/Graphics.js';
+import ResourceHandler from '../rpg_core/ResourceHandler.js';
+import StorageManager from '../rpg_managers/StorageManagerShim.js';
+import SceneManager from '../rpg_managers/SceneManager.js';
+import BattleManager from '../rpg_managers/BattleManager.js';
+import ImageManager from '../rpg_managers/ImageManager.js';
+import JsonEx from '../rpg_core/JsonEx.js';
+import Scene_Boot from '../rpg_scenes/Scene_Boot.js';
+import Utils from '../rpg_core/Utils.js';
+import Game_Temp from '../rpg_objects/Game_Temp.js';
+import Game_System from '../rpg_objects/Game_System.js';
+import Game_Screen from '../rpg_objects/Game_Screen.js';
+import Game_Timer from '../rpg_objects/Game_Timer.js';
+import Game_Message from '../rpg_objects/Game_Message.js';
+import Game_Switches from '../rpg_objects/Game_Switches.js';
+import Game_Variables from '../rpg_objects/Game_Variables.js';
+import Game_SelfSwitches from '../rpg_objects/Game_SelfSwitches.js';
+import Game_Actors from '../rpg_objects/Game_Actors.js';
+import Game_Party from '../rpg_objects/Game_Party.js';
+import Game_Troop from '../rpg_objects/Game_Troop.js';
+import Game_Map from '../rpg_objects/Game_Map.js';
+import Game_Player from '../rpg_objects/Game_Player.js';
 
 //-----------------------------------------------------------------------------
 // DataManager
@@ -48,15 +48,15 @@ class DataManager {
 		const url = `data/${src}`;
 		self[name] = null;
 		fetch(url)
-		.then(response => response.json())
-		.then(json => {
-			self[name] = json;
-			DataManager.onLoad(self[name]);
-		})
-		.catch(function (err) {
-			console.error(err);
-			DataManager._errorUrl = DataManager._errorUrl || src;
-		});
+			.then((response) => response.json())
+			.then((json) => {
+				self[name] = json;
+				DataManager.onLoad(self[name]);
+			})
+			.catch(function (err) {
+				console.error(err);
+				DataManager._errorUrl = DataManager._errorUrl || src;
+			});
 	}
 
 	static isDatabaseLoaded() {
@@ -72,7 +72,10 @@ class DataManager {
 	static loadMapData(mapId) {
 		if (mapId > 0) {
 			const filename = 'Map%1.json'.format(mapId.padZero(3));
-			this._mapLoader = ResourceHandler.createLoader(`data/${filename}`, this.loadDataFile.bind(this, '$dataMap', filename));
+			this._mapLoader = ResourceHandler.createLoader(
+				`data/${filename}`,
+				this.loadDataFile.bind(this, '$dataMap', filename)
+			);
 			this.loadDataFile('$dataMap', filename);
 		} else {
 			this.makeEmptyMap();
@@ -108,8 +111,11 @@ class DataManager {
 		this.createGameObjects();
 		this.selectSavefileForNewGame();
 		self.$gameParty.setupStartingMembers();
-		self.$gamePlayer.reserveTransfer(self.$dataSystem.startMapId,
-			self.$dataSystem.startX, self.$dataSystem.startY);
+		self.$gamePlayer.reserveTransfer(
+			self.$dataSystem.startMapId,
+			self.$dataSystem.startX,
+			self.$dataSystem.startY
+		);
 		Graphics.frameCount = 0;
 		SceneManager.resetFrameCount();
 	}
@@ -167,8 +173,10 @@ class DataManager {
 				return true;
 			} else {
 				const savefile = globalInfo[savefileId];
-				return (savefile.globalId === this._globalId &&
-					savefile.title === self.$dataSystem.gameTitle);
+				return (
+					savefile.globalId === this._globalId &&
+					savefile.title === self.$dataSystem.gameTitle
+				);
 			}
 		} else {
 			return false;
@@ -240,7 +248,7 @@ class DataManager {
 
 	static loadSavefileInfo(savefileId) {
 		const globalInfo = this.loadGlobalInfo();
-		return (globalInfo && globalInfo[savefileId]) ? globalInfo[savefileId] : null;
+		return globalInfo && globalInfo[savefileId] ? globalInfo[savefileId] : null;
 	}
 
 	static lastAccessedSavefileId() {
@@ -250,7 +258,10 @@ class DataManager {
 	static async saveGameWithoutRescue(savefileId) {
 		const json = JsonEx.stringify(this.makeSaveContents());
 		if (json.length >= 200000) {
-			console.warn('[DataManager.saveGameWithoutRescue] Save data length %i is larger than suggested 200000.', json.length);
+			console.warn(
+				'[DataManager.saveGameWithoutRescue] Save data length %i is larger than suggested 200000.',
+				json.length
+			);
 		}
 		await StorageManager.save(savefileId, json);
 		this._lastAccessedId = savefileId;
@@ -315,7 +326,11 @@ class DataManager {
 	}
 
 	static autoSaveGame() {
-		if (this._autoSaveFileId !== 0 && !this.isEventTest() && self.$gameSystem.isSaveEnabled()) {
+		if (
+			this._autoSaveFileId !== 0 &&
+			!this.isEventTest() &&
+			self.$gameSystem.isSaveEnabled()
+		) {
 			self.$gameSystem.onBeforeSave();
 			if (this.saveGame(this._autoSaveFileId)) {
 				StorageManager.cleanBackup(this._autoSaveFileId);
@@ -335,7 +350,7 @@ class DataManager {
 	static extractMetadata(data) {
 		const re = /<([^<>:]+)(:?)([^>]*)>/g;
 		data.meta = {};
-		for (; ;) {
+		for (;;) {
 			const match = re.exec(data.note);
 			if (match) {
 				if (match[2] === ':') {
@@ -395,10 +410,7 @@ class DataManager {
 		self.$gamePlayer = new Game_Player();
 	}
 
-	static loadSavefileImages({
-		characters,
-		faces
-	}) {
+	static loadSavefileImages({ characters, faces }) {
 		if (characters) {
 			for (let i = 0; i < characters.length; i++) {
 				ImageManager.reserveCharacter(characters[i][0]);
@@ -453,60 +465,60 @@ DataManager._autoSaveFileId = 0;
 DataManager._databaseFiles = [
 	{
 		name: '$dataActors',
-		src: 'Actors.json'
+		src: 'Actors.json',
 	},
 	{
 		name: '$dataClasses',
-		src: 'Classes.json'
+		src: 'Classes.json',
 	},
 	{
 		name: '$dataSkills',
-		src: 'Skills.json'
+		src: 'Skills.json',
 	},
 	{
 		name: '$dataItems',
-		src: 'Items.json'
+		src: 'Items.json',
 	},
 	{
 		name: '$dataWeapons',
-		src: 'Weapons.json'
+		src: 'Weapons.json',
 	},
 	{
 		name: '$dataArmors',
-		src: 'Armors.json'
+		src: 'Armors.json',
 	},
 	{
 		name: '$dataEnemies',
-		src: 'Enemies.json'
+		src: 'Enemies.json',
 	},
 	{
 		name: '$dataTroops',
-		src: 'Troops.json'
+		src: 'Troops.json',
 	},
 	{
 		name: '$dataStates',
-		src: 'States.json'
+		src: 'States.json',
 	},
 	{
 		name: '$dataAnimations',
-		src: 'Animations.json'
+		src: 'Animations.json',
 	},
 	{
 		name: '$dataTilesets',
-		src: 'Tilesets.json'
+		src: 'Tilesets.json',
 	},
 	{
 		name: '$dataCommonEvents',
-		src: 'CommonEvents.json'
+		src: 'CommonEvents.json',
 	},
 	{
 		name: '$dataSystem',
-		src: 'System.json'
+		src: 'System.json',
 	},
 	{
 		name: '$dataMapInfos',
-		src: 'MapInfos.json'
-	}
+		src: 'MapInfos.json',
+	},
 ];
 
 let $dataActors = null;
@@ -569,5 +581,5 @@ export {
 	$gameMap,
 	$gamePlayer,
 	$testEvent,
-	DataManager
+	DataManager,
 };

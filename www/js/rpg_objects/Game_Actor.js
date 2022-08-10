@@ -1,11 +1,11 @@
-import Game_Battler from "./Game_Battler.js";
-import SoundManager from "../rpg_managers/SoundManager.js";
-import TextManager from "../rpg_managers/TextManager.js";
-import { DataManager } from "../rpg_managers/DataManager.js";
-import BattleManager from "../rpg_managers/BattleManager.js";
-import Game_Item from "../rpg_objects/Game_Item.js";
-import Game_Action from "../rpg_objects/Game_Action.js";
-import Game_BattlerBase from "../rpg_objects/Game_BattlerBase.js";
+import Game_Battler from './Game_Battler.js';
+import SoundManager from '../rpg_managers/SoundManager.js';
+import TextManager from '../rpg_managers/TextManager.js';
+import { DataManager } from '../rpg_managers/DataManager.js';
+import BattleManager from '../rpg_managers/BattleManager.js';
+import Game_Item from '../rpg_objects/Game_Item.js';
+import Game_Action from '../rpg_objects/Game_Action.js';
+import Game_BattlerBase from '../rpg_objects/Game_BattlerBase.js';
 
 //-----------------------------------------------------------------------------
 // Game_Actor
@@ -146,8 +146,11 @@ class Game_Actor extends Game_Battler {
 		const extra = c.expParams[1];
 		const acc_a = c.expParams[2];
 		const acc_b = c.expParams[3];
-		return Math.round(basis * (Math.pow(level - 1, 0.9 + acc_a / 250)) * level *
-			(level + 1) / (6 + Math.pow(level, 2) / 50 / acc_b) + (level - 1) * extra);
+		return Math.round(
+			(basis * Math.pow(level - 1, 0.9 + acc_a / 250) * level * (level + 1)) /
+				(6 + Math.pow(level, 2) / 50 / acc_b) +
+				(level - 1) * extra
+		);
 	}
 
 	initExp() {
@@ -171,8 +174,7 @@ class Game_Actor extends Game_Battler {
 	}
 
 	maxLevel() {
-		return this.actor()
-			.maxLevel;
+		return this.actor().maxLevel;
 	}
 
 	isMaxLevel() {
@@ -181,15 +183,11 @@ class Game_Actor extends Game_Battler {
 
 	initSkills() {
 		this._skills = [];
-		this.currentClass()
-			.learnings.forEach(function ({
-				level,
-				skillId
-			}) {
-				if (level <= this._level) {
-					this.learnSkill(skillId);
-				}
-			}, this);
+		this.currentClass().learnings.forEach(function ({ level, skillId }) {
+			if (level <= this._level) {
+				this.learnSkill(skillId);
+			}
+		}, this);
 	}
 
 	initEquips(equips) {
@@ -220,37 +218,37 @@ class Game_Actor extends Game_Battler {
 	}
 
 	equips() {
-		return this._equips.map(item => item.object());
+		return this._equips.map((item) => item.object());
 	}
 
 	weapons() {
-		return this.equips()
-			.filter(item => item && DataManager.isWeapon(item));
+		return this.equips().filter((item) => item && DataManager.isWeapon(item));
 	}
 
 	armors() {
-		return this.equips()
-			.filter(item => item && DataManager.isArmor(item));
+		return this.equips().filter((item) => item && DataManager.isArmor(item));
 	}
 
 	hasWeapon(weapon) {
-		return this.weapons()
-			.contains(weapon);
+		return this.weapons().contains(weapon);
 	}
 
 	hasArmor(armor) {
-		return this.armors()
-			.contains(armor);
+		return this.armors().contains(armor);
 	}
 
 	isEquipChangeOk(slotId) {
-		return (!this.isEquipTypeLocked(this.equipSlots()[slotId]) &&
-			!this.isEquipTypeSealed(this.equipSlots()[slotId]));
+		return (
+			!this.isEquipTypeLocked(this.equipSlots()[slotId]) &&
+			!this.isEquipTypeSealed(this.equipSlots()[slotId])
+		);
 	}
 
 	changeEquip(slotId, item) {
-		if (this.tradeItemWithParty(item, this.equips()[slotId]) &&
-			(!item || this.equipSlots()[slotId] === item.etypeId)) {
+		if (
+			this.tradeItemWithParty(item, this.equips()[slotId]) &&
+			(!item || this.equipSlots()[slotId] === item.etypeId)
+		) {
 			this._equips[slotId].setObject(item);
 			this.refresh();
 		}
@@ -282,13 +280,11 @@ class Game_Actor extends Game_Battler {
 	}
 
 	isEquipped(item) {
-		return this.equips()
-			.contains(item);
+		return this.equips().contains(item);
 	}
 
 	discardEquip(item) {
-		const slotId = this.equips()
-			.indexOf(item);
+		const slotId = this.equips().indexOf(item);
 		if (slotId >= 0) {
 			this._equips[slotId].setObject(null);
 		}
@@ -317,8 +313,7 @@ class Game_Actor extends Game_Battler {
 	}
 
 	clearEquipments() {
-		const maxSlots = this.equipSlots()
-			.length;
+		const maxSlots = this.equipSlots().length;
 		for (let i = 0; i < maxSlots; i++) {
 			if (this.isEquipChangeOk(i)) {
 				this.changeEquip(i, null);
@@ -327,8 +322,7 @@ class Game_Actor extends Game_Battler {
 	}
 
 	optimizeEquipments() {
-		const maxSlots = this.equipSlots()
-			.length;
+		const maxSlots = this.equipSlots().length;
 		this.clearEquipments();
 		for (let i = 0; i < maxSlots; i++) {
 			if (this.isEquipChangeOk(i)) {
@@ -339,10 +333,9 @@ class Game_Actor extends Game_Battler {
 
 	bestEquipItem(slotId) {
 		const etypeId = this.equipSlots()[slotId];
-		const items = self.$gameParty.equipItems()
-			.filter(function (item) {
-				return item.etypeId === etypeId && this.canEquip(item);
-			}, this);
+		const items = self.$gameParty.equipItems().filter(function (item) {
+			return item.etypeId === etypeId && this.canEquip(item);
+		}, this);
 		let bestItem = null;
 		let bestPerformance = -1000;
 		for (let i = 0; i < items.length; i++) {
@@ -355,21 +348,18 @@ class Game_Actor extends Game_Battler {
 		return bestItem;
 	}
 
-	calcEquipItemPerformance({
-		params
-	}) {
+	calcEquipItemPerformance({ params }) {
 		return params.reduce((a, b) => a + b);
 	}
 
-	isSkillWtypeOk({
-		requiredWtypeId1,
-		requiredWtypeId2
-	}) {
+	isSkillWtypeOk({ requiredWtypeId1, requiredWtypeId2 }) {
 		const wtypeId1 = requiredWtypeId1;
 		const wtypeId2 = requiredWtypeId2;
-		if ((wtypeId1 === 0 && wtypeId2 === 0) ||
+		if (
+			(wtypeId1 === 0 && wtypeId2 === 0) ||
 			(wtypeId1 > 0 && this.isWtypeEquipped(wtypeId1)) ||
-			(wtypeId2 > 0 && this.isWtypeEquipped(wtypeId2))) {
+			(wtypeId2 > 0 && this.isWtypeEquipped(wtypeId2))
+		) {
 			return true;
 		} else {
 			return false;
@@ -377,8 +367,7 @@ class Game_Actor extends Game_Battler {
 	}
 
 	isWtypeEquipped(wtypeId) {
-		return this.weapons()
-			.some(weapon => weapon.wtypeId === wtypeId);
+		return this.weapons().some((weapon) => weapon.wtypeId === wtypeId);
 	}
 
 	refresh() {
@@ -399,13 +388,11 @@ class Game_Actor extends Game_Battler {
 	}
 
 	index() {
-		return self.$gameParty.members()
-			.indexOf(this);
+		return self.$gameParty.members().indexOf(this);
 	}
 
 	isBattleMember() {
-		return self.$gameParty.battleMembers()
-			.contains(this);
+		return self.$gameParty.battleMembers().contains(this);
 	}
 
 	isFormationChangeOk() {
@@ -422,20 +409,18 @@ class Game_Actor extends Game_Battler {
 
 	skills() {
 		const list = [];
-		this._skills.concat(this.addedSkills())
-			.forEach(id => {
-				if (!list.contains(self.$dataSkills[id])) {
-					list.push(self.$dataSkills[id]);
-				}
-			});
+		this._skills.concat(this.addedSkills()).forEach((id) => {
+			if (!list.contains(self.$dataSkills[id])) {
+				list.push(self.$dataSkills[id]);
+			}
+		});
 		return list;
 	}
 
 	usableSkills() {
-		return this.skills()
-			.filter(function (skill) {
-				return this.canUse(skill);
-			}, this);
+		return this.skills().filter(function (skill) {
+			return this.canUse(skill);
+		}, this);
 	}
 
 	traitObjects() {
@@ -461,8 +446,7 @@ class Game_Actor extends Game_Battler {
 	}
 
 	hasNoWeapons() {
-		return this.weapons()
-			.length === 0;
+		return this.weapons().length === 0;
 	}
 
 	bareHandsElementId() {
@@ -477,8 +461,7 @@ class Game_Actor extends Game_Battler {
 	}
 
 	paramBase(paramId) {
-		return this.currentClass()
-			.params[paramId][this._level];
+		return this.currentClass().params[paramId][this._level];
 	}
 
 	paramPlus(paramId) {
@@ -530,15 +513,11 @@ class Game_Actor extends Game_Battler {
 
 	levelUp() {
 		this._level++;
-		this.currentClass()
-			.learnings.forEach(function ({
-				level,
-				skillId
-			}) {
-				if (level === this._level) {
-					this.learnSkill(skillId);
-				}
-			}, this);
+		this.currentClass().learnings.forEach(function ({ level, skillId }) {
+			if (level === this._level) {
+				this.learnSkill(skillId);
+			}
+		}, this);
 	}
 
 	levelDown() {
@@ -557,12 +536,14 @@ class Game_Actor extends Game_Battler {
 	}
 
 	displayLevelUp(newSkills) {
-		const text = TextManager.levelUp.format(this._name, TextManager.level, this._level);
+		const text = TextManager.levelUp.format(
+			this._name,
+			TextManager.level,
+			this._level
+		);
 		self.$gameMessage.newPage();
 		self.$gameMessage.add(text);
-		newSkills.forEach(({
-			name
-		}) => {
+		newSkills.forEach(({ name }) => {
 			self.$gameMessage.add(TextManager.obtainSkill.format(name));
 		});
 	}
@@ -608,8 +589,7 @@ class Game_Actor extends Game_Battler {
 	}
 
 	hasSkill(skillId) {
-		return this.skills()
-			.contains(self.$dataSkills[skillId]);
+		return this.skills().contains(self.$dataSkills[skillId]);
 	}
 
 	changeClass(classId, keepExp) {
@@ -732,14 +712,11 @@ class Game_Actor extends Game_Battler {
 		let action = new Game_Action(this);
 		action.setAttack();
 		list.push(action);
-		this.usableSkills()
-			.forEach(function ({
-				id
-			}) {
-				action = new Game_Action(this);
-				action.setSkill(id);
-				list.push(action);
-			}, this);
+		this.usableSkills().forEach(function ({ id }) {
+			action = new Game_Action(this);
+			action.setSkill(id);
+			list.push(action);
+		}, this);
 		return list;
 	}
 
@@ -760,8 +737,7 @@ class Game_Actor extends Game_Battler {
 
 	makeConfusionActions() {
 		for (let i = 0; i < this.numActions(); i++) {
-			this.action(i)
-				.setConfusion();
+			this.action(i).setConfusion();
 		}
 		this.setActionState('waiting');
 	}
@@ -785,19 +761,15 @@ class Game_Actor extends Game_Battler {
 		this.checkFloorEffect();
 		if (self.$gamePlayer.isNormal()) {
 			this.turnEndOnMap();
-			this.states()
-				.forEach(function (state) {
-					this.updateStateSteps(state);
-				}, this);
+			this.states().forEach(function (state) {
+				this.updateStateSteps(state);
+			}, this);
 			this.showAddedStates();
 			this.showRemovedStates();
 		}
 	}
 
-	updateStateSteps({
-		removeByWalking,
-		id
-	}) {
+	updateStateSteps({ removeByWalking, id }) {
 		if (removeByWalking) {
 			if (this._stateSteps[id] > 0) {
 				if (--this._stateSteps[id] === 0) {
@@ -810,9 +782,7 @@ class Game_Actor extends Game_Battler {
 	showAddedStates() {
 		this.result()
 			.addedStateObjects()
-			.forEach(function ({
-				message1
-			}) {
+			.forEach(function ({ message1 }) {
 				if (message1) {
 					self.$gameMessage.add(this._name + message1);
 				}
@@ -822,9 +792,7 @@ class Game_Actor extends Game_Battler {
 	showRemovedStates() {
 		this.result()
 			.removedStateObjects()
-			.forEach(function ({
-				message4
-			}) {
+			.forEach(function ({ message4 }) {
 				if (message4) {
 					self.$gameMessage.add(this._name + message4);
 				}
@@ -838,8 +806,7 @@ class Game_Actor extends Game_Battler {
 	turnEndOnMap() {
 		if (self.$gameParty.steps() % this.stepsForTurn() === 0) {
 			this.onTurnEnd();
-			if (this.result()
-				.hpDamage > 0) {
+			if (this.result().hpDamage > 0) {
 				this.performMapDamage();
 			}
 		}
@@ -925,17 +892,25 @@ class Game_Actor extends Game_Battler {
 		this._lastCommandSymbol = symbol;
 	}
 
-	testEscape({
-		effects
-	}) {
-		return effects.some((effect, index, ar) => effect && effect.code === Game_Action.EFFECT_SPECIAL);
+	testEscape({ effects }) {
+		return effects.some(
+			(effect, index, ar) =>
+				effect && effect.code === Game_Action.EFFECT_SPECIAL
+		);
 	}
 
 	meetsUsableItemConditions(item) {
-		if (self.$gameParty.inBattle() && !BattleManager.canEscape() && this.testEscape(item)) {
+		if (
+			self.$gameParty.inBattle() &&
+			!BattleManager.canEscape() &&
+			this.testEscape(item)
+		) {
 			return false;
 		}
-		return Game_BattlerBase.prototype.meetsUsableItemConditions.call(this, item);
+		return Game_BattlerBase.prototype.meetsUsableItemConditions.call(
+			this,
+			item
+		);
 	}
 }
 

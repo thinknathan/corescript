@@ -1,13 +1,13 @@
 {
-  "name": "corescript",
-  "window": {
-    "title": "",
-    "toolbar": false,
-    "width": 960,
-    "height": 540,
-    "position": "center",
-    "icon": "icon/icon.png"
-  },
-  "main": "index.html",
-  "chromium-args": "--disable-raf-throttling --enable-gpu-async-worker-context --enable-hardware-overlays=single-fullscreen --enable-zero-copy --force-color-profile=srgb --ignore-gpu-blocklist"
+	"name": "corescript",
+	"window": {
+		"title": "",
+		"toolbar": false,
+		"width": 960,
+		"height": 540,
+		"position": "center",
+		"icon": "icon/icon.png"
+	},
+	"main": "index.html",
+	"chromium-args": "--disable-raf-throttling --enable-gpu-async-worker-context --enable-hardware-overlays=single-fullscreen --enable-zero-copy --force-color-profile=srgb --ignore-gpu-blocklist"
 }

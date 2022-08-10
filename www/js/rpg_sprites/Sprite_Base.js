@@ -1,5 +1,5 @@
-import Sprite from "../rpg_core/Sprite.js";
-import Sprite_Animation from "../rpg_sprites/Sprite_Animation.js";
+import Sprite from '../rpg_core/Sprite.js';
+import Sprite_Animation from '../rpg_sprites/Sprite_Animation.js';
 
 //-----------------------------------------------------------------------------
 // Sprite_Base

@@ -1,8 +1,8 @@
-import Window_Base from "./Window_Base.js";
-import TouchInput from "../rpg_core/TouchInput.js";
-import Input from "../rpg_core/Input.js";
-import Rectangle from "../rpg_core/Rectangle.js";
-import SoundManager from "../rpg_managers/SoundManager.js";
+import Window_Base from './Window_Base.js';
+import TouchInput from '../rpg_core/TouchInput.js';
+import Input from '../rpg_core/Input.js';
+import Rectangle from '../rpg_core/Rectangle.js';
+import SoundManager from '../rpg_managers/SoundManager.js';
 
 //-----------------------------------------------------------------------------
 // Window_Selectable
@@ -62,8 +62,10 @@ class Window_Selectable extends Window_Base {
 	}
 
 	itemWidth() {
-		return Math.floor((this.width - this.padding * 2 +
-			this.spacing()) / this.maxCols() - this.spacing());
+		return Math.floor(
+			(this.width - this.padding * 2 + this.spacing()) / this.maxCols() -
+				this.spacing()
+		);
 	}
 
 	itemHeight() {
@@ -155,7 +157,7 @@ class Window_Selectable extends Window_Base {
 		const maxCols = this.maxCols();
 		rect.width = this.itemWidth();
 		rect.height = this.itemHeight();
-		rect.x = index % maxCols * (rect.width + this.spacing()) - this._scrollX;
+		rect.x = (index % maxCols) * (rect.width + this.spacing()) - this._scrollX;
 		rect.y = Math.floor(index / maxCols) * rect.height - this._scrollY;
 		return rect;
 	}
@@ -203,8 +205,12 @@ class Window_Selectable extends Window_Base {
 	}
 
 	isCursorMovable() {
-		return (this.isOpenAndActive() && !this._cursorFixed &&
-			!this._cursorAll && this.maxItems() > 0);
+		return (
+			this.isOpenAndActive() &&
+			!this._cursorFixed &&
+			!this._cursorAll &&
+			this.maxItems() > 0
+		);
 	}
 
 	cursorDown(wrap) {
@@ -229,7 +235,10 @@ class Window_Selectable extends Window_Base {
 		const index = this.index();
 		const maxItems = this.maxItems();
 		const maxCols = this.maxCols();
-		if (maxCols >= 2 && (index < maxItems - 1 || (wrap && this.isHorizontal()))) {
+		if (
+			maxCols >= 2 &&
+			(index < maxItems - 1 || (wrap && this.isHorizontal()))
+		) {
 			this.select((index + 1) % maxItems);
 		}
 	}
@@ -420,7 +429,7 @@ class Window_Selectable extends Window_Base {
 		const top = this.padding;
 		const right = this.width - this.padding;
 		const bottom = this.height - this.padding;
-		return (x >= left && y >= top && x < right && y < bottom);
+		return x >= left && y >= top && x < right && y < bottom;
 	}
 
 	isTouchOkEnabled() {

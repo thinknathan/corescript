@@ -1,4 +1,4 @@
-import Window_Selectable from "./Window_Selectable.js";
+import Window_Selectable from './Window_Selectable.js';
 
 //-----------------------------------------------------------------------------
 // Window_EquipSlot
@@ -32,8 +32,7 @@ class Window_EquipSlot extends Window_Selectable {
 	}
 
 	maxItems() {
-		return this._actor ? this._actor.equipSlots()
-			.length : 0;
+		return this._actor ? this._actor.equipSlots().length : 0;
 	}
 
 	item() {
@@ -45,7 +44,13 @@ class Window_EquipSlot extends Window_Selectable {
 			const rect = this.itemRectForText(index);
 			this.changeTextColor(this.systemColor());
 			this.changePaintOpacity(this.isEnabled(index));
-			this.drawText(this.slotName(index), rect.x, rect.y, 138, this.lineHeight());
+			this.drawText(
+				this.slotName(index),
+				rect.x,
+				rect.y,
+				138,
+				this.lineHeight()
+			);
 			this.drawItemName(this._actor.equips()[index], rect.x + 138, rect.y);
 			this.changePaintOpacity(true);
 		}

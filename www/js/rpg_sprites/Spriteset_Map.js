@@ -1,13 +1,13 @@
-import Spriteset_Base from "./Spriteset_Base.js";
-import Graphics from "../rpg_core/Graphics.js";
-import TilingSprite from "../rpg_core/TilingSprite.js";
-import ImageManager from "../rpg_managers/ImageManager.js";
-import Sprite from "../rpg_core/Sprite.js";
-import Sprite_Character from "../rpg_sprites/Sprite_Character.js";
-import Sprite_Destination from "../rpg_sprites/Sprite_Destination.js";
-import Tilemap from "../rpg_core/Tilemap.js";
-import ShaderTilemap from "../rpg_core/ShaderTilemap.js";
-import Weather from "../rpg_core/Weather.js";
+import Spriteset_Base from './Spriteset_Base.js';
+import Graphics from '../rpg_core/Graphics.js';
+import TilingSprite from '../rpg_core/TilingSprite.js';
+import ImageManager from '../rpg_managers/ImageManager.js';
+import Sprite from '../rpg_core/Sprite.js';
+import Sprite_Character from '../rpg_sprites/Sprite_Character.js';
+import Sprite_Destination from '../rpg_sprites/Sprite_Destination.js';
+import Tilemap from '../rpg_core/Tilemap.js';
+import ShaderTilemap from '../rpg_core/ShaderTilemap.js';
+import Weather from '../rpg_core/Weather.js';
 
 //-----------------------------------------------------------------------------
 // Spriteset_Map
@@ -66,7 +66,11 @@ class Spriteset_Map extends Spriteset_Base {
 		}
 		this._tilemap.tileWidth = self.$gameMap.tileWidth();
 		this._tilemap.tileHeight = self.$gameMap.tileHeight();
-		this._tilemap.setData(self.$gameMap.width(), self.$gameMap.height(), self.$gameMap.data());
+		this._tilemap.setData(
+			self.$gameMap.width(),
+			self.$gameMap.height(),
+			self.$gameMap.data()
+		);
 		this._tilemap.horizontalWrap = self.$gameMap.isLoopHorizontal();
 		this._tilemap.verticalWrap = self.$gameMap.isLoopVertical();
 		this.loadTileset();
@@ -91,18 +95,15 @@ class Spriteset_Map extends Spriteset_Base {
 
 	createCharacters() {
 		this._characterSprites = [];
-		self.$gameMap.events()
-			.forEach(function (event) {
-				this._characterSprites.push(new Sprite_Character(event));
-			}, this);
-		self.$gameMap.vehicles()
-			.forEach(function (vehicle) {
-				this._characterSprites.push(new Sprite_Character(vehicle));
-			}, this);
-		self.$gamePlayer.followers()
-			.reverseEach(function (follower) {
-				this._characterSprites.push(new Sprite_Character(follower));
-			}, this);
+		self.$gameMap.events().forEach(function (event) {
+			this._characterSprites.push(new Sprite_Character(event));
+		}, this);
+		self.$gameMap.vehicles().forEach(function (vehicle) {
+			this._characterSprites.push(new Sprite_Character(vehicle));
+		}, this);
+		self.$gamePlayer.followers().reverseEach(function (follower) {
+			this._characterSprites.push(new Sprite_Character(follower));
+		}, this);
 		this._characterSprites.push(new Sprite_Character(self.$gamePlayer));
 		for (let i = 0; i < this._characterSprites.length; i++) {
 			this._tilemap.addChild(this._characterSprites[i]);
@@ -164,12 +165,17 @@ class Spriteset_Map extends Spriteset_Base {
 	}
 
 	updateTilemap() {
-		this._tilemap.origin.x = self.$gameMap.displayX() * self.$gameMap.tileWidth();
-		this._tilemap.origin.y = self.$gameMap.displayY() * self.$gameMap.tileHeight();
+		this._tilemap.origin.x =
+			self.$gameMap.displayX() * self.$gameMap.tileWidth();
+		this._tilemap.origin.y =
+			self.$gameMap.displayY() * self.$gameMap.tileHeight();
 
 		// Fix tilemap not being ready, by LTN Gaming
 		if (this._tilemap.bitmaps) {
-			if (!this._tilesetReady && this._tilemap.bitmaps.every(bitmap => bitmap.isRequestReady())) {
+			if (
+				!this._tilesetReady &&
+				this._tilemap.bitmaps.every((bitmap) => bitmap.isRequestReady())
+			) {
 				this._tilemap.refreshTileset();
 				this._tilesetReady = true;
 			}
@@ -186,8 +192,10 @@ class Spriteset_Map extends Spriteset_Base {
 	updateWeather() {
 		this._weather.type = self.$gameScreen.weatherType();
 		this._weather.power = self.$gameScreen.weatherPower();
-		this._weather.origin.x = self.$gameMap.displayX() * self.$gameMap.tileWidth();
-		this._weather.origin.y = self.$gameMap.displayY() * self.$gameMap.tileHeight();
+		this._weather.origin.x =
+			self.$gameMap.displayX() * self.$gameMap.tileWidth();
+		this._weather.origin.y =
+			self.$gameMap.displayY() * self.$gameMap.tileHeight();
 	}
 }
 

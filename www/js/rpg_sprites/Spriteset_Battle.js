@@ -1,13 +1,13 @@
-import * as PIXI from "../libs/pixi.js";
-import Spriteset_Base from "./Spriteset_Base.js";
-import Graphics from "../rpg_core/Graphics.js";
-import Sprite from "../rpg_core/Sprite.js";
-import TilingSprite from "../rpg_core/TilingSprite.js";
-import Sprite_Enemy from "../rpg_sprites/Sprite_Enemy.js";
-import Sprite_Actor from "../rpg_sprites/Sprite_Actor.js";
-import ImageManager from "../rpg_managers/ImageManager.js";
-import SceneManager from "../rpg_managers/SceneManager.js";
-import BattleManager from "../rpg_managers/BattleManager.js";
+import * as PIXI from '../libs/pixi.js';
+import Spriteset_Base from './Spriteset_Base.js';
+import Graphics from '../rpg_core/Graphics.js';
+import Sprite from '../rpg_core/Sprite.js';
+import TilingSprite from '../rpg_core/TilingSprite.js';
+import Sprite_Enemy from '../rpg_sprites/Sprite_Enemy.js';
+import Sprite_Actor from '../rpg_sprites/Sprite_Actor.js';
+import ImageManager from '../rpg_managers/ImageManager.js';
+import SceneManager from '../rpg_managers/SceneManager.js';
+import BattleManager from '../rpg_managers/BattleManager.js';
 
 //-----------------------------------------------------------------------------
 // Spriteset_Battle
@@ -37,7 +37,9 @@ class Spriteset_Battle extends Spriteset_Base {
 	createBackground() {
 		// this._backgroundSprite = new Sprite();
 		// this._backgroundSprite.bitmap = SceneManager.backgroundBitmap();
-		this._backgroundSprite = new PIXI.Sprite(new PIXI.Texture(SceneManager.backgroundBitmap().baseTexture));
+		this._backgroundSprite = new PIXI.Sprite(
+			new PIXI.Texture(SceneManager.backgroundBitmap().baseTexture)
+		);
 		if (Graphics.isWebGL()) {
 			const filter = new PIXI.filters.PixelateFilter(12, 12);
 			this._backgroundSprite.filters = [filter];
@@ -151,73 +153,77 @@ class Spriteset_Battle extends Spriteset_Base {
 	}
 
 	normalBattleback1Name() {
-		return (this.terrainBattleback1Name(this.autotileType(1)) ||
+		return (
+			this.terrainBattleback1Name(this.autotileType(1)) ||
 			this.terrainBattleback1Name(this.autotileType(0)) ||
-			this.defaultBattleback1Name());
+			this.defaultBattleback1Name()
+		);
 	}
 
 	normalBattleback2Name() {
-		return (this.terrainBattleback2Name(this.autotileType(1)) ||
+		return (
+			this.terrainBattleback2Name(this.autotileType(1)) ||
 			this.terrainBattleback2Name(this.autotileType(0)) ||
-			this.defaultBattleback2Name());
+			this.defaultBattleback2Name()
+		);
 	}
 
 	terrainBattleback1Name(type) {
 		switch (type) {
-		case 24:
-		case 25:
-			return 'Wasteland';
-		case 26:
-		case 27:
-			return 'DirtField';
-		case 32:
-		case 33:
-			return 'Desert';
-		case 34:
-			return 'Lava1';
-		case 35:
-			return 'Lava2';
-		case 40:
-		case 41:
-			return 'Snowfield';
-		case 42:
-			return 'Clouds';
-		case 4:
-		case 5:
-			return 'PoisonSwamp';
-		default:
-			return null;
+			case 24:
+			case 25:
+				return 'Wasteland';
+			case 26:
+			case 27:
+				return 'DirtField';
+			case 32:
+			case 33:
+				return 'Desert';
+			case 34:
+				return 'Lava1';
+			case 35:
+				return 'Lava2';
+			case 40:
+			case 41:
+				return 'Snowfield';
+			case 42:
+				return 'Clouds';
+			case 4:
+			case 5:
+				return 'PoisonSwamp';
+			default:
+				return null;
 		}
 	}
 
 	terrainBattleback2Name(type) {
 		switch (type) {
-		case 20:
-		case 21:
-			return 'Forest';
-		case 22:
-		case 30:
-		case 38:
-			return 'Cliff';
-		case 24:
-		case 25:
-		case 26:
-		case 27:
-			return 'Wasteland';
-		case 32:
-		case 33:
-			return 'Desert';
-		case 34:
-		case 35:
-			return 'Lava';
-		case 40:
-		case 41:
-			return 'Snowfield';
-		case 42:
-			return 'Clouds';
-		case 4:
-		case 5:
-			return 'PoisonSwamp';
+			case 20:
+			case 21:
+				return 'Forest';
+			case 22:
+			case 30:
+			case 38:
+				return 'Cliff';
+			case 24:
+			case 25:
+			case 26:
+			case 27:
+				return 'Wasteland';
+			case 32:
+			case 33:
+				return 'Desert';
+			case 34:
+			case 35:
+				return 'Lava';
+			case 40:
+			case 41:
+				return 'Snowfield';
+			case 42:
+				return 'Clouds';
+			case 4:
+			case 5:
+				return 'PoisonSwamp';
 		}
 	}
 
@@ -238,7 +244,11 @@ class Spriteset_Battle extends Spriteset_Base {
 	}
 
 	autotileType(z) {
-		return self.$gameMap.autotileType(self.$gamePlayer.x, self.$gamePlayer.y, z);
+		return self.$gameMap.autotileType(
+			self.$gamePlayer.x,
+			self.$gamePlayer.y,
+			z
+		);
 	}
 
 	createEnemies() {
@@ -282,18 +292,15 @@ class Spriteset_Battle extends Spriteset_Base {
 	}
 
 	isAnimationPlaying() {
-		return this.battlerSprites()
-			.some(sprite => sprite.isAnimationPlaying());
+		return this.battlerSprites().some((sprite) => sprite.isAnimationPlaying());
 	}
 
 	isEffecting() {
-		return this.battlerSprites()
-			.some(sprite => sprite.isEffecting());
+		return this.battlerSprites().some((sprite) => sprite.isEffecting());
 	}
 
 	isAnyoneMoving() {
-		return this.battlerSprites()
-			.some(sprite => sprite.isMoving());
+		return this.battlerSprites().some((sprite) => sprite.isMoving());
 	}
 
 	isBusy() {

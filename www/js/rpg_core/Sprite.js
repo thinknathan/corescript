@@ -1,7 +1,7 @@
-import * as PIXI from "../libs/pixi.js";
-import Rectangle from "../rpg_core/Rectangle.js";
-import Graphics from "../rpg_core/Graphics.js";
-import Utils from "../rpg_core/Utils.js";
+import * as PIXI from '../libs/pixi.js';
+import Rectangle from '../rpg_core/Rectangle.js';
+import Graphics from '../rpg_core/Graphics.js';
+import Utils from '../rpg_core/Utils.js';
 
 //-----------------------------------------------------------------------------
 /**
@@ -46,7 +46,7 @@ class Sprite extends PIXI.Sprite {
 	 * @method _onRemoveAsAChild
 	 * @private
 	 */
-	 onRemoveAsAChild() {
+	onRemoveAsAChild() {
 		this.filters = null;
 	}
 
@@ -124,7 +124,7 @@ class Sprite extends PIXI.Sprite {
 	 * @method update
 	 */
 	update() {
-		this.children.forEach(child => {
+		this.children.forEach((child) => {
 			if (child.update) {
 				child.update();
 			}
@@ -155,8 +155,12 @@ class Sprite extends PIXI.Sprite {
 	setFrame(x, y, width, height) {
 		this._refreshFrame = false;
 		const frame = this._frame;
-		if (x !== frame.x || y !== frame.y ||
-			width !== frame.width || height !== frame.height) {
+		if (
+			x !== frame.x ||
+			y !== frame.y ||
+			width !== frame.width ||
+			height !== frame.height
+		) {
 			frame.x = x;
 			frame.y = y;
 			frame.width = width;
@@ -246,10 +250,8 @@ class Sprite extends PIXI.Sprite {
 		const bitmapH = this._bitmap ? this._bitmap.height : 0;
 		const realX = frameX.clamp(0, bitmapW);
 		const realY = frameY.clamp(0, bitmapH);
-		const realW = (frameW - realX + frameX)
-			.clamp(0, bitmapW - realX);
-		const realH = (frameH - realY + frameY)
-			.clamp(0, bitmapH - realY);
+		const realW = (frameW - realX + frameX).clamp(0, bitmapW - realX);
+		const realH = (frameH - realY + frameY).clamp(0, bitmapH - realY);
 
 		this._realFrame.x = realX;
 		this._realFrame.y = realY;
@@ -280,8 +282,14 @@ class Sprite extends PIXI.Sprite {
 		} else if (this._bitmap) {
 			this.texture.frame = Rectangle.emptyRectangle;
 		} else {
-			this.texture.baseTexture.width = Math.max(this.texture.baseTexture.width, this._frame.x + this._frame.width);
-			this.texture.baseTexture.height = Math.max(this.texture.baseTexture.height, this._frame.y + this._frame.height);
+			this.texture.baseTexture.width = Math.max(
+				this.texture.baseTexture.width,
+				this._frame.x + this._frame.width
+			);
+			this.texture.baseTexture.height = Math.max(
+				this.texture.baseTexture.height,
+				this._frame.y + this._frame.height
+			);
 			this.texture.frame = this._frame;
 		}
 		this.texture._updateID++;
@@ -297,8 +305,13 @@ class Sprite extends PIXI.Sprite {
 	 * @private
 	 */
 	_isInBitmapRect(x, y, w, h) {
-		return (this._bitmap && x + w > 0 && y + h > 0 &&
-			x < this._bitmap.width && y < this._bitmap.height);
+		return (
+			this._bitmap &&
+			x + w > 0 &&
+			y + h > 0 &&
+			x < this._bitmap.width &&
+			y < this._bitmap.height
+		);
 	}
 
 	/**
@@ -424,11 +437,27 @@ class Sprite extends PIXI.Sprite {
 		const blue = color[2] / 255;
 		const opacity = color[3] / 255;
 		this._colorMatrixFilter.matrix = [
-            red / 64, 0, 0, 0, red,
-            0, green / 64, 0, 0, green,
-            0, 0, blue / 64, 0, blue,
-            0, 0, 0, 1, 0
-      ];
+			red / 64,
+			0,
+			0,
+			0,
+			red,
+			0,
+			green / 64,
+			0,
+			0,
+			green,
+			0,
+			0,
+			blue / 64,
+			0,
+			blue,
+			0,
+			0,
+			0,
+			1,
+			0,
+		];
 		this._colorMatrixFilter.alpha = opacity;
 	}
 

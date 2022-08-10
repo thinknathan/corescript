@@ -1,8 +1,8 @@
-import CacheMap from "../rpg_core/CacheMap.js";
-import ImageCache from "../rpg_core/ImageCache.js";
-import RequestQueue from "../rpg_core/RequestQueue.js";
-import Utils from "../rpg_core/Utils.js";
-import Bitmap from "../rpg_core/Bitmap.js";
+import CacheMap from '../rpg_core/CacheMap.js';
+import ImageCache from '../rpg_core/ImageCache.js';
+import RequestQueue from '../rpg_core/RequestQueue.js';
+import Utils from '../rpg_core/Utils.js';
+import Bitmap from '../rpg_core/Bitmap.js';
 
 //-----------------------------------------------------------------------------
 // ImageManager
@@ -118,23 +118,53 @@ class ImageManager {
 	}
 
 	static reserveAnimation(filename, hue, reservationId) {
-		return this.reserveBitmap('img/animations/', filename, hue, true, reservationId);
+		return this.reserveBitmap(
+			'img/animations/',
+			filename,
+			hue,
+			true,
+			reservationId
+		);
 	}
 
 	static reserveBattleback1(filename, hue, reservationId) {
-		return this.reserveBitmap('img/battlebacks1/', filename, hue, true, reservationId);
+		return this.reserveBitmap(
+			'img/battlebacks1/',
+			filename,
+			hue,
+			true,
+			reservationId
+		);
 	}
 
 	static reserveBattleback2(filename, hue, reservationId) {
-		return this.reserveBitmap('img/battlebacks2/', filename, hue, true, reservationId);
+		return this.reserveBitmap(
+			'img/battlebacks2/',
+			filename,
+			hue,
+			true,
+			reservationId
+		);
 	}
 
 	static reserveEnemy(filename, hue, reservationId) {
-		return this.reserveBitmap('img/enemies/', filename, hue, true, reservationId);
+		return this.reserveBitmap(
+			'img/enemies/',
+			filename,
+			hue,
+			true,
+			reservationId
+		);
 	}
 
 	static reserveCharacter(filename, hue, reservationId) {
-		return this.reserveBitmap('img/characters/', filename, hue, false, reservationId);
+		return this.reserveBitmap(
+			'img/characters/',
+			filename,
+			hue,
+			false,
+			reservationId
+		);
 	}
 
 	static reserveFace(filename, hue, reservationId) {
@@ -142,41 +172,93 @@ class ImageManager {
 	}
 
 	static reserveParallax(filename, hue, reservationId) {
-		return this.reserveBitmap('img/parallaxes/', filename, hue, true, reservationId);
+		return this.reserveBitmap(
+			'img/parallaxes/',
+			filename,
+			hue,
+			true,
+			reservationId
+		);
 	}
 
 	static reservePicture(filename, hue, reservationId) {
-		return this.reserveBitmap('img/pictures/', filename, hue, true, reservationId);
+		return this.reserveBitmap(
+			'img/pictures/',
+			filename,
+			hue,
+			true,
+			reservationId
+		);
 	}
 
 	static reserveSvActor(filename, hue, reservationId) {
-		return this.reserveBitmap('img/sv_actors/', filename, hue, false, reservationId);
+		return this.reserveBitmap(
+			'img/sv_actors/',
+			filename,
+			hue,
+			false,
+			reservationId
+		);
 	}
 
 	static reserveSvEnemy(filename, hue, reservationId) {
-		return this.reserveBitmap('img/sv_enemies/', filename, hue, true, reservationId);
+		return this.reserveBitmap(
+			'img/sv_enemies/',
+			filename,
+			hue,
+			true,
+			reservationId
+		);
 	}
 
 	static reserveSystem(filename, hue, reservationId) {
-		return this.reserveBitmap('img/system/', filename, hue, false, reservationId || this._systemReservationId);
+		return this.reserveBitmap(
+			'img/system/',
+			filename,
+			hue,
+			false,
+			reservationId || this._systemReservationId
+		);
 	}
 
 	static reserveTileset(filename, hue, reservationId) {
-		return this.reserveBitmap('img/tilesets/', filename, hue, false, reservationId);
+		return this.reserveBitmap(
+			'img/tilesets/',
+			filename,
+			hue,
+			false,
+			reservationId
+		);
 	}
 
 	static reserveTitle1(filename, hue, reservationId) {
-		return this.reserveBitmap('img/titles1/', filename, hue, true, reservationId);
+		return this.reserveBitmap(
+			'img/titles1/',
+			filename,
+			hue,
+			true,
+			reservationId
+		);
 	}
 
 	static reserveTitle2(filename, hue, reservationId) {
-		return this.reserveBitmap('img/titles2/', filename, hue, true, reservationId);
+		return this.reserveBitmap(
+			'img/titles2/',
+			filename,
+			hue,
+			true,
+			reservationId
+		);
 	}
 
 	static reserveBitmap(folder, filename, hue, smooth, reservationId) {
 		if (filename) {
 			const path = `${folder + encodeURIComponent(filename)}.png`;
-			const bitmap = this.reserveNormalBitmap(path, hue || 0, reservationId || this._defaultReservationId);
+			const bitmap = this.reserveNormalBitmap(
+				path,
+				hue || 0,
+				reservationId || this._defaultReservationId
+			);
 			return bitmap;
 		} else {
 			return this.loadEmptyBitmap();
@@ -185,7 +267,11 @@ class ImageManager {
 
 	static reserveNormalBitmap(path, hue, reservationId) {
 		const bitmap = this.loadNormalBitmap(path, hue);
-		this._imageCache.reserve(this._generateCacheKey(path, hue), bitmap, reservationId);
+		this._imageCache.reserve(
+			this._generateCacheKey(path, hue),
+			bitmap,
+			reservationId
+		);
 
 		return bitmap;
 	}
@@ -302,12 +388,12 @@ class ImageManager {
 	static isObjectCharacter(filename) {
 		const sign = filename.match(/^[\!\$]+/);
 		return sign && sign[0].contains('!');
-	};
+	}
 
 	static isBigCharacter(filename) {
 		const sign = filename.match(/^[\!\$]+/);
 		return sign && sign[0].contains('$');
-	};
+	}
 
 	static isZeroParallax(filename) {
 		return filename.charAt(0) === '!';

@@ -1,12 +1,12 @@
-import Window_Selectable from "./Window_Selectable.js";
-import Graphics from "../rpg_core/Graphics.js";
-import Input from "../rpg_core/Input.js";
-import Sprite from "../rpg_core/Sprite.js";
-import Bitmap from "../rpg_core/Bitmap.js";
-import TouchInput from "../rpg_core/TouchInput.js";
-import { DataManager } from "../rpg_managers/DataManager.js";
-import SoundManager from "../rpg_managers/SoundManager.js";
-import TextManager from "../rpg_managers/TextManager.js";
+import Window_Selectable from './Window_Selectable.js';
+import Graphics from '../rpg_core/Graphics.js';
+import Input from '../rpg_core/Input.js';
+import Sprite from '../rpg_core/Sprite.js';
+import Bitmap from '../rpg_core/Bitmap.js';
+import TouchInput from '../rpg_core/TouchInput.js';
+import { DataManager } from '../rpg_managers/DataManager.js';
+import SoundManager from '../rpg_managers/SoundManager.js';
+import TextManager from '../rpg_managers/TextManager.js';
 
 //-----------------------------------------------------------------------------
 // Window_BattleLog
@@ -99,12 +99,12 @@ class Window_BattleLog extends Window_Selectable {
 	updateWaitMode() {
 		let waiting = false;
 		switch (this._waitMode) {
-		case 'effect':
-			waiting = this._spriteset.isEffecting();
-			break;
-		case 'movement':
-			waiting = this._spriteset.isAnyoneMoving();
-			break;
+			case 'effect':
+				waiting = this._spriteset.isEffecting();
+				break;
+			case 'movement':
+				waiting = this._spriteset.isAnyoneMoving();
+				break;
 		}
 		if (!waiting) {
 			this._waitMode = '';
@@ -128,15 +128,18 @@ class Window_BattleLog extends Window_Selectable {
 	}
 
 	isFastForward() {
-		return Input.isLongPressed('ok') || Input.isPressed('shift') ||
-			TouchInput.isLongPressed();
+		return (
+			Input.isLongPressed('ok') ||
+			Input.isPressed('shift') ||
+			TouchInput.isLongPressed()
+		);
 	}
 
 	push(methodName) {
 		const methodArgs = Array.prototype.slice.call(arguments, 1);
 		this._methods.push({
 			name: methodName,
-			params: methodArgs
+			params: methodArgs,
 		});
 	}
 
@@ -267,7 +270,7 @@ class Window_BattleLog extends Window_Selectable {
 		if (animation) {
 			let delay = this.animationBaseDelay();
 			const nextDelay = this.animationNextDelay();
-			targets.forEach(target => {
+			targets.forEach((target) => {
 				target.startAnimation(animationId, mirror, delay);
 				delay += nextDelay;
 			});
@@ -304,7 +307,7 @@ class Window_BattleLog extends Window_Selectable {
 			x: 0,
 			y: this.padding,
 			width: this.width,
-			height: this.numLines() * this.lineHeight()
+			height: this.numLines() * this.lineHeight(),
 		};
 	}
 
@@ -364,7 +367,10 @@ class Window_BattleLog extends Window_Selectable {
 				this.push('addText', item.message2.format(item.name));
 			}
 		} else {
-			this.push('addText', TextManager.useItem.format(subject.name(), item.name));
+			this.push(
+				'addText',
+				TextManager.useItem.format(subject.name(), item.name)
+			);
 		}
 		if (this._methods.length === numMethods) {
 			this.push('wait');
@@ -384,12 +390,14 @@ class Window_BattleLog extends Window_Selectable {
 	displaySubstitute(substitute, target) {
 		const substName = substitute.name();
 		this.push('performSubstitute', substitute, target);
-		this.push('addText', TextManager.substitute.format(substName, target.name()));
+		this.push(
+			'addText',
+			TextManager.substitute.format(substName, target.name())
+		);
 	}
 
 	displayActionResults(subject, target) {
-		if (target.result()
-			.used) {
+		if (target.result().used) {
 			this.push('pushBaseLine');
 			this.displayCritical(target);
 			this.push('popupDamage', target);
@@ -403,16 +411,13 @@ class Window_BattleLog extends Window_Selectable {
 	}
 
 	displayFailure(target) {
-		if (target.result()
-			.isHit() && !target.result()
-			.success) {
+		if (target.result().isHit() && !target.result().success) {
 			this.push('addText', TextManager.actionFailure.format(target.name()));
 		}
 	}
 
 	displayCritical(target) {
-		if (target.result()
-			.critical) {
+		if (target.result().critical) {
 			if (target.isActor()) {
 				this.push('addText', TextManager.criticalToActor);
 			} else {
@@ -422,11 +427,9 @@ class Window_BattleLog extends Window_Selectable {
 	}
 
 	displayDamage(target) {
-		if (target.result()
-			.missed) {
+		if (target.result().missed) {
 			this.displayMiss(target);
-		} else if (target.result()
-			.evaded) {
+		} else if (target.result().evaded) {
 			this.displayEvasion(target);
 		} else {
 			this.displayHpDamage(target);
@@ -437,8 +440,7 @@ class Window_BattleLog extends Window_Selectable {
 
 	displayMiss(target) {
 		let fmt;
-		if (target.result()
-			.physical) {
+		if (target.result().physical) {
 			fmt = target.isActor() ? TextManager.actorNoHit : TextManager.enemyNoHit;
 			this.push('performMiss', target);
 		} else {
@@ -449,8 +451,7 @@ class Window_BattleLog extends Window_Selectable {
 
 	displayEvasion(target) {
 		let fmt;
-		if (target.result()
-			.physical) {
+		if (target.result().physical) {
 			fmt = TextManager.evasion;
 			this.push('performEvasion', target);
 		} else {
@@ -461,15 +462,11 @@ class Window_BattleLog extends Window_Selectable {
 	}
 
 	displayHpDamage(target) {
-		if (target.result()
-			.hpAffected) {
-			if (target.result()
-				.hpDamage > 0 && !target.result()
-				.drain) {
+		if (target.result().hpAffected) {
+			if (target.result().hpDamage > 0 && !target.result().drain) {
 				this.push('performDamage', target);
 			}
-			if (target.result()
-				.hpDamage < 0) {
+			if (target.result().hpDamage < 0) {
 				this.push('performRecovery', target);
 			}
 			this.push('addText', this.makeHpDamageText(target));
@@ -477,10 +474,8 @@ class Window_BattleLog extends Window_Selectable {
 	}
 
 	displayMpDamage(target) {
-		if (target.isAlive() && target.result()
-			.mpDamage !== 0) {
-			if (target.result()
-				.mpDamage < 0) {
+		if (target.isAlive() && target.result().mpDamage !== 0) {
+			if (target.result().mpDamage < 0) {
 				this.push('performRecovery', target);
 			}
 			this.push('addText', this.makeMpDamageText(target));
@@ -488,10 +483,8 @@ class Window_BattleLog extends Window_Selectable {
 	}
 
 	displayTpDamage(target) {
-		if (target.isAlive() && target.result()
-			.tpDamage !== 0) {
-			if (target.result()
-				.tpDamage < 0) {
+		if (target.isAlive() && target.result().tpDamage !== 0) {
+			if (target.result().tpDamage < 0) {
 				this.push('performRecovery', target);
 			}
 			this.push('addText', this.makeTpDamageText(target));
@@ -499,8 +492,7 @@ class Window_BattleLog extends Window_Selectable {
 	}
 
 	displayAffectedStatus(target) {
-		if (target.result()
-			.isStatusAffected()) {
+		if (target.result().isStatusAffected()) {
 			this.push('pushBaseLine');
 			this.displayChangedStates(target);
 			this.displayChangedBuffs(target);
@@ -510,8 +502,7 @@ class Window_BattleLog extends Window_Selectable {
 	}
 
 	displayAutoAffectedStatus(target) {
-		if (target.result()
-			.isStatusAffected()) {
+		if (target.result().isStatusAffected()) {
 			this.displayAffectedStatus(target, null);
 			this.push('clear');
 		}
@@ -523,13 +514,10 @@ class Window_BattleLog extends Window_Selectable {
 	}
 
 	displayAddedStates(target) {
-		target.result()
+		target
+			.result()
 			.addedStateObjects()
-			.forEach(function ({
-				message1,
-				message2,
-				id
-			}) {
+			.forEach(function ({ message1, message2, id }) {
 				const stateMsg = target.isActor() ? message1 : message2;
 				if (id === target.deathStateId()) {
 					this.push('performCollapse', target);
@@ -544,11 +532,10 @@ class Window_BattleLog extends Window_Selectable {
 	}
 
 	displayRemovedStates(target) {
-		target.result()
+		target
+			.result()
 			.removedStateObjects()
-			.forEach(function ({
-				message4
-			}) {
+			.forEach(function ({ message4 }) {
 				if (message4) {
 					this.push('popBaseLine');
 					this.push('pushBaseLine');
@@ -568,7 +555,10 @@ class Window_BattleLog extends Window_Selectable {
 		buffs.forEach(function (paramId) {
 			this.push('popBaseLine');
 			this.push('pushBaseLine');
-			this.push('addText', fmt.format(target.name(), TextManager.param(paramId)));
+			this.push(
+				'addText',
+				fmt.format(target.name(), TextManager.param(paramId))
+			);
 		}, this);
 	}
 

@@ -1,6 +1,6 @@
-import * as PIXI from "../libs/pixi.js";
-import Graphics from "../rpg_core/Graphics.js";
-import Utils from "../rpg_core/Utils.js";
+import * as PIXI from '../libs/pixi.js';
+import Graphics from '../rpg_core/Graphics.js';
+import Utils from '../rpg_core/Utils.js';
 
 //-----------------------------------------------------------------------------
 /**
@@ -50,7 +50,7 @@ class ScreenSprite extends PIXI.Container {
 		this.scale.y = 1;
 		return {
 			x: 0,
-			y: 0
+			y: 0,
 		};
 	}
 
@@ -94,12 +94,9 @@ class ScreenSprite extends PIXI.Container {
 	 */
 	setColor(r, g, b) {
 		if (this._red !== r || this._green !== g || this._blue !== b) {
-			r = Math.round(r || 0)
-				.clamp(0, 255);
-			g = Math.round(g || 0)
-				.clamp(0, 255);
-			b = Math.round(b || 0)
-				.clamp(0, 255);
+			r = Math.round(r || 0).clamp(0, 255);
+			g = Math.round(g || 0).clamp(0, 255);
+			b = Math.round(b || 0).clamp(0, 255);
 			this._red = r;
 			this._green = g;
 			this._blue = b;
@@ -109,7 +106,12 @@ class ScreenSprite extends PIXI.Container {
 			graphics.clear();
 			const intColor = (r << 16) | (g << 8) | b;
 			graphics.beginFill(intColor, 1);
-			graphics.drawRect(-Graphics.width * 5, -Graphics.height * 5, Graphics.width * 10, Graphics.height * 10);
+			graphics.drawRect(
+				-Graphics.width * 5,
+				-Graphics.height * 5,
+				Graphics.width * 10,
+				Graphics.height * 10
+			);
 		}
 	}
 }

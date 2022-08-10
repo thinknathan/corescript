@@ -1,4 +1,4 @@
-import Game_Picture from "./Game_Picture.js";
+import Game_Picture from './Game_Picture.js';
 
 //-----------------------------------------------------------------------------
 // Game_Screen
@@ -234,7 +234,8 @@ class Game_Screen {
 
 	updateShake() {
 		if (this._shakeDuration > 0 || this._shake !== 0) {
-			const delta = (this._shakePower * this._shakeSpeed * this._shakeDirection) / 10;
+			const delta =
+				(this._shakePower * this._shakeSpeed * this._shakeDirection) / 10;
 			if (this._shakeDuration <= 1 && this._shake * (this._shake + delta) < 0) {
 				this._shake = 0;
 			} else {
@@ -272,7 +273,7 @@ class Game_Screen {
 	}
 
 	updatePictures() {
-		this._pictures.forEach(picture => {
+		this._pictures.forEach((picture) => {
 			if (picture) {
 				picture.update();
 			}
@@ -283,14 +284,34 @@ class Game_Screen {
 		this.startFlash([255, 0, 0, 128], 8);
 	}
 
-	showPicture(pictureId, name, origin, x, y, scaleX, scaleY, opacity, blendMode) {
+	showPicture(
+		pictureId,
+		name,
+		origin,
+		x,
+		y,
+		scaleX,
+		scaleY,
+		opacity,
+		blendMode
+	) {
 		const realPictureId = this.realPictureId(pictureId);
 		const picture = new Game_Picture();
 		picture.show(name, origin, x, y, scaleX, scaleY, opacity, blendMode);
 		this._pictures[realPictureId] = picture;
 	}
 
-	movePicture(pictureId, origin, x, y, scaleX, scaleY, opacity, blendMode, duration) {
+	movePicture(
+		pictureId,
+		origin,
+		x,
+		y,
+		scaleX,
+		scaleY,
+		opacity,
+		blendMode,
+		duration
+	) {
 		const picture = this.picture(pictureId);
 		if (picture) {
 			picture.move(origin, x, y, scaleX, scaleY, opacity, blendMode, duration);

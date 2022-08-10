@@ -21,23 +21,19 @@ class Game_Unit {
 	}
 
 	aliveMembers() {
-		return this.members()
-			.filter(member => member.isAlive());
+		return this.members().filter((member) => member.isAlive());
 	}
 
 	deadMembers() {
-		return this.members()
-			.filter(member => member.isDead());
+		return this.members().filter((member) => member.isDead());
 	}
 
 	movableMembers() {
-		return this.members()
-			.filter(member => member.canMove());
+		return this.members().filter((member) => member.canMove());
 	}
 
 	clearActions() {
-		return this.members()
-			.forEach(member => member.clearActions());
+		return this.members().forEach((member) => member.clearActions());
 	}
 
 	agility() {
@@ -45,29 +41,23 @@ class Game_Unit {
 		if (members.length === 0) {
 			return 1;
 		}
-		const sum = members.reduce((r, {
-			agi
-		}) => r + agi, 0);
+		const sum = members.reduce((r, { agi }) => r + agi, 0);
 		return sum / members.length;
 	}
 
 	tgrSum() {
-		return this.aliveMembers()
-			.reduce((r, {
-				tgr
-			}) => r + tgr, 0);
+		return this.aliveMembers().reduce((r, { tgr }) => r + tgr, 0);
 	}
 
 	randomTarget() {
 		let tgrRand = Math.random() * this.tgrSum();
 		let target = null;
-		this.aliveMembers()
-			.forEach(member => {
-				tgrRand -= member.tgr;
-				if (tgrRand <= 0 && !target) {
-					target = member;
-				}
-			});
+		this.aliveMembers().forEach((member) => {
+			tgrRand -= member.tgr;
+			if (tgrRand <= 0 && !target) {
+				target = member;
+			}
+		});
 		return target;
 	}
 
@@ -84,7 +74,7 @@ class Game_Unit {
 			index = 0;
 		}
 		const member = this.members()[index];
-		return (member && member.isAlive()) ? member : this.aliveMembers()[0];
+		return member && member.isAlive() ? member : this.aliveMembers()[0];
 	}
 
 	smoothDeadTarget(index) {
@@ -92,53 +82,47 @@ class Game_Unit {
 			index = 0;
 		}
 		const member = this.members()[index];
-		return (member && member.isDead()) ? member : this.deadMembers()[0];
+		return member && member.isDead() ? member : this.deadMembers()[0];
 	}
 
 	clearResults() {
-		this.members()
-			.forEach(member => {
-				member.clearResult();
-			});
+		this.members().forEach((member) => {
+			member.clearResult();
+		});
 	}
 
 	onBattleStart() {
-		this.members()
-			.forEach(member => {
-				member.onBattleStart();
-			});
+		this.members().forEach((member) => {
+			member.onBattleStart();
+		});
 		this._inBattle = true;
 	}
 
 	onBattleEnd() {
 		this._inBattle = false;
-		this.members()
-			.forEach(member => {
-				member.onBattleEnd();
-			});
+		this.members().forEach((member) => {
+			member.onBattleEnd();
+		});
 	}
 
 	makeActions() {
-		this.members()
-			.forEach(member => {
-				member.makeActions();
-			});
+		this.members().forEach((member) => {
+			member.makeActions();
+		});
 	}
 
 	select(activeMember) {
-		this.members()
-			.forEach(member => {
-				if (member === activeMember) {
-					member.select();
-				} else {
-					member.deselect();
-				}
-			});
+		this.members().forEach((member) => {
+			if (member === activeMember) {
+				member.select();
+			} else {
+				member.deselect();
+			}
+		});
 	}
 
 	isAllDead() {
-		return this.aliveMembers()
-			.length === 0;
+		return this.aliveMembers().length === 0;
 	}
 
 	substituteBattler() {

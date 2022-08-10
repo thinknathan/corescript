@@ -1,15 +1,15 @@
-import Scene_Base from "./Scene_Base.js";
-import SceneManager from "../rpg_managers/SceneManager.js";
-import Sprite from "../rpg_core/Sprite.js";
-import { DataManager } from "../rpg_managers/DataManager.js";
-import ImageManager from "../rpg_managers/ImageManager.js";
-import AudioManager from "../rpg_managers/AudioManager.js";
-import Bitmap from "../rpg_core/Bitmap.js";
-import Graphics from "../rpg_core/Graphics.js";
-import Scene_Map from "../rpg_scenes/Scene_Map.js";
-import Scene_Options from "../rpg_scenes/Scene_Options.js";
-import Scene_Load from "../rpg_scenes/Scene_Load.js";
-import Window_TitleCommand from "../rpg_windows/Window_TitleCommand.js";
+import Scene_Base from './Scene_Base.js';
+import SceneManager from '../rpg_managers/SceneManager.js';
+import Sprite from '../rpg_core/Sprite.js';
+import { DataManager } from '../rpg_managers/DataManager.js';
+import ImageManager from '../rpg_managers/ImageManager.js';
+import AudioManager from '../rpg_managers/AudioManager.js';
+import Bitmap from '../rpg_core/Bitmap.js';
+import Graphics from '../rpg_core/Graphics.js';
+import Scene_Map from '../rpg_scenes/Scene_Map.js';
+import Scene_Options from '../rpg_scenes/Scene_Options.js';
+import Scene_Load from '../rpg_scenes/Scene_Load.js';
+import Window_TitleCommand from '../rpg_windows/Window_TitleCommand.js';
 
 //-----------------------------------------------------------------------------
 // Scene_Title
@@ -51,7 +51,9 @@ class Scene_Title extends Scene_Base {
 	}
 
 	isBusy() {
-		return this._commandWindow.isClosing() || Scene_Base.prototype.isBusy.call(this);
+		return (
+			this._commandWindow.isClosing() || Scene_Base.prototype.isBusy.call(this)
+		);
 	}
 
 	terminate() {
@@ -60,14 +62,20 @@ class Scene_Title extends Scene_Base {
 	}
 
 	createBackground() {
-		this._backSprite1 = new Sprite(ImageManager.loadTitle1(self.$dataSystem.title1Name));
-		this._backSprite2 = new Sprite(ImageManager.loadTitle2(self.$dataSystem.title2Name));
+		this._backSprite1 = new Sprite(
+			ImageManager.loadTitle1(self.$dataSystem.title1Name)
+		);
+		this._backSprite2 = new Sprite(
+			ImageManager.loadTitle2(self.$dataSystem.title2Name)
+		);
 		this.addChild(this._backSprite1);
 		this.addChild(this._backSprite2);
 	}
 
 	createForeground() {
-		this._gameTitleSprite = new Sprite(new Bitmap(Graphics.width, Graphics.height));
+		this._gameTitleSprite = new Sprite(
+			new Bitmap(Graphics.width, Graphics.height)
+		);
 		this.addChild(this._gameTitleSprite);
 		if (self.$dataSystem.optDrawTitle) {
 			this.drawGameTitle();

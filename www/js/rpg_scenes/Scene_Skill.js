@@ -1,9 +1,9 @@
-import Scene_ItemBase from "./Scene_ItemBase.js";
-import Window_SkillType from "../rpg_windows/Window_SkillType.js";
-import Window_SkillList from "../rpg_windows/Window_SkillList.js";
-import Window_SkillStatus from "../rpg_windows/Window_SkillStatus.js";
-import SoundManager from "../rpg_managers/SoundManager.js";
-import Graphics from "../rpg_core/Graphics.js";
+import Scene_ItemBase from './Scene_ItemBase.js';
+import Window_SkillType from '../rpg_windows/Window_SkillType.js';
+import Window_SkillList from '../rpg_windows/Window_SkillList.js';
+import Window_SkillStatus from '../rpg_windows/Window_SkillStatus.js';
+import SoundManager from '../rpg_managers/SoundManager.js';
+import Graphics from '../rpg_core/Graphics.js';
 
 //-----------------------------------------------------------------------------
 // Scene_Skill
@@ -85,8 +85,7 @@ class Scene_Skill extends Scene_ItemBase {
 	}
 
 	onItemOk() {
-		this.actor()
-			.setLastMenuSkill(this.item());
+		this.actor().setLastMenuSkill(this.item());
 		this.determineItem();
 	}
 

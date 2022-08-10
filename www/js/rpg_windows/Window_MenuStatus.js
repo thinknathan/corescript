@@ -1,7 +1,7 @@
-import Window_Selectable from "./Window_Selectable.js";
-import Window_Base from "./Window_Base.js";
-import Graphics from "../rpg_core/Graphics.js";
-import ImageManager from "../rpg_managers/ImageManager.js";
+import Window_Selectable from './Window_Selectable.js';
+import Window_Base from './Window_Base.js';
+import Graphics from '../rpg_core/Graphics.js';
+import ImageManager from '../rpg_managers/ImageManager.js';
 
 //-----------------------------------------------------------------------------
 // Window_MenuStatus
@@ -45,10 +45,9 @@ class Window_MenuStatus extends Window_Selectable {
 	}
 
 	loadImages() {
-		self.$gameParty.members()
-			.forEach(actor => {
-				ImageManager.reserveFace(actor.faceName());
-			}, this);
+		self.$gameParty.members().forEach((actor) => {
+			ImageManager.reserveFace(actor.faceName());
+		}, this);
 	}
 
 	drawItem(index) {
@@ -71,7 +70,13 @@ class Window_MenuStatus extends Window_Selectable {
 		const actor = self.$gameParty.members()[index];
 		const rect = this.itemRect(index);
 		this.changePaintOpacity(actor.isBattleMember());
-		this.drawActorFace(actor, rect.x + 1, rect.y + 1, Window_Base._faceWidth, Window_Base._faceHeight);
+		this.drawActorFace(
+			actor,
+			rect.x + 1,
+			rect.y + 1,
+			Window_Base._faceWidth,
+			Window_Base._faceHeight
+		);
 		this.changePaintOpacity(true);
 	}
 
@@ -99,8 +104,7 @@ class Window_MenuStatus extends Window_Selectable {
 	}
 
 	selectLast() {
-		this.select(self.$gameParty.menuActor()
-			.index() || 0);
+		this.select(self.$gameParty.menuActor().index() || 0);
 	}
 
 	formationMode() {

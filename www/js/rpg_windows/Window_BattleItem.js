@@ -1,4 +1,4 @@
-import Window_ItemList from "./Window_ItemList.js";
+import Window_ItemList from './Window_ItemList.js';
 
 //-----------------------------------------------------------------------------
 // Window_BattleItem

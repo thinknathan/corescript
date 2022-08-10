@@ -1,6 +1,6 @@
-import Window_Selectable from "./Window_Selectable.js";
-import { DataManager } from "../rpg_managers/DataManager.js";
-import TextManager from "../rpg_managers/TextManager.js";
+import Window_Selectable from './Window_Selectable.js';
+import { DataManager } from '../rpg_managers/DataManager.js';
+import TextManager from '../rpg_managers/TextManager.js';
 
 //-----------------------------------------------------------------------------
 // Window_SavefileList
@@ -64,12 +64,7 @@ class Window_SavefileList extends Window_Selectable {
 		}
 	}
 
-	drawContents(info, {
-		y,
-		height,
-		width,
-		x
-	}, valid) {
+	drawContents(info, { y, height, width, x }, valid) {
 		const bottom = y + height;
 		if (width >= 420) {
 			this.drawGameTitle(info, x + 192, y, width - 192);
@@ -84,17 +79,13 @@ class Window_SavefileList extends Window_Selectable {
 		}
 	}
 
-	drawGameTitle({
-		title
-	}, x, y, width) {
+	drawGameTitle({ title }, x, y, width) {
 		if (title) {
 			this.drawText(title, x, y, width);
 		}
 	}
 
-	drawPartyCharacters({
-		characters
-	}, x, y) {
+	drawPartyCharacters({ characters }, x, y) {
 		if (characters) {
 			characters.forEach((data, i) => {
 				this.drawCharacter(data[0], data[1], x + i * 48, y);
@@ -102,9 +93,7 @@ class Window_SavefileList extends Window_Selectable {
 		}
 	}
 
-	drawPlaytime({
-		playtime
-	}, x, y, width) {
+	drawPlaytime({ playtime }, x, y, width) {
 		if (playtime) {
 			this.drawText(playtime, x, y, width, 'right');
 		}

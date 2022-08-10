@@ -1,9 +1,9 @@
-import Game_BattlerBase from "./Game_BattlerBase.js";
-import { DataManager } from "../rpg_managers/DataManager.js";
-import SoundManager from "../rpg_managers/SoundManager.js";
-import BattleManager from "../rpg_managers/BattleManager.js";
-import Game_Action from "../rpg_objects/Game_Action.js";
-import Game_ActionResult from "../rpg_objects/Game_ActionResult.js";
+import Game_BattlerBase from './Game_BattlerBase.js';
+import { DataManager } from '../rpg_managers/DataManager.js';
+import SoundManager from '../rpg_managers/SoundManager.js';
+import BattleManager from '../rpg_managers/BattleManager.js';
+import Game_Action from '../rpg_objects/Game_Action.js';
+import Game_ActionResult from '../rpg_objects/Game_ActionResult.js';
 
 //-----------------------------------------------------------------------------
 // Game_Battler
@@ -126,7 +126,7 @@ class Game_Battler extends Game_BattlerBase {
 		const data = {
 			animationId,
 			mirror,
-			delay
+			delay,
 		};
 		this._animations.push(data);
 	}
@@ -203,10 +203,13 @@ class Game_Battler extends Game_BattlerBase {
 	onApplyStateFailure(stateId, target) {}
 
 	isStateAddable(stateId) {
-		return (this.isAlive() && self.$dataStates[stateId] &&
+		return (
+			this.isAlive() &&
+			self.$dataStates[stateId] &&
 			!this.isStateResist(stateId) &&
 			!this._result.isStateRemoved(stateId) &&
-			!this.isStateRestrict(stateId));
+			!this.isStateRestrict(stateId)
+		);
 	}
 
 	isStateRestrict(stateId) {
@@ -216,15 +219,11 @@ class Game_Battler extends Game_BattlerBase {
 	onRestrict() {
 		super.onRestrict();
 		this.clearActions();
-		this.states()
-			.forEach(function ({
-				removeByRestriction,
-				id
-			}) {
-				if (removeByRestriction) {
-					this.removeState(id);
-				}
-			}, this);
+		this.states().forEach(function ({ removeByRestriction, id }) {
+			if (removeByRestriction) {
+				this.removeState(id);
+			}
+		}, this);
 	}
 
 	removeState(stateId) {
@@ -278,15 +277,11 @@ class Game_Battler extends Game_BattlerBase {
 	}
 
 	removeBattleStates() {
-		this.states()
-			.forEach(function ({
-				removeAtBattleEnd,
-				id
-			}) {
-				if (removeAtBattleEnd) {
-					this.removeState(id);
-				}
-			}, this);
+		this.states().forEach(function ({ removeAtBattleEnd, id }) {
+			if (removeAtBattleEnd) {
+				this.removeState(id);
+			}
+		}, this);
 	}
 
 	removeAllBuffs() {
@@ -296,15 +291,11 @@ class Game_Battler extends Game_BattlerBase {
 	}
 
 	removeStatesAuto(timing) {
-		this.states()
-			.forEach(function ({
-				id,
-				autoRemovalTiming
-			}) {
-				if (this.isStateExpired(id) && autoRemovalTiming === timing) {
-					this.removeState(id);
-				}
-			}, this);
+		this.states().forEach(function ({ id, autoRemovalTiming }) {
+			if (this.isStateExpired(id) && autoRemovalTiming === timing) {
+				this.removeState(id);
+			}
+		}, this);
 	}
 
 	removeBuffsAuto() {
@@ -316,21 +307,18 @@ class Game_Battler extends Game_BattlerBase {
 	}
 
 	removeStatesByDamage() {
-		this.states()
-			.forEach(function ({
-				removeByDamage,
-				chanceByDamage,
-				id
-			}) {
-				if (removeByDamage && Math.randomInt(100) < chanceByDamage) {
-					this.removeState(id);
-				}
-			}, this);
+		this.states().forEach(function ({ removeByDamage, chanceByDamage, id }) {
+			if (removeByDamage && Math.randomInt(100) < chanceByDamage) {
+				this.removeState(id);
+			}
+		}, this);
 	}
 
 	makeActionTimes() {
-		return this.actionPlusSet()
-			.reduce((r, p) => Math.random() < p ? r + 1 : r, 1);
+		return this.actionPlusSet().reduce(
+			(r, p) => (Math.random() < p ? r + 1 : r),
+			1
+		);
 	}
 
 	makeActions() {
@@ -349,7 +337,11 @@ class Game_Battler extends Game_BattlerBase {
 	}
 
 	makeSpeed() {
-		this._speed = Math.min.apply(null, this._actions.map(action => action.speed())) || 0;
+		this._speed =
+			Math.min.apply(
+				null,
+				this._actions.map((action) => action.speed())
+			) || 0;
 	}
 
 	currentAction() {
@@ -522,14 +514,14 @@ class Game_Battler extends Game_BattlerBase {
 
 	isChanting() {
 		if (this.isWaiting()) {
-			return this._actions.some(action => action.isMagicSkill());
+			return this._actions.some((action) => action.isMagicSkill());
 		}
 		return false;
 	}
 
 	isGuardWaiting() {
 		if (this.isWaiting()) {
-			return this._actions.some(action => action.isGuard());
+			return this._actions.some((action) => action.isGuard());
 		}
 		return false;
 	}

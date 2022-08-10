@@ -1,4 +1,4 @@
-import Game_Character from "./Game_Character.js";
+import Game_Character from './Game_Character.js';
 
 //-----------------------------------------------------------------------------
 // Game_Follower
@@ -20,10 +20,8 @@ class Game_Follower extends Game_Character {
 	}
 
 	refresh() {
-		const characterName = this.isVisible() ? this.actor()
-			.characterName() : '';
-		const characterIndex = this.isVisible() ? this.actor()
-			.characterIndex() : 0;
+		const characterName = this.isVisible() ? this.actor().characterName() : '';
+		const characterIndex = this.isVisible() ? this.actor().characterIndex() : 0;
 		this.setImage(characterName, characterIndex);
 	}
 
@@ -32,8 +30,7 @@ class Game_Follower extends Game_Character {
 	}
 
 	isVisible() {
-		return this.actor() && self.$gamePlayer.followers()
-			.isVisible();
+		return this.actor() && self.$gamePlayer.followers().isVisible();
 	}
 
 	update() {
@@ -47,10 +44,7 @@ class Game_Follower extends Game_Character {
 		this.setTransparent(self.$gamePlayer.isTransparent());
 	}
 
-	chaseCharacter({
-		x,
-		y
-	}) {
+	chaseCharacter({ x, y }) {
 		const sx = this.deltaXFrom(x);
 		const sy = this.deltaYFrom(y);
 		if (sx !== 0 && sy !== 0) {

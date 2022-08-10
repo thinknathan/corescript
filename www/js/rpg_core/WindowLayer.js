@@ -1,4 +1,4 @@
-import * as PIXI from "../libs/pixi.js";
+import * as PIXI from '../libs/pixi.js';
 
 //-----------------------------------------------------------------------------
 /**
@@ -76,7 +76,7 @@ class WindowLayer extends PIXI.Container {
 	 * @method update
 	 */
 	update() {
-		this.children.forEach(child => {
+		this.children.forEach((child) => {
 			if (child.update) {
 				child.update();
 			}

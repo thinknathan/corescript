@@ -1,4 +1,4 @@
-import Window_Selectable from "./Window_Selectable.js";
+import Window_Selectable from './Window_Selectable.js';
 
 //-----------------------------------------------------------------------------
 // Window_Command
@@ -55,7 +55,7 @@ class Window_Command extends Window_Selectable {
 			name,
 			symbol,
 			enabled,
-			ext
+			ext,
 		});
 	}
 
@@ -76,18 +76,15 @@ class Window_Command extends Window_Selectable {
 	}
 
 	isCurrentItemEnabled() {
-		return this.currentData() ? this.currentData()
-			.enabled : false;
+		return this.currentData() ? this.currentData().enabled : false;
 	}
 
 	currentSymbol() {
-		return this.currentData() ? this.currentData()
-			.symbol : null;
+		return this.currentData() ? this.currentData().symbol : null;
 	}
 
 	currentExt() {
-		return this.currentData() ? this.currentData()
-			.ext : null;
+		return this.currentData() ? this.currentData().ext : null;
 	}
 
 	findSymbol(symbol) {

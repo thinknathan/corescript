@@ -1,7 +1,7 @@
-import Sprite from "../rpg_core/Sprite.js";
-import ImageManager from "../rpg_managers/ImageManager.js";
-import AudioManager from "../rpg_managers/AudioManager.js";
-import ScreenSprite from "../rpg_core/ScreenSprite.js";
+import Sprite from '../rpg_core/Sprite.js';
+import ImageManager from '../rpg_managers/ImageManager.js';
+import AudioManager from '../rpg_managers/AudioManager.js';
+import ScreenSprite from '../rpg_core/ScreenSprite.js';
 
 //-----------------------------------------------------------------------------
 // Sprite_Animation
@@ -92,7 +92,7 @@ class Sprite_Animation extends Sprite {
 				this._screenFlashSprite.x = -this.absoluteX();
 				this._screenFlashSprite.y = -this.absoluteY();
 				this._screenFlashSprite.opacity *= (d - 1) / d;
-				this._screenFlashSprite.visible = (this._screenFlashDuration > 0);
+				this._screenFlashSprite.visible = this._screenFlashDuration > 0;
 			}
 		}
 	}
@@ -140,7 +140,12 @@ class Sprite_Animation extends Sprite {
 	}
 
 	isReady() {
-		return this._bitmap1 && this._bitmap1.isReady() && this._bitmap2 && this._bitmap2.isReady();
+		return (
+			this._bitmap1 &&
+			this._bitmap1.isReady() &&
+			this._bitmap2 &&
+			this._bitmap2.isReady()
+		);
 	}
 
 	createSprites() {
@@ -225,8 +230,10 @@ class Sprite_Animation extends Sprite {
 	}
 
 	currentFrameIndex() {
-		return (this._animation.frames.length -
-			Math.floor((this._duration + this._rate - 1) / this._rate));
+		return (
+			this._animation.frames.length -
+			Math.floor((this._duration + this._rate - 1) / this._rate)
+		);
 	}
 
 	updateAllCellSprites(frame) {
@@ -242,14 +249,14 @@ class Sprite_Animation extends Sprite {
 	updateCellSprite(sprite, cell) {
 		const pattern = cell[0];
 		if (pattern >= 0) {
-			const sx = pattern % 5 * 192;
-			const sy = Math.floor(pattern % 100 / 5) * 192;
+			const sx = (pattern % 5) * 192;
+			const sy = Math.floor((pattern % 100) / 5) * 192;
 			const mirror = this._mirror;
 			sprite.bitmap = pattern < 100 ? this._bitmap1 : this._bitmap2;
 			sprite.setFrame(sx, sy, 192, 192);
 			sprite.x = cell[1];
 			sprite.y = cell[2];
-			sprite.rotation = cell[4] * Math.PI / 180;
+			sprite.rotation = (cell[4] * Math.PI) / 180;
 			sprite.scale.x = cell[3] / 100;
 
 			if (cell[5]) {
@@ -270,23 +277,18 @@ class Sprite_Animation extends Sprite {
 		}
 	}
 
-	processTimingData({
-		flashDuration,
-		flashScope,
-		flashColor,
-		se
-	}) {
+	processTimingData({ flashDuration, flashScope, flashColor, se }) {
 		const duration = flashDuration * this._rate;
 		switch (flashScope) {
-		case 1:
-			this.startFlash(flashColor, duration);
-			break;
-		case 2:
-			this.startScreenFlash(flashColor, duration);
-			break;
-		case 3:
-			this.startHiding(duration);
-			break;
+			case 1:
+				this.startFlash(flashColor, duration);
+				break;
+			case 2:
+				this.startScreenFlash(flashColor, duration);
+				break;
+			case 3:
+				this.startHiding(duration);
+				break;
 		}
 		if (!this._duplicated && se) {
 			AudioManager.playSe(se);

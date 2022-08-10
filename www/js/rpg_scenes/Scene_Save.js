@@ -1,8 +1,8 @@
-import Scene_File from "./Scene_File.js";
-import SoundManager from "../rpg_managers/SoundManager.js";
-import TextManager from "../rpg_managers/TextManager.js";
-import StorageManager from "../rpg_managers/StorageManagerShim.js";
-import { DataManager } from "../rpg_managers/DataManager.js";
+import Scene_File from './Scene_File.js';
+import SoundManager from '../rpg_managers/SoundManager.js';
+import TextManager from '../rpg_managers/TextManager.js';
+import StorageManager from '../rpg_managers/StorageManagerShim.js';
+import { DataManager } from '../rpg_managers/DataManager.js';
 
 //-----------------------------------------------------------------------------
 // Scene_Save

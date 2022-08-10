@@ -1,5 +1,5 @@
-import Utils from "../rpg_core/Utils.js";
-import ResourceHandler from "../rpg_core/ResourceHandler.js";
+import Utils from '../rpg_core/Utils.js';
+import ResourceHandler from '../rpg_core/ResourceHandler.js';
 
 //-----------------------------------------------------------------------------
 /**
@@ -110,10 +110,12 @@ class Input {
 		if (this._isEscapeCompatible(keyName) && this.isRepeated('escape')) {
 			return true;
 		} else {
-			return (this._latestButton === keyName &&
+			return (
+				this._latestButton === keyName &&
 				(this._pressedTime === 0 ||
 					(this._pressedTime >= this.keyRepeatWait &&
-						this._pressedTime % this.keyRepeatInterval === 0)));
+						this._pressedTime % this.keyRepeatInterval === 0))
+			);
 		}
 	}
 
@@ -129,8 +131,10 @@ class Input {
 		if (this._isEscapeCompatible(keyName) && this.isLongPressed('escape')) {
 			return true;
 		} else {
-			return (this._latestButton === keyName &&
-				this._pressedTime >= this.keyRepeatWait);
+			return (
+				this._latestButton === keyName &&
+				this._pressedTime >= this.keyRepeatWait
+			);
 		}
 	}
 
@@ -155,7 +159,8 @@ class Input {
 		if (this._shouldPreventDefault(event.keyCode)) {
 			event.preventDefault();
 		}
-		if (event.keyCode === 144) { // Numlock
+		if (event.keyCode === 144) {
+			// Numlock
 			this.clear();
 		}
 		const buttonName = this.keyMapper[event.keyCode];
@@ -172,14 +177,13 @@ class Input {
 	 * @param {KeyboardEvent} event
 	 * @private
 	 */
-	static _onKeyUp({
-		keyCode
-	}) {
+	static _onKeyUp({ keyCode }) {
 		const buttonName = this.keyMapper[keyCode];
 		if (buttonName) {
 			this._currentState[buttonName] = false;
 		}
-		if (keyCode === 0) { // For QtWebEngine on OS X
+		if (keyCode === 0) {
+			// For QtWebEngine on OS X
 			this.clear();
 		}
 	}
@@ -338,14 +342,14 @@ class Input {
 	 */
 	static _shouldPreventDefault(keyCode) {
 		switch (keyCode) {
-		case 8: // backspace
-		case 33: // pageup
-		case 34: // pagedown
-		case 37: // left arrow
-		case 38: // up arrow
-		case 39: // right arrow
-		case 40: // down arrow
-			return true;
+			case 8: // backspace
+			case 33: // pageup
+			case 34: // pagedown
+			case 37: // left arrow
+			case 38: // up arrow
+			case 39: // right arrow
+			case 40: // down arrow
+				return true;
 		}
 		return false;
 	}
@@ -363,7 +367,7 @@ class Input {
 			return 5 - y * 3 + x;
 		}
 		return 0;
-	};
+	}
 
 	/**
 	 * @static
@@ -426,7 +430,7 @@ Input.keyMapper = {
 	100: 'left', // numpad 4
 	102: 'right', // numpad 6
 	104: 'up', // numpad 8
-	120: 'debug' // F9
+	120: 'debug', // F9
 };
 
 /**
@@ -460,7 +464,7 @@ Object.defineProperty(Input, 'dir4', {
 	get() {
 		return this._dir4;
 	},
-	configurable: true
+	configurable: true,
 });
 
 /**
@@ -474,7 +478,7 @@ Object.defineProperty(Input, 'dir8', {
 	get() {
 		return this._dir8;
 	},
-	configurable: true
+	configurable: true,
 });
 
 /**
@@ -488,7 +492,7 @@ Object.defineProperty(Input, 'date', {
 	get() {
 		return this._date;
 	},
-	configurable: true
+	configurable: true,
 });
 
 export default Input;

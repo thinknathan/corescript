@@ -1,8 +1,8 @@
-import * as PIXI from "../libs/pixi.js";
-import Scene_Base from "./Scene_Base.js";
-import Window_Help from "../rpg_windows/Window_Help.js";
-import SceneManager from "../rpg_managers/SceneManager.js";
-import Graphics from "../rpg_core/Graphics.js";
+import * as PIXI from '../libs/pixi.js';
+import Scene_Base from './Scene_Base.js';
+import Window_Help from '../rpg_windows/Window_Help.js';
+import SceneManager from '../rpg_managers/SceneManager.js';
+import Graphics from '../rpg_core/Graphics.js';
 
 //-----------------------------------------------------------------------------
 // Scene_MenuBase
@@ -37,7 +37,9 @@ class Scene_MenuBase extends Scene_Base {
 	createBackground() {
 		// this._backgroundSprite = new Sprite();
 		// this._backgroundSprite.bitmap = SceneManager.backgroundBitmap();
-		this._backgroundSprite = new PIXI.Sprite(new PIXI.Texture(SceneManager.backgroundBitmap().baseTexture));
+		this._backgroundSprite = new PIXI.Sprite(
+			new PIXI.Texture(SceneManager.backgroundBitmap().baseTexture)
+		);
 		if (Graphics.isWebGL()) {
 			const filter = new PIXI.filters.PixelateFilter(12, 12);
 			this._backgroundSprite.filters = [filter];

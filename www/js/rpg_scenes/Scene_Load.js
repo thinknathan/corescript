@@ -1,9 +1,9 @@
-import Scene_File from "./Scene_File.js";
-import Scene_Map from "./Scene_Map.js";
-import { DataManager } from "../rpg_managers/DataManager.js";
-import SoundManager from "../rpg_managers/SoundManager.js";
-import TextManager from "../rpg_managers/TextManager.js";
-import SceneManager from "../rpg_managers/SceneManager.js";
+import Scene_File from './Scene_File.js';
+import Scene_Map from './Scene_Map.js';
+import { DataManager } from '../rpg_managers/DataManager.js';
+import SoundManager from '../rpg_managers/SoundManager.js';
+import TextManager from '../rpg_managers/TextManager.js';
+import SceneManager from '../rpg_managers/SceneManager.js';
 
 //-----------------------------------------------------------------------------
 // Scene_Load
@@ -64,7 +64,11 @@ class Scene_Load extends Scene_File {
 
 	reloadMapIfUpdated() {
 		if (self.$gameSystem.versionId() !== self.$dataSystem.versionId) {
-			self.$gamePlayer.reserveTransfer(self.$gameMap.mapId(), self.$gamePlayer.x, self.$gamePlayer.y);
+			self.$gamePlayer.reserveTransfer(
+				self.$gameMap.mapId(),
+				self.$gamePlayer.x,
+				self.$gamePlayer.y
+			);
 			self.$gamePlayer.requestMapReload();
 		}
 	}

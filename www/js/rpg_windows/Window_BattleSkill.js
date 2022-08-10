@@ -1,4 +1,4 @@
-import Window_SkillList from "./Window_SkillList.js";
+import Window_SkillList from './Window_SkillList.js';
 
 //-----------------------------------------------------------------------------
 // Window_BattleSkill

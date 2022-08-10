@@ -1,7 +1,7 @@
-import Game_Unit from "./Game_Unit.js";
-import TextManager from "../rpg_managers/TextManager.js";
-import { DataManager } from "../rpg_managers/DataManager.js";
-import Game_Item from "../rpg_objects/Game_Item.js";
+import Game_Unit from './Game_Unit.js';
+import TextManager from '../rpg_managers/TextManager.js';
+import { DataManager } from '../rpg_managers/DataManager.js';
+import Game_Item from '../rpg_objects/Game_Item.js';
 
 //-----------------------------------------------------------------------------
 // Game_Party
@@ -37,8 +37,7 @@ class Game_Party extends Game_Unit {
 	}
 
 	size() {
-		return this.members()
-			.length;
+		return this.members().length;
 	}
 
 	isEmpty() {
@@ -50,13 +49,13 @@ class Game_Party extends Game_Unit {
 	}
 
 	allMembers() {
-		return this._actors.map(id => self.$gameActors.actor(id));
+		return this._actors.map((id) => self.$gameActors.actor(id));
 	}
 
 	battleMembers() {
 		return this.allMembers()
 			.slice(0, this.maxBattleMembers())
-			.filter(actor => actor.isAppeared());
+			.filter((actor) => actor.isAppeared());
 	}
 
 	maxBattleMembers() {
@@ -68,12 +67,11 @@ class Game_Party extends Game_Unit {
 	}
 
 	reviveBattleMembers() {
-		this.battleMembers()
-			.forEach(actor => {
-				if (actor.isDead()) {
-					actor.setHp(1);
-				}
-			});
+		this.battleMembers().forEach((actor) => {
+			if (actor.isDead()) {
+				actor.setHp(1);
+			}
+		});
 	}
 
 	items() {
@@ -101,13 +99,11 @@ class Game_Party extends Game_Unit {
 	}
 
 	equipItems() {
-		return this.weapons()
-			.concat(this.armors());
+		return this.weapons().concat(this.armors());
 	}
 
 	allItems() {
-		return this.items()
-			.concat(this.equipItems());
+		return this.items().concat(this.equipItems());
 	}
 
 	itemContainer(item) {
@@ -134,16 +130,13 @@ class Game_Party extends Game_Unit {
 	}
 
 	name() {
-		const numBattleMembers = this.battleMembers()
-			.length;
+		const numBattleMembers = this.battleMembers().length;
 		if (numBattleMembers === 0) {
 			return '';
 		} else if (numBattleMembers === 1) {
-			return this.leader()
-				.name();
+			return this.leader().name();
 		} else {
-			return TextManager.partyName.format(this.leader()
-				.name());
+			return TextManager.partyName.format(this.leader().name());
 		}
 	}
 
@@ -156,7 +149,7 @@ class Game_Party extends Game_Unit {
 		self.$dataSystem.testBattlers.forEach(function ({
 			actorId,
 			level,
-			equips
+			equips,
 		}) {
 			const actor = self.$gameActors.actor(actorId);
 			if (actor) {
@@ -165,7 +158,8 @@ class Game_Party extends Game_Unit {
 				actor.recoverAll();
 				this.addActor(actorId);
 			}
-		}, this);
+		},
+		this);
 	}
 
 	setupBattleTestItems() {
@@ -177,10 +171,10 @@ class Game_Party extends Game_Unit {
 	}
 
 	highestLevel() {
-		return Math.max.apply(null, this.members()
-			.map(({
-				level
-			}) => level));
+		return Math.max.apply(
+			null,
+			this.members().map(({ level }) => level)
+		);
 	}
 
 	addActor(actorId) {
@@ -204,8 +198,7 @@ class Game_Party extends Game_Unit {
 	}
 
 	gainGold(amount) {
-		this._gold = (this._gold + amount)
-			.clamp(0, this.maxGold());
+		this._gold = (this._gold + amount).clamp(0, this.maxGold());
 	}
 
 	loseGold(amount) {
@@ -251,9 +244,7 @@ class Game_Party extends Game_Unit {
 	}
 
 	isAnyMemberEquipped(item) {
-		return this.members()
-			.some(actor => actor.equips()
-				.contains(item));
+		return this.members().some((actor) => actor.equips().contains(item));
 	}
 
 	gainItem(item, amount, includeEquip) {
@@ -274,13 +265,12 @@ class Game_Party extends Game_Unit {
 
 	discardMembersEquip(item, amount) {
 		let n = amount;
-		this.members()
-			.forEach(actor => {
-				while (n > 0 && actor.isEquipped(item)) {
-					actor.discardEquip(item);
-					n--;
-				}
-			});
+		this.members().forEach((actor) => {
+			while (n > 0 && actor.isEquipped(item)) {
+				actor.discardEquip(item);
+				n--;
+			}
+		});
 	}
 
 	loseItem(item, amount, includeEquip) {
@@ -294,13 +284,11 @@ class Game_Party extends Game_Unit {
 	}
 
 	canUse(item) {
-		return this.members()
-			.some(actor => actor.canUse(item));
+		return this.members().some((actor) => actor.canUse(item));
 	}
 
 	canInput() {
-		return this.members()
-			.some(actor => actor.canInput());
+		return this.members().some((actor) => actor.canInput());
 	}
 
 	isAllDead() {
@@ -312,14 +300,12 @@ class Game_Party extends Game_Unit {
 	}
 
 	onPlayerWalk() {
-		this.members()
-			.forEach(actor => actor.onPlayerWalk());
+		this.members().forEach((actor) => actor.onPlayerWalk());
 	}
 
 	menuActor() {
 		let actor = self.$gameActors.actor(this._menuActorId);
-		if (!this.members()
-			.contains(actor)) {
+		if (!this.members().contains(actor)) {
 			actor = this.members()[0];
 		}
 		return actor;
@@ -330,11 +316,9 @@ class Game_Party extends Game_Unit {
 	}
 
 	makeMenuActorNext() {
-		let index = this.members()
-			.indexOf(this.menuActor());
+		let index = this.members().indexOf(this.menuActor());
 		if (index >= 0) {
-			index = (index + 1) % this.members()
-				.length;
+			index = (index + 1) % this.members().length;
 			this.setMenuActor(this.members()[index]);
 		} else {
 			this.setMenuActor(this.members()[0]);
@@ -342,12 +326,9 @@ class Game_Party extends Game_Unit {
 	}
 
 	makeMenuActorPrevious() {
-		let index = this.members()
-			.indexOf(this.menuActor());
+		let index = this.members().indexOf(this.menuActor());
 		if (index >= 0) {
-			index = (index + this.members()
-					.length - 1) % this.members()
-				.length;
+			index = (index + this.members().length - 1) % this.members().length;
 			this.setMenuActor(this.members()[index]);
 		} else {
 			this.setMenuActor(this.members()[0]);
@@ -356,8 +337,7 @@ class Game_Party extends Game_Unit {
 
 	targetActor() {
 		let actor = self.$gameActors.actor(this._targetActorId);
-		if (!this.members()
-			.contains(actor)) {
+		if (!this.members().contains(actor)) {
 			actor = this.members()[0];
 		}
 		return actor;
@@ -383,18 +363,21 @@ class Game_Party extends Game_Unit {
 	}
 
 	charactersForSavefile() {
-		return this.battleMembers()
-			.map(actor => [actor.characterName(), actor.characterIndex()]);
+		return this.battleMembers().map((actor) => [
+			actor.characterName(),
+			actor.characterIndex(),
+		]);
 	}
 
 	facesForSavefile() {
-		return this.battleMembers()
-			.map(actor => [actor.faceName(), actor.faceIndex()]);
+		return this.battleMembers().map((actor) => [
+			actor.faceName(),
+			actor.faceIndex(),
+		]);
 	}
 
 	partyAbility(abilityId) {
-		return this.battleMembers()
-			.some(actor => actor.partyAbility(abilityId));
+		return this.battleMembers().some((actor) => actor.partyAbility(abilityId));
 	}
 
 	hasEncounterHalf() {
@@ -438,31 +421,27 @@ class Game_Party extends Game_Unit {
 	}
 
 	performVictory() {
-		this.members()
-			.forEach(actor => {
-				actor.performVictory();
-			});
+		this.members().forEach((actor) => {
+			actor.performVictory();
+		});
 	}
 
 	performEscape() {
-		this.members()
-			.forEach(actor => {
-				actor.performEscape();
-			});
+		this.members().forEach((actor) => {
+			actor.performEscape();
+		});
 	}
 
 	removeBattleStates() {
-		this.members()
-			.forEach(actor => {
-				actor.removeBattleStates();
-			});
+		this.members().forEach((actor) => {
+			actor.removeBattleStates();
+		});
 	}
 
 	requestMotionRefresh() {
-		this.members()
-			.forEach(actor => {
-				actor.requestMotionRefresh();
-			});
+		this.members().forEach((actor) => {
+			actor.requestMotionRefresh();
+		});
 	}
 }
 

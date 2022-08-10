@@ -1,6 +1,6 @@
-import Window_ItemList from "./Window_ItemList.js";
-import Graphics from "../rpg_core/Graphics.js";
-import { DataManager } from "../rpg_managers/DataManager.js";
+import Window_ItemList from './Window_ItemList.js';
+import Graphics from '../rpg_core/Graphics.js';
+import { DataManager } from '../rpg_managers/DataManager.js';
 
 //-----------------------------------------------------------------------------
 // Window_EventItem
@@ -60,7 +60,10 @@ class Window_EventItem extends Window_ItemList {
 	onOk() {
 		const item = this.item();
 		const itemId = item ? item.id : 0;
-		self.$gameVariables.setValue(self.$gameMessage.itemChoiceVariableId(), itemId);
+		self.$gameVariables.setValue(
+			self.$gameMessage.itemChoiceVariableId(),
+			itemId
+		);
 		this._messageWindow.terminateMessage();
 		this.close();
 	}

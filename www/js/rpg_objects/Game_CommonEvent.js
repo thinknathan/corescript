@@ -1,4 +1,4 @@
-import Game_Interpreter from "./Game_Interpreter.js";
+import Game_Interpreter from './Game_Interpreter.js';
 
 //-----------------------------------------------------------------------------
 // Game_CommonEvent
@@ -21,8 +21,7 @@ class Game_CommonEvent {
 	}
 
 	list() {
-		return this.event()
-			.list;
+		return this.event().list;
 	}
 
 	refresh() {
@@ -46,7 +45,7 @@ class Game_CommonEvent {
 				this._interpreter.setup(this.list());
 				this._interpreter.setEventInfo({
 					eventType: 'common_event',
-					commonEventId: this._commonEventId
+					commonEventId: this._commonEventId,
 				});
 			}
 			this._interpreter.update();

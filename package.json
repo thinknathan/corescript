@@ -1,11 +1,11 @@
 {
-  "name": "corescript",
-  "scripts": {
-    "build": "rollup -c"
-  },
-  "devDependencies": {
-    "rollup": "^2.75.7",
-    "rollup-plugin-terser": "^7.0.2",
-    "rollup-plugin-url-resolve": "^0.2.0"
-  }
+	"name": "corescript",
+	"scripts": {
+		"build": "rollup -c"
+	},
+	"devDependencies": {
+		"rollup": "^2.75.7",
+		"rollup-plugin-terser": "^7.0.2",
+		"rollup-plugin-url-resolve": "^0.2.0"
+	}
 }

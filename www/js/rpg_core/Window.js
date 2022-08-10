@@ -1,10 +1,10 @@
-import * as PIXI from "../libs/pixi.js";
-import Bitmap from "../rpg_core/Bitmap.js";
-import Sprite from "../rpg_core/Sprite.js";
-import Point from "../rpg_core/Point.js";
-import Rectangle from "../rpg_core/Rectangle.js";
-import WindowSkinCache from "../rpg_core/WindowSkinCache.js";
-import Graphics from "../rpg_core/Graphics.js";
+import * as PIXI from '../libs/pixi.js';
+import Bitmap from '../rpg_core/Bitmap.js';
+import Sprite from '../rpg_core/Sprite.js';
+import Point from '../rpg_core/Point.js';
+import Rectangle from '../rpg_core/Rectangle.js';
+import WindowSkinCache from '../rpg_core/WindowSkinCache.js';
+import Graphics from '../rpg_core/Graphics.js';
 
 //-----------------------------------------------------------------------------
 /**
@@ -236,7 +236,8 @@ class Window extends PIXI.Container {
 		if (this._openness !== value) {
 			this._openness = value.clamp(0, 255);
 			this._windowSpriteContainer.scale.y = this._openness / 255;
-			this._windowSpriteContainer.y = this.height / 2 * (1 - this._openness / 255);
+			this._windowSpriteContainer.y =
+				(this.height / 2) * (1 - this._openness / 255);
 		}
 	}
 
@@ -249,7 +250,7 @@ class Window extends PIXI.Container {
 		if (this.active) {
 			this._animationCount++;
 		}
-		this.children.forEach(child => {
+		this.children.forEach((child) => {
 			if (child.update) {
 				child.update();
 			}
@@ -308,7 +309,12 @@ class Window extends PIXI.Container {
 		const cw = Math.floor(width || 0);
 		const ch = Math.floor(height || 0);
 		const rect = this._cursorRect;
-		if (rect.x !== cx || rect.y !== cy || rect.width !== cw || rect.height !== ch) {
+		if (
+			rect.x !== cx ||
+			rect.y !== cy ||
+			rect.width !== cw ||
+			rect.height !== ch
+		) {
 			this._cursorRect.x = cx;
 			this._cursorRect.y = cy;
 			this._cursorRect.width = cw;
@@ -418,11 +424,24 @@ class Window extends PIXI.Container {
 		const h = this._height - m * 2;
 		const tone = PIXI.utils.rgb2hex(this._colorTone);
 
-		if (w > 0 && h > 0 && this._windowskin && !this._windowBackSprite._setupComplete) {
+		if (
+			w > 0 &&
+			h > 0 &&
+			this._windowskin &&
+			!this._windowBackSprite._setupComplete
+		) {
 			const p = 96;
 			this._windowBackSprite.blt(this._windowskin, 0, 0, p, p, 0, 0, w, h);
 			this._windowBackSprite.addChild(
-				this._windowBackSprite.createTilingSprite(this._windowskin.baseTexture, 0, p, p, p, w, h)
+				this._windowBackSprite.createTilingSprite(
+					this._windowskin.baseTexture,
+					0,
+					p,
+					p,
+					p,
+					w,
+					h
+				)
 			);
 
 			this._windowBackSprite._setupComplete = true;
@@ -432,7 +451,7 @@ class Window extends PIXI.Container {
 		this._windowBackSprite.height = h;
 		this._windowBackSprite.x = m;
 		this._windowBackSprite.y = m;
-		this._windowBackSprite.children.forEach(child => {
+		this._windowBackSprite.children.forEach((child) => {
 			if (child) {
 				child.width = w;
 				child.height = h;
@@ -450,9 +469,17 @@ class Window extends PIXI.Container {
 		const h = this._height;
 		const m = 24;
 
-		if (w > 0 && h > 0 && this._windowskin && !this._windowFrameSprite._setupComplete) {
+		if (
+			w > 0 &&
+			h > 0 &&
+			this._windowskin &&
+			!this._windowFrameSprite._setupComplete
+		) {
 			let texture;
-			const cachedFrame = WindowSkinCache.getItem(this._windowskin._url, 'frame');
+			const cachedFrame = WindowSkinCache.getItem(
+				this._windowskin._url,
+				'frame'
+			);
 			if (cachedFrame) {
 				texture = cachedFrame;
 			} else {
@@ -461,9 +488,29 @@ class Window extends PIXI.Container {
 				const p = 96;
 				const q = 96;
 				container.blt(skin, p + m, 0 + 0, p - m * 2, m, m, 0, w - m * 2, m);
-				container.blt(skin, p + m, 0 + q - m, p - m * 2, m, m, h - m, w - m * 2, m);
+				container.blt(
+					skin,
+					p + m,
+					0 + q - m,
+					p - m * 2,
+					m,
+					m,
+					h - m,
+					w - m * 2,
+					m
+				);
 				container.blt(skin, p + 0, 0 + m, m, p - m * 2, 0, m, m, h - m * 2);
-				container.blt(skin, p + q - m, 0 + m, m, p - m * 2, w - m, m, m, h - m * 2);
+				container.blt(
+					skin,
+					p + q - m,
+					0 + m,
+					m,
+					p - m * 2,
+					w - m,
+					m,
+					m,
+					h - m * 2
+				);
 				container.blt(skin, p + 0, 0 + 0, m, m, 0, 0, m, m);
 				container.blt(skin, p + q - m, 0 + 0, m, m, w - m, 0, m, m);
 				container.blt(skin, p + 0, 0 + q - m, m, m, 0, h - m, m, m);
@@ -498,13 +545,26 @@ class Window extends PIXI.Container {
 		const w = this._cursorRect.width;
 		const h = this._cursorRect.height;
 
-		if (w > 0 && h > 0 && this._windowskin && !this._windowCursorSprite._setupComplete) {
+		if (
+			w > 0 &&
+			h > 0 &&
+			this._windowskin &&
+			!this._windowCursorSprite._setupComplete
+		) {
 			const p = 96;
 			const q = 48;
-			this._windowCursorPlane = this._windowCursorSprite.create9Slice(this._windowskin.baseTexture, p, p, q, q, 12, 12, 12, 12);
-			this._windowCursorSprite.addChild(
-				this._windowCursorPlane
+			this._windowCursorPlane = this._windowCursorSprite.create9Slice(
+				this._windowskin.baseTexture,
+				p,
+				p,
+				q,
+				q,
+				12,
+				12,
+				12,
+				12
 			);
+			this._windowCursorSprite.addChild(this._windowCursorPlane);
 			this._windowCursorSprite._setupComplete = true;
 		}
 
@@ -522,7 +582,8 @@ class Window extends PIXI.Container {
 	 */
 	_refreshContents() {
 		this._windowContentsSprite.move(this.padding, this.padding);
-		if (this._windowContentsSprite.children.length) this._windowContentsSprite.children[0].clear();
+		if (this._windowContentsSprite.children.length)
+			this._windowContentsSprite.children[0].clear();
 	}
 
 	/**

@@ -1,9 +1,9 @@
-import * as PIXI from "../libs/pixi.js";
-import Point from "../rpg_core/Point.js";
-import Graphics from "../rpg_core/Graphics.js";
-import Bitmap from "../rpg_core/Bitmap.js";
-import Sprite from "../rpg_core/Sprite.js";
-import ScreenSprite from "../rpg_core/ScreenSprite.js";
+import * as PIXI from '../libs/pixi.js';
+import Point from '../rpg_core/Point.js';
+import Graphics from '../rpg_core/Graphics.js';
+import Bitmap from '../rpg_core/Bitmap.js';
+import Sprite from '../rpg_core/Sprite.js';
+import ScreenSprite from '../rpg_core/ScreenSprite.js';
 
 //-----------------------------------------------------------------------------
 /**
@@ -139,15 +139,15 @@ class Weather extends PIXI.Container {
 	 */
 	_updateSprite(sprite) {
 		switch (this.type) {
-		case 'rain':
-			this._updateRainSprite(sprite);
-			break;
-		case 'storm':
-			this._updateStormSprite(sprite);
-			break;
-		case 'snow':
-			this._updateSnowSprite(sprite);
-			break;
+			case 'rain':
+				this._updateRainSprite(sprite);
+				break;
+			case 'storm':
+				this._updateStormSprite(sprite);
+				break;
+			case 'snow':
+				this._updateSnowSprite(sprite);
+				break;
 		}
 		if (sprite.opacity < 40) {
 			this._rebornSprite(sprite);

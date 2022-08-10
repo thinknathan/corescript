@@ -1,6 +1,6 @@
-import Sprite from "../rpg_core/Sprite.js";
-import Rectangle from "../rpg_core/Rectangle.js";
-import TouchInput from "../rpg_core/TouchInput.js";
+import Sprite from '../rpg_core/Sprite.js';
+import Rectangle from '../rpg_core/Rectangle.js';
+import TouchInput from '../rpg_core/TouchInput.js';
 
 //-----------------------------------------------------------------------------
 // Sprite_Button

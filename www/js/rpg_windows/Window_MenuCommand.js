@@ -1,6 +1,6 @@
-import Window_Command from "./Window_Command.js";
-import TextManager from "../rpg_managers/TextManager.js";
-import { DataManager } from "../rpg_managers/DataManager.js";
+import Window_Command from './Window_Command.js';
+import TextManager from '../rpg_managers/TextManager.js';
+import { DataManager } from '../rpg_managers/DataManager.js';
 
 //-----------------------------------------------------------------------------
 // Window_MenuCommand
@@ -87,18 +87,18 @@ class Window_MenuCommand extends Window_Command {
 		const flags = self.$dataSystem.menuCommands;
 		if (flags) {
 			switch (name) {
-			case 'item':
-				return flags[0];
-			case 'skill':
-				return flags[1];
-			case 'equip':
-				return flags[2];
-			case 'status':
-				return flags[3];
-			case 'formation':
-				return flags[4];
-			case 'save':
-				return flags[5];
+				case 'item':
+					return flags[0];
+				case 'skill':
+					return flags[1];
+				case 'equip':
+					return flags[2];
+				case 'status':
+					return flags[3];
+				case 'formation':
+					return flags[4];
+				case 'save':
+					return flags[5];
 			}
 		}
 		return true;

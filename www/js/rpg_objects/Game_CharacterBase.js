@@ -1,5 +1,5 @@
-import Graphics from "../rpg_core/Graphics.js";
-import ImageManager from "../rpg_managers/ImageManager.js";
+import Graphics from '../rpg_core/Graphics.js';
+import ImageManager from '../rpg_managers/ImageManager.js';
 
 //-----------------------------------------------------------------------------
 // Game_CharacterBase
@@ -107,8 +107,11 @@ class Game_CharacterBase {
 	}
 
 	jumpHeight() {
-		return (this._jumpPeak * this._jumpPeak -
-			Math.pow(Math.abs(this._jumpCount - this._jumpPeak), 2)) / 2;
+		return (
+			(this._jumpPeak * this._jumpPeak -
+				Math.pow(Math.abs(this._jumpCount - this._jumpPeak), 2)) /
+			2
+		);
 	}
 
 	isStopping() {
@@ -184,7 +187,9 @@ class Game_CharacterBase {
 		const x2 = self.$gameMap.roundXWithDirection(x, d);
 		const y2 = self.$gameMap.roundYWithDirection(y, d);
 		const d2 = this.reverseDir(d);
-		return self.$gameMap.isPassable(x, y, d) && self.$gameMap.isPassable(x2, y2, d2);
+		return (
+			self.$gameMap.isPassable(x, y, d) && self.$gameMap.isPassable(x2, y2, d2)
+		);
 	}
 
 	isCollidedWithCharacters(x, y) {
@@ -193,13 +198,11 @@ class Game_CharacterBase {
 
 	isCollidedWithEvents(x, y) {
 		const events = self.$gameMap.eventsXyNt(x, y);
-		return events.some(event => event.isNormalPriority());
+		return events.some((event) => event.isNormalPriority());
 	}
 
 	isCollidedWithVehicles(x, y) {
-		return self.$gameMap.boat()
-			.posNt(x, y) || self.$gameMap.ship()
-			.posNt(x, y);
+		return self.$gameMap.boat().posNt(x, y) || self.$gameMap.ship().posNt(x, y);
 	}
 
 	setPosition(x, y) {
@@ -261,8 +264,9 @@ class Game_CharacterBase {
 
 	screenY() {
 		const th = self.$gameMap.tileHeight();
-		return Math.round(this.scrolledY() * th + th -
-			this.shiftY() - this.jumpHeight());
+		return Math.round(
+			this.scrolledY() * th + th - this.shiftY() - this.jumpHeight()
+		);
 	}
 
 	screenZ() {
@@ -297,8 +301,10 @@ class Game_CharacterBase {
 
 	updateJump() {
 		this._jumpCount--;
-		this._realX = (this._realX * this._jumpCount + this._x) / (this._jumpCount + 1.0);
-		this._realY = (this._realY * this._jumpCount + this._y) / (this._jumpCount + 1.0);
+		this._realX =
+			(this._realX * this._jumpCount + this._x) / (this._jumpCount + 1.0);
+		this._realY =
+			(this._realY * this._jumpCount + this._y) / (this._jumpCount + 1.0);
 		this.refreshBushDepth();
 		if (this._jumpCount === 0) {
 			this._realX = this._x = self.$gameMap.roundX(this._x);
@@ -373,8 +379,12 @@ class Game_CharacterBase {
 	}
 
 	refreshBushDepth() {
-		if (this.isNormalPriority() && !this.isObjectCharacter() &&
-			this.isOnBush() && !this.isJumping()) {
+		if (
+			this.isNormalPriority() &&
+			!this.isObjectCharacter() &&
+			this.isOnBush() &&
+			!this.isJumping()
+		) {
 			if (!this.isMoving()) {
 				this._bushDepth = 12;
 			}
@@ -467,12 +477,20 @@ class Game_CharacterBase {
 	}
 
 	moveDiagonally(horz, vert) {
-		this.setMovementSuccess(this.canPassDiagonally(this._x, this._y, horz, vert));
+		this.setMovementSuccess(
+			this.canPassDiagonally(this._x, this._y, horz, vert)
+		);
 		if (this.isMovementSucceeded()) {
 			this._x = self.$gameMap.roundXWithDirection(this._x, horz);
 			this._y = self.$gameMap.roundYWithDirection(this._y, vert);
-			this._realX = self.$gameMap.xWithDirection(this._x, this.reverseDir(horz));
-			this._realY = self.$gameMap.yWithDirection(this._y, this.reverseDir(vert));
+			this._realX = self.$gameMap.xWithDirection(
+				this._x,
+				this.reverseDir(horz)
+			);
+			this._realY = self.$gameMap.yWithDirection(
+				this._y,
+				this.reverseDir(vert)
+			);
 			this.increaseSteps();
 		}
 		if (this._direction === this.reverseDir(horz)) {
@@ -594,14 +612,14 @@ Object.defineProperties(Game_CharacterBase.prototype, {
 		get() {
 			return this._x;
 		},
-		configurable: true
+		configurable: true,
 	},
 	y: {
 		get() {
 			return this._y;
 		},
-		configurable: true
-	}
+		configurable: true,
+	},
 });
 
 export default Game_CharacterBase;

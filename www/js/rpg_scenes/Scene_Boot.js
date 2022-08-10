@@ -1,14 +1,14 @@
-import Scene_Base from "./Scene_Base.js";
-import { DataManager } from "../rpg_managers/DataManager.js";
-import ConfigManager from "../rpg_managers/ConfigManager.js";
-import ImageManager from "../rpg_managers/ImageManager.js";
-import SoundManager from "../rpg_managers/SoundManager.js";
-import SceneManager from "../rpg_managers/SceneManager.js";
-import Graphics from "../rpg_core/Graphics.js";
-import Window_TitleCommand from "../rpg_windows/Window_TitleCommand.js";
-import Scene_Title from "../rpg_scenes/Scene_Title.js";
-import Scene_Map from "../rpg_scenes/Scene_Map.js";
-import Scene_Battle from "../rpg_scenes/Scene_Battle.js";
+import Scene_Base from './Scene_Base.js';
+import { DataManager } from '../rpg_managers/DataManager.js';
+import ConfigManager from '../rpg_managers/ConfigManager.js';
+import ImageManager from '../rpg_managers/ImageManager.js';
+import SoundManager from '../rpg_managers/SoundManager.js';
+import SceneManager from '../rpg_managers/SceneManager.js';
+import Graphics from '../rpg_core/Graphics.js';
+import Window_TitleCommand from '../rpg_windows/Window_TitleCommand.js';
+import Scene_Title from '../rpg_scenes/Scene_Title.js';
+import Scene_Map from '../rpg_scenes/Scene_Map.js';
+import Scene_Battle from '../rpg_scenes/Scene_Battle.js';
 
 //-----------------------------------------------------------------------------
 // Scene_Boot
@@ -40,7 +40,11 @@ class Scene_Boot extends Scene_Base {
 
 	isReady() {
 		if (Scene_Base.prototype.isReady.call(this)) {
-			return DataManager._globalInfo && DataManager.isDatabaseLoaded() && this.isGameFontLoaded();
+			return (
+				DataManager._globalInfo &&
+				DataManager.isDatabaseLoaded() &&
+				this.isGameFontLoaded()
+			);
 		} else {
 			return false;
 		}
@@ -81,7 +85,7 @@ class Scene_Boot extends Scene_Base {
 
 	checkPlayerLocation() {
 		if (self.$dataSystem.startMapId === 0) {
-			throw new Error('Player\'s starting position is not set');
+			throw new Error("Player's starting position is not set");
 		}
 	}
 

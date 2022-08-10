@@ -1,19 +1,19 @@
-import Utils from "./Utils.js";
+import Utils from './Utils.js';
 
 class WindowShim {
-    constructor() {
+	constructor() {
 		throw new Error('This is a static class');
 	}
 
-    static addEventListener(type, func) {
+	static addEventListener(type, func) {
 		this._eventStack.push({
 			type: type,
-			func: func
+			func: func,
 		});
 	}
 
 	static triggerEvent(payload) {
-		this._eventStack.forEach(event => {
+		this._eventStack.forEach((event) => {
 			if (event.type === payload.type) {
 				event.func(payload);
 			}
@@ -23,8 +23,8 @@ class WindowShim {
 	static close() {
 		self.postMessage({
 			type: 'close',
-			data: {}
-		 });
+			data: {},
+		});
 	}
 }
 

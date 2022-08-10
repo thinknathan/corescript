@@ -1,6 +1,6 @@
-import Window_Selectable from "./Window_Selectable.js";
-import Graphics from "../rpg_core/Graphics.js";
-import Input from "../rpg_core/Input.js";
+import Window_Selectable from './Window_Selectable.js';
+import Graphics from '../rpg_core/Graphics.js';
+import Input from '../rpg_core/Input.js';
 
 //-----------------------------------------------------------------------------
 // Window_DebugRange
@@ -15,7 +15,9 @@ class Window_DebugRange extends Window_Selectable {
 
 	initialize(x, y) {
 		this._maxSwitches = Math.ceil((self.$dataSystem.switches.length - 1) / 10);
-		this._maxVariables = Math.ceil((self.$dataSystem.variables.length - 1) / 10);
+		this._maxVariables = Math.ceil(
+			(self.$dataSystem.variables.length - 1) / 10
+		);
 		const width = this.windowWidth();
 		const height = this.windowHeight();
 		super.initialize(x, y, width, height);
@@ -80,8 +82,10 @@ class Window_DebugRange extends Window_Selectable {
 	}
 
 	isCancelTriggered() {
-		return Window_Selectable.prototype.isCancelTriggered() ||
-			Input.isTriggered('debug');
+		return (
+			Window_Selectable.prototype.isCancelTriggered() ||
+			Input.isTriggered('debug')
+		);
 	}
 
 	processCancel() {

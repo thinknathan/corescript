@@ -1,7 +1,7 @@
-import * as PIXI from "../libs/pixi.js";
-import Graphics from "../rpg_core/Graphics.js";
-import Rectangle from "../rpg_core/Rectangle.js";
-import CanvasShim from "./CanvasShim.js";
+import * as PIXI from '../libs/pixi.js';
+import Graphics from '../rpg_core/Graphics.js';
+import Rectangle from '../rpg_core/Rectangle.js';
+import CanvasShim from './CanvasShim.js';
 
 //-----------------------------------------------------------------------------
 /**
@@ -27,7 +27,7 @@ class Bitmap extends PIXI.Container {
 			this._createCanvas(width, height);
 		}
 
-		this._loader = new PIXI.Loader;
+		this._loader = new PIXI.Loader();
 		this._width = width;
 		this._height = height;
 		this._image = null;
@@ -191,7 +191,6 @@ class Bitmap extends PIXI.Container {
 	 */
 	clear() {
 		for (let i = this.children.length - 1; i >= 0; i--) {
-
 			if (this.children[i].isBitmapText) {
 				this.children[i].text = '';
 				continue;
@@ -218,10 +217,13 @@ class Bitmap extends PIXI.Container {
 		const context = this;
 		const toRemove = [];
 
-		this.children.forEach(child => {
-			if (child &&
-				(child.x >= x && child.x < x + width) &&
-				(child.y >= y && child.y < y + height)
+		this.children.forEach((child) => {
+			if (
+				child &&
+				child.x >= x &&
+				child.x < x + width &&
+				child.y >= y &&
+				child.y < y + height
 			) {
 				if (child.isBitmapText) {
 					child.text = '';
@@ -231,7 +233,7 @@ class Bitmap extends PIXI.Container {
 			}
 		});
 
-		toRemove.forEach(child => {
+		toRemove.forEach((child) => {
 			child.destroy({
 				children: true,
 				texture: true,
@@ -252,10 +254,11 @@ class Bitmap extends PIXI.Container {
 	 */
 	create9Slice(source, x, y, w, h, tl, tr, br, bl) {
 		return new PIXI.NineSlicePlane(
-			new PIXI.Texture(
-				source,
-				new PIXI.Rectangle(x, y, w, h)
-			), tl, tr, br, bl
+			new PIXI.Texture(source, new PIXI.Rectangle(x, y, w, h)),
+			tl,
+			tr,
+			br,
+			bl
 		);
 	}
 
@@ -266,10 +269,9 @@ class Bitmap extends PIXI.Container {
 	 */
 	createTilingSprite(source, x, y, w, h, tileWidth, tileHeight) {
 		return new PIXI.TilingSprite(
-			new PIXI.Texture(
-				source,
-				new PIXI.Rectangle(x, y, w, h)
-			), tileWidth, tileHeight
+			new PIXI.Texture(source, new PIXI.Rectangle(x, y, w, h)),
+			tileWidth,
+			tileHeight
 		);
 	}
 
@@ -280,10 +282,7 @@ class Bitmap extends PIXI.Container {
 	 */
 	createCroppedSprite(source, x, y, w, h) {
 		return new PIXI.Sprite(
-			new PIXI.Texture(
-				source,
-				new PIXI.Rectangle(x, y, w, h)
-			)
+			new PIXI.Texture(source, new PIXI.Rectangle(x, y, w, h))
 		);
 	}
 
@@ -302,11 +301,7 @@ class Bitmap extends PIXI.Container {
 	 * @param {Number} [dw=sw] The width to draw the image in the destination
 	 * @param {Number} [dh=sh] The height to draw the image in the destination
 	 */
-	blt({
-		width,
-		height,
-		baseTexture
-	}, sx, sy, sw, sh, dx, dy, dw, dh) {
+	blt({ width, height, baseTexture }, sx, sy, sw, sh, dx, dy, dw, dh) {
 		dw = dw || sw;
 		dh = dh || sh;
 		sx = Math.floor(sx);
@@ -317,8 +312,16 @@ class Bitmap extends PIXI.Container {
 		dy = Math.floor(dy);
 		dw = Math.floor(dw);
 		dh = Math.floor(dh);
-		if (sx >= 0 && sy >= 0 && sw > 0 && sh > 0 && dw > 0 && dh > 0 &&
-			sx + sw <= width && sy + sh <= height) {
+		if (
+			sx >= 0 &&
+			sy >= 0 &&
+			sw > 0 &&
+			sh > 0 &&
+			dw > 0 &&
+			dh > 0 &&
+			sx + sw <= width &&
+			sy + sh <= height
+		) {
 			const sprite = this.createCroppedSprite(baseTexture, sx, sy, sw, sh);
 			if (sprite) {
 				sprite.x = dx;
@@ -351,12 +354,7 @@ class Bitmap extends PIXI.Container {
 		color = PIXI.utils.string2hex(color);
 		const rectangle = new PIXI.Graphics();
 		rectangle.beginFill(color);
-		rectangle.drawRect(
-			0,
-			0,
-			width,
-			height
-		);
+		rectangle.drawRect(0, 0, width, height);
 		rectangle.endFill();
 		if (rectangle) {
 			rectangle.x = x;
@@ -382,16 +380,22 @@ class Bitmap extends PIXI.Container {
 	 * @param {Number} [dw=sw] The width to draw the image in the destination
 	 * @param {Number} [dh=sh] The height to draw the image in the destination
 	 */
-	bltImage({
-		width,
-		height,
-		_image
-	}, sx, sy, sw, sh, dx, dy, dw, dh) {
-		return this.blt({
-			width,
-			height,
-			_image
-		}, sx, sy, sw, sh, dx, dy, dw, dh);
+	bltImage({ width, height, _image }, sx, sy, sw, sh, dx, dy, dw, dh) {
+		return this.blt(
+			{
+				width,
+				height,
+				_image,
+			},
+			sx,
+			sy,
+			sw,
+			sh,
+			dx,
+			dy,
+			dw,
+			dh
+		);
 	}
 
 	/**
@@ -435,11 +439,7 @@ class Bitmap extends PIXI.Container {
 		const circle = new PIXI.Graphics();
 		color = PIXI.utils.string2hex(color);
 		circle.beginFill(color);
-		circle.drawCircle(
-			0,
-			0,
-			radius
-		);
+		circle.drawCircle(0, 0, radius);
 		circle.endFill();
 		if (circle) {
 			circle.x = x;
@@ -532,10 +532,9 @@ class Bitmap extends PIXI.Container {
 			this.__canvas.height = h;
 			this._createBaseTexture(this._image);
 		} else {
-			this._createBaseTexture(new PIXI.Resource(
-				this.__canvas.width,
-				this.__canvas.height
-			));
+			this._createBaseTexture(
+				new PIXI.Resource(this.__canvas.width, this.__canvas.height)
+			);
 		}
 		// this._setDirty();
 	}
@@ -558,7 +557,12 @@ class Bitmap extends PIXI.Container {
 
 	_renewCanvas() {
 		const newImage = this._image;
-		if (newImage && this.__canvas && (this.__canvas.width < newImage.width || this.__canvas.height < newImage.height)) {
+		if (
+			newImage &&
+			this.__canvas &&
+			(this.__canvas.width < newImage.width ||
+				this.__canvas.height < newImage.height)
+		) {
 			this._createCanvas();
 		}
 	}
@@ -578,10 +582,10 @@ class Bitmap extends PIXI.Container {
 		if (stage) {
 			const renderTexture = PIXI.RenderTexture.create({
 				width,
-				height
+				height,
 			});
 			Graphics._renderer.render(stage, {
-				renderTexture: renderTexture
+				renderTexture: renderTexture,
 			});
 			bitmap.__baseTexture = renderTexture.baseTexture;
 		}
@@ -618,7 +622,7 @@ class Bitmap extends PIXI.Container {
 		sprite.destroy({
 			children: true,
 			texture: true,
-			baseTexture: false
+			baseTexture: false,
 		});
 		return result;
 	}
@@ -647,7 +651,7 @@ class Bitmap extends PIXI.Container {
 		sprite.destroy({
 			children: true,
 			texture: true,
-			baseTexture: false
+			baseTexture: false,
 		});
 		return result;
 	}
@@ -687,7 +691,7 @@ class Bitmap extends PIXI.Container {
 		lineHeight = Math.floor(lineHeight * 1.75);
 
 		if (align === 'center') {
-			x = x + (maxWidth / 2);
+			x = x + maxWidth / 2;
 		} else if (align === 'right') {
 			x = x + maxWidth;
 		}
@@ -715,9 +719,11 @@ class Bitmap extends PIXI.Container {
 		for (const bitmapTextInstance of this.textCache) {
 			if (bitmapTextInstance.x === x && bitmapTextInstance.y === y) {
 				const newTint = PIXI.utils.string2hex(this.textColor);
-				if (bitmapTextInstance._tint !== newTint) bitmapTextInstance.tint = newTint;
+				if (bitmapTextInstance._tint !== newTint)
+					bitmapTextInstance.tint = newTint;
 				if (bitmapTextInstance.text !== text) bitmapTextInstance.text = text;
-				if (bitmapTextInstance.alpha !== alpha) bitmapTextInstance.alpha = alpha;
+				if (bitmapTextInstance.alpha !== alpha)
+					bitmapTextInstance.alpha = alpha;
 				this.addChild(bitmapTextInstance);
 				return true;
 			}
@@ -784,11 +790,7 @@ class Bitmap extends PIXI.Container {
 	 */
 	_makeBitmapFont(style) {
 		const bitmapOptions = {
-			chars: [
-				[" ", "~"],
-				'\u2192',
-				'’',
-			]
+			chars: [[' ', '~'], '\u2192', '’'],
 		};
 		PIXI.BitmapFont.from(style.fontFamily, style, bitmapOptions);
 	}
@@ -972,8 +974,9 @@ class Bitmap extends PIXI.Container {
 	}
 
 	isRequestReady() {
-		return this._loadingState !== 'pending' &&
-			this._loadingState !== 'requesting';
+		return (
+			this._loadingState !== 'pending' && this._loadingState !== 'requesting'
+		);
 	}
 
 	startRequest() {
@@ -1016,40 +1019,40 @@ class Bitmap extends PIXI.Container {
 	/**
 	 * Deprecated function.
 	 */
-	rotateHue(offset) { }
+	rotateHue(offset) {}
 
 	/**
 	 * Deprecated function.
 	 */
-	blur() { }
+	blur() {}
 
 	/**
 	 * Deprecated function.
 	 */
-	_drawTextOutline(text, tx, ty, maxWidth) { }
+	_drawTextOutline(text, tx, ty, maxWidth) {}
 
 	/**
 	 * Deprecated function.
 	 */
-	_drawTextBody(text, tx, ty, maxWidth) { }
+	_drawTextBody(text, tx, ty, maxWidth) {}
 
 	/**
 	 * Deprecated function.
 	 *
 	 * @method drawSmallText
 	 */
-	drawSmallText(text, x, y, maxWidth, lineHeight, align) { }
+	drawSmallText(text, x, y, maxWidth, lineHeight, align) {}
 
 	/**
 	 * Deprecated function.
 	 */
-	_setDirty() { }
+	_setDirty() {}
 
 	/**
 	 * Deprecated function.
 	 * @method checkDirty
 	 */
-	checkDirty() { }
+	checkDirty() {}
 
 	/**
 	 * Deprecated property.
@@ -1079,21 +1082,21 @@ Object.defineProperties(Bitmap.prototype, {
 		get() {
 			if (!this.__canvas) this._createCanvas();
 			return this.__canvas;
-		}
+		},
 	},
 	_context: {
 		get() {
 			if (!this.__context) this._createCanvas();
 			return this.__context;
-		}
+		},
 	},
 
 	_baseTexture: {
 		get() {
 			if (!this.__baseTexture) this._createBaseTexture(this._image);
 			return this.__baseTexture;
-		}
-	}
+		},
+	},
 });
 
 export default Bitmap;

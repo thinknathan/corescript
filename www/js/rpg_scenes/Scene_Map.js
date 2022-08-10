@@ -1,23 +1,23 @@
-import Scene_Base from "./Scene_Base.js";
-import { DataManager } from "../rpg_managers/DataManager.js";
-import SceneManager from "../rpg_managers/SceneManager.js";
-import Input from "../rpg_core/Input.js";
-import TouchInput from "../rpg_core/TouchInput.js";
-import Scene_Battle from "../rpg_scenes/Scene_Battle.js";
-import ImageManager from "../rpg_managers/ImageManager.js";
-import AudioManager from "../rpg_managers/AudioManager.js";
-import BattleManager from "../rpg_managers/BattleManager.js";
-import Scene_Title from "../rpg_scenes/Scene_Title.js";
-import Scene_Menu from "../rpg_scenes/Scene_Menu.js";
-import Scene_Load from "../rpg_scenes/Scene_Load.js";
-import Scene_Debug from "../rpg_scenes/Scene_Debug.js";
-import Scene_Gameover from "../rpg_scenes/Scene_Gameover.js";
-import SoundManager from "../rpg_managers/SoundManager.js";
-import Window_MenuCommand from "../rpg_windows/Window_MenuCommand.js";
-import Window_Message from "../rpg_windows/Window_Message.js";
-import Window_ScrollText from "../rpg_windows/Window_ScrollText.js";
-import Window_MapName from "../rpg_windows/Window_MapName.js";
-import Spriteset_Map from "../rpg_sprites/Spriteset_Map.js";
+import Scene_Base from './Scene_Base.js';
+import { DataManager } from '../rpg_managers/DataManager.js';
+import SceneManager from '../rpg_managers/SceneManager.js';
+import Input from '../rpg_core/Input.js';
+import TouchInput from '../rpg_core/TouchInput.js';
+import Scene_Battle from '../rpg_scenes/Scene_Battle.js';
+import ImageManager from '../rpg_managers/ImageManager.js';
+import AudioManager from '../rpg_managers/AudioManager.js';
+import BattleManager from '../rpg_managers/BattleManager.js';
+import Scene_Title from '../rpg_scenes/Scene_Title.js';
+import Scene_Menu from '../rpg_scenes/Scene_Menu.js';
+import Scene_Load from '../rpg_scenes/Scene_Load.js';
+import Scene_Debug from '../rpg_scenes/Scene_Debug.js';
+import Scene_Gameover from '../rpg_scenes/Scene_Gameover.js';
+import SoundManager from '../rpg_managers/SoundManager.js';
+import Window_MenuCommand from '../rpg_windows/Window_MenuCommand.js';
+import Window_Message from '../rpg_windows/Window_Message.js';
+import Window_ScrollText from '../rpg_windows/Window_ScrollText.js';
+import Window_MapName from '../rpg_windows/Window_MapName.js';
+import Spriteset_Map from '../rpg_sprites/Spriteset_Map.js';
 
 //-----------------------------------------------------------------------------
 // Scene_Map
@@ -41,7 +41,9 @@ class Scene_Map extends Scene_Base {
 	create() {
 		super.create();
 		this._transfer = self.$gamePlayer.isTransferring();
-		const mapId = this._transfer ? self.$gamePlayer.newMapId() : self.$gameMap.mapId();
+		const mapId = this._transfer
+			? self.$gamePlayer.newMapId()
+			: self.$gameMap.mapId();
 		DataManager.loadMapData(mapId);
 	}
 
@@ -104,8 +106,11 @@ class Scene_Map extends Scene_Base {
 	}
 
 	isFastForward() {
-		return self.$gameMap.isEventRunning() && !SceneManager.isSceneChanging() &&
-			(Input.isLongPressed('ok') || TouchInput.isLongPressed());
+		return (
+			self.$gameMap.isEventRunning() &&
+			!SceneManager.isSceneChanging() &&
+			(Input.isLongPressed('ok') || TouchInput.isLongPressed())
+		);
 	}
 
 	stop() {
@@ -122,9 +127,12 @@ class Scene_Map extends Scene_Base {
 	}
 
 	isBusy() {
-		return ((this._messageWindow && this._messageWindow.isClosing()) ||
-			this._waitCount > 0 || this._encounterEffectDuration > 0 ||
-			Scene_Base.prototype.isBusy.call(this));
+		return (
+			(this._messageWindow && this._messageWindow.isClosing()) ||
+			this._waitCount > 0 ||
+			this._encounterEffectDuration > 0 ||
+			Scene_Base.prototype.isBusy.call(this)
+		);
 	}
 
 	terminate() {
@@ -150,13 +158,17 @@ class Scene_Map extends Scene_Base {
 	}
 
 	needsFadeIn() {
-		return SceneManager.isPreviousScene(Scene_Battle) ||
-			SceneManager.isPreviousScene(Scene_Load);
+		return (
+			SceneManager.isPreviousScene(Scene_Battle) ||
+			SceneManager.isPreviousScene(Scene_Load)
+		);
 	}
 
 	needsSlowFadeOut() {
-		return SceneManager.isNextScene(Scene_Title) ||
-			SceneManager.isNextScene(Scene_Gameover);
+		return (
+			SceneManager.isNextScene(Scene_Title) ||
+			SceneManager.isNextScene(Scene_Gameover)
+		);
 	}
 
 	updateWaitCount() {
@@ -240,10 +252,9 @@ class Scene_Map extends Scene_Base {
 	createMessageWindow() {
 		this._messageWindow = new Window_Message();
 		this.addWindow(this._messageWindow);
-		this._messageWindow.subWindows()
-			.forEach(function (window) {
-				this.addWindow(window);
-			}, this);
+		this._messageWindow.subWindows().forEach(function (window) {
+			this.addWindow(window);
+		}, this);
 	}
 
 	createScrollTextWindow() {
@@ -306,20 +317,20 @@ class Scene_Map extends Scene_Base {
 	fadeInForTransfer() {
 		const fadeType = self.$gamePlayer.fadeType();
 		switch (fadeType) {
-		case 0:
-		case 1:
-			this.startFadeIn(this.fadeSpeed(), fadeType === 1);
-			break;
+			case 0:
+			case 1:
+				this.startFadeIn(this.fadeSpeed(), fadeType === 1);
+				break;
 		}
 	}
 
 	fadeOutForTransfer() {
 		const fadeType = self.$gamePlayer.fadeType();
 		switch (fadeType) {
-		case 0:
-		case 1:
-			this.startFadeOut(this.fadeSpeed(), fadeType === 1);
-			break;
+			case 0:
+			case 1:
+				this.startFadeOut(this.fadeSpeed(), fadeType === 1);
+				break;
 		}
 	}
 

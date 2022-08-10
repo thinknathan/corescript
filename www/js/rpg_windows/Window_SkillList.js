@@ -1,4 +1,4 @@
-import Window_Selectable from "./Window_Selectable.js";
+import Window_Selectable from './Window_Selectable.js';
 
 //-----------------------------------------------------------------------------
 // Window_SkillList
@@ -64,10 +64,9 @@ class Window_SkillList extends Window_Selectable {
 
 	makeItemList() {
 		if (this._actor) {
-			this._data = this._actor.skills()
-				.filter(function (item) {
-					return this.includes(item);
-				}, this);
+			this._data = this._actor.skills().filter(function (item) {
+				return this.includes(item);
+			}, this);
 		} else {
 			this._data = [];
 		}

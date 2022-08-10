@@ -1,4 +1,4 @@
-import Window_Command from "./Window_Command.js";
+import Window_Command from './Window_Command.js';
 
 //-----------------------------------------------------------------------------
 // Window_SkillType

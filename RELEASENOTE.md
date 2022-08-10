@@ -1,7 +1,8 @@
 # RPGMakerMV corescript "community-1.1" Release Notes
 
 ## Summary
-The big change is "bug fix", "WebGL" and "preload". Especially in mobile devices, high speed and high quality games will be drawn by adopting WebGL mode.  In addition, the new preload system loads images to be used later in advance in the background (without freezing the game), so you can enjoy comfortably even if Internet is crowded.
+
+The big change is "bug fix", "WebGL" and "preload". Especially in mobile devices, high speed and high quality games will be drawn by adopting WebGL mode. In addition, the new preload system loads images to be used later in advance in the background (without freezing the game), so you can enjoy comfortably even if Internet is crowded.
 
 ## Features
 
@@ -27,10 +28,13 @@ The big change is "bug fix", "WebGL" and "preload". Especially in mobile devices
 - Fix black lines are displayed on game screen with mac and iOS. (Fixed by updating to Pixi 4.4.1)
 
 ## Committers
+
 liply, krmbn0576, wilfrem, ivanpopelyshev
 
 ## How to test
-It is appreciated if you can test the changed points!  Especially change of image loading system (memory managemant and preloading) are major modifications, so it will be helpful if you can test with the game using lots of images!  Please use the bundled *Debug_ReportMemory.js* when testing! The size and number of the images being loaded is displayed in the upper right.  This number is constant as long as it operates normally. If it continues to increase it is bad. We are happy if you can report if a bad situation occurs.
+
+It is appreciated if you can test the changed points! Especially change of image loading system (memory managemant and preloading) are major modifications, so it will be helpful if you can test with the game using lots of images! Please use the bundled _Debug_ReportMemory.js_ when testing! The size and number of the images being loaded is displayed in the upper right. This number is constant as long as it operates normally. If it continues to increase it is bad. We are happy if you can report if a bad situation occurs.
 
 # Trailer
-First, load the image. Then.. Holy shit, Loading Error!  Like everything you do. This game is like your life. Begining a lot of games, but never finish it without any errors. And nobody loves you. Next time, "Farewell Image Loading Error, Hello Loading Retry!" Please look forward to!
+
+First, load the image. Then.. Holy shit, Loading Error! Like everything you do. This game is like your life. Begining a lot of games, but never finish it without any errors. And nobody loves you. Next time, "Farewell Image Loading Error, Hello Loading Retry!" Please look forward to!

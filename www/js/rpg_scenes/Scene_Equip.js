@@ -1,10 +1,10 @@
-import Scene_MenuBase from "./Scene_MenuBase.js";
-import Graphics from "../rpg_core/Graphics.js";
-import SoundManager from "../rpg_managers/SoundManager.js";
-import Window_EquipStatus from "../rpg_windows/Window_EquipStatus.js";
-import Window_EquipCommand from "../rpg_windows/Window_EquipCommand.js";
-import Window_EquipSlot from "../rpg_windows/Window_EquipSlot.js";
-import Window_EquipItem from "../rpg_windows/Window_EquipItem.js";
+import Scene_MenuBase from './Scene_MenuBase.js';
+import Graphics from '../rpg_core/Graphics.js';
+import SoundManager from '../rpg_managers/SoundManager.js';
+import Window_EquipStatus from '../rpg_windows/Window_EquipStatus.js';
+import Window_EquipCommand from '../rpg_windows/Window_EquipCommand.js';
+import Window_EquipSlot from '../rpg_windows/Window_EquipSlot.js';
+import Window_EquipItem from '../rpg_windows/Window_EquipItem.js';
 
 //-----------------------------------------------------------------------------
 // Scene_Equip
@@ -92,8 +92,7 @@ class Scene_Equip extends Scene_MenuBase {
 
 	commandOptimize() {
 		SoundManager.playEquip();
-		this.actor()
-			.optimizeEquipments();
+		this.actor().optimizeEquipments();
 		this._statusWindow.refresh();
 		this._slotWindow.refresh();
 		this._commandWindow.activate();
@@ -101,8 +100,7 @@ class Scene_Equip extends Scene_MenuBase {
 
 	commandClear() {
 		SoundManager.playEquip();
-		this.actor()
-			.clearEquipments();
+		this.actor().clearEquipments();
 		this._statusWindow.refresh();
 		this._slotWindow.refresh();
 		this._commandWindow.activate();
@@ -120,8 +118,7 @@ class Scene_Equip extends Scene_MenuBase {
 
 	onItemOk() {
 		SoundManager.playEquip();
-		this.actor()
-			.changeEquip(this._slotWindow.index(), this._itemWindow.item());
+		this.actor().changeEquip(this._slotWindow.index(), this._itemWindow.item());
 		this._slotWindow.activate();
 		this._slotWindow.refresh();
 		this._itemWindow.deselect();

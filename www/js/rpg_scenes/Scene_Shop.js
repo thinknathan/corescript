@@ -1,14 +1,14 @@
-import Scene_MenuBase from "./Scene_MenuBase.js";
-import Graphics from "../rpg_core/Graphics.js";
-import SoundManager from "../rpg_managers/SoundManager.js";
-import Window_Base from "../rpg_windows/Window_Base.js";
-import Window_Gold from "../rpg_windows/Window_Gold.js";
-import Window_ItemCategory from "../rpg_windows/Window_ItemCategory.js";
-import Window_ShopCommand from "../rpg_windows/Window_ShopCommand.js";
-import Window_ShopBuy from "../rpg_windows/Window_ShopBuy.js";
-import Window_ShopSell from "../rpg_windows/Window_ShopSell.js";
-import Window_ShopNumber from "../rpg_windows/Window_ShopNumber.js";
-import Window_ShopStatus from "../rpg_windows/Window_ShopStatus.js";
+import Scene_MenuBase from './Scene_MenuBase.js';
+import Graphics from '../rpg_core/Graphics.js';
+import SoundManager from '../rpg_managers/SoundManager.js';
+import Window_Base from '../rpg_windows/Window_Base.js';
+import Window_Gold from '../rpg_windows/Window_Gold.js';
+import Window_ItemCategory from '../rpg_windows/Window_ItemCategory.js';
+import Window_ShopCommand from '../rpg_windows/Window_ShopCommand.js';
+import Window_ShopBuy from '../rpg_windows/Window_ShopBuy.js';
+import Window_ShopSell from '../rpg_windows/Window_ShopSell.js';
+import Window_ShopNumber from '../rpg_windows/Window_ShopNumber.js';
+import Window_ShopStatus from '../rpg_windows/Window_ShopStatus.js';
 
 //-----------------------------------------------------------------------------
 // Scene_Shop
@@ -51,7 +51,10 @@ class Scene_Shop extends Scene_MenuBase {
 	}
 
 	createCommandWindow() {
-		this._commandWindow = new Window_ShopCommand(this._goldWindow.x, this._purchaseOnly);
+		this._commandWindow = new Window_ShopCommand(
+			this._goldWindow.x,
+			this._purchaseOnly
+		);
 		this._commandWindow.y = this._helpWindow.height;
 		this._commandWindow.setHandler('buy', this.commandBuy.bind(this));
 		this._commandWindow.setHandler('sell', this.commandSell.bind(this));
@@ -202,12 +205,12 @@ class Scene_Shop extends Scene_MenuBase {
 	onNumberOk() {
 		SoundManager.playShop();
 		switch (this._commandWindow.currentSymbol()) {
-		case 'buy':
-			this.doBuy(this._numberWindow.number());
-			break;
-		case 'sell':
-			this.doSell(this._numberWindow.number());
-			break;
+			case 'buy':
+				this.doBuy(this._numberWindow.number());
+				break;
+			case 'sell':
+				this.doSell(this._numberWindow.number());
+				break;
 		}
 		this.endNumberInput();
 		this._goldWindow.refresh();
@@ -232,17 +235,19 @@ class Scene_Shop extends Scene_MenuBase {
 	endNumberInput() {
 		this._numberWindow.hide();
 		switch (this._commandWindow.currentSymbol()) {
-		case 'buy':
-			this.activateBuyWindow();
-			break;
-		case 'sell':
-			this.activateSellWindow();
-			break;
+			case 'buy':
+				this.activateBuyWindow();
+				break;
+			case 'sell':
+				this.activateSellWindow();
+				break;
 		}
 	}
 
 	maxBuy() {
-		const max = self.$gameParty.maxItems(this._item) - self.$gameParty.numItems(this._item);
+		const max =
+			self.$gameParty.maxItems(this._item) -
+			self.$gameParty.numItems(this._item);
 		const price = this.buyingPrice();
 		if (price > 0) {
 			return Math.min(max, Math.floor(this.money() / price));

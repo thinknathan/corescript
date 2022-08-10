@@ -1,7 +1,7 @@
-import Game_Unit from "./Game_Unit.js";
-import BattleManager from "../rpg_managers/BattleManager.js";
-import Game_Enemy from "../rpg_objects/Game_Enemy.js";
-import Game_Interpreter from "../rpg_objects/Game_Interpreter.js";
+import Game_Unit from './Game_Unit.js';
+import BattleManager from '../rpg_managers/BattleManager.js';
+import Game_Enemy from '../rpg_objects/Game_Enemy.js';
+import Game_Interpreter from '../rpg_objects/Game_Interpreter.js';
 
 //-----------------------------------------------------------------------------
 // Game_Troop
@@ -53,65 +53,65 @@ class Game_Troop extends Game_Unit {
 		this.clear();
 		this._troopId = troopId;
 		this._enemies = [];
-		this.troop()
-			.members.forEach(function (member) {
-				if (self.$dataEnemies[member.enemyId]) {
-					const enemyId = member.enemyId;
-					const x = member.x;
-					const y = member.y;
-					const enemy = new Game_Enemy(enemyId, x, y);
-					if (member.hidden) {
-						enemy.hide();
-					}
-					this._enemies.push(enemy);
+		this.troop().members.forEach(function (member) {
+			if (self.$dataEnemies[member.enemyId]) {
+				const enemyId = member.enemyId;
+				const x = member.x;
+				const y = member.y;
+				const enemy = new Game_Enemy(enemyId, x, y);
+				if (member.hidden) {
+					enemy.hide();
 				}
-			}, this);
+				this._enemies.push(enemy);
+			}
+		}, this);
 		this.makeUniqueNames();
 	}
 
 	makeUniqueNames() {
 		const table = this.letterTable();
-		this.members()
-			.forEach(function (enemy) {
-				if (enemy.isAlive() && enemy.isLetterEmpty()) {
-					const name = enemy.originalName();
-					const n = this._namesCount[name] || 0;
-					enemy.setLetter(table[n % table.length]);
-					this._namesCount[name] = n + 1;
-				}
-			}, this);
-		this.members()
-			.forEach(function (enemy) {
+		this.members().forEach(function (enemy) {
+			if (enemy.isAlive() && enemy.isLetterEmpty()) {
 				const name = enemy.originalName();
-				if (this._namesCount[name] >= 2) {
-					enemy.setPlural(true);
-				}
-			}, this);
+				const n = this._namesCount[name] || 0;
+				enemy.setLetter(table[n % table.length]);
+				this._namesCount[name] = n + 1;
+			}
+		}, this);
+		this.members().forEach(function (enemy) {
+			const name = enemy.originalName();
+			if (this._namesCount[name] >= 2) {
+				enemy.setPlural(true);
+			}
+		}, this);
 	}
 
 	letterTable() {
-		return self.$gameSystem.isCJK() ? Game_Troop.LETTER_TABLE_FULL :
-			Game_Troop.LETTER_TABLE_HALF;
+		return self.$gameSystem.isCJK()
+			? Game_Troop.LETTER_TABLE_FULL
+			: Game_Troop.LETTER_TABLE_HALF;
 	}
 
 	enemyNames() {
 		const names = [];
-		this.members()
-			.forEach(enemy => {
-				const name = enemy.originalName();
-				if (enemy.isAlive() && !names.contains(name)) {
-					names.push(name);
-				}
-			});
+		this.members().forEach((enemy) => {
+			const name = enemy.originalName();
+			if (enemy.isAlive() && !names.contains(name)) {
+				names.push(name);
+			}
+		});
 		return names;
 	}
 
-	meetsConditions({
-		conditions
-	}) {
+	meetsConditions({ conditions }) {
 		const c = conditions;
-		if (!c.turnEnding && !c.turnValid && !c.enemyValid &&
-			!c.actorValid && !c.switchValid) {
+		if (
+			!c.turnEnding &&
+			!c.turnValid &&
+			!c.enemyValid &&
+			!c.actorValid &&
+			!c.switchValid
+		) {
 			return false; // Conditions not set
 		}
 		if (c.turnEnding) {
@@ -123,10 +123,10 @@ class Game_Troop extends Game_Unit {
 			const n = this._turnCount;
 			const a = c.turnA;
 			const b = c.turnB;
-			if ((b === 0 && n !== a)) {
+			if (b === 0 && n !== a) {
 				return false;
 			}
-			if ((b > 0 && (n < 1 || n < a || n % b !== a % b))) {
+			if (b > 0 && (n < 1 || n < a || n % b !== a % b)) {
 				return false;
 			}
 		}
@@ -155,8 +155,7 @@ class Game_Troop extends Game_Unit {
 			if (this._interpreter.setupReservedCommonEvent()) {
 				return;
 			}
-			const pages = this.troop()
-				.pages;
+			const pages = this.troop().pages;
 			for (let i = 0; i < pages.length; i++) {
 				const page = pages[i];
 				if (this.meetsConditions(page) && !this._eventFlags[i]) {
@@ -164,7 +163,7 @@ class Game_Troop extends Game_Unit {
 					this._interpreter.setEventInfo({
 						eventType: 'battle_event',
 						troopId: this._troopId,
-						page: i + 1
+						page: i + 1,
 					});
 					if (page.span <= 1) {
 						this._eventFlags[i] = true;
@@ -176,12 +175,9 @@ class Game_Troop extends Game_Unit {
 	}
 
 	increaseTurn() {
-		const pages = this.troop()
-			.pages;
+		const pages = this.troop().pages;
 
-		pages.forEach(({
-			span
-		}, i) => {
+		pages.forEach(({ span }, i) => {
 			if (span === 1) {
 				this._eventFlags[i] = false;
 			}
@@ -191,13 +187,14 @@ class Game_Troop extends Game_Unit {
 	}
 
 	expTotal() {
-		return this.deadMembers()
-			.reduce((r, enemy) => r + enemy.exp(), 0);
+		return this.deadMembers().reduce((r, enemy) => r + enemy.exp(), 0);
 	}
 
 	goldTotal() {
-		return this.deadMembers()
-			.reduce((r, enemy) => r + enemy.gold(), 0) * this.goldRate();
+		return (
+			this.deadMembers().reduce((r, enemy) => r + enemy.gold(), 0) *
+			this.goldRate()
+		);
 	}
 
 	goldRate() {
@@ -205,18 +202,68 @@ class Game_Troop extends Game_Unit {
 	}
 
 	makeDropItems() {
-		return this.deadMembers()
-			.reduce((r, enemy) => r.concat(enemy.makeDropItems()), []);
+		return this.deadMembers().reduce(
+			(r, enemy) => r.concat(enemy.makeDropItems()),
+			[]
+		);
 	}
 }
 
 Game_Troop.LETTER_TABLE_HALF = [
-    ' A', ' B', ' C', ' D', ' E', ' F', ' G', ' H', ' I', ' J', ' K', ' L', ' M',
-    ' N', ' O', ' P', ' Q', ' R', ' S', ' T', ' U', ' V', ' W', ' X', ' Y', ' Z'
+	' A',
+	' B',
+	' C',
+	' D',
+	' E',
+	' F',
+	' G',
+	' H',
+	' I',
+	' J',
+	' K',
+	' L',
+	' M',
+	' N',
+	' O',
+	' P',
+	' Q',
+	' R',
+	' S',
+	' T',
+	' U',
+	' V',
+	' W',
+	' X',
+	' Y',
+	' Z',
 ];
 Game_Troop.LETTER_TABLE_FULL = [
-    'Ａ', 'Ｂ', 'Ｃ', 'Ｄ', 'Ｅ', 'Ｆ', 'Ｇ', 'Ｈ', 'Ｉ', 'Ｊ', 'Ｋ', 'Ｌ', 'Ｍ',
-    'Ｎ', 'Ｏ', 'Ｐ', 'Ｑ', 'Ｒ', 'Ｓ', 'Ｔ', 'Ｕ', 'Ｖ', 'Ｗ', 'Ｘ', 'Ｙ', 'Ｚ'
+	'Ａ',
+	'Ｂ',
+	'Ｃ',
+	'Ｄ',
+	'Ｅ',
+	'Ｆ',
+	'Ｇ',
+	'Ｈ',
+	'Ｉ',
+	'Ｊ',
+	'Ｋ',
+	'Ｌ',
+	'Ｍ',
+	'Ｎ',
+	'Ｏ',
+	'Ｐ',
+	'Ｑ',
+	'Ｒ',
+	'Ｓ',
+	'Ｔ',
+	'Ｕ',
+	'Ｖ',
+	'Ｗ',
+	'Ｘ',
+	'Ｙ',
+	'Ｚ',
 ];
 
 export default Game_Troop;

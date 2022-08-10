@@ -1,6 +1,6 @@
-import Window_Base from "./Window_Base.js";
-import Graphics from "../rpg_core/Graphics.js";
-import ImageManager from "../rpg_managers/ImageManager.js";
+import Window_Base from './Window_Base.js';
+import Graphics from '../rpg_core/Graphics.js';
+import ImageManager from '../rpg_managers/ImageManager.js';
 
 //-----------------------------------------------------------------------------
 // Window_NameEdit
@@ -20,8 +20,7 @@ class Window_NameEdit extends Window_Base {
 		const y = (Graphics.boxHeight - (height + this.fittingHeight(9) + 8)) / 2;
 		super.initialize(x, y, width, height);
 		this._actor = actor;
-		this._name = actor.name()
-			.slice(0, this._maxLength);
+		this._name = actor.name().slice(0, this._maxLength);
 		this._index = this._name.length;
 		this._maxLength = maxLength;
 		this._defaultName = this._name;
@@ -83,7 +82,10 @@ class Window_NameEdit extends Window_Base {
 	left() {
 		const nameCenter = (this.contentsWidth() + this.faceWidth()) / 2;
 		const nameWidth = (this._maxLength + 1) * this.charWidth();
-		return Math.min(nameCenter - nameWidth / 2, this.contentsWidth() - nameWidth);
+		return Math.min(
+			nameCenter - nameWidth / 2,
+			this.contentsWidth() - nameWidth
+		);
 	}
 
 	itemRect(index) {
@@ -91,7 +93,7 @@ class Window_NameEdit extends Window_Base {
 			x: this.left() + index * this.charWidth(),
 			y: 54,
 			width: this.charWidth(),
-			height: this.lineHeight()
+			height: this.lineHeight(),
 		};
 	}
 

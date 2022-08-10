@@ -1,8 +1,8 @@
-import Scene_MenuBase from "./Scene_MenuBase.js";
-import Graphics from "../rpg_core/Graphics.js";
-import Window_Base from "../rpg_windows/Window_Base.js";
-import Window_DebugRange from "../rpg_windows/Window_DebugRange.js";
-import Window_DebugEdit from "../rpg_windows/Window_DebugEdit.js";
+import Scene_MenuBase from './Scene_MenuBase.js';
+import Graphics from '../rpg_core/Graphics.js';
+import Window_Base from '../rpg_windows/Window_Base.js';
+import Window_DebugRange from '../rpg_windows/Window_DebugRange.js';
+import Window_DebugEdit from '../rpg_windows/Window_DebugEdit.js';
 
 //-----------------------------------------------------------------------------
 // Scene_Debug
@@ -74,10 +74,12 @@ class Scene_Debug extends Scene_MenuBase {
 		if (this._rangeWindow.mode() === 'switch') {
 			return 'Enter : ON / OFF';
 		} else {
-			return ('Left     :  -1\n' +
+			return (
+				'Left     :  -1\n' +
 				'Right    :  +1\n' +
 				'Pageup   : -10\n' +
-				'Pagedown : +10');
+				'Pagedown : +10'
+			);
 		}
 	}
 }

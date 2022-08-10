@@ -79,12 +79,15 @@ class JsonEx {
 				value['@'] = constructorName;
 			}
 			for (let key in value) {
-				if ((!value.hasOwnProperty || value.hasOwnProperty(key)) && !key.match(/^@./)) {
+				if (
+					(!value.hasOwnProperty || value.hasOwnProperty(key)) &&
+					!key.match(/^@./)
+				) {
 					if (value[key] && typeof value[key] === 'object') {
 						if (value[key]['@c']) {
 							circular.push([key, value, value[key]]);
 							value[key] = {
-								'@r': value[key]['@c']
+								'@r': value[key]['@c'],
 							};
 						} else {
 							value[key] = this._encode(value[key], circular, depth + 1);
@@ -95,7 +98,7 @@ class JsonEx {
 
 								value[key] = {
 									'@c': value[key]['@c'],
-									'@a': value[key]
+									'@a': value[key],
 								};
 							}
 						}
@@ -151,11 +154,11 @@ class JsonEx {
 	}
 
 	static _generateId() {
-		return JsonEx._id++
+		return JsonEx._id++;
 	}
 
 	static _restoreCircularReference(circulars) {
-		circulars.forEach(circular => {
+		circulars.forEach((circular) => {
 			const key = circular[0];
 			const value = circular[1];
 			const content = circular[2];
@@ -165,7 +168,7 @@ class JsonEx {
 	}
 
 	static _linkCircularReference(contents, circulars, registry) {
-		circulars.forEach(circular => {
+		circulars.forEach((circular) => {
 			const key = circular[0];
 			const value = circular[1];
 			const id = circular[2];
@@ -181,13 +184,12 @@ class JsonEx {
 		delete object['@c'];
 
 		if (typeof object === 'object') {
-			Object.keys(object)
-				.forEach(key => {
-					const value = object[key];
-					if (typeof value === 'object') {
-						JsonEx._cleanMetadata(value);
-					}
-				});
+			Object.keys(object).forEach((key) => {
+				const value = object[key];
+				if (typeof value === 'object') {
+					JsonEx._cleanMetadata(value);
+				}
+			});
 		}
 	}
 
@@ -198,9 +200,7 @@ class JsonEx {
 	 * @return {String}
 	 * @private
 	 */
-	static _getConstructorName({
-		constructor
-	}) {
+	static _getConstructorName({ constructor }) {
 		if (!constructor) {
 			return null;
 		}
@@ -221,7 +221,7 @@ class JsonEx {
 	 * @private
 	 */
 	static _resetPrototype(value, prototype) {
-		if (Object.setPrototypeOf !== undefined && typeof (prototype) == 'object') {
+		if (Object.setPrototypeOf !== undefined && typeof prototype == 'object') {
 			Object.setPrototypeOf(value, prototype);
 		} else if ('__proto__' in value) {
 			value.__proto__ = prototype;
@@ -236,7 +236,6 @@ class JsonEx {
 		}
 		return value;
 	}
-
 }
 
 /**

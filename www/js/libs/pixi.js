@@ -34,7 +34,7 @@ import { Extract } from 'https://cdn.skypack.dev/pin/@pixi/extract@v6.4.2-7mUZqa
 Renderer.registerPlugin('extract', Extract);
 import { TilingSpriteRenderer } from 'https://cdn.skypack.dev/pin/@pixi/sprite-tiling@v6.4.2-JeJLVzDVYDtXCHI3rF5H/mode=imports/optimized/@pixi/sprite-tiling.js';
 Renderer.registerPlugin('tilingSprite', TilingSpriteRenderer);
-import { TileRenderer } from "https://cdn.skypack.dev/pin/@pixi/tilemap@v3.2.2-2dMlZoW3YNxu69J1N1DJ/mode=imports/optimized/@pixi/tilemap.js";
+import { TileRenderer } from 'https://cdn.skypack.dev/pin/@pixi/tilemap@v3.2.2-2dMlZoW3YNxu69J1N1DJ/mode=imports/optimized/@pixi/tilemap.js';
 Renderer.registerPlugin('tilemap', TileRenderer);
 
 // CanvasRenderer plugins
@@ -47,7 +47,7 @@ import { CanvasMeshRenderer } from 'https://cdn.skypack.dev/pin/@pixi/canvas-mes
 CanvasRenderer.registerPlugin('mesh', CanvasMeshRenderer);
 import { CanvasSpriteRenderer } from 'https://cdn.skypack.dev/pin/@pixi/canvas-sprite@v6.4.2-Dc4l6KhaPzPQ6UGyvmvx/mode=imports/optimized/@pixi/canvas-sprite.js';
 CanvasRenderer.registerPlugin('sprite', CanvasSpriteRenderer);
-import { CanvasTileRenderer } from "https://cdn.skypack.dev/pin/@pixi/tilemap@v3.2.2-2dMlZoW3YNxu69J1N1DJ/mode=imports/optimized/@pixi/tilemap.js";
+import { CanvasTileRenderer } from 'https://cdn.skypack.dev/pin/@pixi/tilemap@v3.2.2-2dMlZoW3YNxu69J1N1DJ/mode=imports/optimized/@pixi/tilemap.js';
 CanvasRenderer.registerPlugin('tilemap', CanvasTileRenderer);
 
 // Application plugins
@@ -71,14 +71,14 @@ import { KawaseBlurFilter } from 'https://cdn.skypack.dev/pin/@pixi/filter-kawas
 import { GlitchFilter } from 'https://cdn.skypack.dev/pin/@pixi/filter-glitch@v4.1.5-6MTVsmHwH5NCeXGf9NwN/mode=imports/optimized/@pixi/filter-glitch.js';
 
 export const filters = {
-  AlphaFilter,
-  ColorMatrixFilter,
-  PixelateFilter,
-  CRTFilter,
-  ShockwaveFilter,
-  RGBSplitFilter,
-  AdvancedBloomFilter,
-  MotionBlurFilter,
-  KawaseBlurFilter,
-  GlitchFilter
+	AlphaFilter,
+	ColorMatrixFilter,
+	PixelateFilter,
+	CRTFilter,
+	ShockwaveFilter,
+	RGBSplitFilter,
+	AdvancedBloomFilter,
+	MotionBlurFilter,
+	KawaseBlurFilter,
+	GlitchFilter,
 };

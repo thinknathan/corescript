@@ -1,6 +1,6 @@
-import Scene_MenuBase from "./Scene_MenuBase.js";
-import Window_Options from "../rpg_windows/Window_Options.js";
-import ConfigManager from "../rpg_managers/ConfigManager.js";
+import Scene_MenuBase from './Scene_MenuBase.js';
+import Window_Options from '../rpg_windows/Window_Options.js';
+import ConfigManager from '../rpg_managers/ConfigManager.js';
 
 //-----------------------------------------------------------------------------
 // Scene_Options

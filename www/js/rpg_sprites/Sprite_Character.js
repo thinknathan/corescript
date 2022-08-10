@@ -1,7 +1,7 @@
-import Sprite_Base from "./Sprite_Base.js";
-import ImageManager from "../rpg_managers/ImageManager.js";
-import Sprite from "../rpg_core/Sprite.js";
-import Sprite_Balloon from "../rpg_sprites/Sprite_Balloon.js";
+import Sprite_Base from './Sprite_Base.js';
+import ImageManager from '../rpg_managers/ImageManager.js';
+import Sprite from '../rpg_core/Sprite.js';
+import Sprite_Balloon from '../rpg_sprites/Sprite_Balloon.js';
 
 //-----------------------------------------------------------------------------
 // Sprite_Character
@@ -76,10 +76,12 @@ class Sprite_Character extends Sprite_Base {
 	}
 
 	isImageChanged() {
-		return (this._tilesetId !== self.$gameMap.tilesetId() ||
+		return (
+			this._tilesetId !== self.$gameMap.tilesetId() ||
 			this._tileId !== this._character.tileId() ||
 			this._characterName !== this._character.characterName() ||
-			this._characterIndex !== this._character.characterIndex());
+			this._characterIndex !== this._character.characterIndex()
+		);
 	}
 
 	setTileBitmap() {
@@ -102,8 +104,9 @@ class Sprite_Character extends Sprite_Base {
 	updateTileFrame() {
 		const pw = this.patternWidth();
 		const ph = this.patternHeight();
-		const sx = (Math.floor(this._tileId / 128) % 2 * 8 + this._tileId % 8) * pw;
-		const sy = Math.floor(this._tileId % 256 / 8) % 16 * ph;
+		const sx =
+			((Math.floor(this._tileId / 128) % 2) * 8 + (this._tileId % 8)) * pw;
+		const sy = (Math.floor((this._tileId % 256) / 8) % 16) * ph;
 		this.setFrame(sx, sy, pw, ph);
 	}
 
@@ -128,7 +131,7 @@ class Sprite_Character extends Sprite_Base {
 			return 0;
 		} else {
 			const index = this._character.characterIndex();
-			return index % 4 * 3;
+			return (index % 4) * 3;
 		}
 	}
 

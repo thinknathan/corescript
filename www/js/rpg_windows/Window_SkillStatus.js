@@ -1,4 +1,4 @@
-import Window_Base from "./Window_Base.js";
+import Window_Base from './Window_Base.js';
 
 //-----------------------------------------------------------------------------
 // Window_SkillStatus

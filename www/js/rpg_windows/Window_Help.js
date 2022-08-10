@@ -1,5 +1,5 @@
-import Window_Base from "./Window_Base.js";
-import Graphics from "../rpg_core/Graphics.js";
+import Window_Base from './Window_Base.js';
+import Graphics from '../rpg_core/Graphics.js';
 
 //-----------------------------------------------------------------------------
 // Window_Help

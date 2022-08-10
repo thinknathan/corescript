@@ -1,6 +1,6 @@
-import Scene_MenuBase from "./Scene_MenuBase.js";
-import Window_NameEdit from "../rpg_windows/Window_NameEdit.js";
-import Window_NameInput from "../rpg_windows/Window_NameInput.js";
+import Scene_MenuBase from './Scene_MenuBase.js';
+import Window_NameEdit from '../rpg_windows/Window_NameEdit.js';
+import Window_NameInput from '../rpg_windows/Window_NameInput.js';
 
 //-----------------------------------------------------------------------------
 // Scene_Name

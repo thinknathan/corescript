@@ -1,6 +1,6 @@
-import Sprite from "../rpg_core/Sprite.js";
-import Bitmap from "../rpg_core/Bitmap.js";
-import Graphics from "../rpg_core/Graphics.js";
+import Sprite from '../rpg_core/Sprite.js';
+import Bitmap from '../rpg_core/Bitmap.js';
+import Graphics from '../rpg_core/Graphics.js';
 
 //-----------------------------------------------------------------------------
 // Sprite_Timer

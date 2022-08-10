@@ -1,7 +1,10 @@
-import * as PIXI from "../libs/pixi.js";
-import ZLayer from "./ZLayer.js";
-import Tilemap from "./Tilemap.js";
-import { CompositeRectTileLayer, settings } from "https://cdn.skypack.dev/pin/@pixi/tilemap@v3.2.2-2dMlZoW3YNxu69J1N1DJ/mode=imports/optimized/@pixi/tilemap.js";
+import * as PIXI from '../libs/pixi.js';
+import ZLayer from './ZLayer.js';
+import Tilemap from './Tilemap.js';
+import {
+	CompositeRectTileLayer,
+	settings,
+} from 'https://cdn.skypack.dev/pin/@pixi/tilemap@v3.2.2-2dMlZoW3YNxu69J1N1DJ/mode=imports/optimized/@pixi/tilemap.js';
 
 settings.SCALE_MODE = PIXI.SCALE_MODES.NEAREST;
 settings.TEXTILE_UNITS = 4;
@@ -30,7 +33,8 @@ class ShaderTilemap extends Tilemap {
 		let af = this.animationFrame % 4;
 		if (af == 3) af = 1;
 		renderer.plugins.tilemap.tileAnim[0] = af * this._tileWidth;
-		renderer.plugins.tilemap.tileAnim[1] = (this.animationFrame % 3) * this._tileHeight;
+		renderer.plugins.tilemap.tileAnim[1] =
+			(this.animationFrame % 3) * this._tileHeight;
 		return renderer;
 	}
 
@@ -75,7 +79,9 @@ class ShaderTilemap extends Tilemap {
 	 * @method updateBitmaps
 	 */
 	refreshTileset() {
-		const bitmaps = this.bitmaps.map(x => x._baseTexture ? new PIXI.Texture(x._baseTexture) : x);
+		const bitmaps = this.bitmaps.map((x) =>
+			x._baseTexture ? new PIXI.Texture(x._baseTexture) : x
+		);
 		this.lowerLayer.setBitmaps(bitmaps);
 		this.upperLayer.setBitmaps(bitmaps);
 	}
@@ -90,8 +96,11 @@ class ShaderTilemap extends Tilemap {
 		const startX = Math.floor((ox - this._margin) / this._tileWidth);
 		const startY = Math.floor((oy - this._margin) / this._tileHeight);
 		this._updateLayerPositions(startX, startY);
-		if (this._needsRepaint ||
-			this._lastStartX !== startX || this._lastStartY !== startY) {
+		if (
+			this._needsRepaint ||
+			this._lastStartX !== startX ||
+			this._lastStartY !== startY
+		) {
 			this._lastStartX = startX;
 			this._lastStartY = startY;
 			this._paintAllTiles(startX, startY);
@@ -110,12 +119,16 @@ class ShaderTilemap extends Tilemap {
 
 		if (!this.lowerZLayer) {
 			//@hackerham: create layers only in initialization. Doesn't depend on width/height
-			this.addChild(this.lowerZLayer = new ZLayer(this, 0));
-			this.addChild(this.upperZLayer = new ZLayer(this, 4));
+			this.addChild((this.lowerZLayer = new ZLayer(this, 0)));
+			this.addChild((this.upperZLayer = new ZLayer(this, 4)));
 
-			this.lowerZLayer.addChild(this.lowerLayer = new CompositeRectTileLayer(0, []));
+			this.lowerZLayer.addChild(
+				(this.lowerLayer = new CompositeRectTileLayer(0, []))
+			);
 			this.lowerLayer.shadowColor = new Float32Array([0.0, 0.0, 0.0, 0.5]);
-			this.upperZLayer.addChild(this.upperLayer = new CompositeRectTileLayer(4, []));
+			this.upperZLayer.addChild(
+				(this.upperLayer = new CompositeRectTileLayer(4, []))
+			);
 		}
 	}
 
@@ -246,8 +259,8 @@ class ShaderTilemap extends Tilemap {
 
 		const w = this._tileWidth;
 		const h = this._tileHeight;
-		const sx = (Math.floor(tileId / 128) % 2 * 8 + tileId % 8) * w;
-		const sy = (Math.floor(tileId % 256 / 8) % 16) * h;
+		const sx = ((Math.floor(tileId / 128) % 2) * 8 + (tileId % 8)) * w;
+		const sy = (Math.floor((tileId % 256) / 8) % 16) * h;
 
 		layer.addRect(setNumber, sx, sy, dx, dy, w, h);
 	}
@@ -289,7 +302,7 @@ class ShaderTilemap extends Tilemap {
 				by = 3;
 			} else {
 				bx = Math.floor(tx / 4) * 8;
-				by = ty * 6 + Math.floor(tx / 2) % 2 * 3;
+				by = ty * 6 + (Math.floor(tx / 2) % 2) * 3;
 				if (kind % 2 === 0) {
 					animX = 2;
 				} else {
@@ -337,7 +350,17 @@ class ShaderTilemap extends Tilemap {
 				const sx2 = (bx * 2 + qsx2) * w1;
 				const sy2 = (by * 2 + qsy2) * h1;
 				layer.addRect(setNumber, sx2, sy2, dx1, dy1, w1, h1, animX, animY);
-				layer.addRect(setNumber, sx1, sy1, dx1, dy1 + h1 / 2, w1, h1 / 2, animX, animY);
+				layer.addRect(
+					setNumber,
+					sx1,
+					sy1,
+					dx1,
+					dy1 + h1 / 2,
+					w1,
+					h1 / 2,
+					animX,
+					animY
+				);
 			} else {
 				layer.addRect(setNumber, sx1, sy1, dx1, dy1, w1, h1, animX, animY);
 			}

@@ -1,7 +1,7 @@
-import Window_Command from "./Window_Command.js";
-import Graphics from "../rpg_core/Graphics.js";
-import TextManager from "../rpg_managers/TextManager.js";
-import ConfigManager from "../rpg_managers/ConfigManager.js";
+import Window_Command from './Window_Command.js';
+import Graphics from '../rpg_core/Graphics.js';
+import TextManager from '../rpg_managers/TextManager.js';
+import ConfigManager from '../rpg_managers/ConfigManager.js';
 
 //-----------------------------------------------------------------------------
 // Window_ActorCommand

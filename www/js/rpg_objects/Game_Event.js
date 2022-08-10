@@ -1,5 +1,5 @@
-import Game_Character from "./Game_Character.js";
-import Game_Interpreter from "./Game_Interpreter.js";
+import Game_Character from './Game_Character.js';
+import Game_Interpreter from './Game_Interpreter.js';
 
 //-----------------------------------------------------------------------------
 // Game_Event
@@ -17,9 +17,7 @@ class Game_Event extends Game_Character {
 		super.initialize();
 		this._mapId = mapId;
 		this._eventId = eventId;
-		this.locate(this.event()
-			.x, this.event()
-			.y);
+		this.locate(this.event().x, this.event().y);
 		this.refresh();
 	}
 
@@ -45,18 +43,18 @@ class Game_Event extends Game_Character {
 	}
 
 	page() {
-		return this.event()
-			.pages[this._pageIndex];
+		return this.event().pages[this._pageIndex];
 	}
 
 	list() {
-		return this.page()
-			.list;
+		return this.page().list;
 	}
 
 	isCollidedWithCharacters(x, y) {
-		return (Game_Character.prototype.isCollidedWithCharacters.call(this, x, y) ||
-			this.isCollidedWithPlayerCharacters(x, y));
+		return (
+			Game_Character.prototype.isCollidedWithCharacters.call(this, x, y) ||
+			this.isCollidedWithPlayerCharacters(x, y)
+		);
 	}
 
 	isCollidedWithEvents(x, y) {
@@ -94,18 +92,21 @@ class Game_Event extends Game_Character {
 	}
 
 	updateSelfMovement() {
-		if (!this._locked && this.isNearTheScreen() &&
-			this.checkStop(this.stopCountThreshold())) {
+		if (
+			!this._locked &&
+			this.isNearTheScreen() &&
+			this.checkStop(this.stopCountThreshold())
+		) {
 			switch (this._moveType) {
-			case 1:
-				this.moveTypeRandom();
-				break;
-			case 2:
-				this.moveTypeTowardPlayer();
-				break;
-			case 3:
-				this.moveTypeCustom();
-				break;
+				case 1:
+					this.moveTypeRandom();
+					break;
+				case 2:
+					this.moveTypeTowardPlayer();
+					break;
+				case 3:
+					this.moveTypeCustom();
+					break;
 			}
 		}
 	}
@@ -116,36 +117,36 @@ class Game_Event extends Game_Character {
 
 	moveTypeRandom() {
 		switch (Math.randomInt(6)) {
-		case 0:
-		case 1:
-			this.moveRandom();
-			break;
-		case 2:
-		case 3:
-		case 4:
-			this.moveForward();
-			break;
-		case 5:
-			this.resetStopCount();
-			break;
+			case 0:
+			case 1:
+				this.moveRandom();
+				break;
+			case 2:
+			case 3:
+			case 4:
+				this.moveForward();
+				break;
+			case 5:
+				this.resetStopCount();
+				break;
 		}
 	}
 
 	moveTypeTowardPlayer() {
 		if (this.isNearThePlayer()) {
 			switch (Math.randomInt(6)) {
-			case 0:
-			case 1:
-			case 2:
-			case 3:
-				this.moveTowardPlayer();
-				break;
-			case 4:
-				this.moveRandom();
-				break;
-			case 5:
-				this.moveForward();
-				break;
+				case 0:
+				case 1:
+				case 2:
+				case 3:
+					this.moveTowardPlayer();
+					break;
+				case 4:
+					this.moveRandom();
+					break;
+				case 5:
+					this.moveForward();
+					break;
 			}
 		} else {
 			this.moveRandom();
@@ -198,8 +199,7 @@ class Game_Event extends Game_Character {
 	}
 
 	findProperPageIndex() {
-		const pages = this.event()
-			.pages;
+		const pages = this.event().pages;
 		for (let i = pages.length - 1; i >= 0; i--) {
 			const page = pages[i];
 			if (this.meetsConditions(page)) {
@@ -209,9 +209,7 @@ class Game_Event extends Game_Character {
 		return -1;
 	}
 
-	meetsConditions({
-		conditions
-	}) {
+	meetsConditions({ conditions }) {
 		const c = conditions;
 		if (c.switch1Valid) {
 			if (!self.$gameSwitches.value(c.switch1Id)) {
@@ -242,8 +240,7 @@ class Game_Event extends Game_Character {
 		}
 		if (c.actorValid) {
 			const actor = self.$gameActors.actor(c.actorId);
-			if (!self.$gameParty.members()
-				.contains(actor)) {
+			if (!self.$gameParty.members().contains(actor)) {
 				return false;
 			}
 		}
@@ -356,10 +353,10 @@ class Game_Event extends Game_Character {
 
 	getEventInfo() {
 		return {
-			eventType: "map_event",
+			eventType: 'map_event',
 			mapId: this._mapId,
 			mapEventId: this._eventId,
-			page: this._pageIndex + 1
+			page: this._pageIndex + 1,
 		};
 	}
 }

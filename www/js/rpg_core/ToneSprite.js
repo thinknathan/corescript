@@ -1,6 +1,6 @@
-import * as PIXI from "../libs/pixi.js";
-import Utils from "../rpg_core/Utils.js";
-import Graphics from "../rpg_core/Graphics.js";
+import * as PIXI from '../libs/pixi.js';
+import Utils from '../rpg_core/Utils.js';
+import Graphics from '../rpg_core/Graphics.js';
 
 //-----------------------------------------------------------------------------
 /**
@@ -42,14 +42,10 @@ class ToneSprite extends PIXI.Container {
 	 * @param {Number} gray The grayscale level in the range (0, 255)
 	 */
 	setTone(r, g, b, gray) {
-		this._red = Math.round(r || 0)
-			.clamp(-255, 255);
-		this._green = Math.round(g || 0)
-			.clamp(-255, 255);
-		this._blue = Math.round(b || 0)
-			.clamp(-255, 255);
-		this._gray = Math.round(gray || 0)
-			.clamp(0, 255);
+		this._red = Math.round(r || 0).clamp(-255, 255);
+		this._green = Math.round(g || 0).clamp(-255, 255);
+		this._blue = Math.round(b || 0).clamp(-255, 255);
+		this._gray = Math.round(gray || 0).clamp(0, 255);
 	}
 
 	/**

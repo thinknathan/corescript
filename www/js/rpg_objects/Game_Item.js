@@ -1,4 +1,4 @@
-import { DataManager } from "../rpg_managers/DataManager.js";
+import { DataManager } from '../rpg_managers/DataManager.js';
 
 //-----------------------------------------------------------------------------
 // Game_Item

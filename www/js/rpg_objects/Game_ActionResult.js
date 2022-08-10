@@ -33,17 +33,21 @@ class Game_ActionResult {
 	}
 
 	addedStateObjects() {
-		return this.addedStates.map(id => self.$dataStates[id]);
+		return this.addedStates.map((id) => self.$dataStates[id]);
 	}
 
 	removedStateObjects() {
-		return this.removedStates.map(id => self.$dataStates[id]);
+		return this.removedStates.map((id) => self.$dataStates[id]);
 	}
 
 	isStatusAffected() {
-		return (this.addedStates.length > 0 || this.removedStates.length > 0 ||
-			this.addedBuffs.length > 0 || this.addedDebuffs.length > 0 ||
-			this.removedBuffs.length > 0);
+		return (
+			this.addedStates.length > 0 ||
+			this.removedStates.length > 0 ||
+			this.addedBuffs.length > 0 ||
+			this.addedDebuffs.length > 0 ||
+			this.removedBuffs.length > 0
+		);
 	}
 
 	isHit() {

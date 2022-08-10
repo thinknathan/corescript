@@ -1,6 +1,6 @@
-import WebAudio from "../rpg_core/WebAudio.js";
-import Utils from "../rpg_core/Utils.js";
-import Graphics from "../rpg_core/Graphics.js";
+import WebAudio from '../rpg_core/WebAudio.js';
+import Utils from '../rpg_core/Utils.js';
+import Graphics from '../rpg_core/Graphics.js';
 
 //-----------------------------------------------------------------------------
 // AudioManager
@@ -28,11 +28,9 @@ class AudioManager {
 		this.updateCurrentBgm(bgm, pos);
 	}
 
-	static playEncryptedBgm({
-		name
-	}, pos) { }
+	static playEncryptedBgm({ name }, pos) {}
 
-	static createDecryptBuffer(url, bgm, pos) { }
+	static createDecryptBuffer(url, bgm, pos) {}
 
 	static replayBgm(bgm) {
 		if (this.isCurrentBgm(bgm)) {
@@ -45,29 +43,23 @@ class AudioManager {
 		}
 	}
 
-	static isCurrentBgm({
-		name
-	}) {
-		return this._currentBgm && this._bgmBuffer &&
-			this._currentBgm.name === name;
+	static isCurrentBgm({ name }) {
+		return (
+			this._currentBgm && this._bgmBuffer && this._currentBgm.name === name
+		);
 	}
 
 	static updateBgmParameters(bgm) {
 		this.updateBufferParameters(this._bgmBuffer, this._bgmVolume, bgm);
 	}
 
-	static updateCurrentBgm({
-		name,
-		volume,
-		pitch,
-		pan
-	}, pos) {
+	static updateCurrentBgm({ name, volume, pitch, pan }, pos) {
 		this._currentBgm = {
 			name: name,
 			volume: volume,
 			pitch: pitch,
 			pan: pan,
-			pos
+			pos,
 		};
 	}
 
@@ -117,29 +109,23 @@ class AudioManager {
 		}
 	}
 
-	static isCurrentBgs({
-		name
-	}) {
-		return this._currentBgs && this._bgsBuffer &&
-			this._currentBgs.name === name;
+	static isCurrentBgs({ name }) {
+		return (
+			this._currentBgs && this._bgsBuffer && this._currentBgs.name === name
+		);
 	}
 
 	static updateBgsParameters(bgs) {
 		this.updateBufferParameters(this._bgsBuffer, this._bgsVolume, bgs);
 	}
 
-	static updateCurrentBgs({
-		name,
-		volume,
-		pitch,
-		pan
-	}, pos) {
+	static updateCurrentBgs({ name, volume, pitch, pan }, pos) {
 		this._currentBgs = {
 			name: name,
 			volume: volume,
 			pitch: pitch,
 			pan: pan,
-			pos
+			pos,
 		};
 	}
 
@@ -201,7 +187,7 @@ class AudioManager {
 
 	static playSe(se) {
 		if (se.name) {
-			this._seBuffers = this._seBuffers.filter(audio => audio.isPlaying());
+			this._seBuffers = this._seBuffers.filter((audio) => audio.isPlaying());
 			const buffer = this.createBuffer('se', se.name);
 			this.updateSeParameters(buffer, se);
 			buffer.play(false);
@@ -214,7 +200,7 @@ class AudioManager {
 	}
 
 	static stopSe() {
-		this._seBuffers.forEach(buffer => {
+		this._seBuffers.forEach((buffer) => {
 			buffer.stop();
 		});
 		this._seBuffers = [];
@@ -243,9 +229,7 @@ class AudioManager {
 		}
 	}
 
-	static isStaticSe({
-		name
-	}) {
+	static isStaticSe({ name }) {
 		for (const buffer of this._staticBuffers) {
 			if (buffer._reservedSeName === name) {
 				return true;
@@ -270,7 +254,7 @@ class AudioManager {
 				volume: bgm.volume,
 				pitch: bgm.pitch,
 				pan: bgm.pan,
-				pos: this._bgmBuffer ? this._bgmBuffer.seek() : 0
+				pos: this._bgmBuffer ? this._bgmBuffer.seek() : 0,
 			};
 		} else {
 			return this.makeEmptyAudioObject();
@@ -285,7 +269,7 @@ class AudioManager {
 				volume: bgs.volume,
 				pitch: bgs.pitch,
 				pan: bgs.pan,
-				pos: this._bgsBuffer ? this._bgsBuffer.seek() : 0
+				pos: this._bgsBuffer ? this._bgsBuffer.seek() : 0,
 			};
 		} else {
 			return this.makeEmptyAudioObject();
@@ -304,10 +288,10 @@ class AudioManager {
 		this.checkWebAudioError(this._bgmBuffer);
 		this.checkWebAudioError(this._bgsBuffer);
 		this.checkWebAudioError(this._meBuffer);
-		this._seBuffers.forEach(buffer => {
+		this._seBuffers.forEach((buffer) => {
 			this.checkWebAudioError(buffer);
 		});
-		this._staticBuffers.forEach(buffer => {
+		this._staticBuffers.forEach((buffer) => {
 			this.checkWebAudioError(buffer);
 		});
 	}
@@ -339,21 +323,20 @@ class AudioManager {
 	}
 
 	static makeEmptyAudioObject() {
-		return ({
+		return {
 			name: '',
 			volume: 0,
-			pitch: 0
-		});
+			pitch: 0,
+		};
 	}
 
 	static updateBufferParameters(buffer, configVolume, audio) {
 		if (buffer && audio) {
-			buffer.volume = configVolume * (audio.volume || 0) / 10000;
+			buffer.volume = (configVolume * (audio.volume || 0)) / 10000;
 			buffer.pitch = (audio.pitch || 0) / 100;
 			buffer.pan = (audio.pan || 0) / 100;
 		}
-	};
-
+	}
 }
 
 AudioManager._masterVolume = 1; // (min: 0, max: 1)
@@ -381,7 +364,7 @@ Object.defineProperty(AudioManager, 'masterVolume', {
 		WebAudio.setMasterVolume(this._masterVolume);
 		Graphics.setVideoVolume(this._masterVolume);
 	},
-	configurable: true
+	configurable: true,
 });
 
 Object.defineProperty(AudioManager, 'bgmVolume', {
@@ -392,7 +375,7 @@ Object.defineProperty(AudioManager, 'bgmVolume', {
 		this._bgmVolume = value;
 		this.updateBgmParameters(this._currentBgm);
 	},
-	configurable: true
+	configurable: true,
 });
 
 Object.defineProperty(AudioManager, 'bgsVolume', {
@@ -403,7 +386,7 @@ Object.defineProperty(AudioManager, 'bgsVolume', {
 		this._bgsVolume = value;
 		this.updateBgsParameters(this._currentBgs);
 	},
-	configurable: true
+	configurable: true,
 });
 
 Object.defineProperty(AudioManager, 'meVolume', {
@@ -414,7 +397,7 @@ Object.defineProperty(AudioManager, 'meVolume', {
 		this._meVolume = value;
 		this.updateMeParameters(this._currentMe);
 	},
-	configurable: true
+	configurable: true,
 });
 
 Object.defineProperty(AudioManager, 'seVolume', {
@@ -424,7 +407,7 @@ Object.defineProperty(AudioManager, 'seVolume', {
 	set(value) {
 		this._seVolume = value;
 	},
-	configurable: true
+	configurable: true,
 });
 
 export default AudioManager;

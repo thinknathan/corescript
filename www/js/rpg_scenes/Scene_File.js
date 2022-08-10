@@ -1,8 +1,8 @@
-import Scene_MenuBase from "./Scene_MenuBase.js";
-import { DataManager } from "../rpg_managers/DataManager.js";
-import Window_Help from "../rpg_windows/Window_Help.js";
-import Window_SavefileList from "../rpg_windows/Window_SavefileList.js";
-import Graphics from "../rpg_core/Graphics.js";
+import Scene_MenuBase from './Scene_MenuBase.js';
+import { DataManager } from '../rpg_managers/DataManager.js';
+import Window_Help from '../rpg_windows/Window_Help.js';
+import Window_SavefileList from '../rpg_windows/Window_SavefileList.js';
+import Graphics from '../rpg_core/Graphics.js';
 
 //-----------------------------------------------------------------------------
 // Scene_File

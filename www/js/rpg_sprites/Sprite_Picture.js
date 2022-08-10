@@ -1,5 +1,5 @@
-import Sprite from "../rpg_core/Sprite.js";
-import ImageManager from "../rpg_managers/ImageManager.js";
+import Sprite from '../rpg_core/Sprite.js';
+import ImageManager from '../rpg_managers/ImageManager.js';
 
 //-----------------------------------------------------------------------------
 // Sprite_Picture
@@ -87,7 +87,7 @@ class Sprite_Picture extends Sprite {
 		const picture = this.picture();
 		this.opacity = picture.opacity();
 		this.blendMode = picture.blendMode();
-		this.rotation = picture.angle() * Math.PI / 180;
+		this.rotation = (picture.angle() * Math.PI) / 180;
 	}
 
 	loadBitmap() {

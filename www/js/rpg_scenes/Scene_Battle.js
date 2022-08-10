@@ -1,23 +1,23 @@
-import Scene_Base from "./Scene_Base.js";
-import ImageManager from "../rpg_managers/ImageManager.js";
-import BattleManager from "../rpg_managers/BattleManager.js";
-import SceneManager from "../rpg_managers/SceneManager.js";
-import AudioManager from "../rpg_managers/AudioManager.js";
-import Scene_Title from "../rpg_scenes/Scene_Title.js";
-import Scene_Gameover from "../rpg_scenes/Scene_Gameover.js";
-import Graphics from "../rpg_core/Graphics.js";
-import Spriteset_Battle from "../rpg_sprites/Spriteset_Battle.js";
-import Window_Help from "../rpg_windows/Window_Help.js";
-import Window_Message from "../rpg_windows/Window_Message.js";
-import Window_ScrollText from "../rpg_windows/Window_ScrollText.js";
-import Window_BattleLog from "../rpg_windows/Window_BattleLog.js";
-import Window_PartyCommand from "../rpg_windows/Window_PartyCommand.js";
-import Window_ActorCommand from "../rpg_windows/Window_ActorCommand.js";
-import Window_BattleStatus from "../rpg_windows/Window_BattleStatus.js";
-import Window_BattleActor from "../rpg_windows/Window_BattleActor.js";
-import Window_BattleEnemy from "../rpg_windows/Window_BattleEnemy.js";
-import Window_BattleSkill from "../rpg_windows/Window_BattleSkill.js";
-import Window_BattleItem from "../rpg_windows/Window_BattleItem.js";
+import Scene_Base from './Scene_Base.js';
+import ImageManager from '../rpg_managers/ImageManager.js';
+import BattleManager from '../rpg_managers/BattleManager.js';
+import SceneManager from '../rpg_managers/SceneManager.js';
+import AudioManager from '../rpg_managers/AudioManager.js';
+import Scene_Title from '../rpg_scenes/Scene_Title.js';
+import Scene_Gameover from '../rpg_scenes/Scene_Gameover.js';
+import Graphics from '../rpg_core/Graphics.js';
+import Spriteset_Battle from '../rpg_sprites/Spriteset_Battle.js';
+import Window_Help from '../rpg_windows/Window_Help.js';
+import Window_Message from '../rpg_windows/Window_Message.js';
+import Window_ScrollText from '../rpg_windows/Window_ScrollText.js';
+import Window_BattleLog from '../rpg_windows/Window_BattleLog.js';
+import Window_PartyCommand from '../rpg_windows/Window_PartyCommand.js';
+import Window_ActorCommand from '../rpg_windows/Window_ActorCommand.js';
+import Window_BattleStatus from '../rpg_windows/Window_BattleStatus.js';
+import Window_BattleActor from '../rpg_windows/Window_BattleActor.js';
+import Window_BattleEnemy from '../rpg_windows/Window_BattleEnemy.js';
+import Window_BattleSkill from '../rpg_windows/Window_BattleSkill.js';
+import Window_BattleItem from '../rpg_windows/Window_BattleItem.js';
 
 //-----------------------------------------------------------------------------
 // Scene_Battle
@@ -59,20 +59,25 @@ class Scene_Battle extends Scene_Base {
 	}
 
 	updateBattleProcess() {
-		if (!this.isAnyInputWindowActive() || BattleManager.isAborting() ||
-			BattleManager.isBattleEnd()) {
+		if (
+			!this.isAnyInputWindowActive() ||
+			BattleManager.isAborting() ||
+			BattleManager.isBattleEnd()
+		) {
 			BattleManager.update();
 			this.changeInputWindow();
 		}
 	}
 
 	isAnyInputWindowActive() {
-		return (this._partyCommandWindow.active ||
+		return (
+			this._partyCommandWindow.active ||
 			this._actorCommandWindow.active ||
 			this._skillWindow.active ||
 			this._itemWindow.active ||
 			this._actorWindow.active ||
-			this._enemyWindow.active);
+			this._enemyWindow.active
+		);
 	}
 
 	changeInputWindow() {
@@ -109,8 +114,10 @@ class Scene_Battle extends Scene_Base {
 	}
 
 	needsSlowFadeOut() {
-		return SceneManager.isNextScene(Scene_Title) ||
-			SceneManager.isNextScene(Scene_Gameover);
+		return (
+			SceneManager.isNextScene(Scene_Title) ||
+			SceneManager.isNextScene(Scene_Gameover)
+		);
 	}
 
 	updateStatusWindow() {
@@ -186,18 +193,27 @@ class Scene_Battle extends Scene_Base {
 	createPartyCommandWindow() {
 		this._partyCommandWindow = new Window_PartyCommand();
 		this._partyCommandWindow.setHandler('fight', this.commandFight.bind(this));
-		this._partyCommandWindow.setHandler('escape', this.commandEscape.bind(this));
+		this._partyCommandWindow.setHandler(
+			'escape',
+			this.commandEscape.bind(this)
+		);
 		this._partyCommandWindow.deselect();
 		this.addWindow(this._partyCommandWindow);
 	}
 
 	createActorCommandWindow() {
 		this._actorCommandWindow = new Window_ActorCommand();
-		this._actorCommandWindow.setHandler('attack', this.commandAttack.bind(this));
+		this._actorCommandWindow.setHandler(
+			'attack',
+			this.commandAttack.bind(this)
+		);
 		this._actorCommandWindow.setHandler('skill', this.commandSkill.bind(this));
 		this._actorCommandWindow.setHandler('guard', this.commandGuard.bind(this));
 		this._actorCommandWindow.setHandler('item', this.commandItem.bind(this));
-		this._actorCommandWindow.setHandler('cancel', this.selectPreviousCommand.bind(this));
+		this._actorCommandWindow.setHandler(
+			'cancel',
+			this.selectPreviousCommand.bind(this)
+		);
 		this.addWindow(this._actorCommandWindow);
 	}
 
@@ -245,10 +261,9 @@ class Scene_Battle extends Scene_Base {
 	createMessageWindow() {
 		this._messageWindow = new Window_Message();
 		this.addWindow(this._messageWindow);
-		this._messageWindow.subWindows()
-			.forEach(function (window) {
-				this.addWindow(window);
-			}, this);
+		this._messageWindow.subWindows().forEach(function (window) {
+			this.addWindow(window);
+		}, this);
 	}
 
 	createScrollTextWindow() {
@@ -278,15 +293,13 @@ class Scene_Battle extends Scene_Base {
 	}
 
 	startActorCommandSelection() {
-		this._statusWindow.select(BattleManager.actor()
-			.index());
+		this._statusWindow.select(BattleManager.actor().index());
 		this._partyCommandWindow.close();
 		this._actorCommandWindow.setup(BattleManager.actor());
 	}
 
 	commandAttack() {
-		BattleManager.inputtingAction()
-			.setAttack();
+		BattleManager.inputtingAction().setAttack();
 		this.selectEnemySelection();
 	}
 
@@ -299,8 +312,7 @@ class Scene_Battle extends Scene_Base {
 	}
 
 	commandGuard() {
-		BattleManager.inputtingAction()
-			.setGuard();
+		BattleManager.inputtingAction().setGuard();
 		this.selectNextCommand();
 	}
 
@@ -338,14 +350,14 @@ class Scene_Battle extends Scene_Base {
 	onActorCancel() {
 		this._actorWindow.hide();
 		switch (this._actorCommandWindow.currentSymbol()) {
-		case 'skill':
-			this._skillWindow.show();
-			this._skillWindow.activate();
-			break;
-		case 'item':
-			this._itemWindow.show();
-			this._itemWindow.activate();
-			break;
+			case 'skill':
+				this._skillWindow.show();
+				this._skillWindow.activate();
+				break;
+			case 'item':
+				this._itemWindow.show();
+				this._itemWindow.activate();
+				break;
 		}
 	}
 
@@ -368,17 +380,17 @@ class Scene_Battle extends Scene_Base {
 	onEnemyCancel() {
 		this._enemyWindow.hide();
 		switch (this._actorCommandWindow.currentSymbol()) {
-		case 'attack':
-			this._actorCommandWindow.activate();
-			break;
-		case 'skill':
-			this._skillWindow.show();
-			this._skillWindow.activate();
-			break;
-		case 'item':
-			this._itemWindow.show();
-			this._itemWindow.activate();
-			break;
+			case 'attack':
+				this._actorCommandWindow.activate();
+				break;
+			case 'skill':
+				this._skillWindow.show();
+				this._skillWindow.activate();
+				break;
+			case 'item':
+				this._itemWindow.show();
+				this._itemWindow.activate();
+				break;
 		}
 	}
 
@@ -386,8 +398,7 @@ class Scene_Battle extends Scene_Base {
 		const skill = this._skillWindow.item();
 		const action = BattleManager.inputtingAction();
 		action.setSkill(skill.id);
-		BattleManager.actor()
-			.setLastBattleSkill(skill);
+		BattleManager.actor().setLastBattleSkill(skill);
 		this.onSelectAction();
 	}
 

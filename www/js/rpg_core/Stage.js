@@ -1,4 +1,4 @@
-import * as PIXI from "../libs/pixi.js";
+import * as PIXI from '../libs/pixi.js';
 
 //-----------------------------------------------------------------------------
 /**

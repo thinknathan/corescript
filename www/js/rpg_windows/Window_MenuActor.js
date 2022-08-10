@@ -1,6 +1,6 @@
-import Window_MenuStatus from "./Window_MenuStatus.js";
-import { DataManager } from "../rpg_managers/DataManager.js";
-import Game_Action from "../rpg_objects/Game_Action.js";
+import Window_MenuStatus from './Window_MenuStatus.js';
+import { DataManager } from '../rpg_managers/DataManager.js';
+import Game_Action from '../rpg_objects/Game_Action.js';
 
 //-----------------------------------------------------------------------------
 // Window_MenuActor
@@ -26,8 +26,7 @@ class Window_MenuActor extends Window_MenuStatus {
 	}
 
 	selectLast() {
-		this.select(self.$gameParty.targetActor()
-			.index() || 0);
+		this.select(self.$gameParty.targetActor().index() || 0);
 	}
 
 	selectForItem(item) {

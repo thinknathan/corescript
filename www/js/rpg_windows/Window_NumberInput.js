@@ -1,10 +1,10 @@
-import Window_Selectable from "./Window_Selectable.js";
-import Graphics from "../rpg_core/Graphics.js";
-import ImageManager from "../rpg_managers/ImageManager.js";
-import SoundManager from "../rpg_managers/SoundManager.js";
-import TouchInput from "../rpg_core/TouchInput.js";
-import Input from "../rpg_core/Input.js";
-import Sprite_Button from "../rpg_sprites/Sprite_Button.js";
+import Window_Selectable from './Window_Selectable.js';
+import Graphics from '../rpg_core/Graphics.js';
+import ImageManager from '../rpg_managers/ImageManager.js';
+import SoundManager from '../rpg_managers/SoundManager.js';
+import TouchInput from '../rpg_core/TouchInput.js';
+import Input from '../rpg_core/Input.js';
+import Sprite_Button from '../rpg_sprites/Sprite_Button.js';
 
 //-----------------------------------------------------------------------------
 // Window_NumberInput
@@ -29,7 +29,9 @@ class Window_NumberInput extends Window_Selectable {
 
 	start() {
 		this._maxDigits = self.$gameMessage.numInputMaxDigits();
-		this._number = self.$gameVariables.value(self.$gameMessage.numInputVariableId());
+		this._number = self.$gameVariables.value(
+			self.$gameMessage.numInputVariableId()
+		);
 		this._number = this._number.clamp(0, Math.pow(10, this._maxDigits) - 1);
 		this.updatePlacement();
 		this.placeButtons();
@@ -192,7 +194,10 @@ class Window_NumberInput extends Window_Selectable {
 
 	processOk() {
 		SoundManager.playOk();
-		self.$gameVariables.setValue(self.$gameMessage.numInputVariableId(), this._number);
+		self.$gameVariables.setValue(
+			self.$gameMessage.numInputVariableId(),
+			this._number
+		);
 		this._messageWindow.terminateMessage();
 		this.updateInputData();
 		this.deactivate();

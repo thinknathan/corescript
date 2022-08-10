@@ -1,10 +1,10 @@
-import ImageManager from "../rpg_managers/ImageManager.js";
-import AudioManager from "../rpg_managers/AudioManager.js";
-import Graphics from "../rpg_core/Graphics.js";
-import Game_CommonEvent from "../rpg_objects/Game_CommonEvent.js";
-import Game_Vehicle from "../rpg_objects/Game_Vehicle.js";
-import Game_Event from "../rpg_objects/Game_Event.js";
-import Game_Interpreter from "../rpg_objects/Game_Interpreter.js";
+import ImageManager from '../rpg_managers/ImageManager.js';
+import AudioManager from '../rpg_managers/AudioManager.js';
+import Graphics from '../rpg_core/Graphics.js';
+import Game_CommonEvent from '../rpg_objects/Game_CommonEvent.js';
+import Game_Vehicle from '../rpg_objects/Game_Vehicle.js';
+import Game_Event from '../rpg_objects/Game_Event.js';
+import Game_Interpreter from '../rpg_objects/Game_Interpreter.js';
 
 //-----------------------------------------------------------------------------
 // Game_Map
@@ -123,7 +123,7 @@ class Game_Map {
 	}
 
 	refereshVehicles() {
-		this._vehicles.forEach(vehicle => {
+		this._vehicles.forEach((vehicle) => {
 			vehicle.refresh();
 		});
 	}
@@ -163,15 +163,14 @@ class Game_Map {
 				this._events[i] = new Game_Event(this._mapId, i);
 			}
 		}
-		this._commonEvents = this.parallelCommonEvents()
-			.map(({
-				id
-			}) => new Game_CommonEvent(id));
+		this._commonEvents = this.parallelCommonEvents().map(
+			({ id }) => new Game_CommonEvent(id)
+		);
 		this.refreshTileEvents();
 	}
 
 	events() {
-		return this._events.filter(event => !!event);
+		return this._events.filter((event) => !!event);
 	}
 
 	event(eventId) {
@@ -183,7 +182,9 @@ class Game_Map {
 	}
 
 	parallelCommonEvents() {
-		return self.$dataCommonEvents.filter(commonEvent => commonEvent && commonEvent.trigger === 2);
+		return self.$dataCommonEvents.filter(
+			(commonEvent) => commonEvent && commonEvent.trigger === 2
+		);
 	}
 
 	setupScroll() {
@@ -236,7 +237,7 @@ class Game_Map {
 		if (this._parallaxZero) {
 			return this._parallaxX * this.tileWidth();
 		} else if (this._parallaxLoopX) {
-			return this._parallaxX * this.tileWidth() / 2;
+			return (this._parallaxX * this.tileWidth()) / 2;
 		} else {
 			return 0;
 		}
@@ -246,7 +247,7 @@ class Game_Map {
 		if (this._parallaxZero) {
 			return this._parallaxY * this.tileHeight();
 		} else if (this._parallaxLoopY) {
-			return this._parallaxY * this.tileHeight() / 2;
+			return (this._parallaxY * this.tileHeight()) / 2;
 		} else {
 			return 0;
 		}
@@ -302,8 +303,7 @@ class Game_Map {
 	}
 
 	isOverworld() {
-		return this.tileset() && this.tileset()
-			.mode === 0;
+		return this.tileset() && this.tileset().mode === 0;
 	}
 
 	screenTileX() {
@@ -315,8 +315,10 @@ class Game_Map {
 	}
 
 	adjustX(x) {
-		if (this.isLoopHorizontal() && x < this._displayX -
-			(this.width() - this.screenTileX()) / 2) {
+		if (
+			this.isLoopHorizontal() &&
+			x < this._displayX - (this.width() - this.screenTileX()) / 2
+		) {
 			return x - this._displayX + self.$dataMap.width;
 		} else {
 			return x - this._displayX;
@@ -324,8 +326,10 @@ class Game_Map {
 	}
 
 	adjustY(y) {
-		if (this.isLoopVertical() && y < this._displayY -
-			(this.height() - this.screenTileY()) / 2) {
+		if (
+			this.isLoopVertical() &&
+			y < this._displayY - (this.height() - this.screenTileY()) / 2
+		) {
 			return y - this._displayY + self.$dataMap.height;
 		} else {
 			return y - this._displayY;
@@ -418,11 +422,10 @@ class Game_Map {
 	}
 
 	refresh() {
-		this.events()
-			.forEach(event => {
-				event.refresh();
-			});
-		this._commonEvents.forEach(event => {
+		this.events().forEach((event) => {
+			event.refresh();
+		});
+		this._commonEvents.forEach((event) => {
 			event.refresh();
 		});
 		this.refreshTileEvents();
@@ -430,22 +433,19 @@ class Game_Map {
 	}
 
 	refreshTileEvents() {
-		this.tileEvents = this.events()
-			.filter(event => event.isTile());
+		this.tileEvents = this.events().filter((event) => event.isTile());
 	}
 
 	eventsXy(x, y) {
-		return this.events()
-			.filter(event => event.pos(x, y));
+		return this.events().filter((event) => event.pos(x, y));
 	}
 
 	eventsXyNt(x, y) {
-		return this.events()
-			.filter(event => event.posNt(x, y));
+		return this.events().filter((event) => event.posNt(x, y));
 	}
 
 	tileEventsXy(x, y) {
-		return this.tileEvents.filter(event => event.posNt(x, y));
+		return this.tileEvents.filter((event) => event.posNt(x, y));
 	}
 
 	eventIdXy(x, y) {
@@ -462,8 +462,10 @@ class Game_Map {
 			}
 		} else if (this.height() >= this.screenTileY()) {
 			const lastY = this._displayY;
-			this._displayY = Math.min(this._displayY + distance,
-				this.height() - this.screenTileY());
+			this._displayY = Math.min(
+				this._displayY + distance,
+				this.height() - this.screenTileY()
+			);
 			this._parallaxY += this._displayY - lastY;
 		}
 	}
@@ -491,8 +493,10 @@ class Game_Map {
 			}
 		} else if (this.width() >= this.screenTileX()) {
 			const lastX = this._displayX;
-			this._displayX = Math.min(this._displayX + distance,
-				this.width() - this.screenTileX());
+			this._displayX = Math.min(
+				this._displayX + distance,
+				this.width() - this.screenTileX()
+			);
 			this._parallaxX += this._displayX - lastX;
 		}
 	}
@@ -520,11 +524,14 @@ class Game_Map {
 		const tiles = this.allTiles(x, y);
 		for (let i = 0; i < tiles.length; i++) {
 			const flag = flags[tiles[i]];
-			if ((flag & 0x10) !== 0) // [*] No effect on passage
+			if ((flag & 0x10) !== 0)
+				// [*] No effect on passage
 				continue;
-			if ((flag & bit) === 0) // [o] Passable
+			if ((flag & bit) === 0)
+				// [o] Passable
 				return true;
-			if ((flag & bit) === bit) // [x] Impassable
+			if ((flag & bit) === bit)
+				// [x] Impassable
 				return false;
 		}
 		return false;
@@ -545,8 +552,7 @@ class Game_Map {
 	}
 
 	allTiles(x, y) {
-		const tiles = this.tileEventsXy(x, y)
-			.map(event => event.tileId());
+		const tiles = this.tileEventsXy(x, y).map((event) => event.tileId());
 		return tiles.concat(this.layeredTiles(x, y));
 	}
 
@@ -573,8 +579,9 @@ class Game_Map {
 
 	checkLayeredTilesFlags(x, y, bit) {
 		const flags = this.tilesetFlags();
-		return this.layeredTiles(x, y)
-			.some(tileId => (flags[tileId] & bit) !== 0);
+		return this.layeredTiles(x, y).some(
+			(tileId) => (flags[tileId] & bit) !== 0
+		);
 	}
 
 	isLadder(x, y) {
@@ -651,33 +658,32 @@ class Game_Map {
 
 	doScroll(direction, distance) {
 		switch (direction) {
-		case 2:
-			this.scrollDown(distance);
-			break;
-		case 4:
-			this.scrollLeft(distance);
-			break;
-		case 6:
-			this.scrollRight(distance);
-			break;
-		case 8:
-			this.scrollUp(distance);
-			break;
+			case 2:
+				this.scrollDown(distance);
+				break;
+			case 4:
+				this.scrollLeft(distance);
+				break;
+			case 6:
+				this.scrollRight(distance);
+				break;
+			case 8:
+				this.scrollUp(distance);
+				break;
 		}
 	}
 
 	updateEvents() {
-		this.events()
-			.forEach(event => {
-				event.update();
-			});
-		this._commonEvents.forEach(event => {
+		this.events().forEach((event) => {
+			event.update();
+		});
+		this._commonEvents.forEach((event) => {
 			event.update();
 		});
 	}
 
 	updateVehicles() {
-		this._vehicles.forEach(vehicle => {
+		this._vehicles.forEach((vehicle) => {
 			vehicle.update();
 		});
 	}
@@ -759,7 +765,7 @@ class Game_Map {
 		if (self.$testEvent) {
 			this._interpreter.setup(self.$testEvent, 0);
 			this._interpreter.setEventInfo({
-				eventType: 'test_event'
+				eventType: 'test_event',
 			});
 			self.$testEvent = null;
 			return true;
@@ -785,11 +791,15 @@ class Game_Map {
 	setupAutorunCommonEvent() {
 		for (let i = 0; i < self.$dataCommonEvents.length; i++) {
 			const event = self.$dataCommonEvents[i];
-			if (event && event.trigger === 1 && self.$gameSwitches.value(event.switchId)) {
+			if (
+				event &&
+				event.trigger === 1 &&
+				self.$gameSwitches.value(event.switchId)
+			) {
 				this._interpreter.setup(event.list);
 				this._interpreter.setEventInfo({
 					eventType: 'common_event',
-					commonEventId: i
+					commonEventId: i,
 				});
 				return true;
 			}
@@ -798,8 +808,7 @@ class Game_Map {
 	}
 
 	isAnyEventStarting() {
-		return this.events()
-			.some(event => event.isStarting());
+		return this.events().some((event) => event.isStarting());
 	}
 }
 

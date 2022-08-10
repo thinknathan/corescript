@@ -1,5 +1,5 @@
-import Graphics from "../rpg_core/Graphics.js";
-import SceneManager from "../rpg_managers/SceneManager.js";
+import Graphics from '../rpg_core/Graphics.js';
+import SceneManager from '../rpg_managers/SceneManager.js';
 
 //-----------------------------------------------------------------------------
 /**
@@ -12,7 +12,12 @@ class ResourceHandler {
 		throw new Error('This is a static class');
 	}
 
-	static createLoader(url, retryMethod, resignMethod, retryInterval = this._defaultRetryInterval) {
+	static createLoader(
+		url,
+		retryMethod,
+		resignMethod,
+		retryInterval = this._defaultRetryInterval
+	) {
 		const reloaders = this._reloaders;
 		let retryCount = 0;
 		return () => {
@@ -45,7 +50,7 @@ class ResourceHandler {
 		if (this._reloaders.length > 0) {
 			Graphics.eraseLoadingError();
 			SceneManager.resume();
-			this._reloaders.forEach(reloader => {
+			this._reloaders.forEach((reloader) => {
 				reloader();
 			});
 			this._reloaders.length = 0;

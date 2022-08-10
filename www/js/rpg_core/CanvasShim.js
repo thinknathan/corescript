@@ -1,5 +1,5 @@
-import * as PIXI from "../libs/pixi.js";
-import ContextShim from "./ContextShim.js";
+import * as PIXI from '../libs/pixi.js';
+import ContextShim from './ContextShim.js';
 
 class CanvasShim extends PIXI.Container {
 	constructor(...args) {
@@ -16,7 +16,7 @@ class CanvasShim extends PIXI.Container {
 				this._opacity = value;
 				this.alpha = value;
 			},
-			configurable: true
+			configurable: true,
 		});
 		Object.defineProperty(this.style, 'zIndex', {
 			get() {
@@ -25,7 +25,7 @@ class CanvasShim extends PIXI.Container {
 			set(value) {
 				this._zIndex = value;
 			},
-			configurable: true
+			configurable: true,
 		});
 	}
 

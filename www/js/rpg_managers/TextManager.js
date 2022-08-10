@@ -25,12 +25,12 @@ class TextManager {
 	}
 
 	static getter(method, param) {
-		return ({
+		return {
 			get() {
 				return this[method](param);
 			},
-			configurable: true
-		});
+			configurable: true,
+		};
 	}
 }
 
@@ -38,7 +38,7 @@ Object.defineProperty(TextManager, 'currencyUnit', {
 	get() {
 		return self.$dataSystem.currencyUnit;
 	},
-	configurable: true
+	configurable: true,
 });
 
 Object.defineProperties(TextManager, {

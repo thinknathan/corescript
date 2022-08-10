@@ -173,8 +173,12 @@ class Game_Message {
 	}
 
 	isBusy() {
-		return (this.hasText() || this.isChoice() ||
-			this.isNumberInput() || this.isItemChoice());
+		return (
+			this.hasText() ||
+			this.isChoice() ||
+			this.isNumberInput() ||
+			this.isItemChoice()
+		);
 	}
 
 	newPage() {

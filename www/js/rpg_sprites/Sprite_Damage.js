@@ -1,5 +1,5 @@
-import Sprite from "../rpg_core/Sprite.js";
-import ImageManager from "../rpg_managers/ImageManager.js";
+import Sprite from '../rpg_core/Sprite.js';
+import ImageManager from '../rpg_managers/ImageManager.js';
 
 //-----------------------------------------------------------------------------
 // Sprite_Damage
@@ -56,8 +56,7 @@ class Sprite_Damage extends Sprite {
 	}
 
 	createDigits(baseRow, value) {
-		const string = Math.abs(value)
-			.toString();
+		const string = Math.abs(value).toString();
 		const row = baseRow + (value < 0 ? 1 : 0);
 		const w = this.digitWidth();
 		const h = this.digitHeight();
@@ -113,7 +112,7 @@ class Sprite_Damage extends Sprite {
 
 	updateOpacity() {
 		if (this._duration < 10) {
-			this.opacity = 255 * this._duration / 10;
+			this.opacity = (255 * this._duration) / 10;
 		}
 	}
 

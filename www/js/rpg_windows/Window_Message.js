@@ -1,13 +1,13 @@
-import Window_Base from "./Window_Base.js";
-import Graphics from "../rpg_core/Graphics.js";
-import Utils from "../rpg_core/Utils.js";
-import Input from "../rpg_core/Input.js";
-import TouchInput from "../rpg_core/TouchInput.js";
-import ImageManager from "../rpg_managers/ImageManager.js";
-import Window_Gold from "../rpg_windows/Window_Gold.js";
-import Window_ChoiceList from "../rpg_windows/Window_ChoiceList.js";
-import Window_NumberInput from "../rpg_windows/Window_NumberInput.js";
-import Window_EventItem from "../rpg_windows/Window_EventItem.js";
+import Window_Base from './Window_Base.js';
+import Graphics from '../rpg_core/Graphics.js';
+import Utils from '../rpg_core/Utils.js';
+import Input from '../rpg_core/Input.js';
+import TouchInput from '../rpg_core/TouchInput.js';
+import ImageManager from '../rpg_managers/ImageManager.js';
+import Window_Gold from '../rpg_windows/Window_Gold.js';
+import Window_ChoiceList from '../rpg_windows/Window_ChoiceList.js';
+import Window_NumberInput from '../rpg_windows/Window_NumberInput.js';
+import Window_EventItem from '../rpg_windows/Window_EventItem.js';
 
 //-----------------------------------------------------------------------------
 // Window_Message
@@ -42,8 +42,12 @@ class Window_Message extends Window_Base {
 	}
 
 	subWindows() {
-		return [this._goldWindow, this._choiceWindow,
-                this._numberWindow, this._itemWindow];
+		return [
+			this._goldWindow,
+			this._choiceWindow,
+			this._numberWindow,
+			this._itemWindow,
+		];
 	}
 
 	createSubWindows() {
@@ -111,7 +115,9 @@ class Window_Message extends Window_Base {
 	startMessage() {
 		this._textState = {};
 		this._textState.index = 0;
-		this._textState.text = this.convertEscapeCharacters(self.$gameMessage.allText());
+		this._textState.text = this.convertEscapeCharacters(
+			self.$gameMessage.allText()
+		);
 		this.newPage(this._textState);
 		this.updatePlacement();
 		this.updateBackground();
@@ -120,8 +126,9 @@ class Window_Message extends Window_Base {
 
 	updatePlacement() {
 		this._positionType = self.$gameMessage.positionType();
-		this.y = this._positionType * (Graphics.boxHeight - this.height) / 2;
-		this._goldWindow.y = this.y > 0 ? 0 : Graphics.boxHeight - this._goldWindow.height;
+		this.y = (this._positionType * (Graphics.boxHeight - this.height)) / 2;
+		this._goldWindow.y =
+			this.y > 0 ? 0 : Graphics.boxHeight - this._goldWindow.height;
 	}
 
 	updateBackground() {
@@ -176,9 +183,11 @@ class Window_Message extends Window_Base {
 	}
 
 	isAnySubWindowActive() {
-		return (this._choiceWindow.active ||
+		return (
+			this._choiceWindow.active ||
 			this._numberWindow.active ||
-			this._itemWindow.active);
+			this._itemWindow.active
+		);
 	}
 
 	updateMessage() {
@@ -188,7 +197,11 @@ class Window_Message extends Window_Base {
 					this.newPage(this._textState);
 				}
 				this.updateShowFast();
-				if (!this._showFast && !this._lineShowFast && this._textSpeedCount < this._textSpeed) {
+				if (
+					!this._showFast &&
+					!this._lineShowFast &&
+					this._textSpeedCount < this._textSpeed
+				) {
 					this._textSpeedCount++;
 					break;
 				}
@@ -237,18 +250,26 @@ class Window_Message extends Window_Base {
 	}
 
 	isTriggered() {
-		return Input.isRepeated('ok') || Input.isRepeated('cancel') ||
-			TouchInput.isRepeated();
+		return (
+			Input.isRepeated('ok') ||
+			Input.isRepeated('cancel') ||
+			TouchInput.isRepeated()
+		);
 	}
 
 	doesContinue() {
-		return (self.$gameMessage.hasText() && !self.$gameMessage.scrollMode() &&
-			!this.areSettingsChanged());
+		return (
+			self.$gameMessage.hasText() &&
+			!self.$gameMessage.scrollMode() &&
+			!this.areSettingsChanged()
+		);
 	}
 
 	areSettingsChanged() {
-		return (this._background !== self.$gameMessage.background() ||
-			this._positionType !== self.$gameMessage.positionType());
+		return (
+			this._background !== self.$gameMessage.background() ||
+			this._positionType !== self.$gameMessage.positionType()
+		);
 	}
 
 	updateShowFast() {
@@ -269,11 +290,20 @@ class Window_Message extends Window_Base {
 	}
 
 	loadMessageFace() {
-		this._faceBitmap = ImageManager.reserveFace(self.$gameMessage.faceName(), 0, this._imageReservationId);
+		this._faceBitmap = ImageManager.reserveFace(
+			self.$gameMessage.faceName(),
+			0,
+			this._imageReservationId
+		);
 	}
 
 	drawMessageFace() {
-		this.drawFace(self.$gameMessage.faceName(), self.$gameMessage.faceIndex(), 0, 0);
+		this.drawFace(
+			self.$gameMessage.faceName(),
+			self.$gameMessage.faceIndex(),
+			0,
+			0
+		);
 		ImageManager.releaseReservation(this._imageReservationId);
 	}
 
@@ -298,47 +328,46 @@ class Window_Message extends Window_Base {
 		this.startPause();
 	}
 
-	isEndOfText({
-		index,
-		text
-	}) {
+	isEndOfText({ index, text }) {
 		return index >= text.length;
 	}
 
 	needsNewPage(textState) {
-		return (!this.isEndOfText(textState) &&
-			textState.y + textState.height > this.contents.height);
+		return (
+			!this.isEndOfText(textState) &&
+			textState.y + textState.height > this.contents.height
+		);
 	}
 
 	processEscapeCharacter(code, textState) {
 		switch (code) {
-		case '$':
-			this._goldWindow.open();
-			break;
-		case '.':
-			this.startWait(15);
-			break;
-		case '|':
-			this.startWait(60);
-			break;
-		case '!':
-			this.startPause();
-			break;
-		case '>':
-			this._lineShowFast = true;
-			break;
-		case '<':
-			this._lineShowFast = false;
-			break;
-		case '^':
-			this._pauseSkip = true;
-			break;
-		case 'S':
-			this._textSpeed = this.obtainEscapeParam(textState) - 1;
-			break;
-		default:
-			super.processEscapeCharacter(code, textState);
-			break;
+			case '$':
+				this._goldWindow.open();
+				break;
+			case '.':
+				this.startWait(15);
+				break;
+			case '|':
+				this.startWait(60);
+				break;
+			case '!':
+				this.startPause();
+				break;
+			case '>':
+				this._lineShowFast = true;
+				break;
+			case '<':
+				this._lineShowFast = false;
+				break;
+			case '^':
+				this._pauseSkip = true;
+				break;
+			case 'S':
+				this._textSpeed = this.obtainEscapeParam(textState) - 1;
+				break;
+			default:
+				super.processEscapeCharacter(code, textState);
+				break;
 		}
 	}
 

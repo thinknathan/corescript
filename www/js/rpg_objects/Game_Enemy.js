@@ -1,5 +1,5 @@
-import Game_Battler from "./Game_Battler.js";
-import SoundManager from "../rpg_managers/SoundManager.js";
+import Game_Battler from './Game_Battler.js';
+import SoundManager from '../rpg_managers/SoundManager.js';
 
 //-----------------------------------------------------------------------------
 // Game_Enemy
@@ -46,8 +46,7 @@ class Game_Enemy extends Game_Battler {
 	}
 
 	index() {
-		return self.$gameTroop.members()
-			.indexOf(this);
+		return self.$gameTroop.members().indexOf(this);
 	}
 
 	isBattleMember() {
@@ -63,38 +62,29 @@ class Game_Enemy extends Game_Battler {
 	}
 
 	traitObjects() {
-		return Game_Battler.prototype.traitObjects.call(this)
-			.concat(this.enemy());
+		return Game_Battler.prototype.traitObjects.call(this).concat(this.enemy());
 	}
 
 	paramBase(paramId) {
-		return this.enemy()
-			.params[paramId];
+		return this.enemy().params[paramId];
 	}
 
 	exp() {
-		return this.enemy()
-			.exp;
+		return this.enemy().exp;
 	}
 
 	gold() {
-		return this.enemy()
-			.gold;
+		return this.enemy().gold;
 	}
 
 	makeDropItems() {
-		return this.enemy()
-			.dropItems.reduce((r, {
-				kind,
-				denominator,
-				dataId
-			}) => {
-				if (kind > 0 && Math.random() * denominator < this.dropItemRate()) {
-					return r.concat(this.itemObject(kind, dataId));
-				} else {
-					return r;
-				}
-			}, []);
+		return this.enemy().dropItems.reduce((r, { kind, denominator, dataId }) => {
+			if (kind > 0 && Math.random() * denominator < this.dropItemRate()) {
+				return r.concat(this.itemObject(kind, dataId));
+			} else {
+				return r;
+			}
+		}, []);
 	}
 
 	dropItemRate() {
@@ -126,18 +116,15 @@ class Game_Enemy extends Game_Battler {
 	}
 
 	battlerName() {
-		return this.enemy()
-			.battlerName;
+		return this.enemy().battlerName;
 	}
 
 	battlerHue() {
-		return this.enemy()
-			.battlerHue;
+		return this.enemy().battlerHue;
 	}
 
 	originalName() {
-		return this.enemy()
-			.name;
+		return this.enemy().name;
 	}
 
 	name() {
@@ -178,17 +165,17 @@ class Game_Enemy extends Game_Battler {
 	performCollapse() {
 		super.performCollapse();
 		switch (this.collapseType()) {
-		case 0:
-			this.requestEffect('collapse');
-			SoundManager.playEnemyCollapse();
-			break;
-		case 1:
-			this.requestEffect('bossCollapse');
-			SoundManager.playBossCollapse1();
-			break;
-		case 2:
-			this.requestEffect('instantCollapse');
-			break;
+			case 0:
+				this.requestEffect('collapse');
+				SoundManager.playEnemyCollapse();
+				break;
+			case 1:
+				this.requestEffect('bossCollapse');
+				SoundManager.playBossCollapse1();
+				break;
+			case 2:
+				this.requestEffect('instantCollapse');
+				break;
 		}
 	}
 
@@ -205,28 +192,24 @@ class Game_Enemy extends Game_Battler {
 		}
 	}
 
-	meetsCondition({
-		conditionParam1,
-		conditionParam2,
-		conditionType
-	}) {
+	meetsCondition({ conditionParam1, conditionParam2, conditionType }) {
 		const param1 = conditionParam1;
 		const param2 = conditionParam2;
 		switch (conditionType) {
-		case 1:
-			return this.meetsTurnCondition(param1, param2);
-		case 2:
-			return this.meetsHpCondition(param1, param2);
-		case 3:
-			return this.meetsMpCondition(param1, param2);
-		case 4:
-			return this.meetsStateCondition(param1);
-		case 5:
-			return this.meetsPartyLevelCondition(param1);
-		case 6:
-			return this.meetsSwitchCondition(param1);
-		default:
-			return true;
+			case 1:
+				return this.meetsTurnCondition(param1, param2);
+			case 2:
+				return this.meetsHpCondition(param1, param2);
+			case 3:
+				return this.meetsMpCondition(param1, param2);
+			case 4:
+				return this.meetsStateCondition(param1);
+			case 5:
+				return this.meetsPartyLevelCondition(param1);
+			case 6:
+				return this.meetsSwitchCondition(param1);
+			default:
+				return true;
 		}
 	}
 
@@ -260,13 +243,17 @@ class Game_Enemy extends Game_Battler {
 	}
 
 	isActionValid(action) {
-		return this.meetsCondition(action) && this.canUse(self.$dataSkills[action.skillId]);
+		return (
+			this.meetsCondition(action) &&
+			this.canUse(self.$dataSkills[action.skillId])
+		);
 	}
 
 	selectAction(actionList, ratingZero) {
-		const sum = actionList.reduce((r, {
-			rating
-		}) => r + rating - ratingZero, 0);
+		const sum = actionList.reduce(
+			(r, { rating }) => r + rating - ratingZero,
+			0
+		);
 		if (sum > 0) {
 			let value = Math.randomInt(sum);
 
@@ -282,26 +269,23 @@ class Game_Enemy extends Game_Battler {
 	}
 
 	selectAllActions(actionList) {
-		const ratingMax = Math.max.apply(null, actionList.map(({
-			rating
-		}) => rating));
+		const ratingMax = Math.max.apply(
+			null,
+			actionList.map(({ rating }) => rating)
+		);
 		const ratingZero = ratingMax - 3;
-		actionList = actionList.filter(({
-			rating
-		}) => rating > ratingZero);
+		actionList = actionList.filter(({ rating }) => rating > ratingZero);
 		for (let i = 0; i < this.numActions(); i++) {
-			this.action(i)
-				.setEnemyAction(this.selectAction(actionList, ratingZero));
+			this.action(i).setEnemyAction(this.selectAction(actionList, ratingZero));
 		}
 	}
 
 	makeActions() {
 		super.makeActions();
 		if (this.numActions() > 0) {
-			const actionList = this.enemy()
-				.actions.filter(function (a) {
-					return this.isActionValid(a);
-				}, this);
+			const actionList = this.enemy().actions.filter(function (a) {
+				return this.isActionValid(a);
+			}, this);
 			if (actionList.length > 0) {
 				this.selectAllActions(actionList);
 			}

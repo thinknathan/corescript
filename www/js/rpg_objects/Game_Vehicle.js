@@ -1,5 +1,5 @@
-import Game_Character from "./Game_Character.js";
-import AudioManager from "../rpg_managers/AudioManager.js";
+import Game_Character from './Game_Character.js';
+import AudioManager from '../rpg_managers/AudioManager.js';
 
 //-----------------------------------------------------------------------------
 // Game_Vehicle
@@ -140,8 +140,7 @@ class Game_Vehicle extends Game_Character {
 	}
 
 	playBgm() {
-		AudioManager.playBgm(this._bgm || this.vehicle()
-			.bgm);
+		AudioManager.playBgm(this._bgm || this.vehicle().bgm);
 	}
 
 	syncWithPlayer() {
@@ -162,7 +161,7 @@ class Game_Vehicle extends Game_Character {
 	}
 
 	shadowOpacity() {
-		return 255 * this._altitude / this.maxAltitude();
+		return (255 * this._altitude) / this.maxAltitude();
 	}
 
 	canMove() {
@@ -216,8 +215,7 @@ class Game_Vehicle extends Game_Character {
 			if (!self.$gameMap.isAirshipLandOk(x, y)) {
 				return false;
 			}
-			if (self.$gameMap.eventsXy(x, y)
-				.length > 0) {
+			if (self.$gameMap.eventsXy(x, y).length > 0) {
 				return false;
 			}
 		} else {

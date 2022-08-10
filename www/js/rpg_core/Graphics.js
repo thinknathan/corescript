@@ -1,10 +1,10 @@
-import * as PIXI from "../libs/pixi.js";
-import ProgressWatcher from "../rpg_core/ProgressWatcher.js";
-import ResourceHandler from "../rpg_core/ResourceHandler.js";
-import Utils from "../rpg_core/Utils.js";
-import UpperCanvas from "./CanvasShim.js";
-import SceneManager from "../rpg_managers/SceneManager.js";
-import GameStats from "https://cdn.skypack.dev/-/gamestats.js@v1.0.3-FI1CU3PkCi2MgwIBR5jn/dist=es2019,mode=imports/optimized/gamestatsjs.js";
+import * as PIXI from '../libs/pixi.js';
+import ProgressWatcher from '../rpg_core/ProgressWatcher.js';
+import ResourceHandler from '../rpg_core/ResourceHandler.js';
+import Utils from '../rpg_core/Utils.js';
+import UpperCanvas from './CanvasShim.js';
+import SceneManager from '../rpg_managers/SceneManager.js';
+import GameStats from 'https://cdn.skypack.dev/-/gamestats.js@v1.0.3-FI1CU3PkCi2MgwIBR5jn/dist=es2019,mode=imports/optimized/gamestatsjs.js';
 
 //-----------------------------------------------------------------------------
 /**
@@ -167,7 +167,8 @@ class Graphics {
 		this._barElement.id = 'loading-bar';
 		this._barElement.style.width = '100%';
 		this._barElement.style.height = '10%';
-		this._barElement.style.background = 'linear-gradient(to top, gray, lightgray)';
+		this._barElement.style.background =
+			'linear-gradient(to top, gray, lightgray)';
 		this._barElement.style.border = '5px solid white';
 		this._barElement.style.borderRadius = '15px';
 		this._barElement.style.marginTop = '40%';
@@ -176,7 +177,8 @@ class Graphics {
 		this._filledBarElement.id = 'loading-filled-bar';
 		this._filledBarElement.style.width = '0%';
 		this._filledBarElement.style.height = '100%';
-		this._filledBarElement.style.background = 'linear-gradient(to top, lime, honeydew)';
+		this._filledBarElement.style.background =
+			'linear-gradient(to top, lime, honeydew)';
 		this._filledBarElement.style.borderRadius = '10px';
 
 		this._progressElement.appendChild(this._barElement);
@@ -251,7 +253,10 @@ class Graphics {
 	static printLoadingError(url) {
 		if (this._errorPrinter && !this._errorShowed) {
 			this._updateErrorPrinter();
-			this._errorPrinter.innerHTML = this._makeErrorHtml('Loading Error', `Failed to load: ${url}`);
+			this._errorPrinter.innerHTML = this._makeErrorHtml(
+				'Loading Error',
+				`Failed to load: ${url}`
+			);
 			this._errorPrinter.style.userSelect = 'text';
 			this._errorPrinter.style.webkitUserSelect = 'text';
 			this._errorPrinter.style.msUserSelect = 'text';
@@ -262,10 +267,10 @@ class Graphics {
 			button.style.fontSize = '24px';
 			button.style.color = '#ffffff';
 			button.style.backgroundColor = '#000000';
-			button.addEventListener('touchstart', event => {
+			button.addEventListener('touchstart', (event) => {
 				event.stopPropagation();
 			});
-			button.addEventListener('click', event => {
+			button.addEventListener('click', (event) => {
 				ResourceHandler.retry();
 			});
 			this._errorPrinter.appendChild(button);
@@ -330,7 +335,9 @@ class Graphics {
 		if (this._errorPrinter && this._showErrorDetail) {
 			const eventInfo = this._formatEventInfo(error);
 			const eventCommandInfo = this._formatEventCommandInfo(error);
-			const info = eventCommandInfo ? `${eventInfo}, ${eventCommandInfo}` : eventInfo;
+			const info = eventCommandInfo
+				? `${eventInfo}, ${eventCommandInfo}`
+				: eventInfo;
 			const stack = this._formatStackTrace(error);
 			this._makeErrorDetail(info, stack);
 		}
@@ -402,8 +409,7 @@ class Graphics {
 		const head = document.getElementsByTagName('head');
 		const rule = `@font-face { font-family: "${name}"; src: url("${url}"); }`;
 		style.type = 'text/css';
-		head.item(0)
-			.appendChild(style);
+		head.item(0).appendChild(style);
 		style.sheet.insertRule(rule, 0);
 		this._createFontLoader(name);
 	}
@@ -432,11 +438,9 @@ class Graphics {
 			let width1;
 			let width2;
 			context.font = `40px ${name}, sans-serif`;
-			width1 = context.measureText(text)
-				.width;
+			width1 = context.measureText(text).width;
 			context.font = '40px sans-serif';
-			width2 = context.measureText(text)
-				.width;
+			width2 = context.measureText(text).width;
 			return width1 !== width2;
 		}
 	}
@@ -553,7 +557,7 @@ class Graphics {
 	 * @return {Boolean} True if the specified point is inside the game canvas area
 	 */
 	static isInsideCanvas(x, y) {
-		return (x >= 0 && x < this._width && y >= 0 && y < this._height);
+		return x >= 0 && x < this._width && y >= 0 && y < this._height;
 	}
 
 	/**
@@ -992,18 +996,18 @@ class Graphics {
 	static _onKeyDown(event) {
 		if (!event.ctrlKey && !event.altKey) {
 			switch (event.keyCode) {
-			case 113: // F2
-				event.preventDefault();
-				this._switchFPSMeter();
-				break;
-			case 114: // F3
-				event.preventDefault();
-				this._switchStretchMode();
-				break;
-			case 115: // F4
-				event.preventDefault();
-				this._switchFullScreen();
-				break;
+				case 113: // F2
+					event.preventDefault();
+					this._switchFPSMeter();
+					break;
+				case 114: // F3
+					event.preventDefault();
+					this._switchStretchMode();
+					break;
+				case 115: // F4
+					event.preventDefault();
+					this._switchFullScreen();
+					break;
 			}
 		}
 	}
@@ -1089,9 +1093,9 @@ class Graphics {
 			width: this._width,
 			height: this._height,
 			resolution: window.devicePixelRatio,
-			powerPreference: "high-performance",
+			powerPreference: 'high-performance',
 			autoStart: true,
-			forceCanvas: (SceneManager.preferableRendererType() === 'canvas')
+			forceCanvas: SceneManager.preferableRendererType() === 'canvas',
 		};
 		try {
 			this._app = new PIXI.Application(options);
@@ -1105,10 +1109,11 @@ class Graphics {
 
 	static _setupCssFontLoading() {
 		if (Graphics._cssFontLoading) {
-			document.fonts.ready.then(fonts => {
+			document.fonts.ready
+				.then((fonts) => {
 					Graphics._fontLoaded = fonts;
 				})
-				.catch(error => {
+				.catch((error) => {
 					SceneManager.onError(error);
 				});
 		}
@@ -1120,7 +1125,7 @@ class Graphics {
 	 * @static
 	 * @method tickStart
 	 */
-	static tickStart() {};
+	static tickStart() {}
 
 	/**
 	 * Marks the end of each frame for FPSMeter.
@@ -1128,7 +1133,7 @@ class Graphics {
 	 * @static
 	 * @method tickEnd
 	 */
-	static tickEnd() {};
+	static tickEnd() {}
 
 	/**
 	 * Checks whether the current browser supports WebGL.
@@ -1138,19 +1143,21 @@ class Graphics {
 	 * @return {Boolean} True if the current browser supports WebGL.
 	 */
 	static hasWebGL() {
-		if (typeof Graphics._canWebGL === "boolean") {
+		if (typeof Graphics._canWebGL === 'boolean') {
 			return Graphics._canWebGL;
 		}
 		try {
 			const canvas = document.createElement('canvas');
-			const result = !!(canvas.getContext('webgl') || canvas.getContext('experimental-webgl'));
+			const result = !!(
+				canvas.getContext('webgl') || canvas.getContext('experimental-webgl')
+			);
 			Graphics._canWebGL = result;
 			return result;
 		} catch (e) {
 			Graphics._canWebGL = false;
 			return false;
 		}
-	};
+	}
 
 	/**
 	 * Calls pixi.js garbage collector
@@ -1170,7 +1177,9 @@ class Graphics {
 	 * @private
 	 */
 	static _makeErrorHtml(name, message) {
-		return `<font color="yellow"><b>${name}</b></font><br><font color="white">${decodeURIComponent(message)}</font><br>`;
+		return `<font color="yellow"><b>${name}</b></font><br><font color="white">${decodeURIComponent(
+			message
+		)}</font><br>`;
 	}
 
 	/**
@@ -1203,16 +1212,28 @@ class Graphics {
 	 */
 	static _formatEventInfo(error) {
 		switch (String(error.eventType)) {
-		case "map_event":
-			return "MapID: %1, MapEventID: %2, page: %3, line: %4".format(error.mapId, error.mapEventId, error.page, error.line);
-		case "common_event":
-			return "CommonEventID: %1, line: %2".format(error.commonEventId, error.line);
-		case "battle_event":
-			return "TroopID: %1, page: %2, line: %3".format(error.troopId, error.page, error.line);
-		case "test_event":
-			return "TestEvent, line: %1".format(error.line);
-		default:
-			return "No information";
+			case 'map_event':
+				return 'MapID: %1, MapEventID: %2, page: %3, line: %4'.format(
+					error.mapId,
+					error.mapEventId,
+					error.page,
+					error.line
+				);
+			case 'common_event':
+				return 'CommonEventID: %1, line: %2'.format(
+					error.commonEventId,
+					error.line
+				);
+			case 'battle_event':
+				return 'TroopID: %1, page: %2, line: %3'.format(
+					error.troopId,
+					error.page,
+					error.line
+				);
+			case 'test_event':
+				return 'TestEvent, line: %1'.format(error.line);
+			default:
+				return 'No information';
 		}
 	}
 
@@ -1221,26 +1242,23 @@ class Graphics {
 	 * @method _formatEventCommandInfo
 	 * @private
 	 */
-	static _formatEventCommandInfo({
-		eventCommand,
-		content
-	}) {
+	static _formatEventCommandInfo({ eventCommand, content }) {
 		switch (String(eventCommand)) {
-		case "plugin_command":
-			return `◆Plugin Command: ${content}`;
-		case "script":
-			return `◆Script: ${content}`;
-		case "control_variables":
-			return `◆Control Variables: Script: ${content}`;
-		case "conditional_branch_script":
-			return `◆If: Script: ${content}`;
-		case "set_route_script":
-			return `◆Set Movement Route: ◇Script: ${content}`;
-		case "auto_route_script":
-			return `Autonomous Movement Custom Route: ◇Script: ${content}`;
-		case "other":
-		default:
-			return "";
+			case 'plugin_command':
+				return `◆Plugin Command: ${content}`;
+			case 'script':
+				return `◆Script: ${content}`;
+			case 'control_variables':
+				return `◆Control Variables: Script: ${content}`;
+			case 'conditional_branch_script':
+				return `◆If: Script: ${content}`;
+			case 'set_route_script':
+				return `◆Set Movement Route: ◇Script: ${content}`;
+			case 'auto_route_script':
+				return `Autonomous Movement Custom Route: ◇Script: ${content}`;
+			case 'other':
+			default:
+				return '';
 		}
 	}
 
@@ -1249,15 +1267,15 @@ class Graphics {
 	 * @method _formatStackTrace
 	 * @private
 	 */
-	static _formatStackTrace({
-		stack
-	}) {
-		return decodeURIComponent((stack || '')
-			.replace(/file:.*js\//g, '')
-			.replace(/http:.*js\//g, '')
-			.replace(/https:.*js\//g, '')
-			.replace(/chrome-extension:.*js\//g, '')
-			.replace(/\n/g, '<br>'));
+	static _formatStackTrace({ stack }) {
+		return decodeURIComponent(
+			(stack || '')
+				.replace(/file:.*js\//g, '')
+				.replace(/http:.*js\//g, '')
+				.replace(/https:.*js\//g, '')
+				.replace(/chrome-extension:.*js\//g, '')
+				.replace(/\n/g, '<br>')
+		);
 	}
 
 	/**
@@ -1265,7 +1283,7 @@ class Graphics {
 	 * @method _createRenderer
 	 * @private
 	 */
-	static _createRenderer() {};
+	static _createRenderer() {}
 
 	/**
 	 * @static
@@ -1287,7 +1305,7 @@ class Graphics {
 		div.style.height = '1px';
 		div.appendChild(text);
 		document.body.appendChild(div);
-	};
+	}
 
 	/**
 	 * @static
@@ -1300,7 +1318,7 @@ class Graphics {
 		body.style.webkitUserSelect = 'none';
 		body.style.msUserSelect = 'none';
 		body.style.mozUserSelect = 'none';
-	};
+	}
 
 	/**
 	 * @static
@@ -1313,7 +1331,7 @@ class Graphics {
 		for (let i = 0; i < elements.length; i++) {
 			elements[i].oncontextmenu = oncontextmenu;
 		}
-	};
+	}
 
 	/**
 	 * @static
@@ -1322,10 +1340,12 @@ class Graphics {
 	 * @private
 	 */
 	static _isFullScreen() {
-		return document.fullscreenElement ||
+		return (
+			document.fullscreenElement ||
 			document.mozFullScreen ||
 			document.webkitFullscreenElement ||
-			document.msFullscreenElement;
+			document.msFullscreenElement
+		);
 	}
 
 	/**
@@ -1364,7 +1384,11 @@ class Graphics {
 	}
 }
 
-Graphics._cssFontLoading = !Utils.isWorker() && (document.fonts && document.fonts.ready && document.fonts.ready.then);
+Graphics._cssFontLoading =
+	!Utils.isWorker() &&
+	document.fonts &&
+	document.fonts.ready &&
+	document.fonts.ready.then;
 Graphics._fontLoaded = null;
 Graphics._videoVolume = 1;
 
@@ -1375,11 +1399,11 @@ Graphics._videoVolume = 1;
  * @type PIXI.Application
  * @name Graphics.app
  */
-Object.defineProperty(Graphics, "app", {
+Object.defineProperty(Graphics, 'app', {
 	get() {
 		return this._app;
 	},
-	configurable: true
+	configurable: true,
 });
 
 /**
@@ -1389,11 +1413,11 @@ Object.defineProperty(Graphics, "app", {
  * @type PIXI.Renderer
  * @name Graphics._renderer
  */
-Object.defineProperty(Graphics, "_renderer", {
+Object.defineProperty(Graphics, '_renderer', {
 	get() {
 		return this._app.renderer;
 	},
-	configurable: true
+	configurable: true,
 });
 
 /**
@@ -1464,7 +1488,7 @@ Object.defineProperty(Graphics, 'width', {
 			this._updateAllElements();
 		}
 	},
-	configurable: true
+	configurable: true,
 });
 
 /**
@@ -1484,7 +1508,7 @@ Object.defineProperty(Graphics, 'height', {
 			this._updateAllElements();
 		}
 	},
-	configurable: true
+	configurable: true,
 });
 
 /**
@@ -1501,7 +1525,7 @@ Object.defineProperty(Graphics, 'boxWidth', {
 	set(value) {
 		this._boxWidth = value;
 	},
-	configurable: true
+	configurable: true,
 });
 
 /**
@@ -1518,7 +1542,7 @@ Object.defineProperty(Graphics, 'boxHeight', {
 	set(value) {
 		this._boxHeight = value;
 	},
-	configurable: true
+	configurable: true,
 });
 
 /**
@@ -1538,7 +1562,7 @@ Object.defineProperty(Graphics, 'scale', {
 			this._updateAllElements();
 		}
 	},
-	configurable: true
+	configurable: true,
 });
 
 export default Graphics;

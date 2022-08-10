@@ -1,4 +1,4 @@
-import Game_Follower from "../rpg_objects/Game_Follower.js";
+import Game_Follower from '../rpg_objects/Game_Follower.js';
 
 //-----------------------------------------------------------------------------
 // Game_Followers
@@ -46,7 +46,7 @@ class Game_Followers {
 	}
 
 	refresh() {
-		this.forEach(follower => follower.refresh(), this);
+		this.forEach((follower) => follower.refresh(), this);
 	}
 
 	update() {
@@ -58,14 +58,14 @@ class Game_Followers {
 				this._gathering = false;
 			}
 		}
-		this.forEach(follower => {
+		this.forEach((follower) => {
 			follower.update();
 		}, this);
 	}
 
 	updateMove() {
 		for (let i = this._data.length - 1; i >= 0; i--) {
-			const precedingCharacter = (i > 0 ? this._data[i - 1] : self.$gamePlayer);
+			const precedingCharacter = i > 0 ? this._data[i - 1] : self.$gamePlayer;
 			this._data[i].chaseCharacter(precedingCharacter);
 		}
 	}
@@ -81,7 +81,7 @@ class Game_Followers {
 	}
 
 	synchronize(x, y, d) {
-		this.forEach(follower => {
+		this.forEach((follower) => {
 			follower.locate(x, y);
 			follower.setDirection(d);
 		}, this);
@@ -96,22 +96,27 @@ class Game_Followers {
 	}
 
 	visibleFollowers() {
-		return this._data.filter(follower => follower.isVisible(), this);
+		return this._data.filter((follower) => follower.isVisible(), this);
 	}
 
 	areMoving() {
-		return this.visibleFollowers()
-			.some(follower => follower.isMoving(), this);
+		return this.visibleFollowers().some(
+			(follower) => follower.isMoving(),
+			this
+		);
 	}
 
 	areGathered() {
-		return this.visibleFollowers()
-			.every(follower => !follower.isMoving() && follower.pos(self.$gamePlayer.x, self.$gamePlayer.y), this);
+		return this.visibleFollowers().every(
+			(follower) =>
+				!follower.isMoving() &&
+				follower.pos(self.$gamePlayer.x, self.$gamePlayer.y),
+			this
+		);
 	}
 
 	isSomeoneCollided(x, y) {
-		return this.visibleFollowers()
-			.some(follower => follower.pos(x, y), this);
+		return this.visibleFollowers().some((follower) => follower.pos(x, y), this);
 	}
 }
 

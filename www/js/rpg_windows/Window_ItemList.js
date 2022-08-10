@@ -1,5 +1,5 @@
-import Window_Selectable from "./Window_Selectable.js";
-import { DataManager } from "../rpg_managers/DataManager.js";
+import Window_Selectable from './Window_Selectable.js';
+import { DataManager } from '../rpg_managers/DataManager.js';
 
 //-----------------------------------------------------------------------------
 // Window_ItemList
@@ -49,16 +49,16 @@ class Window_ItemList extends Window_Selectable {
 
 	includes(item) {
 		switch (this._category) {
-		case 'item':
-			return DataManager.isItem(item) && item.itypeId === 1;
-		case 'weapon':
-			return DataManager.isWeapon(item);
-		case 'armor':
-			return DataManager.isArmor(item);
-		case 'keyItem':
-			return DataManager.isItem(item) && item.itypeId === 2;
-		default:
-			return false;
+			case 'item':
+				return DataManager.isItem(item) && item.itypeId === 1;
+			case 'weapon':
+				return DataManager.isWeapon(item);
+			case 'armor':
+				return DataManager.isArmor(item);
+			case 'keyItem':
+				return DataManager.isItem(item) && item.itypeId === 2;
+			default:
+				return false;
 		}
 	}
 
@@ -71,10 +71,9 @@ class Window_ItemList extends Window_Selectable {
 	}
 
 	makeItemList() {
-		this._data = self.$gameParty.allItems()
-			.filter(function (item) {
-				return this.includes(item);
-			}, this);
+		this._data = self.$gameParty.allItems().filter(function (item) {
+			return this.includes(item);
+		}, this);
 		if (this.includes(null)) {
 			this._data.push(null);
 		}

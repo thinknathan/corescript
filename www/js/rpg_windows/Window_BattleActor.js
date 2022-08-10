@@ -1,4 +1,4 @@
-import Window_BattleStatus from "./Window_BattleStatus.js";
+import Window_BattleStatus from './Window_BattleStatus.js';
 
 //-----------------------------------------------------------------------------
 // Window_BattleActor

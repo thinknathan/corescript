@@ -1,7 +1,7 @@
-import * as PIXI from "../libs/pixi.js";
-import Point from "../rpg_core/Point.js";
-import Rectangle from "../rpg_core/Rectangle.js";
-import Sprite from "../rpg_core/Sprite.js";
+import * as PIXI from '../libs/pixi.js';
+import Point from '../rpg_core/Point.js';
+import Rectangle from '../rpg_core/Rectangle.js';
+import Sprite from '../rpg_core/Sprite.js';
 
 //-----------------------------------------------------------------------------
 /**
@@ -93,7 +93,7 @@ class TilingSprite extends PIXI.TilingSprite {
 	 * @method update
 	 */
 	update() {
-		this.children.forEach(child => {
+		this.children.forEach((child) => {
 			if (child.update) {
 				child.update();
 			}
@@ -205,9 +205,11 @@ class TilingSprite extends PIXI.TilingSprite {
 	 */
 }
 
-TilingSprite.prototype._renderCanvas_PIXI = PIXI.TilingSprite.prototype._renderCanvas;
+TilingSprite.prototype._renderCanvas_PIXI =
+	PIXI.TilingSprite.prototype._renderCanvas;
 TilingSprite.prototype._render_PIXI = PIXI.TilingSprite.prototype._render;
 
-TilingSprite.prototype.updateTransformTS = PIXI.TilingSprite.prototype.updateTransform;
+TilingSprite.prototype.updateTransformTS =
+	PIXI.TilingSprite.prototype.updateTransform;
 
 export default TilingSprite;

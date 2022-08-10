@@ -1,8 +1,8 @@
-import Window_Command from "./Window_Command.js";
-import Graphics from "../rpg_core/Graphics.js";
-import TextManager from "../rpg_managers/TextManager.js";
-import SoundManager from "../rpg_managers/SoundManager.js";
-import ConfigManager from "../rpg_managers/ConfigManager.js";
+import Window_Command from './Window_Command.js';
+import Graphics from '../rpg_core/Graphics.js';
+import TextManager from '../rpg_managers/TextManager.js';
+import SoundManager from '../rpg_managers/SoundManager.js';
+import ConfigManager from '../rpg_managers/ConfigManager.js';
 
 //-----------------------------------------------------------------------------
 // Window_Options
@@ -57,7 +57,13 @@ class Window_Options extends Window_Command {
 		this.resetTextColor();
 		this.changePaintOpacity(this.isCommandEnabled(index));
 		this.drawText(this.commandName(index), rect.x, rect.y, titleWidth, 'left');
-		this.drawText(this.statusText(index), rect.x + titleWidth, rect.y, statusWidth, 'right');
+		this.drawText(
+			this.statusText(index),
+			rect.x + titleWidth,
+			rect.y,
+			statusWidth,
+			'right'
+		);
 	}
 
 	statusWidth() {

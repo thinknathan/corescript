@@ -1,5 +1,15 @@
-import { strToU8, inflateSync, deflateSync, strFromU8 } from 'https://cdn.skypack.dev/pin/fflate@v0.7.3-x0OS7MYd1pAJyCyfqyxe/mode=imports/optimized/fflate.js';
-import { set, get, del, keys } from 'https://cdn.skypack.dev/pin/idb-keyval@v6.2.0-JnrT8KDKaQ7ZsLcm1DXx/mode=imports/optimized/idb-keyval.js'
+import {
+	strToU8,
+	inflateSync,
+	deflateSync,
+	strFromU8,
+} from 'https://cdn.skypack.dev/pin/fflate@v0.7.3-x0OS7MYd1pAJyCyfqyxe/mode=imports/optimized/fflate.js';
+import {
+	set,
+	get,
+	del,
+	keys,
+} from 'https://cdn.skypack.dev/pin/idb-keyval@v6.2.0-JnrT8KDKaQ7ZsLcm1DXx/mode=imports/optimized/idb-keyval.js';
 
 //-----------------------------------------------------------------------------
 // StorageManager
@@ -25,7 +35,7 @@ class StorageManager {
 			try {
 				const u8array = strToU8(data);
 				return deflateSync(u8array, {
-					level: 1
+					level: 1,
 				});
 			} catch (e) {
 				console.error(e);
@@ -70,8 +80,7 @@ class StorageManager {
 
 	static async load(savefileId, gameTitle) {
 		const key = this.storageKey(savefileId, gameTitle);
-		const data = await get(key)
-			.catch(this.failureCallback);
+		const data = await get(key).catch(this.failureCallback);
 		const result = await this.decompress(data);
 		if (result) {
 			return result;
@@ -82,7 +91,9 @@ class StorageManager {
 				await this.restoreBackup(savefileId, gameTitle);
 				return backup;
 			}
-			console.warn('[StorageManager.load] Loading failed. File broken or missing.');
+			console.warn(
+				'[StorageManager.load] Loading failed. File broken or missing.'
+			);
 			return false;
 		}
 	}
@@ -96,15 +107,14 @@ class StorageManager {
 
 	static async saveExists(savefileId, gameTitle) {
 		const key = this.storageKey(savefileId, gameTitle);
-		return await keys()
-			.then(function (keys) {
-				return keys.includes(key);
-			});
+		return await keys().then(function (keys) {
+			return keys.includes(key);
+		});
 	}
 
 	static async restoreBackup(savefileId, gameTitle) {
 		const key = this.storageKey(savefileId, gameTitle);
-		const backupKey = key + "bak";
+		const backupKey = key + 'bak';
 		const data = await this.loadBackup(savefileId, gameTitle);
 		await this.save(savefileId, data, gameTitle);
 		return await del(backupKey)
@@ -114,9 +124,8 @@ class StorageManager {
 
 	static async backupSave(savefileId, gameTitle) {
 		const key = this.storageKey(savefileId, gameTitle);
-		const backupKey = key + "bak";
-		const data = await get(key)
-			.catch(this.failureCallback);
+		const backupKey = key + 'bak';
+		const data = await get(key).catch(this.failureCallback);
 		if (data) {
 			return await set(backupKey, data)
 				.then(this.successCallback)
@@ -128,7 +137,7 @@ class StorageManager {
 
 	static async loadBackup(savefileId, gameTitle) {
 		const key = this.storageKey(savefileId, gameTitle);
-		const backupKey = key + "bak";
+		const backupKey = key + 'bak';
 		const compressed = await get(backupKey);
 		return await this.decompress(compressed);
 	}

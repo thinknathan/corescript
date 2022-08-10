@@ -1,5 +1,5 @@
-import Utils from "../rpg_core/Utils.js";
-import Graphics from "../rpg_core/Graphics.js";
+import Utils from '../rpg_core/Utils.js';
+import Graphics from '../rpg_core/Graphics.js';
 
 //-----------------------------------------------------------------------------
 /**
@@ -106,10 +106,12 @@ class TouchInput {
 	 * @return {Boolean} True if the mouse button or touchscreen is repeated
 	 */
 	static isRepeated() {
-		return (this.isPressed() &&
+		return (
+			this.isPressed() &&
 			(this._triggered ||
 				(this._pressedTime >= this.keyRepeatWait &&
-					this._pressedTime % this.keyRepeatInterval === 0)));
+					this._pressedTime % this.keyRepeatInterval === 0))
+		);
 	}
 
 	/**
@@ -166,15 +168,33 @@ class TouchInput {
 		document.addEventListener('mousedown', this._onMouseDown.bind(this));
 		document.addEventListener('mousemove', this._onMouseMove.bind(this));
 		document.addEventListener('mouseup', this._onMouseUp.bind(this));
-		document.addEventListener('wheel', this._onWheel.bind(this), isSupportPassive ? {
-			passive: false
-		} : false);
-		document.addEventListener('touchstart', this._onTouchStart.bind(this), isSupportPassive ? {
-			passive: false
-		} : false);
-		document.addEventListener('touchmove', this._onTouchMove.bind(this), isSupportPassive ? {
-			passive: false
-		} : false);
+		document.addEventListener(
+			'wheel',
+			this._onWheel.bind(this),
+			isSupportPassive
+				? {
+						passive: false,
+				  }
+				: false
+		);
+		document.addEventListener(
+			'touchstart',
+			this._onTouchStart.bind(this),
+			isSupportPassive
+				? {
+						passive: false,
+				  }
+				: false
+		);
+		document.addEventListener(
+			'touchmove',
+			this._onTouchMove.bind(this),
+			isSupportPassive
+				? {
+						passive: false,
+				  }
+				: false
+		);
 		document.addEventListener('touchend', this._onTouchEnd.bind(this));
 		document.addEventListener('touchcancel', this._onTouchCancel.bind(this));
 		document.addEventListener('pointerdown', this._onPointerDown.bind(this));
@@ -203,10 +223,7 @@ class TouchInput {
 	 * @param {MouseEvent} event
 	 * @private
 	 */
-	static _onLeftButtonDown({
-		pageX,
-		pageY
-	}) {
+	static _onLeftButtonDown({ pageX, pageY }) {
 		const x = Graphics.pageToCanvasX(pageX);
 		const y = Graphics.pageToCanvasY(pageY);
 		if (Graphics.isInsideCanvas(x, y)) {
@@ -222,10 +239,7 @@ class TouchInput {
 	 * @param {MouseEvent} event
 	 * @private
 	 */
-	static _onRightButtonDown({
-		pageX,
-		pageY
-	}) {
+	static _onRightButtonDown({ pageX, pageY }) {
 		const x = Graphics.pageToCanvasX(pageX);
 		const y = Graphics.pageToCanvasY(pageY);
 		if (Graphics.isInsideCanvas(x, y)) {
@@ -239,10 +253,7 @@ class TouchInput {
 	 * @param {MouseEvent} event
 	 * @private
 	 */
-	static _onMouseMove({
-		pageX,
-		pageY
-	}) {
+	static _onMouseMove({ pageX, pageY }) {
 		if (this._mousePressed) {
 			const x = Graphics.pageToCanvasX(pageX);
 			const y = Graphics.pageToCanvasY(pageY);
@@ -256,11 +267,7 @@ class TouchInput {
 	 * @param {MouseEvent} event
 	 * @private
 	 */
-	static _onMouseUp({
-		button,
-		pageX,
-		pageY
-	}) {
+	static _onMouseUp({ button, pageX, pageY }) {
 		if (button === 0) {
 			const x = Graphics.pageToCanvasX(pageX);
 			const y = Graphics.pageToCanvasY(pageY);
@@ -314,9 +321,7 @@ class TouchInput {
 	 * @param {TouchEvent} event
 	 * @private
 	 */
-	static _onTouchMove({
-		changedTouches
-	}) {
+	static _onTouchMove({ changedTouches }) {
 		for (const touch of changedTouches) {
 			const x = Graphics.pageToCanvasX(touch.pageX);
 			const y = Graphics.pageToCanvasY(touch.pageY);
@@ -330,9 +335,7 @@ class TouchInput {
 	 * @param {TouchEvent} event
 	 * @private
 	 */
-	static _onTouchEnd({
-		changedTouches
-	}) {
+	static _onTouchEnd({ changedTouches }) {
 		for (const touch of changedTouches) {
 			const x = Graphics.pageToCanvasX(touch.pageX);
 			const y = Graphics.pageToCanvasY(touch.pageY);
@@ -461,7 +464,7 @@ Object.defineProperty(TouchInput, 'wheelX', {
 	get() {
 		return this._wheelX;
 	},
-	configurable: true
+	configurable: true,
 });
 
 /**
@@ -475,7 +478,7 @@ Object.defineProperty(TouchInput, 'wheelY', {
 	get() {
 		return this._wheelY;
 	},
-	configurable: true
+	configurable: true,
 });
 
 /**
@@ -489,7 +492,7 @@ Object.defineProperty(TouchInput, 'x', {
 	get() {
 		return this._x;
 	},
-	configurable: true
+	configurable: true,
 });
 
 /**
@@ -503,7 +506,7 @@ Object.defineProperty(TouchInput, 'y', {
 	get() {
 		return this._y;
 	},
-	configurable: true
+	configurable: true,
 });
 
 /**
@@ -517,7 +520,7 @@ Object.defineProperty(TouchInput, 'date', {
 	get() {
 		return this._date;
 	},
-	configurable: true
+	configurable: true,
 });
 
 /**
@@ -526,6 +529,6 @@ Object.defineProperty(TouchInput, 'date', {
  * @param {MouseEvent} event
  * @private
  */
-TouchInput._onMiddleButtonDown = event => {};
+TouchInput._onMiddleButtonDown = (event) => {};
 
 export default TouchInput;

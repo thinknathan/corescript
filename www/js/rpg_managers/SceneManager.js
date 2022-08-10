@@ -1,13 +1,13 @@
-import Utils from "../rpg_core/Utils.js";
-import Graphics from "../rpg_core/Graphics.js";
-import AudioManager from "../rpg_managers/AudioManager.js";
-import Bitmap from "../rpg_core/Bitmap.js";
-import Input from "../rpg_core/Input.js";
-import ImageManager from "../rpg_managers/ImageManager.js";
-import PluginManager from "../rpg_managers/PluginManager.js";
-import TouchInput from "../rpg_core/TouchInput.js";
-import ProgressWatcher from "../rpg_core/ProgressWatcher.js";
-import WebAudio from "../rpg_core/WebAudio.js";
+import Utils from '../rpg_core/Utils.js';
+import Graphics from '../rpg_core/Graphics.js';
+import AudioManager from '../rpg_managers/AudioManager.js';
+import Bitmap from '../rpg_core/Bitmap.js';
+import Input from '../rpg_core/Input.js';
+import ImageManager from '../rpg_managers/ImageManager.js';
+import PluginManager from '../rpg_managers/PluginManager.js';
+import TouchInput from '../rpg_core/TouchInput.js';
+import ProgressWatcher from '../rpg_core/ProgressWatcher.js';
+import WebAudio from '../rpg_core/WebAudio.js';
 
 //-----------------------------------------------------------------------------
 // SceneManager
@@ -91,11 +91,7 @@ class SceneManager {
 		}
 	}
 
-	static onError({
-		message,
-		filename,
-		lineno
-	}) {
+	static onError({ message, filename, lineno }) {
 		console.error(message);
 		if (filename || lineno) {
 			console.error(filename, lineno);
@@ -337,11 +333,11 @@ class SceneManager {
 			const win = gui.Window.get();
 			if (process.platform === 'darwin' && !win.menu) {
 				const menubar = new gui.Menu({
-					type: 'menubar'
+					type: 'menubar',
 				});
 				const option = {
 					hideEdit: true,
-					hideWindow: true
+					hideWindow: true,
 				};
 				menubar.createMacBuiltin('Game', option);
 				win.menu = menubar;
@@ -357,25 +353,19 @@ class SceneManager {
 		window.close();
 	}
 
-	static onKeyDown({
-		ctrlKey,
-		altKey,
-		keyCode
-	}) {
+	static onKeyDown({ ctrlKey, altKey, keyCode }) {
 		if (!ctrlKey && !altKey) {
 			switch (keyCode) {
-			case 116: // F5
-				if (Utils.isNwjs()) {
-					location.reload();
-				}
-				break;
-			case 119: // F8
-				if (Utils.isNwjs() && Utils.isOptionValid('test')) {
-					require('nw.gui')
-						.Window.get()
-						.showDevTools();
-				}
-				break;
+				case 116: // F5
+					if (Utils.isNwjs()) {
+						location.reload();
+					}
+					break;
+				case 119: // F8
+					if (Utils.isNwjs() && Utils.isOptionValid('test')) {
+						require('nw.gui').Window.get().showDevTools();
+					}
+					break;
 			}
 		}
 	}
@@ -424,7 +414,8 @@ SceneManager._screenHeight = 624;
 SceneManager._boxWidth = 816;
 SceneManager._boxHeight = 624;
 SceneManager._deltaTime = 1.0 / 60.0;
-if (!Utils.isMobileSafari()) SceneManager._currentTime = SceneManager._getTimeInMsWithoutMobileSafari();
+if (!Utils.isMobileSafari())
+	SceneManager._currentTime = SceneManager._getTimeInMsWithoutMobileSafari();
 SceneManager._accumulator = 0.0;
 SceneManager._frameCount = 0;
 

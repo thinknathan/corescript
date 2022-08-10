@@ -1,6 +1,6 @@
-import Window_Command from "./Window_Command.js";
-import Graphics from "../rpg_core/Graphics.js";
-import Input from "../rpg_core/Input.js";
+import Window_Command from './Window_Command.js';
+import Graphics from '../rpg_core/Graphics.js';
+import Input from '../rpg_core/Input.js';
 
 //-----------------------------------------------------------------------------
 // Window_ChoiceList
@@ -40,15 +40,15 @@ class Window_ChoiceList extends Window_Command {
 		this.width = this.windowWidth();
 		this.height = this.windowHeight();
 		switch (positionType) {
-		case 0:
-			this.x = 0;
-			break;
-		case 1:
-			this.x = (Graphics.boxWidth - this.width) / 2;
-			break;
-		case 2:
-			this.x = Graphics.boxWidth - this.width;
-			break;
+			case 0:
+				this.x = 0;
+				break;
+			case 1:
+				this.x = (Graphics.boxWidth - this.width) / 2;
+				break;
+			case 2:
+				this.x = Graphics.boxWidth - this.width;
+				break;
 		}
 		if (messageY >= Graphics.boxHeight / 2) {
 			this.y = messageY - this.height;

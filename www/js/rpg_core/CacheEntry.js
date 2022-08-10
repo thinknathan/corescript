@@ -59,8 +59,12 @@ class CacheEntry {
 
 	isStillAlive() {
 		const cache = this.cache;
-		return ((this.ttlTicks == 0) || (this.touchTicks + this.ttlTicks < cache.updateTicks)) &&
-			((this.ttlSeconds == 0) || (this.touchSeconds + this.ttlSeconds < cache.updateSeconds));
+		return (
+			(this.ttlTicks == 0 ||
+				this.touchTicks + this.ttlTicks < cache.updateTicks) &&
+			(this.ttlSeconds == 0 ||
+				this.touchSeconds + this.ttlSeconds < cache.updateSeconds)
+		);
 	}
 
 	/**

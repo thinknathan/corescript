@@ -1,10 +1,10 @@
-import Window_Selectable from "./Window_Selectable.js";
-import TextManager from "../rpg_managers/TextManager.js";
-import SoundManager from "../rpg_managers/SoundManager.js";
-import TouchInput from "../rpg_core/TouchInput.js";
-import Input from "../rpg_core/Input.js";
-import ImageManager from "../rpg_managers/ImageManager.js";
-import Sprite_Button from "../rpg_sprites/Sprite_Button.js";
+import Window_Selectable from './Window_Selectable.js';
+import TextManager from '../rpg_managers/TextManager.js';
+import SoundManager from '../rpg_managers/SoundManager.js';
+import TouchInput from '../rpg_core/TouchInput.js';
+import Input from '../rpg_core/Input.js';
+import ImageManager from '../rpg_managers/ImageManager.js';
+import Sprite_Button from '../rpg_sprites/Sprite_Button.js';
 
 //-----------------------------------------------------------------------------
 // Window_ShopNumber
@@ -197,8 +197,7 @@ class Window_ShopNumber extends Window_Selectable {
 
 	changeNumber(amount) {
 		const lastNumber = this._number;
-		this._number = (this._number + amount)
-			.clamp(1, this._max);
+		this._number = (this._number + amount).clamp(1, this._max);
 		if (this._number !== lastNumber) {
 			SoundManager.playCursor();
 			this.refresh();
@@ -206,8 +205,12 @@ class Window_ShopNumber extends Window_Selectable {
 	}
 
 	updateCursor() {
-		this.setCursorRect(this.cursorX(), this.itemY(),
-			this.cursorWidth(), this.lineHeight());
+		this.setCursorRect(
+			this.cursorX(),
+			this.itemY(),
+			this.cursorWidth(),
+			this.lineHeight()
+		);
 	}
 
 	onButtonUp() {

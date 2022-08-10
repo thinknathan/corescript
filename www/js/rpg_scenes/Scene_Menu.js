@@ -1,16 +1,16 @@
-import Scene_MenuBase from "./Scene_MenuBase.js";
-import Window_Gold from "../rpg_windows/Window_Gold.js";
-import Window_MenuCommand from "../rpg_windows/Window_MenuCommand.js";
-import Window_MenuStatus from "../rpg_windows/Window_MenuStatus.js";
-import SceneManager from "../rpg_managers/SceneManager.js";
-import Graphics from "../rpg_core/Graphics.js";
-import Scene_Item from "../rpg_scenes/Scene_Item.js";
-import Scene_Skill from "../rpg_scenes/Scene_Skill.js";
-import Scene_Equip from "../rpg_scenes/Scene_Equip.js";
-import Scene_Status from "../rpg_scenes/Scene_Status.js";
-import Scene_Options from "../rpg_scenes/Scene_Options.js";
-import Scene_Save from "../rpg_scenes/Scene_Save.js";
-import Scene_GameEnd from "../rpg_scenes/Scene_GameEnd.js";
+import Scene_MenuBase from './Scene_MenuBase.js';
+import Window_Gold from '../rpg_windows/Window_Gold.js';
+import Window_MenuCommand from '../rpg_windows/Window_MenuCommand.js';
+import Window_MenuStatus from '../rpg_windows/Window_MenuStatus.js';
+import SceneManager from '../rpg_managers/SceneManager.js';
+import Graphics from '../rpg_core/Graphics.js';
+import Scene_Item from '../rpg_scenes/Scene_Item.js';
+import Scene_Skill from '../rpg_scenes/Scene_Skill.js';
+import Scene_Equip from '../rpg_scenes/Scene_Equip.js';
+import Scene_Status from '../rpg_scenes/Scene_Status.js';
+import Scene_Options from '../rpg_scenes/Scene_Options.js';
+import Scene_Save from '../rpg_scenes/Scene_Save.js';
+import Scene_GameEnd from '../rpg_scenes/Scene_GameEnd.js';
 
 //-----------------------------------------------------------------------------
 // Scene_Menu
@@ -45,7 +45,10 @@ class Scene_Menu extends Scene_MenuBase {
 		this._commandWindow.setHandler('skill', this.commandPersonal.bind(this));
 		this._commandWindow.setHandler('equip', this.commandPersonal.bind(this));
 		this._commandWindow.setHandler('status', this.commandPersonal.bind(this));
-		this._commandWindow.setHandler('formation', this.commandFormation.bind(this));
+		this._commandWindow.setHandler(
+			'formation',
+			this.commandFormation.bind(this)
+		);
 		this._commandWindow.setHandler('options', this.commandOptions.bind(this));
 		this._commandWindow.setHandler('save', this.commandSave.bind(this));
 		this._commandWindow.setHandler('gameEnd', this.commandGameEnd.bind(this));
@@ -99,15 +102,15 @@ class Scene_Menu extends Scene_MenuBase {
 
 	onPersonalOk() {
 		switch (this._commandWindow.currentSymbol()) {
-		case 'skill':
-			SceneManager.push(Scene_Skill);
-			break;
-		case 'equip':
-			SceneManager.push(Scene_Equip);
-			break;
-		case 'status':
-			SceneManager.push(Scene_Status);
-			break;
+			case 'skill':
+				SceneManager.push(Scene_Skill);
+				break;
+			case 'equip':
+				SceneManager.push(Scene_Equip);
+				break;
+			case 'status':
+				SceneManager.push(Scene_Status);
+				break;
 		}
 	}
 

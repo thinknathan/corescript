@@ -1,7 +1,7 @@
-import Window_Command from "./Window_Command.js";
-import Graphics from "../rpg_core/Graphics.js";
-import TextManager from "../rpg_managers/TextManager.js";
-import { DataManager } from "../rpg_managers/DataManager.js";
+import Window_Command from './Window_Command.js';
+import Graphics from '../rpg_core/Graphics.js';
+import TextManager from '../rpg_managers/TextManager.js';
+import { DataManager } from '../rpg_managers/DataManager.js';
 
 //-----------------------------------------------------------------------------
 // Window_TitleCommand
@@ -36,7 +36,11 @@ class Window_TitleCommand extends Window_Command {
 
 	makeCommandList() {
 		this.addCommand(TextManager.newGame, 'newGame');
-		this.addCommand(TextManager.continue_, 'continue', this.isContinueEnabled());
+		this.addCommand(
+			TextManager.continue_,
+			'continue',
+			this.isContinueEnabled()
+		);
 		this.addCommand(TextManager.options, 'options');
 	}
 

@@ -1,5 +1,5 @@
-import * as PIXI from "../libs/pixi.js";
-import { CanvasTileRenderer } from "https://cdn.skypack.dev/pin/@pixi/tilemap@v3.2.2-2dMlZoW3YNxu69J1N1DJ/mode=imports/optimized/@pixi/tilemap.js";
+import * as PIXI from '../libs/pixi.js';
+import { CanvasTileRenderer } from 'https://cdn.skypack.dev/pin/@pixi/tilemap@v3.2.2-2dMlZoW3YNxu69J1N1DJ/mode=imports/optimized/@pixi/tilemap.js';
 
 //-----------------------------------------------------------------------------
 /**
@@ -22,8 +22,7 @@ class ZLayer extends PIXI.Container {
 
 	clear() {
 		let layers = this.children;
-		for (let i = 0; i < layers.length; i++)
-			layers[i].clear();
+		for (let i = 0; i < layers.length; i++) layers[i].clear();
 		this._previousLayers = 0;
 	}
 
@@ -36,13 +35,19 @@ class ZLayer extends PIXI.Container {
 		let tempRender = this._tempRender;
 		if (!buf) {
 			buf = this.canvasBuffer = document.createElement('canvas');
-			(canvasRenderer.constructor).registerPlugin('tilemap', CanvasTileRenderer);
-			tempRender = this._tempRender = new (canvasRenderer.constructor)({ width: 100, height: 100, view: buf });
+			canvasRenderer.constructor.registerPlugin('tilemap', CanvasTileRenderer);
+			tempRender = this._tempRender = new canvasRenderer.constructor({
+				width: 100,
+				height: 100,
+				view: buf,
+			});
 			tempRender.context = tempRender.rootContext;
 			tempRender.plugins.tilemap.dontUseTransform = true;
 		}
-		if (buf.width !== tilemap._layerWidth ||
-			buf.height !== tilemap._layerHeight) {
+		if (
+			buf.width !== tilemap._layerWidth ||
+			buf.height !== tilemap._layerHeight
+		) {
 			buf.width = tilemap._layerWidth;
 			buf.height = tilemap._layerHeight;
 			modified = true;
@@ -50,7 +55,11 @@ class ZLayer extends PIXI.Container {
 		let i;
 		if (!modified) {
 			for (i = 0; i < layers.length; i++) {
-				if (layers[i].isModified(this._lastAnimationFrame !== tilemap.animationFrame)) {
+				if (
+					layers[i].isModified(
+						this._lastAnimationFrame !== tilemap.animationFrame
+					)
+				) {
 					modified = true;
 					break;
 				}

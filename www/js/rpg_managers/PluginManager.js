@@ -1,4 +1,4 @@
-import Utils from "../rpg_core/Utils.js";
+import Utils from '../rpg_core/Utils.js';
 
 //-----------------------------------------------------------------------------
 // PluginManager
@@ -11,11 +11,7 @@ class PluginManager {
 	}
 
 	static setup(plugins) {
-		plugins.forEach(function ({
-			status,
-			name,
-			parameters
-		}) {
+		plugins.forEach(function ({ status, name, parameters }) {
 			if (status && !this._scripts.contains(name)) {
 				this.setParameters(name, parameters);
 				this.loadScript(`${name}.js`);
@@ -48,9 +44,7 @@ class PluginManager {
 		}
 	}
 
-	static onError({
-		target
-	}) {
+	static onError({ target }) {
 		this._errorUrls.push(target._url);
 	}
 }

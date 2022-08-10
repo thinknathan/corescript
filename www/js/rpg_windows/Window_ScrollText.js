@@ -1,7 +1,7 @@
-import Window_Base from "./Window_Base.js";
-import Graphics from "../rpg_core/Graphics.js";
-import Input from "../rpg_core/Input.js";
-import TouchInput from "../rpg_core/TouchInput.js";
+import Window_Base from './Window_Base.js';
+import Graphics from '../rpg_core/Graphics.js';
+import Input from '../rpg_core/Input.js';
+import TouchInput from '../rpg_core/TouchInput.js';
 
 //-----------------------------------------------------------------------------
 // Window_ScrollText
@@ -45,7 +45,7 @@ class Window_ScrollText extends Window_Base {
 
 	refresh() {
 		const textState = {
-			index: 0
+			index: 0,
 		};
 		textState.text = this.convertEscapeCharacters(this._text);
 		this.resetFontSettings();
@@ -78,8 +78,11 @@ class Window_ScrollText extends Window_Base {
 		if (self.$gameMessage.scrollNoFast()) {
 			return false;
 		} else {
-			return (Input.isPressed('ok') || Input.isPressed('shift') ||
-				TouchInput.isPressed());
+			return (
+				Input.isPressed('ok') ||
+				Input.isPressed('shift') ||
+				TouchInput.isPressed()
+			);
 		}
 	}
 

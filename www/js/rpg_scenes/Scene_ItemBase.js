@@ -1,10 +1,10 @@
-import Scene_MenuBase from "./Scene_MenuBase.js";
-import Graphics from "../rpg_core/Graphics.js";
-import SoundManager from "../rpg_managers/SoundManager.js";
-import SceneManager from "../rpg_managers/SceneManager.js";
-import Window_MenuActor from "../rpg_windows/Window_MenuActor.js";
-import Game_Action from "../rpg_objects/Game_Action.js";
-import Scene_Map from "../rpg_scenes/Scene_Map.js";
+import Scene_MenuBase from './Scene_MenuBase.js';
+import Graphics from '../rpg_core/Graphics.js';
+import SoundManager from '../rpg_managers/SoundManager.js';
+import SceneManager from '../rpg_managers/SceneManager.js';
+import Window_MenuActor from '../rpg_windows/Window_MenuActor.js';
+import Game_Action from '../rpg_objects/Game_Action.js';
+import Scene_Map from '../rpg_scenes/Scene_Map.js';
 
 //-----------------------------------------------------------------------------
 // Scene_ItemBase
@@ -87,8 +87,7 @@ class Scene_ItemBase extends Scene_MenuBase {
 
 	useItem() {
 		this.playSeForItem();
-		this.user()
-			.useItem(this.item());
+		this.user().useItem(this.item());
 		this.applyItem();
 		this.checkCommonEvent();
 		this.checkGameover();
@@ -121,14 +120,16 @@ class Scene_ItemBase extends Scene_MenuBase {
 
 	isItemEffectsValid() {
 		const action = this.action();
-		return this.itemTargetActors()
-			.some(target => action.testApply(target), this);
+		return this.itemTargetActors().some(
+			(target) => action.testApply(target),
+			this
+		);
 	}
 
 	applyItem() {
 		const action = this.action();
 		const targets = this.itemTargetActors();
-		targets.forEach(battler => {
+		targets.forEach((battler) => {
 			const repeats = action.numRepeats();
 			for (let i = 0; i < repeats; i++) {
 				action.apply(battler);

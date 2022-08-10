@@ -11,7 +11,7 @@ class ImageCache {
 		this._items[key] = {
 			bitmap: value,
 			touch: Date.now(),
-			key
+			key,
 		};
 
 		this._truncateCache();
@@ -32,7 +32,7 @@ class ImageCache {
 			this._items[key] = {
 				bitmap: value,
 				touch: Date.now(),
-				key
+				key,
 			};
 		}
 
@@ -43,8 +43,8 @@ class ImageCache {
 		const items = this._items;
 
 		Object.keys(items)
-			.map(key => items[key])
-			.forEach(item => {
+			.map((key) => items[key])
+			.forEach((item) => {
 				if (item.reservationId === reservationId) {
 					delete item.reservationId;
 				}
@@ -56,9 +56,9 @@ class ImageCache {
 		let sizeLeft = ImageCache.limit;
 
 		Object.keys(items)
-			.map(key => items[key])
+			.map((key) => items[key])
 			.sort((a, b) => a.touch - b.touch)
-			.forEach(item => {
+			.forEach((item) => {
 				if (sizeLeft > 0 || this._mustBeHeld(item)) {
 					const bitmap = item.bitmap;
 					sizeLeft -= bitmap.width * bitmap.height;
@@ -68,10 +68,7 @@ class ImageCache {
 			});
 	}
 
-	_mustBeHeld({
-		bitmap,
-		reservationId
-	}) {
+	_mustBeHeld({ bitmap, reservationId }) {
 		// request only is weak so It's purgeable
 		if (bitmap.isRequestOnly()) return false;
 		// reserved item must be held
@@ -83,21 +80,25 @@ class ImageCache {
 	}
 
 	isReady() {
-		return !Object.keys(this._items)
-			.some(key => !this._items[key].bitmap.isRequestOnly() && !this._items[key].bitmap.isReady());
+		return !Object.keys(this._items).some(
+			(key) =>
+				!this._items[key].bitmap.isRequestOnly() &&
+				!this._items[key].bitmap.isReady()
+		);
 	}
 
 	getErrorBitmap() {
 		const items = this._items;
 		let bitmap = null;
-		if (Object.keys(items)
-			.some(key => {
+		if (
+			Object.keys(items).some((key) => {
 				if (items[key].bitmap.isError()) {
 					bitmap = items[key].bitmap;
 					return true;
 				}
 				return false;
-			})) {
+			})
+		) {
 			return bitmap;
 		}
 

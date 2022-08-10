@@ -1,4 +1,4 @@
-import Window_Selectable from "./Window_Selectable.js";
+import Window_Selectable from './Window_Selectable.js';
 
 //-----------------------------------------------------------------------------
 // Window_ShopBuy
@@ -46,8 +46,11 @@ class Window_ShopBuy extends Window_Selectable {
 	}
 
 	isEnabled(item) {
-		return (item && this.price(item) <= this._money &&
-			!self.$gameParty.hasMaxItems(item));
+		return (
+			item &&
+			this.price(item) <= this._money &&
+			!self.$gameParty.hasMaxItems(item)
+		);
 	}
 
 	refresh() {
@@ -62,15 +65,15 @@ class Window_ShopBuy extends Window_Selectable {
 		this._shopGoods.forEach(function (goods) {
 			let item = null;
 			switch (goods[0]) {
-			case 0:
-				item = self.$dataItems[goods[1]];
-				break;
-			case 1:
-				item = self.$dataWeapons[goods[1]];
-				break;
-			case 2:
-				item = self.$dataArmors[goods[1]];
-				break;
+				case 0:
+					item = self.$dataItems[goods[1]];
+					break;
+				case 1:
+					item = self.$dataWeapons[goods[1]];
+					break;
+				case 2:
+					item = self.$dataArmors[goods[1]];
+					break;
 			}
 			if (item) {
 				this._data.push(item);
@@ -86,8 +89,13 @@ class Window_ShopBuy extends Window_Selectable {
 		rect.width -= this.textPadding();
 		this.changePaintOpacity(this.isEnabled(item));
 		this.drawItemName(item, rect.x, rect.y, rect.width - priceWidth);
-		this.drawText(this.price(item), rect.x + rect.width - priceWidth,
-			rect.y, priceWidth, 'right');
+		this.drawText(
+			this.price(item),
+			rect.x + rect.width - priceWidth,
+			rect.y,
+			priceWidth,
+			'right'
+		);
 		this.changePaintOpacity(true);
 	}
 

@@ -1,4 +1,4 @@
-import Utils from "../rpg_core/Utils.js";
+import Utils from '../rpg_core/Utils.js';
 
 //-----------------------------------------------------------------------------
 // Game_Temp

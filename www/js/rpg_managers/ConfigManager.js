@@ -1,5 +1,5 @@
-import StorageManager from "../rpg_managers/StorageManagerShim.js";
-import AudioManager from "../rpg_managers/AudioManager.js";
+import StorageManager from '../rpg_managers/StorageManagerShim.js';
+import AudioManager from '../rpg_managers/AudioManager.js';
 
 //-----------------------------------------------------------------------------
 // ConfigManager
@@ -56,8 +56,7 @@ class ConfigManager {
 	static readVolume(config, name) {
 		const value = config[name];
 		if (value !== undefined) {
-			return Number(value)
-				.clamp(0, 100);
+			return Number(value).clamp(0, 100);
 		} else {
 			return 100;
 		}
@@ -74,7 +73,7 @@ Object.defineProperty(ConfigManager, 'bgmVolume', {
 	set(value) {
 		AudioManager.bgmVolume = value;
 	},
-	configurable: true
+	configurable: true,
 });
 
 Object.defineProperty(ConfigManager, 'bgsVolume', {
@@ -84,7 +83,7 @@ Object.defineProperty(ConfigManager, 'bgsVolume', {
 	set(value) {
 		AudioManager.bgsVolume = value;
 	},
-	configurable: true
+	configurable: true,
 });
 
 Object.defineProperty(ConfigManager, 'meVolume', {
@@ -94,7 +93,7 @@ Object.defineProperty(ConfigManager, 'meVolume', {
 	set(value) {
 		AudioManager.meVolume = value;
 	},
-	configurable: true
+	configurable: true,
 });
 
 Object.defineProperty(ConfigManager, 'seVolume', {
@@ -104,7 +103,7 @@ Object.defineProperty(ConfigManager, 'seVolume', {
 	set(value) {
 		AudioManager.seVolume = value;
 	},
-	configurable: true
+	configurable: true,
 });
 
 export default ConfigManager;

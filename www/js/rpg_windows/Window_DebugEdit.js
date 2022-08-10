@@ -1,6 +1,6 @@
-import Window_Selectable from "./Window_Selectable.js";
-import Input from "../rpg_core/Input.js";
-import SoundManager from "../rpg_managers/SoundManager.js";
+import Window_Selectable from './Window_Selectable.js';
+import Input from '../rpg_core/Input.js';
+import SoundManager from '../rpg_managers/SoundManager.js';
 
 //-----------------------------------------------------------------------------
 // Window_DebugEdit
@@ -95,7 +95,10 @@ class Window_DebugEdit extends Window_Selectable {
 		if (Input.isRepeated('ok')) {
 			const switchId = this.currentId();
 			SoundManager.playCursor();
-			self.$gameSwitches.setValue(switchId, !self.$gameSwitches.value(switchId));
+			self.$gameSwitches.setValue(
+				switchId,
+				!self.$gameSwitches.value(switchId)
+			);
 			this.redrawCurrentItem();
 		}
 	}

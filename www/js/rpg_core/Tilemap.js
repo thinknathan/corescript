@@ -1,8 +1,8 @@
-import * as PIXI from "../libs/pixi.js";
-import Point from "../rpg_core/Point.js";
-import Sprite from "../rpg_core/Sprite.js";
-import Bitmap from "../rpg_core/Bitmap.js";
-import Graphics from "../rpg_core/Graphics.js";
+import * as PIXI from '../libs/pixi.js';
+import Point from '../rpg_core/Point.js';
+import Sprite from '../rpg_core/Sprite.js';
+import Bitmap from '../rpg_core/Bitmap.js';
+import Graphics from '../rpg_core/Graphics.js';
 
 //-----------------------------------------------------------------------------
 /**
@@ -190,7 +190,7 @@ class Tilemap extends PIXI.Container {
 	update() {
 		this.animationCount++;
 		this.animationFrame = Math.floor(this.animationCount / 30);
-		this.children.forEach(child => {
+		this.children.forEach((child) => {
 			if (child.update) {
 				child.update();
 			}
@@ -216,9 +216,7 @@ class Tilemap extends PIXI.Container {
 	 *
 	 * @method refresh
 	 */
-	refreshTileset() {
-
-	}
+	refreshTileset() {}
 
 	/**
 	 * @method updateTransform
@@ -230,8 +228,12 @@ class Tilemap extends PIXI.Container {
 		const startX = Math.floor((ox - this._margin) / this._tileWidth);
 		const startY = Math.floor((oy - this._margin) / this._tileHeight);
 		this._updateLayerPositions(startX, startY);
-		if (this._needsRepaint || this._lastAnimationFrame !== this.animationFrame ||
-			this._lastStartX !== startX || this._lastStartY !== startY) {
+		if (
+			this._needsRepaint ||
+			this._lastAnimationFrame !== this.animationFrame ||
+			this._lastStartX !== startX ||
+			this._lastStartY !== startY
+		) {
 			this._frameUpdated = this._lastAnimationFrame !== this.animationFrame;
 			this._lastAnimationFrame = this.animationFrame;
 			this._lastStartX = startX;
@@ -301,10 +303,8 @@ class Tilemap extends PIXI.Container {
 		const m = this._margin;
 		const ox = Math.floor(this.origin.x);
 		const oy = Math.floor(this.origin.y);
-		const x2 = (ox - m)
-			.mod(this._layerWidth);
-		const y2 = (oy - m)
-			.mod(this._layerHeight);
+		const x2 = (ox - m).mod(this._layerWidth);
+		const y2 = (oy - m).mod(this._layerHeight);
 		const w1 = this._layerWidth - x2;
 		const h1 = this._layerHeight - y2;
 		const w2 = this._width - w1;
@@ -356,10 +356,8 @@ class Tilemap extends PIXI.Container {
 		const tableEdgeVirtualId = 10000;
 		const mx = startX + x;
 		const my = startY + y;
-		const dx = (mx * this._tileWidth)
-			.mod(this._layerWidth);
-		const dy = (my * this._tileHeight)
-			.mod(this._layerHeight);
+		const dx = (mx * this._tileWidth).mod(this._layerWidth);
+		const dy = (my * this._tileHeight).mod(this._layerHeight);
 		const lx = dx / this._tileWidth;
 		const ly = dy / this._tileHeight;
 		const tileId0 = this._readMapData(mx, my, 0);
@@ -407,8 +405,10 @@ class Tilemap extends PIXI.Container {
 		}
 
 		const lastLowerTiles = this._readLastTiles(0, lx, ly);
-		if (!lowerTiles.equals(lastLowerTiles) ||
-			(Tilemap.isTileA1(tileId0) && this._frameUpdated)) {
+		if (
+			!lowerTiles.equals(lastLowerTiles) ||
+			(Tilemap.isTileA1(tileId0) && this._frameUpdated)
+		) {
 			this._lowerBitmap.clearRect(dx, dy, this._tileWidth, this._tileHeight);
 
 			for (const lowerTileId of lowerTiles) {
@@ -512,8 +512,8 @@ class Tilemap extends PIXI.Container {
 
 		const w = this._tileWidth;
 		const h = this._tileHeight;
-		const sx = (Math.floor(tileId / 128) % 2 * 8 + tileId % 8) * w;
-		const sy = (Math.floor(tileId % 256 / 8) % 16) * h;
+		const sx = ((Math.floor(tileId / 128) % 2) * 8 + (tileId % 8)) * w;
+		const sy = (Math.floor((tileId % 256) / 8) % 16) * h;
 
 		const source = this.bitmaps[setNumber];
 		if (source) {
@@ -557,7 +557,7 @@ class Tilemap extends PIXI.Container {
 				by = 3;
 			} else {
 				bx = Math.floor(tx / 4) * 8;
-				by = ty * 6 + Math.floor(tx / 2) % 2 * 3;
+				by = ty * 6 + (Math.floor(tx / 2) % 2) * 3;
 				if (kind % 2 === 0) {
 					bx += waterSurfaceIndex * 2;
 				} else {
@@ -721,7 +721,7 @@ class Tilemap extends PIXI.Container {
 	 * @private
 	 */
 	_isTableTile(tileId) {
-		return Tilemap.isTileA2(tileId) && (this.flags[tileId] & 0x80);
+		return Tilemap.isTileA2(tileId) && this.flags[tileId] & 0x80;
 	}
 
 	/**
@@ -809,7 +809,9 @@ class Tilemap extends PIXI.Container {
 
 	static isWaterTile(tileId) {
 		if (this.isTileA1(tileId)) {
-			return !(tileId >= this.TILE_ID_A1 + 96 && tileId < this.TILE_ID_A1 + 192);
+			return !(
+				tileId >= this.TILE_ID_A1 + 96 && tileId < this.TILE_ID_A1 + 192
+			);
 		} else {
 			return false;
 		}
@@ -824,7 +826,9 @@ class Tilemap extends PIXI.Container {
 	}
 
 	static isGroundTile(tileId) {
-		return this.isTileA1(tileId) || this.isTileA2(tileId) || this.isTileA5(tileId);
+		return (
+			this.isTileA1(tileId) || this.isTileA2(tileId) || this.isTileA5(tileId)
+		);
 	}
 
 	static isShadowingTile(tileId) {
@@ -840,8 +844,10 @@ class Tilemap extends PIXI.Container {
 	}
 
 	static isWallSideTile(tileId) {
-		return (this.isTileA3(tileId) || this.isTileA4(tileId)) &&
-			this.getAutotileKind(tileId) % 16 >= 8;
+		return (
+			(this.isTileA3(tileId) || this.isTileA4(tileId)) &&
+			this.getAutotileKind(tileId) % 16 >= 8
+		);
 	}
 
 	static isWallTile(tileId) {
@@ -849,8 +855,11 @@ class Tilemap extends PIXI.Container {
 	}
 
 	static isFloorTypeAutotile(tileId) {
-		return (this.isTileA1(tileId) && !this.isWaterfallTile(tileId)) ||
-			this.isTileA2(tileId) || this.isWallTopTile(tileId);
+		return (
+			(this.isTileA1(tileId) && !this.isWaterfallTile(tileId)) ||
+			this.isTileA2(tileId) ||
+			this.isWallTopTile(tileId)
+		);
 	}
 
 	static isWallTypeAutotile(tileId) {
@@ -878,46 +887,420 @@ Tilemap.TILE_ID_MAX = 8192;
 // Autotile shape number to coordinates of tileset images
 
 Tilemap.FLOOR_AUTOTILE_TABLE = [
-    [[2, 4], [1, 4], [2, 3], [1, 3]], [[2, 0], [1, 4], [2, 3], [1, 3]],
-    [[2, 4], [3, 0], [2, 3], [1, 3]], [[2, 0], [3, 0], [2, 3], [1, 3]],
-    [[2, 4], [1, 4], [2, 3], [3, 1]], [[2, 0], [1, 4], [2, 3], [3, 1]],
-    [[2, 4], [3, 0], [2, 3], [3, 1]], [[2, 0], [3, 0], [2, 3], [3, 1]],
-    [[2, 4], [1, 4], [2, 1], [1, 3]], [[2, 0], [1, 4], [2, 1], [1, 3]],
-    [[2, 4], [3, 0], [2, 1], [1, 3]], [[2, 0], [3, 0], [2, 1], [1, 3]],
-    [[2, 4], [1, 4], [2, 1], [3, 1]], [[2, 0], [1, 4], [2, 1], [3, 1]],
-    [[2, 4], [3, 0], [2, 1], [3, 1]], [[2, 0], [3, 0], [2, 1], [3, 1]],
-    [[0, 4], [1, 4], [0, 3], [1, 3]], [[0, 4], [3, 0], [0, 3], [1, 3]],
-    [[0, 4], [1, 4], [0, 3], [3, 1]], [[0, 4], [3, 0], [0, 3], [3, 1]],
-    [[2, 2], [1, 2], [2, 3], [1, 3]], [[2, 2], [1, 2], [2, 3], [3, 1]],
-    [[2, 2], [1, 2], [2, 1], [1, 3]], [[2, 2], [1, 2], [2, 1], [3, 1]],
-    [[2, 4], [3, 4], [2, 3], [3, 3]], [[2, 4], [3, 4], [2, 1], [3, 3]],
-    [[2, 0], [3, 4], [2, 3], [3, 3]], [[2, 0], [3, 4], [2, 1], [3, 3]],
-    [[2, 4], [1, 4], [2, 5], [1, 5]], [[2, 0], [1, 4], [2, 5], [1, 5]],
-    [[2, 4], [3, 0], [2, 5], [1, 5]], [[2, 0], [3, 0], [2, 5], [1, 5]],
-    [[0, 4], [3, 4], [0, 3], [3, 3]], [[2, 2], [1, 2], [2, 5], [1, 5]],
-    [[0, 2], [1, 2], [0, 3], [1, 3]], [[0, 2], [1, 2], [0, 3], [3, 1]],
-    [[2, 2], [3, 2], [2, 3], [3, 3]], [[2, 2], [3, 2], [2, 1], [3, 3]],
-    [[2, 4], [3, 4], [2, 5], [3, 5]], [[2, 0], [3, 4], [2, 5], [3, 5]],
-    [[0, 4], [1, 4], [0, 5], [1, 5]], [[0, 4], [3, 0], [0, 5], [1, 5]],
-    [[0, 2], [3, 2], [0, 3], [3, 3]], [[0, 2], [1, 2], [0, 5], [1, 5]],
-    [[0, 4], [3, 4], [0, 5], [3, 5]], [[2, 2], [3, 2], [2, 5], [3, 5]],
-    [[0, 2], [3, 2], [0, 5], [3, 5]], [[0, 0], [1, 0], [0, 1], [1, 1]]
+	[
+		[2, 4],
+		[1, 4],
+		[2, 3],
+		[1, 3],
+	],
+	[
+		[2, 0],
+		[1, 4],
+		[2, 3],
+		[1, 3],
+	],
+	[
+		[2, 4],
+		[3, 0],
+		[2, 3],
+		[1, 3],
+	],
+	[
+		[2, 0],
+		[3, 0],
+		[2, 3],
+		[1, 3],
+	],
+	[
+		[2, 4],
+		[1, 4],
+		[2, 3],
+		[3, 1],
+	],
+	[
+		[2, 0],
+		[1, 4],
+		[2, 3],
+		[3, 1],
+	],
+	[
+		[2, 4],
+		[3, 0],
+		[2, 3],
+		[3, 1],
+	],
+	[
+		[2, 0],
+		[3, 0],
+		[2, 3],
+		[3, 1],
+	],
+	[
+		[2, 4],
+		[1, 4],
+		[2, 1],
+		[1, 3],
+	],
+	[
+		[2, 0],
+		[1, 4],
+		[2, 1],
+		[1, 3],
+	],
+	[
+		[2, 4],
+		[3, 0],
+		[2, 1],
+		[1, 3],
+	],
+	[
+		[2, 0],
+		[3, 0],
+		[2, 1],
+		[1, 3],
+	],
+	[
+		[2, 4],
+		[1, 4],
+		[2, 1],
+		[3, 1],
+	],
+	[
+		[2, 0],
+		[1, 4],
+		[2, 1],
+		[3, 1],
+	],
+	[
+		[2, 4],
+		[3, 0],
+		[2, 1],
+		[3, 1],
+	],
+	[
+		[2, 0],
+		[3, 0],
+		[2, 1],
+		[3, 1],
+	],
+	[
+		[0, 4],
+		[1, 4],
+		[0, 3],
+		[1, 3],
+	],
+	[
+		[0, 4],
+		[3, 0],
+		[0, 3],
+		[1, 3],
+	],
+	[
+		[0, 4],
+		[1, 4],
+		[0, 3],
+		[3, 1],
+	],
+	[
+		[0, 4],
+		[3, 0],
+		[0, 3],
+		[3, 1],
+	],
+	[
+		[2, 2],
+		[1, 2],
+		[2, 3],
+		[1, 3],
+	],
+	[
+		[2, 2],
+		[1, 2],
+		[2, 3],
+		[3, 1],
+	],
+	[
+		[2, 2],
+		[1, 2],
+		[2, 1],
+		[1, 3],
+	],
+	[
+		[2, 2],
+		[1, 2],
+		[2, 1],
+		[3, 1],
+	],
+	[
+		[2, 4],
+		[3, 4],
+		[2, 3],
+		[3, 3],
+	],
+	[
+		[2, 4],
+		[3, 4],
+		[2, 1],
+		[3, 3],
+	],
+	[
+		[2, 0],
+		[3, 4],
+		[2, 3],
+		[3, 3],
+	],
+	[
+		[2, 0],
+		[3, 4],
+		[2, 1],
+		[3, 3],
+	],
+	[
+		[2, 4],
+		[1, 4],
+		[2, 5],
+		[1, 5],
+	],
+	[
+		[2, 0],
+		[1, 4],
+		[2, 5],
+		[1, 5],
+	],
+	[
+		[2, 4],
+		[3, 0],
+		[2, 5],
+		[1, 5],
+	],
+	[
+		[2, 0],
+		[3, 0],
+		[2, 5],
+		[1, 5],
+	],
+	[
+		[0, 4],
+		[3, 4],
+		[0, 3],
+		[3, 3],
+	],
+	[
+		[2, 2],
+		[1, 2],
+		[2, 5],
+		[1, 5],
+	],
+	[
+		[0, 2],
+		[1, 2],
+		[0, 3],
+		[1, 3],
+	],
+	[
+		[0, 2],
+		[1, 2],
+		[0, 3],
+		[3, 1],
+	],
+	[
+		[2, 2],
+		[3, 2],
+		[2, 3],
+		[3, 3],
+	],
+	[
+		[2, 2],
+		[3, 2],
+		[2, 1],
+		[3, 3],
+	],
+	[
+		[2, 4],
+		[3, 4],
+		[2, 5],
+		[3, 5],
+	],
+	[
+		[2, 0],
+		[3, 4],
+		[2, 5],
+		[3, 5],
+	],
+	[
+		[0, 4],
+		[1, 4],
+		[0, 5],
+		[1, 5],
+	],
+	[
+		[0, 4],
+		[3, 0],
+		[0, 5],
+		[1, 5],
+	],
+	[
+		[0, 2],
+		[3, 2],
+		[0, 3],
+		[3, 3],
+	],
+	[
+		[0, 2],
+		[1, 2],
+		[0, 5],
+		[1, 5],
+	],
+	[
+		[0, 4],
+		[3, 4],
+		[0, 5],
+		[3, 5],
+	],
+	[
+		[2, 2],
+		[3, 2],
+		[2, 5],
+		[3, 5],
+	],
+	[
+		[0, 2],
+		[3, 2],
+		[0, 5],
+		[3, 5],
+	],
+	[
+		[0, 0],
+		[1, 0],
+		[0, 1],
+		[1, 1],
+	],
 ];
 
 Tilemap.WALL_AUTOTILE_TABLE = [
-    [[2, 2], [1, 2], [2, 1], [1, 1]], [[0, 2], [1, 2], [0, 1], [1, 1]],
-    [[2, 0], [1, 0], [2, 1], [1, 1]], [[0, 0], [1, 0], [0, 1], [1, 1]],
-    [[2, 2], [3, 2], [2, 1], [3, 1]], [[0, 2], [3, 2], [0, 1], [3, 1]],
-    [[2, 0], [3, 0], [2, 1], [3, 1]], [[0, 0], [3, 0], [0, 1], [3, 1]],
-    [[2, 2], [1, 2], [2, 3], [1, 3]], [[0, 2], [1, 2], [0, 3], [1, 3]],
-    [[2, 0], [1, 0], [2, 3], [1, 3]], [[0, 0], [1, 0], [0, 3], [1, 3]],
-    [[2, 2], [3, 2], [2, 3], [3, 3]], [[0, 2], [3, 2], [0, 3], [3, 3]],
-    [[2, 0], [3, 0], [2, 3], [3, 3]], [[0, 0], [3, 0], [0, 3], [3, 3]]
+	[
+		[2, 2],
+		[1, 2],
+		[2, 1],
+		[1, 1],
+	],
+	[
+		[0, 2],
+		[1, 2],
+		[0, 1],
+		[1, 1],
+	],
+	[
+		[2, 0],
+		[1, 0],
+		[2, 1],
+		[1, 1],
+	],
+	[
+		[0, 0],
+		[1, 0],
+		[0, 1],
+		[1, 1],
+	],
+	[
+		[2, 2],
+		[3, 2],
+		[2, 1],
+		[3, 1],
+	],
+	[
+		[0, 2],
+		[3, 2],
+		[0, 1],
+		[3, 1],
+	],
+	[
+		[2, 0],
+		[3, 0],
+		[2, 1],
+		[3, 1],
+	],
+	[
+		[0, 0],
+		[3, 0],
+		[0, 1],
+		[3, 1],
+	],
+	[
+		[2, 2],
+		[1, 2],
+		[2, 3],
+		[1, 3],
+	],
+	[
+		[0, 2],
+		[1, 2],
+		[0, 3],
+		[1, 3],
+	],
+	[
+		[2, 0],
+		[1, 0],
+		[2, 3],
+		[1, 3],
+	],
+	[
+		[0, 0],
+		[1, 0],
+		[0, 3],
+		[1, 3],
+	],
+	[
+		[2, 2],
+		[3, 2],
+		[2, 3],
+		[3, 3],
+	],
+	[
+		[0, 2],
+		[3, 2],
+		[0, 3],
+		[3, 3],
+	],
+	[
+		[2, 0],
+		[3, 0],
+		[2, 3],
+		[3, 3],
+	],
+	[
+		[0, 0],
+		[3, 0],
+		[0, 3],
+		[3, 3],
+	],
 ];
 
 Tilemap.WATERFALL_AUTOTILE_TABLE = [
-    [[2, 0], [1, 0], [2, 1], [1, 1]], [[0, 0], [1, 0], [0, 1], [1, 1]],
-    [[2, 0], [3, 0], [2, 1], [3, 1]], [[0, 0], [3, 0], [0, 1], [3, 1]]
+	[
+		[2, 0],
+		[1, 0],
+		[2, 1],
+		[1, 1],
+	],
+	[
+		[0, 0],
+		[1, 0],
+		[0, 1],
+		[1, 1],
+	],
+	[
+		[2, 0],
+		[3, 0],
+		[2, 1],
+		[3, 1],
+	],
+	[
+		[0, 0],
+		[3, 0],
+		[0, 1],
+		[3, 1],
+	],
 ];
 
 // The important members from Pixi.js

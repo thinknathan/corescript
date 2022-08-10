@@ -48,8 +48,9 @@ class ContextShim {
 	createLinearGradient() {
 		console.log('ContextShim createLinearGradient');
 		return {
-			addColorStop: () => console.log('ContextShim createLinearGradient.addColorStop'),
-		}
+			addColorStop: () =>
+				console.log('ContextShim createLinearGradient.addColorStop'),
+		};
 	}
 
 	getImageData() {

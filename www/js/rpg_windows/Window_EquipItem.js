@@ -1,5 +1,5 @@
-import Window_ItemList from "./Window_ItemList.js";
-import JsonEx from "../rpg_core/JsonEx.js";
+import Window_ItemList from './Window_ItemList.js';
+import JsonEx from '../rpg_core/JsonEx.js';
 
 //-----------------------------------------------------------------------------
 // Window_EquipItem
@@ -38,7 +38,10 @@ class Window_EquipItem extends Window_ItemList {
 		if (item === null) {
 			return true;
 		}
-		if (this._slotId < 0 || item.etypeId !== this._actor.equipSlots()[this._slotId]) {
+		if (
+			this._slotId < 0 ||
+			item.etypeId !== this._actor.equipSlots()[this._slotId]
+		) {
 			return false;
 		}
 		return this._actor.canEquip(item);

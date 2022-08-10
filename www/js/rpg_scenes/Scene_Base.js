@@ -1,12 +1,12 @@
-import Stage from "../rpg_core/Stage.js";
-import ImageManager from "../rpg_managers/ImageManager.js";
-import SceneManager from "../rpg_managers/SceneManager.js";
-import AudioManager from "../rpg_managers/AudioManager.js";
-import Utils from "../rpg_core/Utils.js";
-import Graphics from "../rpg_core/Graphics.js";
-import ScreenSprite from "../rpg_core/ScreenSprite.js";
-import WindowLayer from "../rpg_core/WindowLayer.js";
-import Scene_Gameover from "../rpg_scenes/Scene_Gameover.js";
+import Stage from '../rpg_core/Stage.js';
+import ImageManager from '../rpg_managers/ImageManager.js';
+import SceneManager from '../rpg_managers/SceneManager.js';
+import AudioManager from '../rpg_managers/AudioManager.js';
+import Utils from '../rpg_core/Utils.js';
+import Graphics from '../rpg_core/Graphics.js';
+import ScreenSprite from '../rpg_core/ScreenSprite.js';
+import WindowLayer from '../rpg_core/WindowLayer.js';
+import Scene_Gameover from '../rpg_scenes/Scene_Gameover.js';
 
 //=============================================================================
 
@@ -258,7 +258,7 @@ class Scene_Base extends Stage {
 	 * @memberof Scene_Base
 	 */
 	updateChildren() {
-		this.children.forEach(child => {
+		this.children.forEach((child) => {
 			if (child.update) {
 				child.update();
 			}

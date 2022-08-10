@@ -1,8 +1,8 @@
-import Sprite_Battler from "./Sprite_Battler.js";
-import Graphics from "../rpg_core/Graphics.js";
-import ImageManager from "../rpg_managers/ImageManager.js";
-import SoundManager from "../rpg_managers/SoundManager.js";
-import Sprite_StateIcon from "../rpg_sprites/Sprite_StateIcon.js";
+import Sprite_Battler from './Sprite_Battler.js';
+import Graphics from '../rpg_core/Graphics.js';
+import ImageManager from '../rpg_managers/ImageManager.js';
+import SoundManager from '../rpg_managers/SoundManager.js';
+import Sprite_StateIcon from '../rpg_sprites/Sprite_StateIcon.js';
 
 //-----------------------------------------------------------------------------
 // Sprite_Enemy
@@ -116,27 +116,27 @@ class Sprite_Enemy extends Sprite_Battler {
 	startEffect(effectType) {
 		this._effectType = effectType;
 		switch (this._effectType) {
-		case 'appear':
-			this.startAppear();
-			break;
-		case 'disappear':
-			this.startDisappear();
-			break;
-		case 'whiten':
-			this.startWhiten();
-			break;
-		case 'blink':
-			this.startBlink();
-			break;
-		case 'collapse':
-			this.startCollapse();
-			break;
-		case 'bossCollapse':
-			this.startBossCollapse();
-			break;
-		case 'instantCollapse':
-			this.startInstantCollapse();
-			break;
+			case 'appear':
+				this.startAppear();
+				break;
+			case 'disappear':
+				this.startDisappear();
+				break;
+			case 'whiten':
+				this.startWhiten();
+				break;
+			case 'blink':
+				this.startBlink();
+				break;
+			case 'collapse':
+				this.startCollapse();
+				break;
+			case 'bossCollapse':
+				this.startBossCollapse();
+				break;
+			case 'instantCollapse':
+				this.startInstantCollapse();
+				break;
 		}
 		this.revertToNormal();
 	}
@@ -179,27 +179,27 @@ class Sprite_Enemy extends Sprite_Battler {
 		if (this._effectDuration > 0) {
 			this._effectDuration--;
 			switch (this._effectType) {
-			case 'whiten':
-				this.updateWhiten();
-				break;
-			case 'blink':
-				this.updateBlink();
-				break;
-			case 'appear':
-				this.updateAppear();
-				break;
-			case 'disappear':
-				this.updateDisappear();
-				break;
-			case 'collapse':
-				this.updateCollapse();
-				break;
-			case 'bossCollapse':
-				this.updateBossCollapse();
-				break;
-			case 'instantCollapse':
-				this.updateInstantCollapse();
-				break;
+				case 'whiten':
+					this.updateWhiten();
+					break;
+				case 'blink':
+					this.updateBlink();
+					break;
+				case 'appear':
+					this.updateAppear();
+					break;
+				case 'disappear':
+					this.updateDisappear();
+					break;
+				case 'collapse':
+					this.updateCollapse();
+					break;
+				case 'bossCollapse':
+					this.updateBossCollapse();
+					break;
+				case 'instantCollapse':
+					this.updateInstantCollapse();
+					break;
 			}
 			if (this._effectDuration === 0) {
 				this._effectType = null;
@@ -224,7 +224,7 @@ class Sprite_Enemy extends Sprite_Battler {
 	}
 
 	updateBlink() {
-		this.opacity = (this._effectDuration % 10 < 5) ? 255 : 0;
+		this.opacity = this._effectDuration % 10 < 5 ? 255 : 0;
 	}
 
 	updateAppear() {
@@ -242,7 +242,7 @@ class Sprite_Enemy extends Sprite_Battler {
 	}
 
 	updateBossCollapse() {
-		this._shake = this._effectDuration % 2 * 4 - 2;
+		this._shake = (this._effectDuration % 2) * 4 - 2;
 		this.blendMode = Graphics.BLEND_ADD;
 		this.opacity *= this._effectDuration / (this._effectDuration + 1);
 		this.setBlendColor([255, 255, 255, 255 - this.opacity]);

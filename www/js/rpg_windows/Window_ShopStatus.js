@@ -1,9 +1,9 @@
-import Window_Base from "./Window_Base.js";
-import TextManager from "../rpg_managers/TextManager.js";
-import SoundManager from "../rpg_managers/SoundManager.js";
-import TouchInput from "../rpg_core/TouchInput.js";
-import Input from "../rpg_core/Input.js";
-import { DataManager } from "../rpg_managers/DataManager.js";
+import Window_Base from './Window_Base.js';
+import TextManager from '../rpg_managers/TextManager.js';
+import SoundManager from '../rpg_managers/SoundManager.js';
+import TouchInput from '../rpg_core/TouchInput.js';
+import Input from '../rpg_core/Input.js';
+import { DataManager } from '../rpg_managers/DataManager.js';
 
 //-----------------------------------------------------------------------------
 // Window_ShopStatus
@@ -63,8 +63,7 @@ class Window_ShopStatus extends Window_Base {
 	statusMembers() {
 		const start = this._pageIndex * this.pageSize();
 		const end = start + this.pageSize();
-		return self.$gameParty.members()
-			.slice(start, end);
+		return self.$gameParty.members().slice(start, end);
 	}
 
 	pageSize() {
@@ -72,7 +71,9 @@ class Window_ShopStatus extends Window_Base {
 	}
 
 	maxPages() {
-		return Math.floor((self.$gameParty.size() + this.pageSize() - 1) / this.pageSize());
+		return Math.floor(
+			(self.$gameParty.size() + this.pageSize() - 1) / this.pageSize()
+		);
 	}
 
 	drawActorEquipInfo(x, y, actor) {
@@ -91,7 +92,8 @@ class Window_ShopStatus extends Window_Base {
 	drawActorParamChange(x, y, actor, item1) {
 		const width = this.contents.width - this.textPadding() - x;
 		const paramId = this.paramId();
-		const change = this._item.params[paramId] - (item1 ? item1.params[paramId] : 0);
+		const change =
+			this._item.params[paramId] - (item1 ? item1.params[paramId] : 0);
 		this.changeTextColor(this.paramchangeTextColor(change));
 		this.drawText((change > 0 ? '+' : '') + change, x, y, width, 'right');
 	}

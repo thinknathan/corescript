@@ -1,9 +1,9 @@
-import TextManager from "../rpg_managers/TextManager.js";
-import AudioManager from "../rpg_managers/AudioManager.js";
-import SceneManager from "../rpg_managers/SceneManager.js";
-import SoundManager from "../rpg_managers/SoundManager.js";
-import Game_Action from "../rpg_objects/Game_Action.js";
-import Scene_Gameover from "../rpg_scenes/Scene_Gameover.js";
+import TextManager from '../rpg_managers/TextManager.js';
+import AudioManager from '../rpg_managers/AudioManager.js';
+import SceneManager from '../rpg_managers/SceneManager.js';
+import SoundManager from '../rpg_managers/SoundManager.js';
+import Game_Action from '../rpg_objects/Game_Action.js';
+import Scene_Gameover from '../rpg_scenes/Scene_Gameover.js';
 
 //-----------------------------------------------------------------------------
 // BattleManager
@@ -74,8 +74,8 @@ class BattleManager {
 	}
 
 	static onEncounter() {
-		this._preemptive = (Math.random() < this.ratePreemptive());
-		this._surprise = (Math.random() < this.rateSurprise() && !this._preemptive);
+		this._preemptive = Math.random() < this.ratePreemptive();
+		this._surprise = Math.random() < this.rateSurprise() && !this._preemptive;
 	}
 
 	static saveBgmAndBgs() {
@@ -95,42 +95,43 @@ class BattleManager {
 	}
 
 	static makeEscapeRatio() {
-		this._escapeRatio = 0.5 * self.$gameParty.agility() / self.$gameTroop.agility();
+		this._escapeRatio =
+			(0.5 * self.$gameParty.agility()) / self.$gameTroop.agility();
 	}
 
 	static update() {
 		if (!this.isBusy() && !this.updateEvent()) {
 			switch (this._phase) {
-			case 'start':
-				this.startInput();
-				break;
-			case 'turn':
-				this.updateTurn();
-				break;
-			case 'action':
-				this.updateAction();
-				break;
-			case 'turnEnd':
-				this.updateTurnEnd();
-				break;
-			case 'battleEnd':
-				this.updateBattleEnd();
-				break;
+				case 'start':
+					this.startInput();
+					break;
+				case 'turn':
+					this.updateTurn();
+					break;
+				case 'action':
+					this.updateAction();
+					break;
+				case 'turnEnd':
+					this.updateTurnEnd();
+					break;
+				case 'battleEnd':
+					this.updateBattleEnd();
+					break;
 			}
 		}
 	}
 
 	static updateEvent() {
 		switch (this._phase) {
-		case 'start':
-		case 'turn':
-		case 'turnEnd':
-			if (this.isActionForced()) {
-				this.processForcedAction();
-				return true;
-			} else {
-				return this.updateEventMain();
-			}
+			case 'start':
+			case 'turn':
+			case 'turnEnd':
+				if (this.isActionForced()) {
+					this.processForcedAction();
+					return true;
+				} else {
+					return this.updateEventMain();
+				}
 		}
 		return this.checkAbort();
 	}
@@ -149,8 +150,11 @@ class BattleManager {
 	}
 
 	static isBusy() {
-		return (self.$gameMessage.isBusy() || this._spriteset.isBusy() ||
-			this._logWindow.isBusy());
+		return (
+			self.$gameMessage.isBusy() ||
+			this._spriteset.isBusy() ||
+			this._logWindow.isBusy()
+		);
 	}
 
 	static isInputting() {
@@ -186,7 +190,9 @@ class BattleManager {
 	}
 
 	static actor() {
-		return this._actorIndex >= 0 ? self.$gameParty.members()[this._actorIndex] : null;
+		return this._actorIndex >= 0
+			? self.$gameParty.members()[this._actorIndex]
+			: null;
 	}
 
 	static clearActor() {
@@ -214,14 +220,17 @@ class BattleManager {
 	}
 
 	static displayStartMessages() {
-		self.$gameTroop.enemyNames()
-			.forEach(name => {
-				self.$gameMessage.add(TextManager.emerge.format(name));
-			});
+		self.$gameTroop.enemyNames().forEach((name) => {
+			self.$gameMessage.add(TextManager.emerge.format(name));
+		});
 		if (this._preemptive) {
-			self.$gameMessage.add(TextManager.preemptive.format(self.$gameParty.name()));
+			self.$gameMessage.add(
+				TextManager.preemptive.format(self.$gameParty.name())
+			);
 		} else if (this._surprise) {
-			self.$gameMessage.add(TextManager.surprise.format(self.$gameParty.name()));
+			self.$gameMessage.add(
+				TextManager.surprise.format(self.$gameParty.name())
+			);
 		}
 	}
 
@@ -250,8 +259,7 @@ class BattleManager {
 					break;
 				}
 			}
-		} while (!this.actor()
-			.canInput());
+		} while (!this.actor().canInput());
 	}
 
 	static selectPreviousCommand() {
@@ -263,8 +271,7 @@ class BattleManager {
 					return;
 				}
 			}
-		} while (!this.actor()
-			.canInput());
+		} while (!this.actor().canInput());
 	}
 
 	static refreshStatus() {
@@ -315,13 +322,12 @@ class BattleManager {
 		this._phase = 'turnEnd';
 		this._preemptive = false;
 		this._surprise = false;
-		this.allBattleMembers()
-			.forEach(function (battler) {
-				battler.onTurnEnd();
-				this.refreshStatus();
-				this._logWindow.displayAutoAffectedStatus(battler);
-				this._logWindow.displayRegeneration(battler);
-			}, this);
+		this.allBattleMembers().forEach(function (battler) {
+			battler.onTurnEnd();
+			this.refreshStatus();
+			this._logWindow.displayAutoAffectedStatus(battler);
+			this._logWindow.displayRegeneration(battler);
+		}, this);
 		if (this.isForcedTurn()) {
 			this._turnForced = false;
 		}
@@ -355,7 +361,7 @@ class BattleManager {
 		if (!this._preemptive) {
 			battlers = battlers.concat(self.$gameTroop.members());
 		}
-		battlers.forEach(battler => {
+		battlers.forEach((battler) => {
 			battler.makeSpeed();
 		});
 		battlers.sort((a, b) => b.speed() - a.speed());
@@ -426,8 +432,7 @@ class BattleManager {
 
 	static applySubstitute(target) {
 		if (this.checkSubstitute(target)) {
-			const substitute = target.friendsUnit()
-				.substituteBattler();
+			const substitute = target.friendsUnit().substituteBattler();
 			if (substitute && target !== substitute) {
 				this._logWindow.displaySubstitute(substitute, target);
 				return substitute;
@@ -520,7 +525,7 @@ class BattleManager {
 	}
 
 	static processEscapeFormula() {
-		return this._preemptive ? true : (Math.random() < this._escapeRatio);
+		return this._preemptive ? true : Math.random() < this._escapeRatio;
 	}
 
 	static processAbort() {
@@ -601,9 +606,7 @@ class BattleManager {
 		const items = this._rewards.items;
 		if (items.length > 0) {
 			self.$gameMessage.newPage();
-			items.forEach(({
-				name
-			}) => {
+			items.forEach(({ name }) => {
 				self.$gameMessage.add(TextManager.obtainItem.format(name));
 			});
 		}
@@ -617,10 +620,9 @@ class BattleManager {
 
 	static gainExp() {
 		const exp = this._rewards.exp;
-		self.$gameParty.allMembers()
-			.forEach(actor => {
-				actor.gainExp(exp);
-			});
+		self.$gameParty.allMembers().forEach((actor) => {
+			actor.gainExp(exp);
+		});
 	}
 
 	static gainGold() {
@@ -629,7 +631,7 @@ class BattleManager {
 
 	static gainDropItems() {
 		const items = this._rewards.items;
-		items.forEach(item => {
+		items.forEach((item) => {
 			self.$gameParty.gainItem(item, 1);
 		});
 	}
@@ -656,8 +658,7 @@ class BattleManager {
 	}
 
 	static allBattleMembers() {
-		return self.$gameParty.members()
-			.concat(self.$gameTroop.members());
+		return self.$gameParty.members().concat(self.$gameTroop.members());
 	}
 
 	static displayVictoryMessage() {
@@ -669,11 +670,15 @@ class BattleManager {
 	}
 
 	static displayEscapeSuccessMessage() {
-		self.$gameMessage.add(TextManager.escapeStart.format(self.$gameParty.name()));
+		self.$gameMessage.add(
+			TextManager.escapeStart.format(self.$gameParty.name())
+		);
 	}
 
 	static displayEscapeFailureMessage() {
-		self.$gameMessage.add(TextManager.escapeStart.format(self.$gameParty.name()));
+		self.$gameMessage.add(
+			TextManager.escapeStart.format(self.$gameParty.name())
+		);
 		self.$gameMessage.add(`\\.${TextManager.escapeFailure}`);
 	}
 }

@@ -1,10 +1,10 @@
-import Sprite_Battler from "./Sprite_Battler.js";
-import Sprite from "../rpg_core/Sprite.js";
-import ImageManager from "../rpg_managers/ImageManager.js";
-import BattleManager from "../rpg_managers/BattleManager.js";
-import Sprite_Base from "../rpg_sprites/Sprite_Base.js";
-import Sprite_Weapon from "../rpg_sprites/Sprite_Weapon.js";
-import Sprite_StateOverlay from "../rpg_sprites/Sprite_StateOverlay.js";
+import Sprite_Battler from './Sprite_Battler.js';
+import Sprite from '../rpg_core/Sprite.js';
+import ImageManager from '../rpg_managers/ImageManager.js';
+import BattleManager from '../rpg_managers/BattleManager.js';
+import Sprite_Base from '../rpg_sprites/Sprite_Base.js';
+import Sprite_Weapon from '../rpg_sprites/Sprite_Weapon.js';
+import Sprite_StateOverlay from '../rpg_sprites/Sprite_StateOverlay.js';
 
 //-----------------------------------------------------------------------------
 // Sprite_Actor
@@ -63,7 +63,7 @@ class Sprite_Actor extends Sprite_Battler {
 
 	setBattler(battler) {
 		super.setBattler(battler);
-		const changed = (battler !== this._actor);
+		const changed = battler !== this._actor;
 		if (changed) {
 			this._actor = battler;
 			if (battler) {
@@ -262,76 +262,76 @@ class Sprite_Actor extends Sprite_Battler {
 Sprite_Actor.MOTIONS = {
 	walk: {
 		index: 0,
-		loop: true
+		loop: true,
 	},
 	wait: {
 		index: 1,
-		loop: true
+		loop: true,
 	},
 	chant: {
 		index: 2,
-		loop: true
+		loop: true,
 	},
 	guard: {
 		index: 3,
-		loop: true
+		loop: true,
 	},
 	damage: {
 		index: 4,
-		loop: false
+		loop: false,
 	},
 	evade: {
 		index: 5,
-		loop: false
+		loop: false,
 	},
 	thrust: {
 		index: 6,
-		loop: false
+		loop: false,
 	},
 	swing: {
 		index: 7,
-		loop: false
+		loop: false,
 	},
 	missile: {
 		index: 8,
-		loop: false
+		loop: false,
 	},
 	skill: {
 		index: 9,
-		loop: false
+		loop: false,
 	},
 	spell: {
 		index: 10,
-		loop: false
+		loop: false,
 	},
 	item: {
 		index: 11,
-		loop: false
+		loop: false,
 	},
 	escape: {
 		index: 12,
-		loop: true
+		loop: true,
 	},
 	victory: {
 		index: 13,
-		loop: true
+		loop: true,
 	},
 	dying: {
 		index: 14,
-		loop: true
+		loop: true,
 	},
 	abnormal: {
 		index: 15,
-		loop: true
+		loop: true,
 	},
 	sleep: {
 		index: 16,
-		loop: true
+		loop: true,
 	},
 	dead: {
 		index: 17,
-		loop: true
-	}
+		loop: true,
+	},
 };
 
 export default Sprite_Actor;

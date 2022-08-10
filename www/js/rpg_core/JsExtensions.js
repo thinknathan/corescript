@@ -1,4 +1,7 @@
-import { requestAnimationFrame, cancelAnimationFrame } from 'https://cdn.skypack.dev/pin/request-animation-frame-polyfill@v1.1.2-OZhq9z8GPqihwGiXM2I4/mode=imports/optimized/request-animation-frame-polyfill.js';
+import {
+	requestAnimationFrame,
+	cancelAnimationFrame,
+} from 'https://cdn.skypack.dev/pin/request-animation-frame-polyfill@v1.1.2-OZhq9z8GPqihwGiXM2I4/mode=imports/optimized/request-animation-frame-polyfill.js';
 
 //-----------------------------------------------------------------------------
 /**
@@ -69,8 +72,7 @@ String.prototype.padZero = function (length) {
  * @return {String} A string with leading zeros
  */
 Number.prototype.padZero = function (length) {
-	return String(this)
-		.padZero(length);
+	return String(this).padZero(length);
 };
 
 Object.defineProperties(Array.prototype, {
@@ -97,7 +99,7 @@ Object.defineProperties(Array.prototype, {
 				}
 			}
 			return true;
-		}
+		},
 	},
 	/**
 	 * Makes a shallow copy of the array.
@@ -109,7 +111,7 @@ Object.defineProperties(Array.prototype, {
 		enumerable: false,
 		value() {
 			return this.slice(0);
-		}
+		},
 	},
 	/**
 	 * Checks whether the array contains a given element.
@@ -122,8 +124,8 @@ Object.defineProperties(Array.prototype, {
 		enumerable: false,
 		value(element) {
 			return this.includes(element);
-		}
-	}
+		},
+	},
 });
 
 /**
@@ -145,14 +147,14 @@ String.prototype.contains = function (string) {
  * @param {Number} max The upper boundary (excluded)
  * @return {Number} A random integer
  */
-Math.randomInt = max => Math.floor(max * Math.random());
+Math.randomInt = (max) => Math.floor(max * Math.random());
 
 /**
  * requestAnimationFrame polyfill.
  */
 if (typeof self.requestAnimationFrame !== 'function') {
-    self.requestAnimationFrame = requestAnimationFrame;
+	self.requestAnimationFrame = requestAnimationFrame;
 }
 if (typeof self.cancelAnimationFrame !== 'function') {
-    self.cancelAnimationFrame = cancelAnimationFrame;
+	self.cancelAnimationFrame = cancelAnimationFrame;
 }

@@ -1,5 +1,5 @@
-import Window_Selectable from "./Window_Selectable.js";
-import Graphics from "../rpg_core/Graphics.js";
+import Window_Selectable from './Window_Selectable.js';
+import Graphics from '../rpg_core/Graphics.js';
 
 //-----------------------------------------------------------------------------
 // Window_BattleStatus
@@ -35,8 +35,7 @@ class Window_BattleStatus extends Window_Selectable {
 	}
 
 	maxItems() {
-		return self.$gameParty.battleMembers()
-			.length;
+		return self.$gameParty.battleMembers().length;
 	}
 
 	refresh() {
@@ -67,11 +66,7 @@ class Window_BattleStatus extends Window_Selectable {
 		return 330;
 	}
 
-	drawBasicArea({
-		x,
-		y,
-		width
-	}, actor) {
+	drawBasicArea({ x, y, width }, actor) {
 		this.drawActorName(actor, x + 0, y, 150);
 		this.drawActorIcons(actor, x + 156, y, width - 156);
 	}
@@ -84,19 +79,13 @@ class Window_BattleStatus extends Window_Selectable {
 		}
 	}
 
-	drawGaugeAreaWithTp({
-		x,
-		y
-	}, actor) {
+	drawGaugeAreaWithTp({ x, y }, actor) {
 		this.drawActorHp(actor, x + 0, y, 108);
 		this.drawActorMp(actor, x + 123, y, 96);
 		this.drawActorTp(actor, x + 234, y, 96);
 	}
 
-	drawGaugeAreaWithoutTp({
-		x,
-		y
-	}, actor) {
+	drawGaugeAreaWithoutTp({ x, y }, actor) {
 		this.drawActorHp(actor, x + 0, y, 201);
 		this.drawActorMp(actor, x + 216, y, 114);
 	}

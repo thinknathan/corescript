@@ -1,5 +1,5 @@
-import Window_Selectable from "./Window_Selectable.js";
-import Graphics from "../rpg_core/Graphics.js";
+import Window_Selectable from './Window_Selectable.js';
+import Graphics from '../rpg_core/Graphics.js';
 
 //-----------------------------------------------------------------------------
 // Window_BattleEnemy

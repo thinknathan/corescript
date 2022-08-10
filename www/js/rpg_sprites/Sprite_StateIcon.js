@@ -1,5 +1,5 @@
-import Sprite from "../rpg_core/Sprite.js";
-import ImageManager from "../rpg_managers/ImageManager.js";
+import Sprite from '../rpg_core/Sprite.js';
+import ImageManager from '../rpg_managers/ImageManager.js';
 
 //-----------------------------------------------------------------------------
 // Sprite_StateIcon
@@ -70,7 +70,7 @@ class Sprite_StateIcon extends Sprite {
 	updateFrame() {
 		const pw = Sprite_StateIcon._iconWidth;
 		const ph = Sprite_StateIcon._iconHeight;
-		const sx = this._iconIndex % 16 * pw;
+		const sx = (this._iconIndex % 16) * pw;
 		const sy = Math.floor(this._iconIndex / 16) * ph;
 		this.setFrame(sx, sy, pw, ph);
 	}

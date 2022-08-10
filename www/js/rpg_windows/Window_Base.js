@@ -1,8 +1,8 @@
-import Window from "../rpg_core/Window.js";
-import Bitmap from "../rpg_core/Bitmap.js";
-import ImageManager from "../rpg_managers/ImageManager.js";
-import TextManager from "../rpg_managers/TextManager.js";
-import Sprite from "../rpg_core/Sprite.js";
+import Window from '../rpg_core/Window.js';
+import Bitmap from '../rpg_core/Bitmap.js';
+import ImageManager from '../rpg_managers/ImageManager.js';
+import TextManager from '../rpg_managers/TextManager.js';
+import Sprite from '../rpg_core/Sprite.js';
 
 //-----------------------------------------------------------------------------
 // Window_Base
@@ -270,7 +270,7 @@ class Window_Base extends Window {
 				index: 0,
 				x,
 				y,
-				left: x
+				left: x,
 			};
 			textState.text = this.convertEscapeCharacters(text);
 			textState.height = this.calcTextHeight(textState, false);
@@ -287,18 +287,30 @@ class Window_Base extends Window {
 	convertEscapeCharacters(text) {
 		text = text.replace(/\\/g, '\x1b');
 		text = text.replace(/\x1b\x1b/g, '\\');
-		text = text.replace(/\x1bV\[(\d+)\]/gi, function (...args) {
-			return self.$gameVariables.value(parseInt(args[1]));
-		}.bind(this));
-		text = text.replace(/\x1bV\[(\d+)\]/gi, function (...args) {
-			return self.$gameVariables.value(parseInt(args[1]));
-		}.bind(this));
-		text = text.replace(/\x1bN\[(\d+)\]/gi, function (...args) {
-			return this.actorName(parseInt(args[1]));
-		}.bind(this));
-		text = text.replace(/\x1bP\[(\d+)\]/gi, function (...args) {
-			return this.partyMemberName(parseInt(args[1]));
-		}.bind(this));
+		text = text.replace(
+			/\x1bV\[(\d+)\]/gi,
+			function (...args) {
+				return self.$gameVariables.value(parseInt(args[1]));
+			}.bind(this)
+		);
+		text = text.replace(
+			/\x1bV\[(\d+)\]/gi,
+			function (...args) {
+				return self.$gameVariables.value(parseInt(args[1]));
+			}.bind(this)
+		);
+		text = text.replace(
+			/\x1bN\[(\d+)\]/gi,
+			function (...args) {
+				return this.actorName(parseInt(args[1]));
+			}.bind(this)
+		);
+		text = text.replace(
+			/\x1bP\[(\d+)\]/gi,
+			function (...args) {
+				return this.partyMemberName(parseInt(args[1]));
+			}.bind(this)
+		);
 		text = text.replace(/\x1bG/gi, TextManager.currencyUnit);
 		return text;
 	}
@@ -315,25 +327,34 @@ class Window_Base extends Window {
 
 	processCharacter(textState) {
 		switch (textState.text[textState.index]) {
-		case '\n':
-			this.processNewLine(textState);
-			break;
-		case '\f':
-			this.processNewPage(textState);
-			break;
-		case '\x1b':
-			this.processEscapeCharacter(this.obtainEscapeCode(textState), textState);
-			break;
-		default:
-			this.processNormalCharacter(textState);
-			break;
+			case '\n':
+				this.processNewLine(textState);
+				break;
+			case '\f':
+				this.processNewPage(textState);
+				break;
+			case '\x1b':
+				this.processEscapeCharacter(
+					this.obtainEscapeCode(textState),
+					textState
+				);
+				break;
+			default:
+				this.processNormalCharacter(textState);
+				break;
 		}
 	}
 
 	processNormalCharacter(textState) {
 		const c = textState.text[textState.index++];
 		const w = this.textWidth(c);
-		this.contents.drawText(c, textState.x, textState.y, w * 2, textState.height);
+		this.contents.drawText(
+			c,
+			textState.x,
+			textState.y,
+			w * 2,
+			textState.height
+		);
 		textState.x += w;
 	}
 
@@ -372,18 +393,18 @@ class Window_Base extends Window {
 
 	processEscapeCharacter(code, textState) {
 		switch (code) {
-		case 'C':
-			this.changeTextColor(this.textColor(this.obtainEscapeParam(textState)));
-			break;
-		case 'I':
-			this.processDrawIcon(this.obtainEscapeParam(textState), textState);
-			break;
-		case '{':
-			this.makeFontBigger();
-			break;
-		case '}':
-			this.makeFontSmaller();
-			break;
+			case 'C':
+				this.changeTextColor(this.textColor(this.obtainEscapeParam(textState)));
+				break;
+			case 'I':
+				this.processDrawIcon(this.obtainEscapeParam(textState), textState);
+				break;
+			case '{':
+				this.makeFontBigger();
+				break;
+			case '}':
+				this.makeFontSmaller();
+				break;
 		}
 	}
 
@@ -404,14 +425,10 @@ class Window_Base extends Window {
 		}
 	}
 
-	calcTextHeight({
-		text,
-		index
-	}, all) {
+	calcTextHeight({ text, index }, all) {
 		const lastFontSize = this.contents.fontSize;
 		let textHeight = 0;
-		const lines = text.slice(index)
-			.split('\n');
+		const lines = text.slice(index).split('\n');
 		const maxLines = all ? lines.length : 1;
 
 		for (let i = 0; i < maxLines; i++) {
@@ -444,7 +461,7 @@ class Window_Base extends Window {
 		const bitmap = ImageManager.loadSystem('IconSet');
 		const pw = Window_Base._iconWidth;
 		const ph = Window_Base._iconHeight;
-		const sx = iconIndex % 16 * pw;
+		const sx = (iconIndex % 16) * pw;
 		const sy = Math.floor(iconIndex / 16) * ph;
 		this.contents.blt(bitmap, sx, sy, pw, ph, x, y);
 	}
@@ -464,7 +481,7 @@ class Window_Base extends Window {
 		const sh = Math.min(height, ph);
 		const dx = Math.floor(x + Math.max(width - pw, 0) / 2);
 		const dy = Math.floor(y + Math.max(height - ph, 0) / 2);
-		const sx = faceIndex % 4 * pw + (pw - sw) / 2;
+		const sx = (faceIndex % 4) * pw + (pw - sw) / 2;
 		const sy = Math.floor(faceIndex / 4) * ph + (ph - sh) / 2;
 		this.contents.blt(bitmap, sx, sy, sw, sh, dx, dy);
 	}
@@ -475,8 +492,8 @@ class Window_Base extends Window {
 		const pw = bitmap.width / (big ? 3 : 12);
 		const ph = bitmap.height / (big ? 4 : 8);
 		const n = big ? 0 : characterIndex;
-		const sx = (n % 4 * 3 + 1) * pw;
-		const sy = (Math.floor(n / 4) * 4) * ph;
+		const sx = ((n % 4) * 3 + 1) * pw;
+		const sy = Math.floor(n / 4) * 4 * ph;
 		this.contents.blt(bitmap, sx, sy, pw, ph, x - pw / 2, y - ph);
 	}
 
@@ -520,8 +537,7 @@ class Window_Base extends Window {
 
 	drawActorClass(actor, x, y, width = 168) {
 		this.resetTextColor();
-		this.drawText(actor.currentClass()
-			.name, x, y, width);
+		this.drawText(actor.currentClass().name, x, y, width);
 	}
 
 	drawActorNickname(actor, x, y, width = 270) {
@@ -529,9 +545,7 @@ class Window_Base extends Window {
 		this.drawText(actor.nickname(), x, y, width);
 	}
 
-	drawActorLevel({
-		level
-	}, x, y) {
+	drawActorLevel({ level }, x, y) {
 		this.changeTextColor(this.systemColor());
 		this.drawText(TextManager.levelA, x, y, 48);
 		this.resetTextColor();
@@ -539,7 +553,8 @@ class Window_Base extends Window {
 	}
 
 	drawActorIcons(actor, x, y, width = 144) {
-		const icons = actor.allIcons()
+		const icons = actor
+			.allIcons()
 			.slice(0, Math.floor(width / Window_Base._iconWidth));
 		for (let i = 0; i < icons.length; i++) {
 			this.drawIcon(icons[i], x + Window_Base._iconWidth * i, y + 2);
@@ -571,8 +586,15 @@ class Window_Base extends Window {
 		this.drawGauge(x, y, width, actor.hpRate(), color1, color2);
 		this.changeTextColor(this.systemColor());
 		this.drawText(TextManager.hpA, x, y, 44);
-		this.drawCurrentAndMax(actor.hp, actor.mhp, x, y, width,
-			this.hpColor(actor), this.normalColor());
+		this.drawCurrentAndMax(
+			actor.hp,
+			actor.mhp,
+			x,
+			y,
+			width,
+			this.hpColor(actor),
+			this.normalColor()
+		);
 	}
 
 	drawActorMp(actor, x, y, width = 186) {
@@ -581,8 +603,15 @@ class Window_Base extends Window {
 		this.drawGauge(x, y, width, actor.mpRate(), color1, color2);
 		this.changeTextColor(this.systemColor());
 		this.drawText(TextManager.mpA, x, y, 44);
-		this.drawCurrentAndMax(actor.mp, actor.mmp, x, y, width,
-			this.mpColor(actor), this.normalColor());
+		this.drawCurrentAndMax(
+			actor.mp,
+			actor.mmp,
+			x,
+			y,
+			width,
+			this.mpColor(actor),
+			this.normalColor()
+		);
 	}
 
 	drawActorTp(actor, x, y, width = 96) {
@@ -716,10 +745,9 @@ class Window_Base extends Window {
 	}
 
 	reserveFaceImages() {
-		self.$gameParty.members()
-			.forEach(actor => {
-				ImageManager.reserveFace(actor.faceName());
-			}, this);
+		self.$gameParty.members().forEach((actor) => {
+			ImageManager.reserveFace(actor.faceName());
+		}, this);
 	}
 }
 

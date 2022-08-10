@@ -1,5 +1,5 @@
-import ResourceHandler from "./ResourceHandler.js";
-import Utils from "./Utils.js";
+import ResourceHandler from './ResourceHandler.js';
+import Utils from './Utils.js';
 
 //-----------------------------------------------------------------------------
 /**
@@ -21,9 +21,13 @@ class WebAudio {
 		this.clear();
 
 		if (!WebAudio._standAlone) {
-			this._loader = ResourceHandler.createLoader(url, this._load.bind(this, url), () => {
-				this._hasError = true;
-			});
+			this._loader = ResourceHandler.createLoader(
+				url,
+				this._load.bind(this, url),
+				() => {
+					this._hasError = true;
+				}
+			);
 		}
 		this._load(url);
 		this._url = url;
@@ -88,7 +92,10 @@ class WebAudio {
 	static setMasterVolume(value) {
 		this._masterVolume = value;
 		if (this._masterGainNode) {
-			this._masterGainNode.gain.setValueAtTime(this._masterVolume, this._context.currentTime);
+			this._masterGainNode.gain.setValueAtTime(
+				this._masterVolume,
+				this._context.currentTime
+			);
 		}
 	}
 
@@ -131,7 +138,10 @@ class WebAudio {
 		const context = WebAudio._context;
 		if (context) {
 			this._masterGainNode = context.createGain();
-			this._masterGainNode.gain.setValueAtTime(this._masterVolume, context.currentTime);
+			this._masterGainNode.gain.setValueAtTime(
+				this._masterVolume,
+				context.currentTime
+			);
 			this._masterGainNode.connect(context.destination);
 		}
 	}
@@ -144,20 +154,26 @@ class WebAudio {
 	static _setupEventHandlers() {
 		const resumeHandler = () => {
 			const context = WebAudio._context;
-			if (context && context.state === "suspended" && typeof context.resume === "function") {
-				context.resume()
-					.then(() => {
-						WebAudio._onTouchStart();
-					});
+			if (
+				context &&
+				context.state === 'suspended' &&
+				typeof context.resume === 'function'
+			) {
+				context.resume().then(() => {
+					WebAudio._onTouchStart();
+				});
 			} else {
 				WebAudio._onTouchStart();
 			}
 		};
-		document.addEventListener("keydown", resumeHandler);
-		document.addEventListener("mousedown", resumeHandler);
-		document.addEventListener("touchend", resumeHandler);
+		document.addEventListener('keydown', resumeHandler);
+		document.addEventListener('mousedown', resumeHandler);
+		document.addEventListener('touchend', resumeHandler);
 		document.addEventListener('touchstart', this._onTouchStart.bind(this));
-		document.addEventListener('visibilitychange', this._onVisibilityChange.bind(this));
+		document.addEventListener(
+			'visibilitychange',
+			this._onVisibilityChange.bind(this)
+		);
 	}
 
 	/**
@@ -289,7 +305,10 @@ class WebAudio {
 	set volume(value) {
 		this._volume = value;
 		if (this._gainNode) {
-			this._gainNode.gain.setValueAtTime(this._volume, WebAudio._context.currentTime);
+			this._gainNode.gain.setValueAtTime(
+				this._volume,
+				WebAudio._context.currentTime
+			);
 		}
 	}
 
@@ -486,9 +505,11 @@ class WebAudio {
 					this._onXhrLoad(xhr);
 				}
 			};
-			xhr.onerror = this._loader || (() => {
-				this._hasError = true;
-			});
+			xhr.onerror =
+				this._loader ||
+				(() => {
+					this._hasError = true;
+				});
 			xhr.send();
 		}
 	}
@@ -498,12 +519,10 @@ class WebAudio {
 	 * @param {XMLHttpRequest} xhr
 	 * @private
 	 */
-	_onXhrLoad({
-		response
-	}) {
+	_onXhrLoad({ response }) {
 		let array = response;
 		this._readLoopComments(new Uint8Array(array));
-		WebAudio._context.decodeAudioData(array, buffer => {
+		WebAudio._context.decodeAudioData(array, (buffer) => {
 			this._buffer = buffer;
 			this._totalTime = buffer.duration;
 			if (this._loopLength > 0 && this._sampleRate > 0) {
@@ -549,7 +568,10 @@ class WebAudio {
 		this._sourceNode.buffer = this._buffer;
 		this._sourceNode.loopStart = this._loopStart;
 		this._sourceNode.loopEnd = this._loopStart + this._loopLength;
-		this._sourceNode.playbackRate.setValueAtTime(this._pitch, context.currentTime);
+		this._sourceNode.playbackRate.setValueAtTime(
+			this._pitch,
+			context.currentTime
+		);
 		this._gainNode = context.createGain();
 		this._gainNode.gain.setValueAtTime(this._volume, context.currentTime);
 		this._pannerNode = context.createPanner();
@@ -754,8 +776,12 @@ class WebAudio {
 	 * @private
 	 */
 	_readLittleEndian(array, index) {
-		return array[index + 3] * 0x1000000 + array[index + 2] * 0x10000 +
-			array[index + 1] * 0x100 + array[index + 0];
+		return (
+			array[index + 3] * 0x1000000 +
+			array[index + 2] * 0x10000 +
+			array[index + 1] * 0x100 +
+			array[index + 0]
+		);
 	}
 
 	/**
@@ -765,8 +791,12 @@ class WebAudio {
 	 * @private
 	 */
 	_readBigEndian(array, index) {
-		return array[index + 0] * 0x1000000 + array[index + 1] * 0x10000 +
-			array[index + 2] * 0x100 + array[index + 3];
+		return (
+			array[index + 0] * 0x1000000 +
+			array[index + 1] * 0x10000 +
+			array[index + 2] * 0x100 +
+			array[index + 3]
+		);
 	}
 
 	/**

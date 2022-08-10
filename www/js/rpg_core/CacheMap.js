@@ -1,4 +1,4 @@
-import CacheEntry from "../rpg_core/CacheEntry.js";
+import CacheEntry from '../rpg_core/CacheEntry.js';
 
 /**
  * Cache for images, audio, or any other kind of resource
@@ -59,8 +59,7 @@ class CacheMap {
 	}
 
 	setItem(key, item) {
-		return new CacheEntry(this, key, item)
-			.allocate();
+		return new CacheEntry(this, key, item).allocate();
 	}
 
 	update(ticks, delta) {

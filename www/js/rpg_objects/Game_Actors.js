@@ -1,4 +1,4 @@
-import Game_Actor from "./Game_Actor.js";
+import Game_Actor from './Game_Actor.js';
 
 //-----------------------------------------------------------------------------
 // Game_Actors
