@@ -3,7 +3,7 @@ from http.server import HTTPServer, SimpleHTTPRequestHandler, test
 import sys
 import os
 
-class CORSRequestHandler(SimpleHTTPRequestHandler):
+class HeaderRequestHandler(SimpleHTTPRequestHandler):
 	def end_headers (self):
 		self.send_header('Cross-Origin-Opener-Policy', 'same-origin')
 		self.send_header('Cross-Origin-Embedder-Policy', 'require-corp')
@@ -15,4 +15,4 @@ class CORSRequestHandler(SimpleHTTPRequestHandler):
 os.chdir('www')
 
 if __name__ == '__main__':
-	test(CORSRequestHandler, HTTPServer, port=int(sys.argv[1]) if len(sys.argv) > 1 else 8000)
+	test(HeaderRequestHandler, HTTPServer, port=int(sys.argv[1]) if len(sys.argv) > 1 else 8000)
