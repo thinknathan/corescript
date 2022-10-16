@@ -1,4 +1,4 @@
-import * as PIXI from '../libs/pixi.js';
+import * as PIXI from '../libs/pixi-webworker.mjs';
 import Spriteset_Base from './Spriteset_Base.js';
 import Graphics from '../rpg_core/Graphics.js';
 import Sprite from '../rpg_core/Sprite.js';

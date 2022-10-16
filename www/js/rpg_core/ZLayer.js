@@ -1,4 +1,4 @@
-import * as PIXI from '../libs/pixi.js';
+import * as PIXI from '../libs/pixi-webworker.mjs';
 import { CanvasTileRenderer } from 'https://cdn.skypack.dev/pin/@pixi/tilemap@v3.2.2-2dMlZoW3YNxu69J1N1DJ/mode=imports/optimized/@pixi/tilemap.js';
 
 //-----------------------------------------------------------------------------

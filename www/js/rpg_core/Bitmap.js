@@ -1,4 +1,4 @@
-import * as PIXI from '../libs/pixi.js';
+import * as PIXI from '../libs/pixi-webworker.mjs';
 import Graphics from '../rpg_core/Graphics.js';
 import Rectangle from '../rpg_core/Rectangle.js';
 import CanvasShim from './CanvasShim.js';

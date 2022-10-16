@@ -1,4 +1,4 @@
-import * as PIXI from '../libs/pixi.js';
+import * as PIXI from '../libs/pixi-webworker.mjs';
 import ContextShim from './ContextShim.js';
 
 class CanvasShim extends PIXI.Container {

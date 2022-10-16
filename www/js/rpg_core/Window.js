@@ -1,4 +1,4 @@
-import * as PIXI from '../libs/pixi.js';
+import * as PIXI from '../libs/pixi-webworker.mjs';
 import Bitmap from '../rpg_core/Bitmap.js';
 import Sprite from '../rpg_core/Sprite.js';
 import Point from '../rpg_core/Point.js';

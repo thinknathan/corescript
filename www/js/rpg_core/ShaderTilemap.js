@@ -1,4 +1,4 @@
-import * as PIXI from '../libs/pixi.js';
+import * as PIXI from '../libs/pixi-webworker.mjs';
 import ZLayer from './ZLayer.js';
 import Tilemap from './Tilemap.js';
 import {

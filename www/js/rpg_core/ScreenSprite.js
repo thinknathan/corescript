@@ -1,4 +1,4 @@
-import * as PIXI from '../libs/pixi.js';
+import * as PIXI from '../libs/pixi-webworker.mjs';
 import Graphics from '../rpg_core/Graphics.js';
 import Utils from '../rpg_core/Utils.js';
 

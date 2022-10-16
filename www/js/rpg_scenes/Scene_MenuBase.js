@@ -1,4 +1,4 @@
-import * as PIXI from '../libs/pixi.js';
+import * as PIXI from '../libs/pixi-webworker.mjs';
 import Scene_Base from './Scene_Base.js';
 import Window_Help from '../rpg_windows/Window_Help.js';
 import SceneManager from '../rpg_managers/SceneManager.js';
