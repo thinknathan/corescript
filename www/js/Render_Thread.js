@@ -7,10 +7,8 @@ import {
 import * as PIXI from './libs/pixi-webworker.mjs';
 // import "https://cdn.skypack.dev/pin/iphone-inline-video@v2.2.2-UGQTdOARhJvH2uY0Ic3l/mode=imports/optimized/iphone-inline-video.js";
 
-console.log('Hello before imports');
-
 import './rpg_core/JsExtensions.js';
-// import ProgressWatcher from './rpg_core/ProgressWatcher.js';
+import ProgressWatcher from './rpg_core/ProgressWatcher.js';
 import Utils from './rpg_core/Utils.js';
 import CacheEntry from './rpg_core/CacheEntry.js';
 import CacheMap from './rpg_core/CacheMap.js';
@@ -465,7 +463,7 @@ class Render_Thread {
 		}, 100);
 	}
 
-	sum(x, y) {
+	static sum(x, y) {
 		return x + y;
 	}
 }
@@ -489,4 +487,4 @@ ChildHandshake(messenger, Render_Thread).then((connection) => {
 
 // } else {
 // 	Render_Thread.start();
-// }
+//
