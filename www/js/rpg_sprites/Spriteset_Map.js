@@ -6,8 +6,8 @@ import Sprite from '../rpg_core/Sprite.js';
 import Sprite_Character from '../rpg_sprites/Sprite_Character.js';
 import Sprite_Destination from '../rpg_sprites/Sprite_Destination.js';
 import Tilemap from '../rpg_core/Tilemap.js';
-import ShaderTilemap from '../rpg_core/ShaderTilemap.js';
-import Weather from '../rpg_core/Weather.js';
+// import ShaderTilemap from '../rpg_core/ShaderTilemap.js';
+// import Weather from '../rpg_core/Weather.js';
 
 //-----------------------------------------------------------------------------
 // Spriteset_Map
