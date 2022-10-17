@@ -38,38 +38,38 @@ import ResourceHandler from './rpg_core/ResourceHandler.js';
 import WindowShim from './rpg_core/WindowShim.js';
 import DocumentShim from './rpg_core/DocumentShim.js';
 
-// import {
-// 	$dataActors,
-// 	$dataClasses,
-// 	$dataSkills,
-// 	$dataItems,
-// 	$dataWeapons,
-// 	$dataArmors,
-// 	$dataEnemies,
-// 	$dataTroops,
-// 	$dataStates,
-// 	$dataAnimations,
-// 	$dataTilesets,
-// 	$dataCommonEvents,
-// 	$dataSystem,
-// 	$dataMapInfos,
-// 	$dataMap,
-// 	$gameTemp,
-// 	$gameSystem,
-// 	$gameScreen,
-// 	$gameTimer,
-// 	$gameMessage,
-// 	$gameSwitches,
-// 	$gameVariables,
-// 	$gameSelfSwitches,
-// 	$gameActors,
-// 	$gameParty,
-// 	$gameTroop,
-// 	$gameMap,
-// 	$gamePlayer,
-// 	$testEvent,
-// 	DataManager,
-// } from './rpg_managers/DataManager.js';
+import {
+	$dataActors,
+	$dataClasses,
+	$dataSkills,
+	$dataItems,
+	$dataWeapons,
+	$dataArmors,
+	$dataEnemies,
+	$dataTroops,
+	$dataStates,
+	$dataAnimations,
+	$dataTilesets,
+	$dataCommonEvents,
+	$dataSystem,
+	$dataMapInfos,
+	$dataMap,
+	$gameTemp,
+	$gameSystem,
+	$gameScreen,
+	$gameTimer,
+	$gameMessage,
+	$gameSwitches,
+	$gameVariables,
+	$gameSelfSwitches,
+	$gameActors,
+	$gameParty,
+	$gameTroop,
+	$gameMap,
+	$gamePlayer,
+	$testEvent,
+	DataManager,
+} from './rpg_managers/DataManager.js';
 import ConfigManager from './rpg_managers/ConfigManager.js';
 import StorageManager from './rpg_managers/StorageManagerShim.js';
 import ImageManager from './rpg_managers/ImageManager.js';
@@ -77,68 +77,68 @@ import AudioManager from './rpg_managers/AudioManager.js';
 import SoundManager from './rpg_managers/SoundManager.js';
 import TextManager from './rpg_managers/TextManager.js';
 import SceneManager from './rpg_managers/SceneManager.js';
-// import BattleManager from './rpg_managers/BattleManager.js';
+import BattleManager from './rpg_managers/BattleManager.js';
 import PluginManager from './rpg_managers/PluginManager.js';
 
 import Game_Temp from './rpg_objects/Game_Temp.js';
 import Game_System from './rpg_objects/Game_System.js';
-// import Game_Timer from './rpg_objects/Game_Timer.js';
+import Game_Timer from './rpg_objects/Game_Timer.js';
 import Game_Message from './rpg_objects/Game_Message.js';
 import Game_Switches from './rpg_objects/Game_Switches.js';
 import Game_Variables from './rpg_objects/Game_Variables.js';
 import Game_SelfSwitches from './rpg_objects/Game_SelfSwitches.js';
 import Game_Screen from './rpg_objects/Game_Screen.js';
 import Game_Picture from './rpg_objects/Game_Picture.js';
-// import Game_Item from './rpg_objects/Game_Item.js';
-// import Game_Action from './rpg_objects/Game_Action.js';
+import Game_Item from './rpg_objects/Game_Item.js';
+import Game_Action from './rpg_objects/Game_Action.js';
 import Game_ActionResult from './rpg_objects/Game_ActionResult.js';
-// import Game_BattlerBase from './rpg_objects/Game_BattlerBase.js';
-// import Game_Battler from './rpg_objects/Game_Battler.js';
-// import Game_Actor from './rpg_objects/Game_Actor.js';
-// import Game_Enemy from './rpg_objects/Game_Enemy.js';
-// import Game_Actors from './rpg_objects/Game_Actors.js';
+import Game_BattlerBase from './rpg_objects/Game_BattlerBase.js';
+import Game_Battler from './rpg_objects/Game_Battler.js';
+import Game_Actor from './rpg_objects/Game_Actor.js';
+import Game_Enemy from './rpg_objects/Game_Enemy.js';
+import Game_Actors from './rpg_objects/Game_Actors.js';
 import Game_Unit from './rpg_objects/Game_Unit.js';
-// import Game_Party from './rpg_objects/Game_Party.js';
-// import Game_Troop from './rpg_objects/Game_Troop.js';
-// import Game_Map from './rpg_objects/Game_Map.js';
-// import Game_CommonEvent from './rpg_objects/Game_CommonEvent.js';
+import Game_Party from './rpg_objects/Game_Party.js';
+import Game_Troop from './rpg_objects/Game_Troop.js';
+import Game_Map from './rpg_objects/Game_Map.js';
+import Game_CommonEvent from './rpg_objects/Game_CommonEvent.js';
 import Game_CharacterBase from './rpg_objects/Game_CharacterBase.js';
 import Game_Character from './rpg_objects/Game_Character.js';
-// import Game_Player from './rpg_objects/Game_Player.js';
+import Game_Player from './rpg_objects/Game_Player.js';
 import Game_Follower from './rpg_objects/Game_Follower.js';
 import Game_Followers from './rpg_objects/Game_Followers.js';
 import Game_Vehicle from './rpg_objects/Game_Vehicle.js';
-// import Game_Event from './rpg_objects/Game_Event.js';
-// import Game_Interpreter from './rpg_objects/Game_Interpreter.js';
+import Game_Event from './rpg_objects/Game_Event.js';
+import Game_Interpreter from './rpg_objects/Game_Interpreter.js';
 
-// import Scene_Base from './rpg_scenes/Scene_Base.js';
-// import Scene_Boot from './rpg_scenes/Scene_Boot.js';
-// import Scene_Title from './rpg_scenes/Scene_Title.js';
-// import Scene_Map from './rpg_scenes/Scene_Map.js';
-// import Scene_MenuBase from './rpg_scenes/Scene_MenuBase.js';
-// import Scene_Menu from './rpg_scenes/Scene_Menu.js';
-// import Scene_ItemBase from './rpg_scenes/Scene_ItemBase.js';
-// import Scene_Item from './rpg_scenes/Scene_Item.js';
-// import Scene_Skill from './rpg_scenes/Scene_Skill.js';
-// import Scene_Equip from './rpg_scenes/Scene_Equip.js';
-// import Scene_Status from './rpg_scenes/Scene_Status.js';
-// import Scene_Options from './rpg_scenes/Scene_Options.js';
-// import Scene_File from './rpg_scenes/Scene_File.js';
-// import Scene_Save from './rpg_scenes/Scene_Save.js';
-// import Scene_Load from './rpg_scenes/Scene_Load.js';
-// import Scene_GameEnd from './rpg_scenes/Scene_GameEnd.js';
-// import Scene_Shop from './rpg_scenes/Scene_Shop.js';
-// import Scene_Name from './rpg_scenes/Scene_Name.js';
-// import Scene_Debug from './rpg_scenes/Scene_Debug.js';
-// import Scene_Battle from './rpg_scenes/Scene_Battle.js';
-// import Scene_Gameover from './rpg_scenes/Scene_Gameover.js';
+import Scene_Base from './rpg_scenes/Scene_Base.js';
+import Scene_Boot from './rpg_scenes/Scene_Boot.js';
+import Scene_Title from './rpg_scenes/Scene_Title.js';
+import Scene_Map from './rpg_scenes/Scene_Map.js';
+import Scene_MenuBase from './rpg_scenes/Scene_MenuBase.js';
+import Scene_Menu from './rpg_scenes/Scene_Menu.js';
+import Scene_ItemBase from './rpg_scenes/Scene_ItemBase.js';
+import Scene_Item from './rpg_scenes/Scene_Item.js';
+import Scene_Skill from './rpg_scenes/Scene_Skill.js';
+import Scene_Equip from './rpg_scenes/Scene_Equip.js';
+import Scene_Status from './rpg_scenes/Scene_Status.js';
+import Scene_Options from './rpg_scenes/Scene_Options.js';
+import Scene_File from './rpg_scenes/Scene_File.js';
+import Scene_Save from './rpg_scenes/Scene_Save.js';
+import Scene_Load from './rpg_scenes/Scene_Load.js';
+import Scene_GameEnd from './rpg_scenes/Scene_GameEnd.js';
+import Scene_Shop from './rpg_scenes/Scene_Shop.js';
+import Scene_Name from './rpg_scenes/Scene_Name.js';
+import Scene_Debug from './rpg_scenes/Scene_Debug.js';
+import Scene_Battle from './rpg_scenes/Scene_Battle.js';
+import Scene_Gameover from './rpg_scenes/Scene_Gameover.js';
 
 import Sprite_Base from './rpg_sprites/Sprite_Base.js';
 import Sprite_Button from './rpg_sprites/Sprite_Button.js';
 import Sprite_Character from './rpg_sprites/Sprite_Character.js';
 import Sprite_Battler from './rpg_sprites/Sprite_Battler.js';
-// import Sprite_Actor from './rpg_sprites/Sprite_Actor.js';
-// import Sprite_Enemy from './rpg_sprites/Sprite_Enemy.js';
+import Sprite_Actor from './rpg_sprites/Sprite_Actor.js';
+import Sprite_Enemy from './rpg_sprites/Sprite_Enemy.js';
 import Sprite_Animation from './rpg_sprites/Sprite_Animation.js';
 import Sprite_Damage from './rpg_sprites/Sprite_Damage.js';
 import Sprite_StateIcon from './rpg_sprites/Sprite_StateIcon.js';
@@ -146,11 +146,11 @@ import Sprite_StateOverlay from './rpg_sprites/Sprite_StateOverlay.js';
 import Sprite_Weapon from './rpg_sprites/Sprite_Weapon.js';
 import Sprite_Balloon from './rpg_sprites/Sprite_Balloon.js';
 import Sprite_Picture from './rpg_sprites/Sprite_Picture.js';
-// import Sprite_Timer from './rpg_sprites/Sprite_Timer.js';
+import Sprite_Timer from './rpg_sprites/Sprite_Timer.js';
 import Sprite_Destination from './rpg_sprites/Sprite_Destination.js';
 import Spriteset_Base from './rpg_sprites/Spriteset_Base.js';
-// import Spriteset_Map from './rpg_sprites/Spriteset_Map.js';
-// import Spriteset_Battle from './rpg_sprites/Spriteset_Battle.js';
+import Spriteset_Map from './rpg_sprites/Spriteset_Map.js';
+import Spriteset_Battle from './rpg_sprites/Spriteset_Battle.js';
 
 import Window_Base from './rpg_windows/Window_Base.js';
 import Window_Selectable from './rpg_windows/Window_Selectable.js';
@@ -158,43 +158,43 @@ import Window_Command from './rpg_windows/Window_Command.js';
 import Window_HorzCommand from './rpg_windows/Window_HorzCommand.js';
 import Window_Help from './rpg_windows/Window_Help.js';
 import Window_Gold from './rpg_windows/Window_Gold.js';
-// import Window_MenuCommand from './rpg_windows/Window_MenuCommand.js';
+import Window_MenuCommand from './rpg_windows/Window_MenuCommand.js';
 import Window_MenuStatus from './rpg_windows/Window_MenuStatus.js';
-// import Window_MenuActor from './rpg_windows/Window_MenuActor.js';
+import Window_MenuActor from './rpg_windows/Window_MenuActor.js';
 import Window_ItemCategory from './rpg_windows/Window_ItemCategory.js';
-// import Window_ItemList from './rpg_windows/Window_ItemList.js';
+import Window_ItemList from './rpg_windows/Window_ItemList.js';
 import Window_SkillType from './rpg_windows/Window_SkillType.js';
 import Window_SkillStatus from './rpg_windows/Window_SkillStatus.js';
 import Window_SkillList from './rpg_windows/Window_SkillList.js';
 import Window_EquipStatus from './rpg_windows/Window_EquipStatus.js';
 import Window_EquipCommand from './rpg_windows/Window_EquipCommand.js';
 import Window_EquipSlot from './rpg_windows/Window_EquipSlot.js';
-// import Window_EquipItem from './rpg_windows/Window_EquipItem.js';
+import Window_EquipItem from './rpg_windows/Window_EquipItem.js';
 import Window_Status from './rpg_windows/Window_Status.js';
 import Window_Options from './rpg_windows/Window_Options.js';
-// import Window_SavefileList from './rpg_windows/Window_SavefileList.js';
+import Window_SavefileList from './rpg_windows/Window_SavefileList.js';
 import Window_ShopCommand from './rpg_windows/Window_ShopCommand.js';
 import Window_ShopBuy from './rpg_windows/Window_ShopBuy.js';
-// import Window_ShopSell from './rpg_windows/Window_ShopSell.js';
+import Window_ShopSell from './rpg_windows/Window_ShopSell.js';
 import Window_ShopNumber from './rpg_windows/Window_ShopNumber.js';
-// import Window_ShopStatus from './rpg_windows/Window_ShopStatus.js';
+import Window_ShopStatus from './rpg_windows/Window_ShopStatus.js';
 import Window_NameEdit from './rpg_windows/Window_NameEdit.js';
 import Window_NameInput from './rpg_windows/Window_NameInput.js';
 import Window_ChoiceList from './rpg_windows/Window_ChoiceList.js';
 import Window_NumberInput from './rpg_windows/Window_NumberInput.js';
-// import Window_EventItem from './rpg_windows/Window_EventItem.js';
-// import Window_Message from './rpg_windows/Window_Message.js';
+import Window_EventItem from './rpg_windows/Window_EventItem.js';
+import Window_Message from './rpg_windows/Window_Message.js';
 import Window_ScrollText from './rpg_windows/Window_ScrollText.js';
 import Window_MapName from './rpg_windows/Window_MapName.js';
-// import Window_BattleLog from './rpg_windows/Window_BattleLog.js';
-// import Window_PartyCommand from './rpg_windows/Window_PartyCommand.js';
+import Window_BattleLog from './rpg_windows/Window_BattleLog.js';
+import Window_PartyCommand from './rpg_windows/Window_PartyCommand.js';
 import Window_ActorCommand from './rpg_windows/Window_ActorCommand.js';
 import Window_BattleStatus from './rpg_windows/Window_BattleStatus.js';
 import Window_BattleActor from './rpg_windows/Window_BattleActor.js';
 import Window_BattleEnemy from './rpg_windows/Window_BattleEnemy.js';
 import Window_BattleSkill from './rpg_windows/Window_BattleSkill.js';
-// import Window_BattleItem from './rpg_windows/Window_BattleItem.js';
-// import Window_TitleCommand from './rpg_windows/Window_TitleCommand.js';
+import Window_BattleItem from './rpg_windows/Window_BattleItem.js';
+import Window_TitleCommand from './rpg_windows/Window_TitleCommand.js';
 import Window_GameEnd from './rpg_windows/Window_GameEnd.js';
 import Window_DebugRange from './rpg_windows/Window_DebugRange.js';
 import Window_DebugEdit from './rpg_windows/Window_DebugEdit.js';
@@ -407,19 +407,18 @@ class Render_Thread {
 		self.PluginManager = PluginManager;
 	}
 
-	static async updateData(payload) {
+	static async updateWindowData(payload) {
 		console.log(payload);
 		await this.initWindowAndDocument();
-		if (payload.type === 'plugins') {
-			self.$plugins = payload.data;
-			return true;
-		} else if (payload.type === 'window') {
-			Object.entries(payload.data).forEach(
-				([key, value]) => (self.window[key] = value)
-			);
-			return true;
-		}
-		return false;
+		Object.entries(payload.data).forEach(
+			([key, value]) => (self.window[key] = value)
+		);
+	}
+
+	static async updatePluginData(payload) {
+		console.log(payload);
+		await this.initWindowAndDocument();
+		self.$plugins = payload.data;
 	}
 
 	static async initWindowAndDocument() {
@@ -429,7 +428,6 @@ class Render_Thread {
 		if (!self.document) {
 			self.document = DocumentShim;
 		}
-		return true;
 	}
 
 	static async receiveEvent(payload) {
@@ -463,8 +461,9 @@ class Render_Thread {
 		}, 100);
 	}
 
-	static sum(x, y) {
-		return x + y;
+	static receiveCanvas(canvas) {
+		// console.log(canvas);
+		Graphics._canvas = canvas;
 	}
 }
 
@@ -486,5 +485,4 @@ ChildHandshake(messenger, Render_Thread).then((connection) => {
 // if (Utils.isWorker()) {
 
 // } else {
-// 	Render_Thread.start();
-//
+// 	Render_Thread.start()

@@ -25,18 +25,18 @@ class Main_Thread {
 		const throttleThreshold = 33.34;
 
 		/* Listen for request to quit game */
-		document.addEventListener('message', (payload) => {
-			if (payload.type === 'close') {
-				console.log('Close window request');
-				window.close();
-			} else if (payload.type === 'audio') {
-				console.log('Web audio request');
-			}
+		Render_Thread.addEventListener('close', (payload) => {
+			console.log('Close window request');
+			window.close();
+		});
+
+		Render_Thread.addEventListener('audio', (payload) => {
+			console.log('Web audio request');
 		});
 
 		/* Keyboard Events */
 		document.addEventListener('keydown', (e) =>
-			Render_Thread.receiveEvent({
+			Render_Thread.call('receiveEvent', {
 				type: 'keydown',
 				shimType: 'document',
 				key: e.key,
@@ -49,7 +49,7 @@ class Main_Thread {
 			})
 		);
 		document.addEventListener('keyup', (e) =>
-			Render_Thread.receiveEvent({
+			Render_Thread.call('receiveEvent', {
 				type: 'keyup',
 				shimType: 'document',
 				key: e.key,
@@ -64,7 +64,7 @@ class Main_Thread {
 
 		/* Mouse Events */
 		document.addEventListener('mousedown', (e) =>
-			Render_Thread.receiveEvent({
+			Render_Thread.call('receiveEvent', {
 				type: 'mousedown',
 				shimType: 'document',
 				clientX: e.clientX,
@@ -84,7 +84,7 @@ class Main_Thread {
 			})
 		);
 		document.addEventListener('mouseup', (e) =>
-			Render_Thread.receiveEvent({
+			Render_Thread.call('receiveEvent', {
 				type: 'mouseup',
 				shimType: 'document',
 				clientX: e.clientX,
@@ -104,7 +104,7 @@ class Main_Thread {
 			})
 		);
 		const mousemoveFunc = (e) =>
-			Render_Thread.receiveEvent({
+			Render_Thread.call('receiveEvent', {
 				type: 'mousemove',
 				shimType: 'document',
 				clientX: e.clientX,
@@ -129,7 +129,7 @@ class Main_Thread {
 		document.addEventListener('mousemove', (e) => mousemoveThrottled(e));
 
 		const wheelFunc = (e) =>
-			Render_Thread.receiveEvent({
+			Render_Thread.call('receiveEvent', {
 				type: 'wheel',
 				shimType: 'document',
 				deltaX: e.deltaX,
@@ -152,7 +152,7 @@ class Main_Thread {
 
 		/* Touch Events */
 		document.addEventListener('touchend', (e) =>
-			Render_Thread.receiveEvent({
+			Render_Thread.call('receiveEvent', {
 				type: 'touchend',
 				shimType: 'document',
 				changedTouches: JSON.stringify(e.changedTouches),
@@ -163,7 +163,7 @@ class Main_Thread {
 		document.addEventListener(
 			'touchstart',
 			(e) =>
-				Render_Thread.receiveEvent({
+				Render_Thread.call('receiveEvent', {
 					type: 'touchstart',
 					shimType: 'document',
 					changedTouches: JSON.stringify(e.changedTouches),
@@ -177,7 +177,7 @@ class Main_Thread {
 				: false
 		);
 		const touchmoveFunc = (e) =>
-			Render_Thread.receiveEvent({
+			Render_Thread.call('receiveEvent', {
 				type: 'touchmove',
 				shimType: 'document',
 				changedTouches: JSON.stringify(e.changedTouches),
@@ -198,7 +198,7 @@ class Main_Thread {
 				: false
 		);
 		document.addEventListener('touchcancel', (e) =>
-			Render_Thread.receiveEvent({
+			Render_Thread.call('receiveEvent', {
 				type: 'touchcancel',
 				shimType: 'document',
 			})
@@ -206,7 +206,7 @@ class Main_Thread {
 
 		/* Other Events */
 		document.addEventListener('pointerdown', (e) =>
-			Render_Thread.receiveEvent({
+			Render_Thread.call('receiveEvent', {
 				type: 'pointerdown',
 				shimType: 'document',
 				clientX: e.clientX,
@@ -227,7 +227,7 @@ class Main_Thread {
 		);
 
 		document.addEventListener('visibilitychange', (e) =>
-			Render_Thread.receiveEvent({
+			Render_Thread.call('receiveEvent', {
 				type: 'visibilitychange',
 				shimType: 'document',
 				timeStamp: e.timeStamp,
@@ -235,7 +235,7 @@ class Main_Thread {
 		);
 
 		const resizeFunc = (e) =>
-			Render_Thread.receiveEvent({
+			Render_Thread.call('receiveEvent', {
 				type: 'resize',
 				shimType: 'window',
 				innerWidth: window.innerWidth,
@@ -249,7 +249,7 @@ class Main_Thread {
 		window.addEventListener('resize', (e) => resizeThrottled(e));
 
 		window.addEventListener('blur', (e) =>
-			Render_Thread.receiveEvent({
+			Render_Thread.call('receiveEvent', {
 				type: 'blur',
 				shimType: 'window',
 				timeStamp: e.timeStamp,
@@ -257,7 +257,7 @@ class Main_Thread {
 		);
 
 		window.addEventListener('error', (e) =>
-			Render_Thread.receiveEvent({
+			Render_Thread.call('receiveEvent', {
 				type: 'error',
 				shimType: 'window',
 				timeStamp: e.timeStamp,
@@ -266,21 +266,7 @@ class Main_Thread {
 			})
 		);
 	}
-	static async transferWindowData(Render_Thread) {
-		const windowData = this.getWindowData();
-		await Render_Thread.updateData({
-			type: 'window',
-			data: windowData,
-		});
-		console.log('the above line of code will absolutely never run');
-	}
-	static async transferPluginData(Render_Thread) {
-		await Render_Thread.updateData({
-			type: 'plugins',
-			data: $plugins,
-		});
-		console.log('the above line of code will absolutely never run');
-	}
+
 	static async setupDataThread() {
 		const dataWorker = new Worker('js/Data_Thread.js', { type: 'module' });
 		const Data_Thread = await Comlink.wrap(dataWorker);
@@ -294,45 +280,34 @@ class Main_Thread {
 			const worker = new Worker('js/Render_Thread.js', {
 				type: 'module',
 			});
+			window.Render_Thread = worker;
 			const messenger = new WorkerMessenger({ worker });
+			const context = this;
 
 			ParentHandshake(messenger).then((connection) => {
 				const remoteHandle = connection.remoteHandle();
 
-				// Call methods on the worker and get the result as a promise
-				remoteHandle.call('sum', 3, 4).then((result) => {
-					console.log(result); // 7
+				// Pass initialize info about window and document to render thread
+				const windowData = this.getWindowData();
+				remoteHandle.call('updateWindowData', windowData);
+
+				remoteHandle.call('updatePluginData', $plugins);
+
+				// Prepare to pass messages to render thread
+				context.attachListeners(remoteHandle);
+
+				// Pass canvas to Render_Thread
+				const htmlCanvas = document.createElement('canvas');
+				htmlCanvas.id = 'GameCanvas';
+				document.body.appendChild(htmlCanvas);
+				const offscreen = htmlCanvas.transferControlToOffscreen();
+				remoteHandle.customCall('receiveCanvas', [offscreen, 2], {
+					transfer: [offscreen],
 				});
 
-				// Listen for a specific custom event from the worker
-				remoteHandle.addEventListener('ping', (payload) => {
-					console.log(payload); // 'Oh, hi!'
-				});
+				// Start render thread
+				remoteHandle.call('start');
 			});
-
-			return;
-
-			// Pass initialize info about window and document to render thread
-			await this.transferWindowData(Render_Thread);
-
-			await this.transferPluginData(Render_Thread);
-
-			// Prepare to pass messages to render thread
-			await this.attachListeners(Render_Thread);
-
-			// Pass canvas to Render_Thread
-			const htmlCanvas = document.createElement('canvas');
-			htmlCanvas.id = 'GameCanvas';
-			document.body.appendChild(htmlCanvas);
-			console.log(htmlCanvas);
-
-			const offscreen = htmlCanvas.transferControlToOffscreen();
-			renderWorker.postMessage({ canvas: offscreen }, [offscreen]);
-
-			// Start render thread
-			await Render_Thread.start();
-			console.log('this absolutely will never run');
-			window.Render_Thread = Render_Thread;
 		} else {
 			// Load rendering code in the main thread
 			Utils.loadScript('js/Render_Thread.js', true);
