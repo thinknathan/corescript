@@ -1060,15 +1060,15 @@ class Graphics {
 		if (!event.ctrlKey && !event.altKey) {
 			switch (event.keyCode) {
 				case 113: // F2
-					event.preventDefault();
+					// event.preventDefault();
 					this._switchFPSMeter();
 					break;
 				case 114: // F3
-					event.preventDefault();
+					// event.preventDefault();
 					this._switchStretchMode();
 					break;
 				case 115: // F4
-					event.preventDefault();
+					// event.preventDefault();
 					this._switchFullScreen();
 					break;
 			}

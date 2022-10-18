@@ -35,7 +35,20 @@ class Main_Thread {
 		});
 
 		/* Keyboard Events */
-		document.addEventListener('keydown', (e) =>
+		document.addEventListener('keydown', (e) => {
+			switch (e.keyCode) {
+				case 8: // backspace
+				case 33: // pageup
+				case 34: // pagedown
+				case 37: // left arrow
+				case 38: // up arrow
+				case 39: // right arrow
+				case 40: // down arrow
+				case 113: // F2
+				case 114: // F3
+				case 115: // F4
+					e.preventDefault();
+			}
 			Render_Thread.call('receiveEvent', {
 				type: 'keydown',
 				shimType: 'document',
@@ -46,8 +59,9 @@ class Main_Thread {
 				ctrlKey: e.ctrlKey,
 				keyCode: e.keyCode,
 				shiftKey: e.shiftKey,
-			})
-		);
+			});
+		});
+
 		document.addEventListener('keyup', (e) =>
 			Render_Thread.call('receiveEvent', {
 				type: 'keyup',
@@ -128,7 +142,8 @@ class Main_Thread {
 		);
 		document.addEventListener('mousemove', (e) => mousemoveThrottled(e));
 
-		const wheelFunc = (e) =>
+		const wheelFunc = (e) => {
+			e.preventDefault();
 			Render_Thread.call('receiveEvent', {
 				type: 'wheel',
 				shimType: 'document',
@@ -136,6 +151,7 @@ class Main_Thread {
 				deltaY: e.deltaY,
 				deltaZ: e.deltaZ,
 			});
+		};
 		const wheelThrottled = Utils.getThrottledFunction(
 			wheelFunc,
 			throttleThreshold

@@ -157,7 +157,8 @@ class Input {
 	 */
 	static _onKeyDown(event) {
 		if (this._shouldPreventDefault(event.keyCode)) {
-			event.preventDefault();
+			// event.preventDefault();
+			console.log('event.preventDefault not called on worker');
 		}
 		if (event.keyCode === 144) {
 			// Numlock

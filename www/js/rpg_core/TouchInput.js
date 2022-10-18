@@ -285,7 +285,8 @@ class TouchInput {
 	static _onWheel(event) {
 		this._events.wheelX += event.deltaX;
 		this._events.wheelY += event.deltaY;
-		event.preventDefault();
+		// event.preventDefault();
+		console.log('event.preventDefault not called on worker');
 	}
 
 	/**
@@ -306,12 +307,14 @@ class TouchInput {
 				} else {
 					this._onTrigger(x, y);
 				}
-				event.preventDefault();
+				// event.preventDefault();
+				console.log('event.preventDefault not called on worker');
 			}
 		}
 
 		if (window.cordova || window.navigator.standalone) {
-			event.preventDefault();
+			// event.preventDefault();
+			console.log('event.preventDefault not called on worker');
 		}
 	}
 
@@ -367,7 +370,8 @@ class TouchInput {
 			if (Graphics.isInsideCanvas(x, y)) {
 				// For Microsoft Edge
 				this._onCancel(x, y);
-				event.preventDefault();
+				// event.preventDefault();
+				console.log('event.preventDefault not called on worker');
 			}
 		}
 	}
