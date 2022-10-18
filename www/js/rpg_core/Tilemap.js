@@ -18,7 +18,7 @@ class Tilemap extends PIXI.Container {
 	}
 
 	initialize() {
-		PIXI.Container.call(this);
+		// PIXI.Container.call(this);
 
 		this._margin = 20;
 		this._width = Graphics.width + this._margin * 2;

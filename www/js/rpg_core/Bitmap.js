@@ -19,7 +19,7 @@ class Bitmap extends PIXI.Container {
 	}
 
 	initialize(width, height) {
-		PIXI.Container.call(this);
+		// PIXI.Container.call(this);
 		width = Math.max(width || 0, 1);
 		height = Math.max(height || 0, 1);
 

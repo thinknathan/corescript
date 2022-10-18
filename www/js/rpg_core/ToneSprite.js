@@ -16,7 +16,7 @@ class ToneSprite extends PIXI.Container {
 	}
 
 	initialize() {
-		PIXI.Container.call(this);
+		// PIXI.Container.call(this);
 		this.clear();
 	}
 

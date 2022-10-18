@@ -182,6 +182,10 @@ class Utils {
 	 * @return {Boolean} True if the browser can read files in the game folder
 	 */
 	static canReadGameFiles() {
+		if (Utils.isWorker()) {
+			console.log('Utils.canReadGameFiles is not supported on worker.');
+			return true;
+		}
 		const scripts = document.getElementsByTagName('script');
 		const lastScript = scripts[scripts.length - 1];
 		const xhr = new XMLHttpRequest();

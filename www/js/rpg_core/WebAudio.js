@@ -15,6 +15,10 @@ class WebAudio {
 	}
 
 	initialize(url) {
+		if (Utils.isWorker()) {
+			console.log('WebAudio is not supported on worker.');
+			return true;
+		}
 		if (!WebAudio._initialized) {
 			WebAudio.initialize();
 		}
@@ -122,6 +126,12 @@ class WebAudio {
 	 * @private
 	 */
 	static _detectCodecs() {
+		if (Utils.isWorker()) {
+			console.log('WebAudio._detectCodecs is not supported on worker.');
+			this._canPlayOgg = false;
+			this._canPlayM4a = false;
+			return;
+		}
 		const audio = document.createElement('audio');
 		if (audio.canPlayType) {
 			this._canPlayOgg = audio.canPlayType('audio/ogg; codecs="vorbis"');

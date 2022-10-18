@@ -16,7 +16,7 @@ class ScreenSprite extends PIXI.Container {
 	}
 
 	initialize() {
-		PIXI.Container.call(this);
+		// PIXI.Container.call(this);
 
 		this._graphics = new PIXI.Graphics();
 

@@ -19,7 +19,7 @@ class Weather extends PIXI.Container {
 	}
 
 	initialize() {
-		PIXI.Container.call(this);
+		// PIXI.Container.call(this);
 
 		this._width = Graphics.width;
 		this._height = Graphics.height;

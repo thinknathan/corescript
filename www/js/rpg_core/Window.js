@@ -20,7 +20,7 @@ class Window extends PIXI.Container {
 	}
 
 	initialize() {
-		PIXI.Container.call(this);
+		// PIXI.Container.call(this);
 
 		this._isWindow = true;
 		this._windowskin = null;

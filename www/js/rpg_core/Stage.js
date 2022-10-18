@@ -14,7 +14,7 @@ class Stage extends PIXI.Container {
 	}
 
 	initialize() {
-		PIXI.Container.call(this);
+		// PIXI.Container.call(this);
 
 		// The interactive flag causes a memory leak.
 		this.interactive = false;

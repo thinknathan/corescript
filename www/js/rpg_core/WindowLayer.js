@@ -14,7 +14,7 @@ class WindowLayer extends PIXI.Container {
 	}
 
 	initialize() {
-		PIXI.Container.call(this);
+		// PIXI.Container.call(this);
 		this._width = 0;
 		this._height = 0;
 

@@ -199,8 +199,6 @@ import Window_GameEnd from './rpg_windows/Window_GameEnd.js';
 import Window_DebugRange from './rpg_windows/Window_DebugRange.js';
 import Window_DebugEdit from './rpg_windows/Window_DebugEdit.js';
 
-console.log('Hello after imports');
-
 class Render_Thread {
 	constructor() {
 		throw new Error('This is a static class');
@@ -408,20 +406,22 @@ class Render_Thread {
 	}
 
 	static async updateWindowData(payload) {
-		console.log(payload);
-		await this.initWindowAndDocument();
+		console.log('updateWindowData', payload);
+		this.initWindowAndDocument();
 		Object.entries(payload.data).forEach(
 			([key, value]) => (self.window[key] = value)
 		);
+		return true;
 	}
 
 	static async updatePluginData(payload) {
-		console.log(payload);
-		await this.initWindowAndDocument();
+		console.log('updatePluginData', payload);
+		this.initWindowAndDocument();
 		self.$plugins = payload.data;
+		return true;
 	}
 
-	static async initWindowAndDocument() {
+	static initWindowAndDocument() {
 		if (!self.window) {
 			self.window = WindowShim;
 		}
@@ -440,30 +440,30 @@ class Render_Thread {
 	}
 
 	static async receiveCanvas(offscreenCanvas) {
-		console.log(offscreenCanvas);
+		this._setupGlobals();
+		console.log('[Render_Thread._setupGlobals]');
+		console.log('receiveCanvas', offscreenCanvas);
 		self.Graphics._canvas = offscreenCanvas;
 		return true;
 	}
 
 	static async start() {
-		console.log('[Render_Thread.start]');
-		this._setupGlobals();
+		this.initWindowAndDocument();
+		// this._setupGlobals();
+		// console.log('[Render_Thread._setupGlobals]');
 		this._setupPixiSettings();
-		PluginManager.setup($plugins);
-		setTimeout(() => {
-			if (Utils.isWorker()) {
-				SceneManager.run(Scene_Boot);
-			} else {
-				document.readyState === 'complete'
-					? SceneManager.run(Scene_Boot)
-					: window.addEventListener('load', () => SceneManager.run(Scene_Boot));
-			}
-		}, 100);
+		console.log('[Render_Thread._setupPixiSettings]');
+		// PluginManager.setup($plugins);
+		// console.log('[PluginManager.setup]');
+		SceneManager.run(Scene_Boot);
+		console.log('SceneManager.run(Scene_Boot)');
+		return true;
 	}
 
 	static receiveCanvas(canvas) {
-		// console.log(canvas);
+		console.log(canvas);
 		Graphics._canvas = canvas;
+		return true;
 	}
 }
 

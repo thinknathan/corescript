@@ -316,6 +316,10 @@ class SceneManager {
 	}
 
 	static initAudio() {
+		if (Utils.isWorker()) {
+			console.log('WebAudio is not supported on worker.');
+			return true;
+		}
 		const noAudio = Utils.isOptionValid('noaudio');
 		if (!WebAudio.initialize(noAudio) && !noAudio) {
 			throw new Error('Your browser does not support Web Audio API.');

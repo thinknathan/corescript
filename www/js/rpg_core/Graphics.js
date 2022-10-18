@@ -157,12 +157,15 @@ class Graphics {
 	}
 
 	static _setupProgress() {
+		if (Utils.isWorker()) {
+			console.log('Graphics._setupProgress unsupported on worker.');
+			return;
+		}
 		this._progressElement = document.createElement('div');
 		this._progressElement.id = 'loading-progress';
 		this._progressElement.width = 600;
 		this._progressElement.height = 300;
 		this._progressElement.style.visibility = 'hidden';
-
 		this._barElement = document.createElement('div');
 		this._barElement.id = 'loading-bar';
 		this._barElement.style.width = '100%';
@@ -172,7 +175,6 @@ class Graphics {
 		this._barElement.style.border = '5px solid white';
 		this._barElement.style.borderRadius = '15px';
 		this._barElement.style.marginTop = '40%';
-
 		this._filledBarElement = document.createElement('div');
 		this._filledBarElement.id = 'loading-filled-bar';
 		this._filledBarElement.style.width = '0%';
@@ -180,11 +182,9 @@ class Graphics {
 		this._filledBarElement.style.background =
 			'linear-gradient(to top, lime, honeydew)';
 		this._filledBarElement.style.borderRadius = '10px';
-
 		this._progressElement.appendChild(this._barElement);
 		this._barElement.appendChild(this._filledBarElement);
 		this._updateProgress();
-
 		document.body.appendChild(this._progressElement);
 	}
 
@@ -251,6 +251,10 @@ class Graphics {
 	 * @param {String} url The url of the resource failed to load
 	 */
 	static printLoadingError(url) {
+		if (Utils.isWorker()) {
+			console.log('Graphics.printLoadingError unsupported on worker.');
+			return;
+		}
 		if (this._errorPrinter && !this._errorShowed) {
 			this._updateErrorPrinter();
 			this._errorPrinter.innerHTML = this._makeErrorHtml(
@@ -405,6 +409,10 @@ class Graphics {
 	 * @param {String} url The url of the font file
 	 */
 	static loadFont(name, url) {
+		if (Utils.isWorker()) {
+			console.log('Graphics.loadFont unsupported on worker.');
+			return;
+		}
 		const style = document.createElement('style');
 		const head = document.getElementsByTagName('head');
 		const rule = `@font-face { font-family: "${name}"; src: url("${url}"); }`;
@@ -430,6 +438,10 @@ class Graphics {
 
 			return false;
 		} else {
+			if (Utils.isWorker()) {
+				console.log('Graphics.isFontLoaded unsupported on worker.');
+				return true;
+			}
 			if (!this._hiddenCanvas) {
 				this._hiddenCanvas = document.createElement('canvas');
 			}
@@ -616,30 +628,34 @@ class Graphics {
 	 * @private
 	 */
 	static _testCanvasBlendModes() {
-		// let canvas;
-		// let context;
-		// let imageData1;
-		// let imageData2;
-		// canvas = document.createElement('canvas');
-		// canvas.width = 1;
-		// canvas.height = 1;
-		// context = canvas.getContext('2d');
-		// context.globalCompositeOperation = 'source-over';
-		// context.fillStyle = 'white';
-		// context.fillRect(0, 0, 1, 1);
-		// context.globalCompositeOperation = 'difference';
-		// context.fillStyle = 'white';
-		// context.fillRect(0, 0, 1, 1);
-		// imageData1 = context.getImageData(0, 0, 1, 1);
-		// context.globalCompositeOperation = 'source-over';
-		// context.fillStyle = 'black';
-		// context.fillRect(0, 0, 1, 1);
-		// context.globalCompositeOperation = 'saturation';
-		// context.fillStyle = 'white';
-		// context.fillRect(0, 0, 1, 1);
-		// imageData2 = context.getImageData(0, 0, 1, 1);
-		// this._canUseDifferenceBlend = imageData1.data[0] === 0;
-		// this._canUseSaturationBlend = imageData2.data[0] === 0;
+		if (Utils.isWorker()) {
+			console.log('Graphics._testCanvasBlendModes unsupported on worker.');
+			return;
+		}
+		let canvas;
+		let context;
+		let imageData1;
+		let imageData2;
+		canvas = document.createElement('canvas');
+		canvas.width = 1;
+		canvas.height = 1;
+		context = canvas.getContext('2d');
+		context.globalCompositeOperation = 'source-over';
+		context.fillStyle = 'white';
+		context.fillRect(0, 0, 1, 1);
+		context.globalCompositeOperation = 'difference';
+		context.fillStyle = 'white';
+		context.fillRect(0, 0, 1, 1);
+		imageData1 = context.getImageData(0, 0, 1, 1);
+		context.globalCompositeOperation = 'source-over';
+		context.fillStyle = 'black';
+		context.fillRect(0, 0, 1, 1);
+		context.globalCompositeOperation = 'saturation';
+		context.fillStyle = 'white';
+		context.fillRect(0, 0, 1, 1);
+		imageData2 = context.getImageData(0, 0, 1, 1);
+		this._canUseDifferenceBlend = imageData1.data[0] === 0;
+		this._canUseSaturationBlend = imageData2.data[0] === 0;
 	}
 
 	/**
@@ -648,6 +664,10 @@ class Graphics {
 	 * @private
 	 */
 	static _createErrorPrinter() {
+		if (Utils.isWorker()) {
+			console.log('Graphics._createErrorPrinter unsupported on worker.');
+			return;
+		}
 		this._errorPrinter = document.createElement('p');
 		this._errorPrinter.id = 'ErrorPrinter';
 		this._updateErrorPrinter();
@@ -681,6 +701,10 @@ class Graphics {
 	 * @private
 	 */
 	static _makeErrorMessage() {
+		if (Utils.isWorker()) {
+			console.log('Graphics._makeErrorMessage unsupported on worker.');
+			return;
+		}
 		const mainMessage = document.createElement('div');
 		const style = mainMessage.style;
 		style.color = 'white';
@@ -696,6 +720,10 @@ class Graphics {
 	 * @private
 	 */
 	static _makeErrorDetail(info, stack) {
+		if (Utils.isWorker()) {
+			console.log('Graphics._makeErrorDetail unsupported on worker.');
+			return;
+		}
 		const detail = document.createElement('div');
 		const style = detail.style;
 		style.color = 'white';
@@ -712,7 +740,8 @@ class Graphics {
 	 */
 	static _createCanvas() {
 		if (Utils.isWorker()) {
-			this._updateCanvas();
+			console.log(this._canvas);
+			if (this._canvas) this._updateCanvas();
 		} else {
 			this._canvas = document.createElement('canvas');
 			this._canvas.id = 'GameCanvas';
@@ -729,8 +758,10 @@ class Graphics {
 	static _updateCanvas() {
 		this._canvas.width = this._width;
 		this._canvas.height = this._height;
-		this._canvas.style.zIndex = 1;
-		this._centerElement(this._canvas);
+		if (!Utils.isWorker()) {
+			this._canvas.style.zIndex = 1;
+			this._centerElement(this._canvas);
+		}
 	}
 
 	/**
@@ -739,14 +770,18 @@ class Graphics {
 	 * @private
 	 */
 	static _createVideo() {
-		// this._video = document.createElement('video');
-		// this._video.id = 'GameVideo';
-		// this._video.style.opacity = 0;
-		// this._video.setAttribute('playsinline', '');
-		// this._video.volume = this._videoVolume;
-		// this._updateVideo();
-		// makeVideoPlayableInline(this._video);
-		// document.body.appendChild(this._video);
+		if (Utils.isWorker()) {
+			console.log('Graphics._createVideo unsupported on worker.');
+			return;
+		}
+		this._video = document.createElement('video');
+		this._video.id = 'GameVideo';
+		this._video.style.opacity = 0;
+		this._video.setAttribute('playsinline', '');
+		this._video.volume = this._videoVolume;
+		this._updateVideo();
+		makeVideoPlayableInline(this._video);
+		document.body.appendChild(this._video);
 	}
 
 	/**
@@ -842,6 +877,10 @@ class Graphics {
 	 * @private
 	 */
 	static _createModeBox() {
+		if (Utils.isWorker()) {
+			console.log('Graphics._createModeBox unsupported on worker.');
+			return;
+		}
 		const box = document.createElement('div');
 		box.id = 'modeTextBack';
 		box.style.position = 'absolute';
@@ -888,6 +927,10 @@ class Graphics {
 	 * @private
 	 */
 	static _centerElement(element) {
+		if (Utils.isWorker()) {
+			console.log('Graphics._centerElement is not supported on worker.');
+			return;
+		}
 		const width = element.width * this._realScale;
 		const height = element.height * this._realScale;
 		element.style.position = 'absolute';
@@ -1146,6 +1189,10 @@ class Graphics {
 		if (typeof Graphics._canWebGL === 'boolean') {
 			return Graphics._canWebGL;
 		}
+		if (Utils.isWorker()) {
+			console.log('Graphics.hasWebGL unsupported on worker.');
+			return true;
+		}
 		try {
 			const canvas = document.createElement('canvas');
 			const result = !!(
@@ -1292,6 +1339,10 @@ class Graphics {
 	 * @private
 	 */
 	static _createFontLoader(name) {
+		if (Utils.isWorker()) {
+			console.log('Graphics._createFontLoader unsupported on worker.');
+			return;
+		}
 		const div = document.createElement('div');
 		const text = document.createTextNode('.');
 		div.style.fontFamily = name;
@@ -1313,6 +1364,10 @@ class Graphics {
 	 * @private
 	 */
 	static _disableTextSelection() {
+		if (Utils.isWorker()) {
+			console.log('Graphics._disableTextSelection unsupported on worker.');
+			return;
+		}
 		const body = document.body;
 		body.style.userSelect = 'none';
 		body.style.webkitUserSelect = 'none';
@@ -1326,6 +1381,10 @@ class Graphics {
 	 * @private
 	 */
 	static _disableContextMenu() {
+		if (Utils.isWorker()) {
+			console.log('Graphics._disableContextMenu unsupported on worker.');
+			return;
+		}
 		const elements = document.body.getElementsByTagName('*');
 		const oncontextmenu = () => false;
 		for (let i = 0; i < elements.length; i++) {
@@ -1354,6 +1413,10 @@ class Graphics {
 	 * @private
 	 */
 	static _requestFullScreen() {
+		if (Utils.isWorker()) {
+			console.log('Graphics._requestFullScreen unsupported on worker.');
+			return;
+		}
 		const element = document.body;
 		if (element.requestFullscreen) {
 			element.requestFullscreen();

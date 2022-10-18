@@ -45,7 +45,7 @@ class DataManager {
 	}
 
 	static loadDataFile(name, src) {
-		const url = `data/${src}`;
+		const url = `../data/${src}`;
 		self[name] = null;
 		fetch(url)
 			.then((response) => response.json())
