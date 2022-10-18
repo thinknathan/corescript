@@ -838,7 +838,7 @@ class Graphics {
 		this._clearUpperCanvas();
 		if (this._loadingImage && this._loadingCount >= 20) {
 			if (!this._loadingImageSprite) {
-				this._loadingImageSprite = new PIXI.Sprite.from(this._loadingImage.src);
+				this._loadingImageSprite = PIXI.Sprite.from(this._loadingImage.src);
 			}
 			this._upperCanvas.addChild(this._loadingImageSprite);
 		}

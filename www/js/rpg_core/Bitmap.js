@@ -27,7 +27,7 @@ class Bitmap extends PIXI.Container {
 			this._createCanvas(width, height);
 		}
 
-		this._loader = new PIXI.Loader();
+		// this._loader = new PIXI.Loader();
 		this._width = width;
 		this._height = height;
 		this._image = null;
@@ -605,7 +605,7 @@ class Bitmap extends PIXI.Container {
 		if (!this.baseTexture) {
 			return '#ffffff';
 		}
-		const sprite = new PIXI.Sprite.from(this.baseTexture);
+		const sprite = PIXI.Sprite.from(this.baseTexture);
 		const pixels = Graphics._renderer.plugins.extract.pixels(sprite, {
 			x: x,
 			y: y,
@@ -639,7 +639,7 @@ class Bitmap extends PIXI.Container {
 		if (!this.baseTexture) {
 			return '1';
 		}
-		const sprite = new PIXI.Sprite.from(this.baseTexture);
+		const sprite = PIXI.Sprite.from(this.baseTexture);
 		const pixels = Graphics._renderer.plugins.extract.pixels(sprite, {
 			x: x,
 			y: y,
@@ -940,29 +940,41 @@ class Bitmap extends PIXI.Container {
 	}
 
 	_requestImage(url) {
-		if (this._loader.resources && this._loader.resources[url]) {
-			this._image = this._loader.resources[url].texture;
-			this._width = this._image.width;
-			this._height = this._image.height;
-			this._onLoad();
-		} else {
-			this._loader.add(url, url);
-			this._url = url;
-			this._loadingState = 'requesting';
+		// if (this._loader.resources && this._loader.resources[url]) {
+		// 	this._image = this._loader.resources[url].texture;
+		// 	this._width = this._image.width;
+		// 	this._height = this._image.height;
+		// 	this._onLoad();
+		// } else {
+		// this._loader.add(url, url);
+		this._url = url;
+		this._loadingState = 'requesting';
 
-			const context = this;
-
-			this._loader.load((loader, resources) => {
-				this._image = resources[url].texture;
+		PIXI.Assets.load(url)
+			.then((texture) => {
+				this._image = texture;
 				this._width = this._image.width;
 				this._height = this._image.height;
 				this._onLoad();
-			});
-
-			this._loader.onError.add(() => {
+			})
+			.catch((error) => {
+				console.error(error);
 				this._onError();
 			});
-		}
+
+		// const context = this;
+
+		// this._loader.load((loader, resources) => {
+		// 	this._image = resources[url].texture;
+		// 	this._width = this._image.width;
+		// 	this._height = this._image.height;
+		// 	this._onLoad();
+		// });
+
+		// this._loader.onError.add(() => {
+		// 	this._onError();
+		// });
+		// }
 
 		// if (this._decodeAfterRequest && !this._loader) {
 		// 	this._loader = ResourceHandler.createLoader(url, this._requestImage.bind(this, url), this._onError.bind(this));
