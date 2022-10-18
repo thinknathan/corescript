@@ -16,7 +16,7 @@ class Point extends PIXI.Point {
 	}
 
 	initialize(x, y) {
-		PIXI.Point.call(this, x, y);
+		// PIXI.Point.call(this, x, y);
 	}
 
 	/**

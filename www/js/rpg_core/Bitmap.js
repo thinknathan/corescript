@@ -97,7 +97,8 @@ class Bitmap extends PIXI.Container {
 		 */
 		this.outlineWidth = 4;
 
-		this.on('removed', this.onRemoveAsAChild);
+		// TEST: Is this still necessary?
+		// this.on('removed', this.onRemoveAsAChild);
 	}
 
 	//-----------------------------------------------------------------------------
@@ -606,7 +607,7 @@ class Bitmap extends PIXI.Container {
 			return '#ffffff';
 		}
 		const sprite = PIXI.Sprite.from(this.baseTexture);
-		const pixels = Graphics._renderer.plugins.extract.pixels(sprite, {
+		const pixels = Graphics._renderer.extract.pixels(sprite, {
 			x: x,
 			y: y,
 			width: 1,
@@ -939,7 +940,7 @@ class Bitmap extends PIXI.Container {
 		this._loadingState = 'error';
 	}
 
-	_requestImage(url) {
+	_requestImage(src) {
 		// if (this._loader.resources && this._loader.resources[url]) {
 		// 	this._image = this._loader.resources[url].texture;
 		// 	this._width = this._image.width;
@@ -947,6 +948,7 @@ class Bitmap extends PIXI.Container {
 		// 	this._onLoad();
 		// } else {
 		// this._loader.add(url, url);
+		const url = `../${src}`;
 		this._url = url;
 		this._loadingState = 'requesting';
 

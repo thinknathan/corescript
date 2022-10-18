@@ -487,6 +487,10 @@ class WebAudio {
 	 * @param {Function} listner The callback function
 	 */
 	addLoadListener(listner) {
+		if (Utils.isWorker()) {
+			console.log('WebAudio.addLoadListener unsupported on worker.');
+			return;
+		}
 		this._loadListeners.push(listner);
 	}
 

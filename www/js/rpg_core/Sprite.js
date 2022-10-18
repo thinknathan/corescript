@@ -20,7 +20,7 @@ class Sprite extends PIXI.Sprite {
 	initialize(bitmap) {
 		const texture = new PIXI.Texture(new PIXI.BaseTexture());
 
-		PIXI.Sprite.call(this, texture);
+		// PIXI.Sprite.call(this, texture);
 
 		this.filters = null;
 		this._bitmap = null;

@@ -288,7 +288,7 @@ class Main_Thread {
 				const remoteHandle = connection.remoteHandle();
 
 				// Pass initialize info about window and document to render thread
-				const windowData = this.getWindowData();
+				const windowData = context.getWindowData();
 				remoteHandle.call('updateWindowData', windowData);
 
 				remoteHandle.call('updatePluginData', $plugins);

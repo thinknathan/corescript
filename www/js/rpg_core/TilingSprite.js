@@ -20,7 +20,7 @@ class TilingSprite extends PIXI.TilingSprite {
 	initialize(bitmap) {
 		const texture = new PIXI.Texture(new PIXI.BaseTexture());
 
-		PIXI.TilingSprite.call(this, texture);
+		// PIXI.TilingSprite.call(this, texture);
 
 		this._bitmap = null;
 		this._width = 0;

@@ -19,12 +19,13 @@ class WindowLayer extends PIXI.Container {
 		this._height = 0;
 
 		//temporary fix for memory leak bug
-		this.on('removed', this.onRemoveAsAChild);
+		// TEST: Is this still necessary?
+		// this.on('removed', this.onRemoveAsAChild);
 	}
 
-	onRemoveAsAChild() {
-		this.removeChildren();
-	}
+	// onRemoveAsAChild() {
+	// 	this.removeChildren();
+	// }
 
 	/**
 	 * The width of the window layer in pixels.

@@ -39,7 +39,7 @@ class Graphics {
 
 		this._errorShowed = false;
 		this._errorPrinter = null;
-		this._canvas = null;
+		this._canvas = this._canvas ?? null;
 		this._video = null;
 		this._videoUnlocked = false;
 		this._videoLoading = false;
@@ -189,6 +189,10 @@ class Graphics {
 	}
 
 	static _showProgress() {
+		if (Utils.isWorker()) {
+			console.log('Graphics._showProgress unsupported on worker.');
+			return;
+		}
 		if (this._progressEnabled) {
 			this._progressElement.value = 0;
 			this._progressElement.style.visibility = 'visible';
@@ -197,6 +201,10 @@ class Graphics {
 	}
 
 	static _hideProgress() {
+		if (Utils.isWorker()) {
+			console.log('Graphics._hideProgress unsupported on worker.');
+			return;
+		}
 		if (this._progressElement) {
 			this._progressElement.style.visibility = 'hidden';
 		}
@@ -204,6 +212,10 @@ class Graphics {
 	}
 
 	static _updateProgressCount(countLoaded, countLoading) {
+		if (Utils.isWorker()) {
+			console.log('Graphics._updateProgressCount unsupported on worker.');
+			return;
+		}
 		let progressValue;
 		if (countLoading !== 0) {
 			progressValue = (countLoaded / countLoading) * 100;
@@ -225,6 +237,10 @@ class Graphics {
 	 * @method updateLoading
 	 */
 	static updateLoading() {
+		if (Utils.isWorker()) {
+			console.log('Graphics.updateLoading unsupported on worker.');
+			return;
+		}
 		this._loadingCount++;
 		this._paintUpperCanvas();
 		this._upperCanvas.style.opacity = 1;
@@ -238,6 +254,10 @@ class Graphics {
 	 * @method endLoading
 	 */
 	static endLoading() {
+		if (Utils.isWorker()) {
+			console.log('Graphics.endLoading unsupported on worker.');
+			return;
+		}
 		this._clearUpperCanvas();
 		this._upperCanvas.style.opacity = 0;
 		this._hideProgress();
