@@ -4,7 +4,6 @@ class DocumentShim {
 	}
 
 	static addEventListener(type, func) {
-		console.log('Attempted document.addEventListener on worker thread.');
 		this._eventStack.push({
 			type: type,
 			func: func,

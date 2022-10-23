@@ -631,9 +631,9 @@ class Graphics {
 	 * @private
 	 */
 	static _updateRealScale() {
-		if (this._stretchEnabled) {
-			let h = window.innerWidth / this._width;
-			let v = window.innerHeight / this._height;
+		if (this._stretchEnabled && self.window) {
+			let h = self.window.innerWidth / this._width;
+			let v = self.window.innerHeight / this._height;
 			if (h >= 1 && h - 0.01 <= 1) h = 1;
 			if (v >= 1 && v - 0.01 <= 1) v = 1;
 			this._realScale = Math.min(h, v);
@@ -700,19 +700,21 @@ class Graphics {
 	 * @private
 	 */
 	static _updateErrorPrinter() {
-		this._errorPrinter.width = this._width * 0.9;
-		if (this._errorShowed && this._showErrorDetail) {
-			this._errorPrinter.height = this._height * 0.9;
-		} else if (this._errorShowed && this._errorMessage) {
-			this._errorPrinter.height = 100;
-		} else {
-			this._errorPrinter.height = 40;
+		if (this._errorPrinter) {
+			this._errorPrinter.width = this._width * 0.9;
+			if (this._errorShowed && this._showErrorDetail) {
+				this._errorPrinter.height = this._height * 0.9;
+			} else if (this._errorShowed && this._errorMessage) {
+				this._errorPrinter.height = 100;
+			} else {
+				this._errorPrinter.height = 40;
+			}
+			this._errorPrinter.style.textAlign = 'center';
+			this._errorPrinter.style.textShadow = '1px 1px 3px #000';
+			this._errorPrinter.style.fontSize = '20px';
+			this._errorPrinter.style.zIndex = 99;
+			this._centerElement(this._errorPrinter);
 		}
-		this._errorPrinter.style.textAlign = 'center';
-		this._errorPrinter.style.textShadow = '1px 1px 3px #000';
-		this._errorPrinter.style.fontSize = '20px';
-		this._errorPrinter.style.zIndex = 99;
-		this._centerElement(this._errorPrinter);
 	}
 
 	/**
@@ -969,11 +971,11 @@ class Graphics {
 	 * @private
 	 */
 	static _applyCanvasFilter() {
-		if (this._canvas) {
-			this._canvas.style.opacity = 0.5;
-			this._canvas.style.webkitFilter = 'blur(8px)';
-			this._canvas.style.filter = 'blur(8px)';
-		}
+		// if (this._canvas) {
+		// 	this._canvas.style.opacity = 0.5;
+		// 	this._canvas.style.webkitFilter = 'blur(8px)';
+		// 	this._canvas.style.filter = 'blur(8px)';
+		// }
 	}
 
 	/**
@@ -1046,7 +1048,13 @@ class Graphics {
 	 * @method _onWindowResize
 	 * @private
 	 */
-	static _onWindowResize() {
+	static _onWindowResize(event) {
+		if (self.window) {
+			self.window.innerWidth = event.innerWidth;
+			self.window.innerHeight = event.innerHeight;
+		} else {
+			console.log('self.window does not exist');
+		}
 		this._updateAllElements();
 	}
 

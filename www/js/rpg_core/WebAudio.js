@@ -206,8 +206,8 @@ class WebAudio {
 	 * @method _onVisibilityChange
 	 * @private
 	 */
-	static _onVisibilityChange() {
-		if (document.visibilityState === 'hidden') {
+	static _onVisibilityChange(payload) {
+		if (payload.visibilityState === 'hidden') {
 			this._onHide();
 		} else {
 			this._onShow();

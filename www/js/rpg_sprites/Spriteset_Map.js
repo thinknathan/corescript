@@ -126,8 +126,8 @@ class Spriteset_Map extends Spriteset_Base {
 	}
 
 	createWeather() {
-		this._weather = new Weather();
-		this.addChild(this._weather);
+		// this._weather = new Weather();
+		// this.addChild(this._weather);
 	}
 
 	updateTileset() {
@@ -190,12 +190,12 @@ class Spriteset_Map extends Spriteset_Base {
 	}
 
 	updateWeather() {
-		this._weather.type = self.$gameScreen.weatherType();
-		this._weather.power = self.$gameScreen.weatherPower();
-		this._weather.origin.x =
-			self.$gameMap.displayX() * self.$gameMap.tileWidth();
-		this._weather.origin.y =
-			self.$gameMap.displayY() * self.$gameMap.tileHeight();
+		// this._weather.type = self.$gameScreen.weatherType();
+		// this._weather.power = self.$gameScreen.weatherPower();
+		// this._weather.origin.x =
+		// 	self.$gameMap.displayX() * self.$gameMap.tileWidth();
+		// this._weather.origin.y =
+		// 	self.$gameMap.displayY() * self.$gameMap.tileHeight();
 	}
 }
 
