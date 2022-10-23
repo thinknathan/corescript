@@ -760,7 +760,7 @@ class Graphics {
 	 */
 	static _createCanvas() {
 		if (Utils.isWorker()) {
-			console.log(this._canvas);
+			// console.log(this._canvas);
 			if (this._canvas) this._updateCanvas();
 		} else {
 			this._canvas = document.createElement('canvas');

@@ -404,7 +404,7 @@ class Render_Thread {
 		self.BattleManager = BattleManager;
 		self.PluginManager = PluginManager;
 
-		console.log('_setupGlobals complete', PIXI);
+		// console.log('_setupGlobals complete', PIXI);
 	}
 
 	static async updateWindowData(payload) {
@@ -446,18 +446,18 @@ class Render_Thread {
 		// this._setupGlobals();
 		// console.log('[Render_Thread._setupGlobals]');
 		this._setupPixiSettings();
-		console.log('[Render_Thread._setupPixiSettings]');
+		// console.log('[Render_Thread._setupPixiSettings]');
 		// PluginManager.setup($plugins);
 		// console.log('[PluginManager.setup]');
 		SceneManager.run(Scene_Boot);
-		console.log('SceneManager.run(Scene_Boot)');
+		// console.log('SceneManager.run(Scene_Boot)');
 		return true;
 	}
 
 	static receiveCanvas(offscreenCanvas) {
 		this._setupGlobals();
-		console.log('[Render_Thread._setupGlobals]');
-		console.log('receiveCanvas', offscreenCanvas);
+		// console.log('[Render_Thread._setupGlobals]');
+		// console.log('receiveCanvas', offscreenCanvas);
 		self.Graphics._canvas = offscreenCanvas;
 		return true;
 	}
