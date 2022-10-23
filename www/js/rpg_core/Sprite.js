@@ -1,7 +1,10 @@
 import * as PIXI from '../libs/pixi-webworker.mjs';
 import Rectangle from '../rpg_core/Rectangle.js';
-import Graphics from '../rpg_core/Graphics.js';
 import Utils from '../rpg_core/Utils.js';
+
+// 0 = prefer high performance techniques
+// 1 = prefer lower performance techniques
+const GRAPHICS_QUALITY_LEVEL = 1;
 
 //-----------------------------------------------------------------------------
 /**
@@ -9,7 +12,7 @@ import Utils from '../rpg_core/Utils.js';
  *
  * @class Sprite
  * @constructor
- * @param {Bitmap} bitmap The image for the sprite
+ * @param {PIXI.Texture} texture The image for the sprite
  */
 class Sprite extends PIXI.Sprite {
 	constructor(...args) {
@@ -17,22 +20,15 @@ class Sprite extends PIXI.Sprite {
 		this.initialize(...args);
 	}
 
-	initialize(bitmap) {
+	initialize() {
 		this.filters = null;
-		this._bitmap = null;
 		this._frame = new Rectangle();
-		this._realFrame = new Rectangle();
 		this._blendColor = [0, 0, 0, 0];
 		this._colorTone = [0, 0, 0, 0];
-		this._canvas = null;
-		this._context = null;
-		this._tintTexture = null;
 		this._colorMatrixFilter = null;
 
 		this.spriteId = Sprite._counter++;
-		this.opaque = false;
 
-		this.bitmap = bitmap;
 		this.on('removed', this.onRemoveAsAChild);
 	}
 
@@ -248,6 +244,9 @@ class Sprite extends PIXI.Sprite {
 	 * @private
 	 */
 	_createTinter() {
+		if (GRAPHICS_QUALITY_LEVEL === 0) {
+			return;
+		}
 		if (!this.filters) {
 			this.filters = [];
 			if (this._frame) {
@@ -271,34 +270,38 @@ class Sprite extends PIXI.Sprite {
 	 * @private
 	 */
 	_executeTint() {
-		const color = this._blendColor;
-		const red = color[0] / 255;
-		const green = color[1] / 255;
-		const blue = color[2] / 255;
-		const opacity = color[3] / 255;
-		this._colorMatrixFilter.matrix = [
-			red / 64,
-			0,
-			0,
-			0,
-			red,
-			0,
-			green / 64,
-			0,
-			0,
-			green,
-			0,
-			0,
-			blue / 64,
-			0,
-			blue,
-			0,
-			0,
-			0,
-			1,
-			0,
-		];
-		this._colorMatrixFilter.alpha = opacity;
+		if (GRAPHICS_QUALITY_LEVEL === 0) {
+			this.tint = PIXI.utils.rgb2hex(color[0], color[1], color[2]);
+		} else {
+			const color = this._blendColor;
+			const red = color[0] / 255;
+			const green = color[1] / 255;
+			const blue = color[2] / 255;
+			const opacity = color[3] / 255;
+			this._colorMatrixFilter.matrix = [
+				red / 64,
+				0,
+				0,
+				0,
+				red,
+				0,
+				green / 64,
+				0,
+				0,
+				green,
+				0,
+				0,
+				blue / 64,
+				0,
+				blue,
+				0,
+				0,
+				0,
+				1,
+				0,
+			];
+			this._colorMatrixFilter.alpha = opacity;
+		}
 	}
 
 	/**
@@ -308,6 +311,8 @@ class Sprite extends PIXI.Sprite {
 	_clearTint() {
 		if (this._colorMatrixFilter) {
 			this._colorMatrixFilter.enabled = false;
+		} else {
+			this.tint = '0xffffff';
 		}
 	}
 
