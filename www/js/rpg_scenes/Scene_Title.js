@@ -82,16 +82,16 @@ class Scene_Title extends Scene_Base {
 	}
 
 	createForeground() {
-		this._gameTitleSprite = new Bitmap(Graphics.width, Graphics.height);
-		this.addChild(this._gameTitleSprite);
 		if (self.$dataSystem.optDrawTitle) {
+			this._gameTitleSprite = new Bitmap(Graphics.width, Graphics.height);
+			this.addChild(this._gameTitleSprite);
 			this.drawGameTitle();
 		}
 	}
 
 	drawGameTitle() {
 		const x = 20;
-		const y = Graphics.height / 4;
+		const y = Math.floor(Graphics.height / 4);
 		const maxWidth = Graphics.width - x * 2;
 		const text = self.$dataSystem.gameTitle;
 		this._gameTitleSprite.outlineColor = 'black';
