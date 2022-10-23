@@ -296,26 +296,27 @@ class TouchInput {
 	 * @private
 	 */
 	static _onTouchStart(event) {
-		for (const touch of event.changedTouches) {
-			const x = Graphics.pageToCanvasX(touch.pageX);
-			const y = Graphics.pageToCanvasY(touch.pageY);
-			if (Graphics.isInsideCanvas(x, y)) {
-				this._screenPressed = true;
-				this._pressedTime = 0;
-				if (event.touches.length >= 2) {
-					this._onCancel(x, y);
-				} else {
-					this._onTrigger(x, y);
+		for (const touch in event.changedTouches) {
+			if (touch.pageX && touch.pageX) {
+				const x = Graphics.pageToCanvasX(touch.pageX);
+				const y = Graphics.pageToCanvasY(touch.pageY);
+				if (Graphics.isInsideCanvas(x, y)) {
+					this._screenPressed = true;
+					this._pressedTime = 0;
+					if (event.touches.length >= 2) {
+						this._onCancel(x, y);
+					} else {
+						this._onTrigger(x, y);
+					}
+					// event.preventDefault();
+					console.log('event.preventDefault not called on worker');
 				}
-				// event.preventDefault();
-				console.log('event.preventDefault not called on worker');
 			}
 		}
 
-		if (window.cordova || window.navigator.standalone) {
-			// event.preventDefault();
-			console.log('event.preventDefault not called on worker');
-		}
+		// if (window.cordova || window.navigator.standalone) {
+		// 	event.preventDefault();
+		// }
 	}
 
 	/**

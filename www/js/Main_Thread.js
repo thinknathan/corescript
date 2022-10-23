@@ -178,14 +178,42 @@ class Main_Thread {
 		);
 		document.addEventListener(
 			'touchstart',
-			(e) =>
+			(e) => {
+				const changedTouches = {
+					0: {},
+					length: 0,
+				};
+				const touches = {
+					0: {},
+					length: 0,
+				};
+				let i = 0;
+				for (const touch of e.changedTouches) {
+					changedTouches[i] = {
+						pageX: touch.pageX,
+						pageY: touch.pageY,
+					};
+					i++;
+				}
+				changedTouches.length = i;
+				let j = 0;
+				for (const touch of e.touches) {
+					touches[j] = {
+						pageX: touch.pageX,
+						pageY: touch.pageY,
+					};
+					j++;
+				}
+				touches.length = j;
+
 				Render_Thread.call('receiveEvent', {
 					type: 'touchstart',
 					shimType: 'document',
-					changedTouches: JSON.stringify(e.changedTouches),
+					changedTouches: changedTouches,
 					timeStamp: e.timeStamp,
-					touches: JSON.stringify(e.touches),
-				}),
+					touches: touches,
+				});
+			},
 			isSupportPassive
 				? {
 						passive: false,
@@ -247,6 +275,7 @@ class Main_Thread {
 				type: 'visibilitychange',
 				shimType: 'document',
 				timeStamp: e.timeStamp,
+				visibilityState: document.visibilityState,
 			})
 		);
 
