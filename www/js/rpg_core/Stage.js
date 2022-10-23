@@ -8,14 +8,12 @@ import * as PIXI from '../libs/pixi-webworker.mjs';
  * @constructor
  */
 class Stage extends PIXI.Container {
-	constructor(...args) {
-		super(...args);
-		this.initialize(...args);
+	constructor() {
+		super();
+		this.initialize();
 	}
 
 	initialize() {
-		// PIXI.Container.call(this);
-
 		// The interactive flag causes a memory leak.
 		this.interactive = false;
 	}

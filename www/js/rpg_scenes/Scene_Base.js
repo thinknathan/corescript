@@ -1,5 +1,4 @@
 import Stage from '../rpg_core/Stage.js';
-import ImageManager from '../rpg_managers/ImageManager.js';
 import SceneManager from '../rpg_managers/SceneManager.js';
 import AudioManager from '../rpg_managers/AudioManager.js';
 import Utils from '../rpg_core/Utils.js';
@@ -18,9 +17,9 @@ import Scene_Gameover from '../rpg_scenes/Scene_Gameover.js';
  * @extends Stage
  */
 class Scene_Base extends Stage {
-	constructor(...args) {
-		super(...args);
-		this.initialize(...args);
+	constructor() {
+		super();
+		this.initialize();
 	}
 
 	/**
@@ -35,7 +34,6 @@ class Scene_Base extends Stage {
 		this._fadeSign = 0;
 		this._fadeDuration = 0;
 		this._fadeSprite = null;
-		this._imageReservationId = Utils.generateRuntimeId();
 	}
 
 	/**
@@ -46,7 +44,7 @@ class Scene_Base extends Stage {
 	 * @memberof Scene_Base
 	 */
 	attachReservation() {
-		ImageManager.setDefaultReservationId(this._imageReservationId);
+		console.log('DEPRECATED: Scene_Base.attachReservation');
 	}
 
 	/**
@@ -57,7 +55,7 @@ class Scene_Base extends Stage {
 	 * @memberof Scene_Base
 	 */
 	detachReservation() {
-		ImageManager.releaseReservation(this._imageReservationId);
+		console.log('DEPRECATED: Scene_Base.detachReservation');
 	}
 
 	/**

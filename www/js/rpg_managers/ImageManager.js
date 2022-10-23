@@ -62,14 +62,6 @@ class ImageManager {
 		return this.loadBitmap('img/tilesets/', filename, hue, false);
 	}
 
-	static loadTitle1(filename, hue) {
-		return this.loadBitmap('img/titles1/', filename, hue, true);
-	}
-
-	static loadTitle2(filename, hue) {
-		return this.loadBitmap('img/titles2/', filename, hue, true);
-	}
-
 	static loadBitmap(folder, filename, hue, smooth) {
 		if (filename) {
 			const path = `${folder + encodeURIComponent(filename)}.png`;

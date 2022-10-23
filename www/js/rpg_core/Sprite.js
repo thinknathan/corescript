@@ -13,15 +13,11 @@ import Utils from '../rpg_core/Utils.js';
  */
 class Sprite extends PIXI.Sprite {
 	constructor(...args) {
-		super();
+		super(...args);
 		this.initialize(...args);
 	}
 
 	initialize(bitmap) {
-		const texture = new PIXI.Texture(new PIXI.BaseTexture());
-
-		// PIXI.Sprite.call(this, texture);
-
 		this.filters = null;
 		this._bitmap = null;
 		this._frame = new Rectangle();
@@ -57,21 +53,11 @@ class Sprite extends PIXI.Sprite {
 	 * @type Bitmap
 	 */
 	get bitmap() {
-		return this._bitmap;
+		console.log('DEPRECATED: Sprite.bitmap (getter)');
 	}
 
 	set bitmap(value) {
-		if (this._bitmap !== value) {
-			this._bitmap = value;
-
-			if (value) {
-				this._refreshFrame = true;
-				value.addLoadListener(this._onBitmapLoad.bind(this));
-			} else {
-				this._refreshFrame = false;
-				this.texture.frame = Rectangle.emptyRectangle;
-			}
-		}
+		console.log('DEPRECATED: Sprite.bitmap (setter)');
 	}
 
 	/**
@@ -222,77 +208,16 @@ class Sprite extends PIXI.Sprite {
 	}
 
 	/**
-	 * @method _onBitmapLoad
-	 * @private
-	 */
-	_onBitmapLoad(bitmapLoaded) {
-		if (bitmapLoaded === this._bitmap) {
-			if (this._refreshFrame && this._bitmap) {
-				this._refreshFrame = false;
-				this._frame.width = this._bitmap.width;
-				this._frame.height = this._bitmap.height;
-			}
-		}
-
-		this._refresh();
-	}
-
-	/**
 	 * @method _refresh
 	 * @private
 	 */
 	_refresh() {
-		const frameX = Math.floor(this._frame.x);
-		const frameY = Math.floor(this._frame.y);
-		const frameW = Math.floor(this._frame.width);
-		const frameH = Math.floor(this._frame.height);
-		const bitmapW = this._bitmap ? this._bitmap.width : 0;
-		const bitmapH = this._bitmap ? this._bitmap.height : 0;
-		const realX = frameX.clamp(0, bitmapW);
-		const realY = frameY.clamp(0, bitmapH);
-		const realW = (frameW - realX + frameX).clamp(0, bitmapW - realX);
-		const realH = (frameH - realY + frameY).clamp(0, bitmapH - realY);
-
-		this._realFrame.x = realX;
-		this._realFrame.y = realY;
-		this._realFrame.width = realW;
-		this._realFrame.height = realH;
-		this.pivot.x = frameX - realX;
-		this.pivot.y = frameY - realY;
-
-		if (realW > 0 && realH > 0) {
-			if (this._needsTint()) {
-				if (Graphics.isWebGL()) {
-					this._createTinterWebGL();
-					this._executeTintWebGL();
-				} else {
-					this._createTinter(realW, realH);
-					this._executeTint(realX, realY, realW, realH);
-					this._tintTexture.update();
-					this.texture.baseTexture = this._tintTexture;
-					this.texture.frame = new Rectangle(0, 0, realW, realH);
-				}
-			} else {
-				if (this._bitmap) {
-					this.texture.baseTexture = this._bitmap.baseTexture;
-				}
-				this.texture.frame = this._realFrame;
-				this._clearTintWebGL();
-			}
-		} else if (this._bitmap) {
-			this.texture.frame = Rectangle.emptyRectangle;
+		if (this._needsTint()) {
+			this._createTinter();
+			this._executeTint();
 		} else {
-			this.texture.baseTexture.width = Math.max(
-				this.texture.baseTexture.width,
-				this._frame.x + this._frame.width
-			);
-			this.texture.baseTexture.height = Math.max(
-				this.texture.baseTexture.height,
-				this._frame.y + this._frame.height
-			);
-			this.texture.frame = this._frame;
+			this._clearTint();
 		}
-		this.texture._updateID++;
 	}
 
 	/**
@@ -305,13 +230,7 @@ class Sprite extends PIXI.Sprite {
 	 * @private
 	 */
 	_isInBitmapRect(x, y, w, h) {
-		return (
-			this._bitmap &&
-			x + w > 0 &&
-			y + h > 0 &&
-			x < this._bitmap.width &&
-			y < this._bitmap.height
-		);
+		console.log('DEPRECATED Sprite._isInBitmapRect');
 	}
 
 	/**
@@ -326,98 +245,19 @@ class Sprite extends PIXI.Sprite {
 
 	/**
 	 * @method _createTinter
-	 * @param {Number} w
-	 * @param {Number} h
 	 * @private
 	 */
-	_createTinter(w, h) {
-		if (!this._canvas) {
-			this._canvas = document.createElement('canvas');
-			this._context = this._canvas.getContext('2d');
-		}
-
-		this._canvas.width = w;
-		this._canvas.height = h;
-
-		if (!this._tintTexture) {
-			this._tintTexture = new PIXI.BaseTexture(this._canvas);
-		}
-
-		this._tintTexture.width = w;
-		this._tintTexture.height = h;
-		this._tintTexture.scaleMode = this._bitmap.baseTexture.scaleMode;
-	}
-
-	/**
-	 * @method _executeTint
-	 * @param {Number} x
-	 * @param {Number} y
-	 * @param {Number} w
-	 * @param {Number} h
-	 * @private
-	 */
-	_executeTint(x, y, w, h) {
-		const context = this._context;
-		const tone = this._colorTone;
-		const color = this._blendColor;
-		console.info('[Sprite._executeTint] Tinting on canvas is slow.');
-		context.globalCompositeOperation = 'copy';
-		context.drawImage(this._bitmap.canvas, x, y, w, h, 0, 0, w, h);
-
-		if (tone[0] || tone[1] || tone[2] || tone[3]) {
-			if (Graphics.canUseSaturationBlend()) {
-				const gray = Math.max(0, tone[3]);
-				context.globalCompositeOperation = 'saturation';
-				context.fillStyle = `rgba(255,255,255,${gray / 255})`;
-				context.fillRect(0, 0, w, h);
-			}
-
-			const r1 = Math.max(0, tone[0]);
-			const g1 = Math.max(0, tone[1]);
-			const b1 = Math.max(0, tone[2]);
-			context.globalCompositeOperation = 'lighter';
-			context.fillStyle = Utils.rgbToCssColor(r1, g1, b1);
-			context.fillRect(0, 0, w, h);
-
-			if (Graphics.canUseDifferenceBlend()) {
-				context.globalCompositeOperation = 'difference';
-				context.fillStyle = 'white';
-				context.fillRect(0, 0, w, h);
-
-				const r2 = Math.max(0, -tone[0]);
-				const g2 = Math.max(0, -tone[1]);
-				const b2 = Math.max(0, -tone[2]);
-				context.globalCompositeOperation = 'lighter';
-				context.fillStyle = Utils.rgbToCssColor(r2, g2, b2);
-				context.fillRect(0, 0, w, h);
-
-				context.globalCompositeOperation = 'difference';
-				context.fillStyle = 'white';
-				context.fillRect(0, 0, w, h);
-			}
-		}
-
-		const r3 = Math.max(0, color[0]);
-		const g3 = Math.max(0, color[1]);
-		const b3 = Math.max(0, color[2]);
-		const a3 = Math.max(0, color[3]);
-		context.globalCompositeOperation = 'source-atop';
-		context.fillStyle = Utils.rgbToCssColor(r3, g3, b3);
-		context.globalAlpha = a3 / 255;
-		context.fillRect(0, 0, w, h);
-
-		context.globalCompositeOperation = 'destination-in';
-		context.globalAlpha = 1;
-		context.drawImage(this._bitmap.canvas, x, y, w, h, 0, 0, w, h);
-	}
-
-	/**
-	 * @method _createTinterWebGL
-	 * @private
-	 */
-	_createTinterWebGL() {
+	_createTinter() {
 		if (!this.filters) {
 			this.filters = [];
+			if (this._frame) {
+				this.filterArea = new PIXI.Rectangle(
+					this._frame.x,
+					this._frame.y,
+					this._frame.width,
+					this._frame.height
+				);
+			}
 		}
 		if (!this._colorMatrixFilter) {
 			this._colorMatrixFilter = new PIXI.filters.ColorMatrixFilter();
@@ -427,10 +267,10 @@ class Sprite extends PIXI.Sprite {
 	}
 
 	/**
-	 * @method _executeTintWebGL
+	 * @method _executeTint
 	 * @private
 	 */
-	_executeTintWebGL() {
+	_executeTint() {
 		const color = this._blendColor;
 		const red = color[0] / 255;
 		const green = color[1] / 255;
@@ -462,52 +302,12 @@ class Sprite extends PIXI.Sprite {
 	}
 
 	/**
-	 * @method _clearTintWebGL
+	 * @method _clearTint
 	 * @private
 	 */
-	_clearTintWebGL() {
+	_clearTint() {
 		if (this._colorMatrixFilter) {
 			this._colorMatrixFilter.enabled = false;
-		}
-	}
-
-	/**
-	 * @method _renderCanvas
-	 * @param {Object} renderer
-	 * @private
-	 */
-	_renderCanvas(renderer) {
-		if (this.bitmap) {
-			this.bitmap.touch();
-		}
-		if (this.bitmap && !this.bitmap.isReady()) {
-			return;
-		}
-
-		if (this.texture.frame.width > 0 && this.texture.frame.height > 0) {
-			this._renderCanvas_PIXI(renderer);
-		}
-	}
-
-	/**
-	 * @method _render
-	 * @param {Object} renderer
-	 * @private
-	 */
-	_render(renderer) {
-		if (this.bitmap) {
-			this.bitmap.touch();
-		}
-		if (this.bitmap && !this.bitmap.isReady()) {
-			return;
-		}
-
-		if (this.texture.frame.width > 0 && this.texture.frame.height > 0) {
-			// if (this._bitmap) {
-			// 	this._bitmap.checkDirty();
-			// }
-
-			this._render_PIXI(renderer);
 		}
 	}
 
@@ -621,8 +421,5 @@ Sprite.voidFilter = new PIXI.filters.AlphaFilter();
 
 // Number of the created objects.
 Sprite._counter = 0;
-
-Sprite.prototype._renderCanvas_PIXI = PIXI.Sprite.prototype._renderCanvas;
-Sprite.prototype._render_PIXI = PIXI.Sprite.prototype._render;
 
 export default Sprite;
