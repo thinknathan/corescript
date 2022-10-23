@@ -1,13 +1,13 @@
 /*!
- * @pixi/webworker - v7.0.0-beta.3
- * Compiled Thu, 13 Oct 2022 15:35:43 UTC
+ * @pixi/webworker - v7.0.0-beta.4
+ * Compiled Thu, 20 Oct 2022 19:39:26 UTC
  *
  * @pixi/webworker is licensed under the MIT License.
  * http://www.opensource.org/licenses/mit-license
  */
 /*!
- * @pixi/constants - v7.0.0-beta.3
- * Compiled Thu, 13 Oct 2022 15:35:43 UTC
+ * @pixi/constants - v7.0.0-beta.4
+ * Compiled Thu, 20 Oct 2022 19:39:26 UTC
  *
  * @pixi/constants is licensed under the MIT License.
  * http://www.opensource.org/licenses/mit-license
@@ -205,8 +205,8 @@ var BUFFER_TYPE = /* @__PURE__ */ ((BUFFER_TYPE2) => {
 })(BUFFER_TYPE || {});
 
 /*!
- * @pixi/settings - v7.0.0-beta.3
- * Compiled Thu, 13 Oct 2022 15:35:43 UTC
+ * @pixi/settings - v7.0.0-beta.4
+ * Compiled Thu, 20 Oct 2022 19:39:26 UTC
  *
  * @pixi/settings is licensed under the MIT License.
  * http://www.opensource.org/licenses/mit-license
@@ -418,8 +418,8 @@ const settings = {
 };
 
 /*!
- * @pixi/extensions - v7.0.0-beta.3
- * Compiled Thu, 13 Oct 2022 15:35:43 UTC
+ * @pixi/extensions - v7.0.0-beta.4
+ * Compiled Thu, 20 Oct 2022 19:39:26 UTC
  *
  * @pixi/extensions is licensed under the MIT License.
  * http://www.opensource.org/licenses/mit-license
@@ -517,8 +517,8 @@ const extensions$1 = {
 };
 
 /*!
- * @pixi/math - v7.0.0-beta.3
- * Compiled Thu, 13 Oct 2022 15:35:43 UTC
+ * @pixi/math - v7.0.0-beta.4
+ * Compiled Thu, 20 Oct 2022 19:39:26 UTC
  *
  * @pixi/math is licensed under the MIT License.
  * http://www.opensource.org/licenses/mit-license
@@ -1316,8 +1316,8 @@ let Transform = _Transform;
 Transform.IDENTITY = new _Transform();
 
 /*!
- * @pixi/runner - v7.0.0-beta.3
- * Compiled Thu, 13 Oct 2022 15:35:43 UTC
+ * @pixi/runner - v7.0.0-beta.4
+ * Compiled Thu, 20 Oct 2022 19:39:26 UTC
  *
  * @pixi/runner is licensed under the MIT License.
  * http://www.opensource.org/licenses/mit-license
@@ -1390,8 +1390,8 @@ Object.defineProperties(Runner.prototype, {
 });
 
 /*!
- * @pixi/ticker - v7.0.0-beta.3
- * Compiled Thu, 13 Oct 2022 15:35:43 UTC
+ * @pixi/ticker - v7.0.0-beta.4
+ * Compiled Thu, 20 Oct 2022 19:39:26 UTC
  *
  * @pixi/ticker is licensed under the MIT License.
  * http://www.opensource.org/licenses/mit-license
@@ -4207,8 +4207,8 @@ var url$1 = {
 };
 
 /*!
- * @pixi/utils - v7.0.0-beta.3
- * Compiled Thu, 13 Oct 2022 15:35:43 UTC
+ * @pixi/utils - v7.0.0-beta.4
+ * Compiled Thu, 20 Oct 2022 19:39:26 UTC
  *
  * @pixi/utils is licensed under the MIT License.
  * http://www.opensource.org/licenses/mit-license
@@ -5238,7 +5238,9 @@ class CanvasRenderTarget {
 function trimCanvas(canvas) {
   let width = canvas.width;
   let height = canvas.height;
-  const context = canvas.getContext("2d");
+  const context = canvas.getContext("2d", {
+    willReadFrequently: true
+  });
   const imageData = context.getImageData(0, 0, width, height);
   const pixels = imageData.data;
   const len = pixels.length;
@@ -5373,8 +5375,8 @@ var utils = {
 };
 
 /*!
- * @pixi/core - v7.0.0-beta.3
- * Compiled Thu, 13 Oct 2022 15:35:43 UTC
+ * @pixi/core - v7.0.0-beta.4
+ * Compiled Thu, 20 Oct 2022 19:39:26 UTC
  *
  * @pixi/core is licensed under the MIT License.
  * http://www.opensource.org/licenses/mit-license
@@ -6328,11 +6330,11 @@ const _VideoResource = class extends BaseImageResource {
   }
   _isSourcePlaying() {
     const source = this.source;
-    return source.currentTime > 0 && source.paused === false && source.ended === false && source.readyState > 2;
+    return !source.paused && !source.ended && this._isSourceReady();
   }
   _isSourceReady() {
     const source = this.source;
-    return source.readyState === 3 || source.readyState === 4;
+    return source.readyState > 2;
   }
   _onPlayStart() {
     if (!this.valid) {
@@ -8177,10 +8179,6 @@ class FramebufferSystem {
   resizeFramebuffer(framebuffer) {
     const { gl } = this;
     const fbo = framebuffer.glFramebuffers[this.CONTEXT_UID];
-    if (fbo.msaaBuffer) {
-      gl.bindRenderbuffer(gl.RENDERBUFFER, fbo.msaaBuffer);
-      gl.renderbufferStorageMultisample(gl.RENDERBUFFER, fbo.multisample, gl.RGBA8, framebuffer.width, framebuffer.height);
-    }
     if (fbo.stencil) {
       gl.bindRenderbuffer(gl.RENDERBUFFER, fbo.stencil);
       if (fbo.msaaBuffer) {
@@ -8198,6 +8196,10 @@ class FramebufferSystem {
       const texture = colorTextures[i];
       const parentTexture = texture.parentTextureArray || texture;
       this.renderer.texture.bind(parentTexture, 0);
+      if (i === 0 && fbo.msaaBuffer) {
+        gl.bindRenderbuffer(gl.RENDERBUFFER, fbo.msaaBuffer);
+        gl.renderbufferStorageMultisample(gl.RENDERBUFFER, fbo.multisample, parentTexture._glTextures[this.CONTEXT_UID].internalFormat, framebuffer.width, framebuffer.height);
+      }
     }
     if (framebuffer.depthTexture && this.writeDepthTexture) {
       this.renderer.texture.bind(framebuffer.depthTexture, 0);
@@ -8213,9 +8215,6 @@ class FramebufferSystem {
     }
     if (fbo.multisample > 1 && this.canMultisampleFramebuffer(framebuffer)) {
       fbo.msaaBuffer = fbo.msaaBuffer || gl.createRenderbuffer();
-      gl.bindRenderbuffer(gl.RENDERBUFFER, fbo.msaaBuffer);
-      gl.renderbufferStorageMultisample(gl.RENDERBUFFER, fbo.multisample, gl.RGBA8, framebuffer.width, framebuffer.height);
-      gl.framebufferRenderbuffer(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.RENDERBUFFER, fbo.msaaBuffer);
     } else if (fbo.msaaBuffer) {
       gl.deleteRenderbuffer(fbo.msaaBuffer);
       fbo.msaaBuffer = null;
@@ -8230,10 +8229,13 @@ class FramebufferSystem {
       const parentTexture = texture.parentTextureArray || texture;
       this.renderer.texture.bind(parentTexture, 0);
       if (i === 0 && fbo.msaaBuffer) {
-        continue;
+        gl.bindRenderbuffer(gl.RENDERBUFFER, fbo.msaaBuffer);
+        gl.renderbufferStorageMultisample(gl.RENDERBUFFER, fbo.multisample, parentTexture._glTextures[this.CONTEXT_UID].internalFormat, framebuffer.width, framebuffer.height);
+        gl.framebufferRenderbuffer(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.RENDERBUFFER, fbo.msaaBuffer);
+      } else {
+        gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0 + i, texture.target, parentTexture._glTextures[this.CONTEXT_UID].texture, mipLevel);
+        activeTextures.push(gl.COLOR_ATTACHMENT0 + i);
       }
-      gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0 + i, texture.target, parentTexture._glTextures[this.CONTEXT_UID].texture, mipLevel);
-      activeTextures.push(gl.COLOR_ATTACHMENT0 + i);
     }
     if (activeTextures.length > 1) {
       gl.drawBuffers(activeTextures);
@@ -9440,6 +9442,7 @@ class Shader {
     } else {
       this.uniformGroup = new UniformGroup({});
     }
+    this.disposeRunner = new Runner("disposeShader");
   }
   checkUniformExists(name, group) {
     if (group.uniforms[name]) {
@@ -9457,6 +9460,8 @@ class Shader {
   }
   destroy() {
     this.uniformGroup = null;
+    this.disposeRunner.emit(this);
+    this.disposeRunner.destroy();
   }
   get uniforms() {
     return this.uniformGroup.uniforms;
@@ -10539,6 +10544,7 @@ class ShaderSystem {
     this.reset();
   }
   bind(shader, dontSync) {
+    shader.disposeRunner.add(this);
     shader.uniforms.globals = this.renderer.globalUniforms;
     const program = shader.program;
     const glProgram = program.glPrograms[this.renderer.CONTEXT_UID] || this.generateProgram(shader);
@@ -10634,6 +10640,11 @@ class ShaderSystem {
   reset() {
     this.program = null;
     this.shader = null;
+  }
+  disposeShader(shader) {
+    if (this.shader === shader) {
+      this.shader = null;
+    }
   }
   destroy() {
     this.renderer = null;
@@ -11466,7 +11477,7 @@ class StartupSystem {
     const renderer = this.renderer;
     renderer.emitWithCustomOptions(renderer.runners.init, options);
     if (options.hello) {
-      console.log(`PixiJS ${"7.0.0-beta.3"} - ${renderer.rendererLogId} - https://pixijs.com`);
+      console.log(`PixiJS ${"7.0.0-beta.4"} - ${renderer.rendererLogId} - https://pixijs.com`);
     }
     renderer.resize(this.renderer.screen.width, this.renderer.screen.height);
   }
@@ -12443,11 +12454,11 @@ ObjectRendererSystem.extension = {
 };
 extensions$1.add(ObjectRendererSystem);
 
-const VERSION = "7.0.0-beta.3";
+const VERSION = "7.0.0-beta.4";
 
 /*!
- * @pixi/filter-alpha - v7.0.0-beta.3
- * Compiled Thu, 13 Oct 2022 15:35:43 UTC
+ * @pixi/filter-alpha - v7.0.0-beta.4
+ * Compiled Thu, 20 Oct 2022 19:39:26 UTC
  *
  * @pixi/filter-alpha is licensed under the MIT License.
  * http://www.opensource.org/licenses/mit-license
@@ -12469,8 +12480,8 @@ class AlphaFilter extends Filter {
 }
 
 /*!
- * @pixi/filter-blur - v7.0.0-beta.3
- * Compiled Thu, 13 Oct 2022 15:35:43 UTC
+ * @pixi/filter-blur - v7.0.0-beta.4
+ * Compiled Thu, 20 Oct 2022 19:39:26 UTC
  *
  * @pixi/filter-blur is licensed under the MIT License.
  * http://www.opensource.org/licenses/mit-license
@@ -12707,8 +12718,8 @@ class BlurFilter extends Filter {
 }
 
 /*!
- * @pixi/filter-color-matrix - v7.0.0-beta.3
- * Compiled Thu, 13 Oct 2022 15:35:43 UTC
+ * @pixi/filter-color-matrix - v7.0.0-beta.4
+ * Compiled Thu, 20 Oct 2022 19:39:26 UTC
  *
  * @pixi/filter-color-matrix is licensed under the MIT License.
  * http://www.opensource.org/licenses/mit-license
@@ -13337,8 +13348,8 @@ class ColorMatrixFilter extends Filter {
 ColorMatrixFilter.prototype.grayscale = ColorMatrixFilter.prototype.greyscale;
 
 /*!
- * @pixi/filter-displacement - v7.0.0-beta.3
- * Compiled Thu, 13 Oct 2022 15:35:43 UTC
+ * @pixi/filter-displacement - v7.0.0-beta.4
+ * Compiled Thu, 20 Oct 2022 19:39:26 UTC
  *
  * @pixi/filter-displacement is licensed under the MIT License.
  * http://www.opensource.org/licenses/mit-license
@@ -13389,8 +13400,8 @@ class DisplacementFilter extends Filter {
 }
 
 /*!
- * @pixi/filter-fxaa - v7.0.0-beta.3
- * Compiled Thu, 13 Oct 2022 15:35:43 UTC
+ * @pixi/filter-fxaa - v7.0.0-beta.4
+ * Compiled Thu, 20 Oct 2022 19:39:26 UTC
  *
  * @pixi/filter-fxaa is licensed under the MIT License.
  * http://www.opensource.org/licenses/mit-license
@@ -13407,8 +13418,8 @@ class FXAAFilter extends Filter {
 }
 
 /*!
- * @pixi/filter-noise - v7.0.0-beta.3
- * Compiled Thu, 13 Oct 2022 15:35:43 UTC
+ * @pixi/filter-noise - v7.0.0-beta.4
+ * Compiled Thu, 20 Oct 2022 19:39:26 UTC
  *
  * @pixi/filter-noise is licensed under the MIT License.
  * http://www.opensource.org/licenses/mit-license
@@ -13440,8 +13451,8 @@ class NoiseFilter extends Filter {
 }
 
 /*!
- * @pixi/display - v7.0.0-beta.3
- * Compiled Thu, 13 Oct 2022 15:35:43 UTC
+ * @pixi/display - v7.0.0-beta.4
+ * Compiled Thu, 20 Oct 2022 19:39:26 UTC
  *
  * @pixi/display is licensed under the MIT License.
  * http://www.opensource.org/licenses/mit-license
@@ -14304,8 +14315,8 @@ class Container extends DisplayObject {
 Container.prototype.containerUpdateTransform = Container.prototype.updateTransform;
 
 /*!
- * @pixi/sprite - v7.0.0-beta.3
- * Compiled Thu, 13 Oct 2022 15:35:43 UTC
+ * @pixi/sprite - v7.0.0-beta.4
+ * Compiled Thu, 20 Oct 2022 19:39:26 UTC
  *
  * @pixi/sprite is licensed under the MIT License.
  * http://www.opensource.org/licenses/mit-license
@@ -14563,8 +14574,8 @@ class Sprite extends Container {
 }
 
 /*!
- * @pixi/mixin-cache-as-bitmap - v7.0.0-beta.3
- * Compiled Thu, 13 Oct 2022 15:35:43 UTC
+ * @pixi/mixin-cache-as-bitmap - v7.0.0-beta.4
+ * Compiled Thu, 20 Oct 2022 19:39:26 UTC
  *
  * @pixi/mixin-cache-as-bitmap is licensed under the MIT License.
  * http://www.opensource.org/licenses/mit-license
@@ -14810,8 +14821,8 @@ DisplayObject.prototype._cacheAsBitmapDestroy = function _cacheAsBitmapDestroy(o
 };
 
 /*!
- * @pixi/mixin-get-child-by-name - v7.0.0-beta.3
- * Compiled Thu, 13 Oct 2022 15:35:43 UTC
+ * @pixi/mixin-get-child-by-name - v7.0.0-beta.4
+ * Compiled Thu, 20 Oct 2022 19:39:26 UTC
  *
  * @pixi/mixin-get-child-by-name is licensed under the MIT License.
  * http://www.opensource.org/licenses/mit-license
@@ -14840,8 +14851,8 @@ Container.prototype.getChildByName = function getChildByName(name, deep) {
 };
 
 /*!
- * @pixi/mixin-get-global-position - v7.0.0-beta.3
- * Compiled Thu, 13 Oct 2022 15:35:43 UTC
+ * @pixi/mixin-get-global-position - v7.0.0-beta.4
+ * Compiled Thu, 20 Oct 2022 19:39:26 UTC
  *
  * @pixi/mixin-get-global-position is licensed under the MIT License.
  * http://www.opensource.org/licenses/mit-license
@@ -14858,8 +14869,8 @@ DisplayObject.prototype.getGlobalPosition = function getGlobalPosition(point = n
 };
 
 /*!
- * @pixi/app - v7.0.0-beta.3
- * Compiled Thu, 13 Oct 2022 15:35:43 UTC
+ * @pixi/app - v7.0.0-beta.4
+ * Compiled Thu, 20 Oct 2022 19:39:26 UTC
  *
  * @pixi/app is licensed under the MIT License.
  * http://www.opensource.org/licenses/mit-license
@@ -14963,8 +14974,8 @@ ResizePlugin.extension = ExtensionType.Application;
 extensions$1.add(ResizePlugin);
 
 /*!
- * @pixi/assets - v7.0.0-beta.3
- * Compiled Thu, 13 Oct 2022 15:35:43 UTC
+ * @pixi/assets - v7.0.0-beta.4
+ * Compiled Thu, 20 Oct 2022 19:39:26 UTC
  *
  * @pixi/assets is licensed under the MIT License.
  * http://www.opensource.org/licenses/mit-license
@@ -15738,33 +15749,69 @@ extensions$1.add(loadWebFont);
 
 let UUID = 0;
 let MAX_WORKERS;
+const WHITE_PNG = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+ip1sAAAAASUVORK5CYII=";
+const checkImageBitmapCode = {
+  id: "checkImageBitmap",
+  code: `
+    async function checkImageBitmap()
+    {
+        try
+        {
+            if (typeof createImageBitmap !== 'function') return false;
+
+            const response = await fetch('${WHITE_PNG}');
+            const imageBlob =  await response.blob();
+            const imageBitmap = await createImageBitmap(imageBlob);
+
+            return imageBitmap.width === 1 && imageBitmap.height === 1;
+        }
+        catch (e)
+        {
+            return false;
+        }
+    }
+    checkImageBitmap().then((result) => { self.postMessage(result); });
+    `
+};
 const workerCode = {
   id: "loadImageBitmap",
   code: `
-    self.onmessage = function(event) {
+    async function loadImageBitmap(url)
+    {
+        const response = await fetch(url);
 
-        async function loadImageBitmap(url)
+        if (!response.ok)
         {
-            const response = await fetch(url);
-            const imageBlob =  await response.blob();
-            const imageBitmap = await createImageBitmap(imageBlob);
-            return imageBitmap;
+            throw new Error(\`[WorkerManager.loadImageBitmap] Failed to fetch \${url}: \`
+                + \`\${response.status} \${response.statusText}\`);
         }
 
-        loadImageBitmap(event.data.data[0]).then(imageBitmap => {
+        const imageBlob =  await response.blob();
+        const imageBitmap = await createImageBitmap(imageBlob);
+
+        return imageBitmap;
+    }
+    self.onmessage = async (event) =>
+    {
+        try
+        {
+            const imageBitmap = await loadImageBitmap(event.data.data[0]);
+
             self.postMessage({
                 data: imageBitmap,
                 uuid: event.data.uuid,
                 id: event.data.id,
             }, [imageBitmap]);
-        }).catch(error => {
+        }
+        catch(e)
+        {
             self.postMessage({
-                data: null,
+                error: e,
                 uuid: event.data.uuid,
                 id: event.data.id,
             });
-        });
-    }`
+        }
+    };`
 };
 let workerURL;
 class WorkerManagerClass {
@@ -15774,6 +15821,20 @@ class WorkerManagerClass {
     this.workerPool = [];
     this.queue = [];
     this.resolveHash = {};
+  }
+  isImageBitmapSupported() {
+    if (this._isImageBitmapSupported !== void 0)
+      return this._isImageBitmapSupported;
+    this._isImageBitmapSupported = new Promise((resolve) => {
+      const workerURL2 = URL.createObjectURL(new Blob([checkImageBitmapCode.code], { type: "application/javascript" }));
+      const worker = new Worker(workerURL2);
+      worker.addEventListener("message", (event) => {
+        worker.terminate();
+        URL.revokeObjectURL(workerURL2);
+        resolve(event.data);
+      });
+    });
+    return this._isImageBitmapSupported;
   }
   loadImageBitmap(src) {
     return this._run("loadImageBitmap", [src]);
@@ -15806,14 +15867,17 @@ class WorkerManagerClass {
     this.workerPool.push(worker);
   }
   complete(data) {
-    const result = data.data;
-    this.resolveHash[data.uuid](result);
+    if (data.error !== void 0) {
+      this.resolveHash[data.uuid].reject(data.error);
+    } else {
+      this.resolveHash[data.uuid].resolve(data.data);
+    }
     this.resolveHash[data.uuid] = null;
   }
-  _run(id, args) {
-    this._initWorkers();
-    const promise = new Promise((resolve) => {
-      this.queue.push({ id, arguments: args, resolve });
+  async _run(id, args) {
+    await this._initWorkers();
+    const promise = new Promise((resolve, reject) => {
+      this.queue.push({ id, arguments: args, resolve, reject });
     });
     this.next();
     return promise;
@@ -15827,7 +15891,7 @@ class WorkerManagerClass {
     }
     const toDo = this.queue.pop();
     const id = toDo.id;
-    this.resolveHash[UUID] = toDo.resolve;
+    this.resolveHash[UUID] = { resolve: toDo.resolve, reject: toDo.reject };
     worker.postMessage({
       data: toDo.arguments,
       uuid: UUID++,
@@ -15857,6 +15921,9 @@ function createTexture(base, loader, url) {
 const validImages$1 = [".jpg", ".png", ".jpeg", ".avif", ".webp"];
 async function loadImageBitmap(url) {
   const response = await settings.ADAPTER.fetch(url);
+  if (!response.ok) {
+    throw new Error(`[loadImageBitmap] Failed to fetch ${url}: ${response.status} ${response.statusText}`);
+  }
   const imageBlob = await response.blob();
   const imageBitmap = await createImageBitmap(imageBlob);
   return imageBitmap;
@@ -15872,7 +15939,7 @@ const loadTextures = {
   test(url) {
     let isValidBase64Suffix = false;
     for (let i = 0; i < validImages$1.length; i++) {
-      if (url.indexOf(`data:image/${validImages$1[i].slice(1)}`) === 0) {
+      if (url.startsWith(`data:image/${validImages$1[i].slice(1)}`)) {
         isValidBase64Suffix = true;
         break;
       }
@@ -15882,7 +15949,11 @@ const loadTextures = {
   async load(url, asset, loader) {
     let src = null;
     if (globalThis.createImageBitmap) {
-      src = this.config.preferWorkers ? await WorkerManager.loadImageBitmap(url) : await loadImageBitmap(url);
+      if (this.config.preferWorkers && await WorkerManager.isImageBitmapSupported()) {
+        src = await WorkerManager.loadImageBitmap(url);
+      } else {
+        src = await loadImageBitmap(url);
+      }
     } else {
       src = await new Promise((resolve) => {
         src = new Image();
@@ -15999,8 +16070,8 @@ const detectDefaults = {
 extensions$1.add(detectDefaults);
 
 /*!
- * @pixi/compressed-textures - v7.0.0-beta.3
- * Compiled Thu, 13 Oct 2022 15:35:43 UTC
+ * @pixi/compressed-textures - v7.0.0-beta.4
+ * Compiled Thu, 20 Oct 2022 19:39:26 UTC
  *
  * @pixi/compressed-textures is licensed under the MIT License.
  * http://www.opensource.org/licenses/mit-license
@@ -16688,8 +16759,8 @@ const resolveCompressedTextureUrl = {
 extensions$1.add(resolveCompressedTextureUrl);
 
 /*!
- * @pixi/extract - v7.0.0-beta.3
- * Compiled Thu, 13 Oct 2022 15:35:43 UTC
+ * @pixi/extract - v7.0.0-beta.4
+ * Compiled Thu, 20 Oct 2022 19:39:26 UTC
  *
  * @pixi/extract is licensed under the MIT License.
  * http://www.opensource.org/licenses/mit-license
@@ -16834,8 +16905,8 @@ Extract.extension = {
 extensions$1.add(Extract);
 
 /*!
- * @pixi/graphics - v7.0.0-beta.3
- * Compiled Thu, 13 Oct 2022 15:35:43 UTC
+ * @pixi/graphics - v7.0.0-beta.4
+ * Compiled Thu, 20 Oct 2022 19:39:26 UTC
  *
  * @pixi/graphics is licensed under the MIT License.
  * http://www.opensource.org/licenses/mit-license
@@ -17113,11 +17184,17 @@ const buildRectangle = {
     const height = rectData.height;
     const points = graphicsData.points;
     points.length = 0;
+    if (!(width >= 0 && height >= 0)) {
+      return;
+    }
     points.push(x, y, x + width, y, x + width, y + height, x, y + height);
   },
   triangulate(graphicsData, graphicsGeometry) {
     const points = graphicsData.points;
     const verts = graphicsGeometry.points;
+    if (points.length === 0) {
+      return;
+    }
     const vertPos = verts.length / 2;
     verts.push(points[0], points[1], points[2], points[3], points[6], points[7], points[4], points[5]);
     graphicsGeometry.indices.push(vertPos, vertPos + 1, vertPos + 2, vertPos + 1, vertPos + 2, vertPos + 3);
@@ -18599,8 +18676,8 @@ const graphicsUtils = {
 };
 
 /*!
- * @pixi/mesh - v7.0.0-beta.3
- * Compiled Thu, 13 Oct 2022 15:35:43 UTC
+ * @pixi/mesh - v7.0.0-beta.4
+ * Compiled Thu, 20 Oct 2022 19:39:26 UTC
  *
  * @pixi/mesh is licensed under the MIT License.
  * http://www.opensource.org/licenses/mit-license
@@ -18924,8 +19001,8 @@ class MeshGeometry extends Geometry {
 }
 
 /*!
- * @pixi/mesh-extras - v7.0.0-beta.3
- * Compiled Thu, 13 Oct 2022 15:35:43 UTC
+ * @pixi/mesh-extras - v7.0.0-beta.4
+ * Compiled Thu, 20 Oct 2022 19:39:26 UTC
  *
  * @pixi/mesh-extras is licensed under the MIT License.
  * http://www.opensource.org/licenses/mit-license
@@ -19282,8 +19359,8 @@ class NineSlicePlane extends SimplePlane {
 }
 
 /*!
- * @pixi/particle-container - v7.0.0-beta.3
- * Compiled Thu, 13 Oct 2022 15:35:43 UTC
+ * @pixi/particle-container - v7.0.0-beta.4
+ * Compiled Thu, 20 Oct 2022 19:39:26 UTC
  *
  * @pixi/particle-container is licensed under the MIT License.
  * http://www.opensource.org/licenses/mit-license
@@ -19687,8 +19764,8 @@ ParticleRenderer.extension = {
 extensions$1.add(ParticleRenderer);
 
 /*!
- * @pixi/text - v7.0.0-beta.3
- * Compiled Thu, 13 Oct 2022 15:35:43 UTC
+ * @pixi/text - v7.0.0-beta.4
+ * Compiled Thu, 20 Oct 2022 19:39:26 UTC
  *
  * @pixi/text is licensed under the MIT License.
  * http://www.opensource.org/licenses/mit-license
@@ -20077,6 +20154,9 @@ function deepCopyProperties(target, source, propertyObj) {
   }
 }
 
+const contextSettings = {
+  willReadFrequently: true
+};
 class TextMetrics {
   constructor(text, style, width, height, lines, lineWidths, lineHeight, maxLineWidth, fontProperties) {
     this.text = text;
@@ -20097,7 +20177,7 @@ class TextMetrics {
       fontProperties.fontSize = style.fontSize;
       fontProperties.ascent = style.fontSize;
     }
-    const context = canvas.getContext("2d");
+    const context = canvas.getContext("2d", contextSettings);
     context.font = font;
     const outputText = wordWrap ? TextMetrics.wordWrap(text, style, canvas) : text;
     const lines = outputText.split(/(?:\r\n|\r|\n)/);
@@ -20120,7 +20200,7 @@ class TextMetrics {
     return new TextMetrics(text, style, width, height, lines, lineWidths, lineHeight + style.leading, maxLineWidth, fontProperties);
   }
   static wordWrap(text, style, canvas = TextMetrics._canvas) {
-    const context = canvas.getContext("2d");
+    const context = canvas.getContext("2d", contextSettings);
     let width = 0;
     let line = "";
     let lines = "";
@@ -20367,7 +20447,7 @@ class TextMetrics {
       let canvas;
       try {
         const c = new OffscreenCanvas(0, 0);
-        const context = c.getContext("2d");
+        const context = c.getContext("2d", contextSettings);
         if (context?.measureText) {
           TextMetrics.__canvas = c;
           return c;
@@ -20383,7 +20463,7 @@ class TextMetrics {
   }
   static get _context() {
     if (!TextMetrics.__context) {
-      TextMetrics.__context = TextMetrics._canvas.getContext("2d");
+      TextMetrics.__context = TextMetrics._canvas.getContext("2d", contextSettings);
     }
     return TextMetrics.__context;
   }
@@ -20434,7 +20514,9 @@ const _Text = class extends Sprite {
     super(texture);
     this._ownCanvas = ownCanvas;
     this.canvas = canvas;
-    this.context = canvas.getContext("2d");
+    this.context = canvas.getContext("2d", {
+      willReadFrequently: true
+    });
     this._resolution = settings.RESOLUTION;
     this._autoResolution = true;
     this._text = null;
@@ -20752,8 +20834,8 @@ let Text = _Text;
 Text.experimentalLetterSpacing = false;
 
 /*!
- * @pixi/prepare - v7.0.0-beta.3
- * Compiled Thu, 13 Oct 2022 15:35:43 UTC
+ * @pixi/prepare - v7.0.0-beta.4
+ * Compiled Thu, 20 Oct 2022 19:39:26 UTC
  *
  * @pixi/prepare is licensed under the MIT License.
  * http://www.opensource.org/licenses/mit-license
@@ -21025,8 +21107,8 @@ class TimeLimiter {
 }
 
 /*!
- * @pixi/spritesheet - v7.0.0-beta.3
- * Compiled Thu, 13 Oct 2022 15:35:43 UTC
+ * @pixi/spritesheet - v7.0.0-beta.4
+ * Compiled Thu, 20 Oct 2022 19:39:26 UTC
  *
  * @pixi/spritesheet is licensed under the MIT License.
  * http://www.opensource.org/licenses/mit-license
@@ -21238,8 +21320,8 @@ const spritesheetAsset = {
 extensions$1.add(spritesheetAsset);
 
 /*!
- * @pixi/sprite-animated - v7.0.0-beta.3
- * Compiled Thu, 13 Oct 2022 15:35:43 UTC
+ * @pixi/sprite-animated - v7.0.0-beta.4
+ * Compiled Thu, 20 Oct 2022 19:39:26 UTC
  *
  * @pixi/sprite-animated is licensed under the MIT License.
  * http://www.opensource.org/licenses/mit-license
@@ -21434,8 +21516,8 @@ class AnimatedSprite extends Sprite {
 }
 
 /*!
- * @pixi/sprite-tiling - v7.0.0-beta.3
- * Compiled Thu, 13 Oct 2022 15:35:43 UTC
+ * @pixi/sprite-tiling - v7.0.0-beta.4
+ * Compiled Thu, 20 Oct 2022 19:39:26 UTC
  *
  * @pixi/sprite-tiling is licensed under the MIT License.
  * http://www.opensource.org/licenses/mit-license
@@ -21633,8 +21715,8 @@ TilingSpriteRenderer.extension = {
 extensions$1.add(TilingSpriteRenderer);
 
 /*!
- * @pixi/text-bitmap - v7.0.0-beta.3
- * Compiled Thu, 13 Oct 2022 15:35:43 UTC
+ * @pixi/text-bitmap - v7.0.0-beta.4
+ * Compiled Thu, 20 Oct 2022 19:39:26 UTC
  *
  * @pixi/text-bitmap is licensed under the MIT License.
  * http://www.opensource.org/licenses/mit-license
@@ -22080,13 +22162,14 @@ const _BitmapFont = class {
           file: ""
         });
       }
-      const metrics = TextMetrics.measureText(charsList[i], style, false, canvas);
+      const character = charsList[i];
+      const metrics = TextMetrics.measureText(character, style, false, canvas);
       const width = metrics.width;
       const height = Math.ceil(metrics.height);
       const textureGlyphWidth = Math.ceil((style.fontStyle === "italic" ? 2 : 1) * width);
       if (positionY >= textureHeight - height * resolution) {
         if (positionY === 0) {
-          throw new Error(`[BitmapFont] textureHeight ${textureHeight}px is too small for ${style.fontSize}px fonts`);
+          throw new Error(`[BitmapFont] textureHeight ${textureHeight}px is too small (fontFamily: '${style.fontFamily}', fontSize: ${style.fontSize}px, char: '${character}')`);
         }
         --i;
         canvas = null;
@@ -22099,6 +22182,9 @@ const _BitmapFont = class {
       }
       maxCharHeight = Math.max(height + metrics.fontProperties.descent, maxCharHeight);
       if (textureGlyphWidth * resolution + positionX >= lineWidth) {
+        if (positionX === 0) {
+          throw new Error(`[BitmapFont] textureWidth ${textureWidth}px is too small (fontFamily: '${style.fontFamily}', fontSize: ${style.fontSize}px, char: '${character}')`);
+        }
         --i;
         positionY += maxCharHeight * resolution;
         positionY = Math.ceil(positionY);
@@ -22594,6 +22680,9 @@ const _BitmapText = class extends Container {
     const data = BitmapFont.available[this._fontName];
     const pageMeshDataPool = data.distanceFieldType === "none" ? pageMeshDataDefaultPageMeshData : pageMeshDataMSDFPageMeshData;
     pageMeshDataPool.push(...this._activePagesMeshData);
+    for (const data2 of this._activePagesMeshData) {
+      this.removeChild(data2.mesh);
+    }
     this._activePagesMeshData = [];
     pageMeshDataPool.filter((page) => _textureCache[page.mesh.texture.baseTexture.uid]).forEach((page) => {
       page.mesh.texture = Texture.EMPTY;
