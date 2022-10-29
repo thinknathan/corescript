@@ -1,6 +1,6 @@
 /*!
- * @pixi/webworker - v7.0.0-beta.6
- * Compiled Tue, 25 Oct 2022 20:17:28 UTC
+ * @pixi/webworker - v7.0.0
+ * Compiled Fri, 28 Oct 2022 17:30:09 UTC
  *
  * @pixi/webworker is licensed under the MIT License.
  * http://www.opensource.org/licenses/mit-license
@@ -11361,7 +11361,7 @@ class StartupSystem {
     const renderer = this.renderer;
     renderer.emitWithCustomOptions(renderer.runners.init, options);
     if (options.hello) {
-      console.log(`PixiJS ${"7.0.0-beta.6"} - ${renderer.rendererLogId} - https://pixijs.com`);
+      console.log(`PixiJS ${"7.0.0"} - ${renderer.rendererLogId} - https://pixijs.com`);
     }
     renderer.resize(this.renderer.screen.width, this.renderer.screen.height);
   }
@@ -12330,7 +12330,7 @@ ObjectRendererSystem.extension = {
 };
 extensions$1.add(ObjectRendererSystem);
 
-const VERSION = "7.0.0-beta.6";
+const VERSION = "7.0.0";
 
 var fragment$6 = "varying vec2 vTextureCoord;\n\nuniform sampler2D uSampler;\nuniform float uAlpha;\n\nvoid main(void)\n{\n   gl_FragColor = texture2D(uSampler, vTextureCoord) * uAlpha;\n}\n";
 
@@ -14389,7 +14389,7 @@ const _tempMatrix = new Matrix();
 DisplayObject.prototype._cacheAsBitmap = false;
 DisplayObject.prototype._cacheData = null;
 DisplayObject.prototype._cacheAsBitmapResolution = null;
-DisplayObject.prototype._cacheAsBitmapMultisample = MSAA_QUALITY.NONE;
+DisplayObject.prototype._cacheAsBitmapMultisample = null;
 class CacheData {
   constructor() {
     this.textureCacheId = null;
