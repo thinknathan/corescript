@@ -3,7 +3,7 @@ import {
 	inflateSync,
 	deflateSync,
 	strFromU8,
-} from 'https://cdn.skypack.dev/pin/fflate@v0.7.3-x0OS7MYd1pAJyCyfqyxe/mode=imports/optimized/fflate.js';
+} from 'https://cdn.skypack.dev/fflate@v0.7.4';
 import {
 	set,
 	get,
