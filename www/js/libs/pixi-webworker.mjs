@@ -1,6 +1,6 @@
 /*!
- * @pixi/webworker - v7.0.0
- * Compiled Fri, 28 Oct 2022 17:30:09 UTC
+ * @pixi/webworker - v7.0.3
+ * Compiled Mon, 07 Nov 2022 00:40:25 UTC
  *
  * @pixi/webworker is licensed under the MIT License.
  * http://www.opensource.org/licenses/mit-license
@@ -480,6 +480,9 @@ const extensions$1 = {
   },
   handleByList(type, list) {
     return this.handle(type, (extension) => {
+      if (list.includes(extension.ref)) {
+        return;
+      }
       list.push(extension.ref);
       list.sort((a, b) => (b.priority ?? -1) - (a.priority ?? -1));
     }, (extension) => {
@@ -5814,7 +5817,7 @@ class BaseImageResource extends Resource {
         return false;
       }
     } else if (typeof HTMLVideoElement !== "undefined" && source instanceof HTMLVideoElement) {
-      if (source.readyState <= 1) {
+      if (source.readyState <= 1 && source.buffered.length === 0) {
         return false;
       }
     }
@@ -11361,7 +11364,7 @@ class StartupSystem {
     const renderer = this.renderer;
     renderer.emitWithCustomOptions(renderer.runners.init, options);
     if (options.hello) {
-      console.log(`PixiJS ${"7.0.0"} - ${renderer.rendererLogId} - https://pixijs.com`);
+      console.log(`PixiJS ${"7.0.3"} - ${renderer.rendererLogId} - https://pixijs.com`);
     }
     renderer.resize(this.renderer.screen.width, this.renderer.screen.height);
   }
@@ -12330,7 +12333,7 @@ ObjectRendererSystem.extension = {
 };
 extensions$1.add(ObjectRendererSystem);
 
-const VERSION = "7.0.0";
+const VERSION = "7.0.3";
 
 var fragment$6 = "varying vec2 vTextureCoord;\n\nuniform sampler2D uSampler;\nuniform float uAlpha;\n\nvoid main(void)\n{\n   gl_FragColor = texture2D(uSampler, vTextureCoord) * uAlpha;\n}\n";
 
@@ -14223,7 +14226,7 @@ class Sprite extends Container {
     if (this._roundPixels) {
       const resolution = settings.RESOLUTION;
       for (let i = 0; i < vertexData.length; ++i) {
-        vertexData[i] = Math.round((vertexData[i] * resolution | 0) / resolution);
+        vertexData[i] = Math.round(vertexData[i] * resolution) / resolution;
       }
     }
   }
@@ -18723,7 +18726,7 @@ const _Mesh = class extends Container {
     if (this._roundPixels) {
       const resolution = settings.RESOLUTION;
       for (let i = 0; i < vertexData.length; ++i) {
-        vertexData[i] = Math.round((vertexData[i] * resolution | 0) / resolution);
+        vertexData[i] = Math.round(vertexData[i] * resolution) / resolution;
       }
     }
     this.vertexDirty = vertexDirtyId;

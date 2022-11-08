@@ -1,15 +1,8 @@
 /*!
- * pixi.js - v7.0.0-beta.3
- * Compiled Thu, 13 Oct 2022 15:35:43 UTC
+ * pixi.js - v7.0.3
+ * Compiled Mon, 07 Nov 2022 00:40:25 UTC
  *
  * pixi.js is licensed under the MIT License.
- * http://www.opensource.org/licenses/mit-license
- */
-/*!
- * @pixi/constants - v7.0.0-beta.3
- * Compiled Thu, 13 Oct 2022 15:35:43 UTC
- *
- * @pixi/constants is licensed under the MIT License.
  * http://www.opensource.org/licenses/mit-license
  */
 var ENV = /* @__PURE__ */ ((ENV2) => {
@@ -203,14 +196,6 @@ var BUFFER_TYPE = /* @__PURE__ */ ((BUFFER_TYPE2) => {
   BUFFER_TYPE2[BUFFER_TYPE2["UNIFORM_BUFFER"] = 35345] = "UNIFORM_BUFFER";
   return BUFFER_TYPE2;
 })(BUFFER_TYPE || {});
-
-/*!
- * @pixi/settings - v7.0.0-beta.3
- * Compiled Thu, 13 Oct 2022 15:35:43 UTC
- *
- * @pixi/settings is licensed under the MIT License.
- * http://www.opensource.org/licenses/mit-license
- */
 
 const BrowserAdapter = {
   createCanvas: (width, height) => {
@@ -417,13 +402,9 @@ const settings = {
   ROUND_PIXELS: false
 };
 
-/*!
- * @pixi/extensions - v7.0.0-beta.3
- * Compiled Thu, 13 Oct 2022 15:35:43 UTC
- *
- * @pixi/extensions is licensed under the MIT License.
- * http://www.opensource.org/licenses/mit-license
- */
+settings.PREFER_ENV = ENV.WEBGL2;
+settings.STRICT_TEXTURE_CACHE = false;
+
 var ExtensionType = /* @__PURE__ */ ((ExtensionType2) => {
   ExtensionType2["Renderer"] = "renderer";
   ExtensionType2["Application"] = "application";
@@ -440,9 +421,6 @@ var ExtensionType = /* @__PURE__ */ ((ExtensionType2) => {
 })(ExtensionType || {});
 const normalizeExtension = (ext) => {
   if (typeof ext === "function" || typeof ext === "object" && ext.extension) {
-    if (!ext.extension) {
-      throw new Error("Extension class must have an extension object");
-    }
     const metadata = typeof ext.extension !== "object" ? { type: ext.extension } : ext.extension;
     ext = { ...metadata, ref: ext };
   }
@@ -484,9 +462,6 @@ const extensions$1 = {
   handle(type, onAdd, onRemove) {
     const addHandlers = this._addHandlers;
     const removeHandlers = this._removeHandlers;
-    if (addHandlers[type] || removeHandlers[type]) {
-      throw new Error(`Extension type ${type} already has a handler`);
-    }
     addHandlers[type] = onAdd;
     removeHandlers[type] = onRemove;
     const queue = this._queue;
@@ -505,6 +480,9 @@ const extensions$1 = {
   },
   handleByList(type, list) {
     return this.handle(type, (extension) => {
+      if (list.includes(extension.ref)) {
+        return;
+      }
       list.push(extension.ref);
       list.sort((a, b) => (b.priority ?? -1) - (a.priority ?? -1));
     }, (extension) => {
@@ -516,13 +494,6 @@ const extensions$1 = {
   }
 };
 
-/*!
- * @pixi/math - v7.0.0-beta.3
- * Compiled Thu, 13 Oct 2022 15:35:43 UTC
- *
- * @pixi/math is licensed under the MIT License.
- * http://www.opensource.org/licenses/mit-license
- */
 const PI_2 = Math.PI * 2;
 const RAD_TO_DEG = 180 / Math.PI;
 const DEG_TO_RAD = Math.PI / 180;
@@ -560,9 +531,6 @@ class Point {
     this.x = x;
     this.y = y;
     return this;
-  }
-  toString() {
-    return `[@pixi/math:Point x=${this.x} y=${this.y}]`;
   }
 }
 
@@ -712,9 +680,6 @@ class Rectangle {
     this.height = y2 - y1;
     return this;
   }
-  toString() {
-    return `[@pixi/math:Rectangle x=${this.x} y=${this.y} width=${this.width} height=${this.height}]`;
-  }
 }
 
 class Circle {
@@ -741,9 +706,6 @@ class Circle {
   getBounds() {
     return new Rectangle(this.x - this.radius, this.y - this.radius, this.radius * 2, this.radius * 2);
   }
-  toString() {
-    return `[@pixi/math:Circle x=${this.x} y=${this.y} radius=${this.radius}]`;
-  }
 }
 
 class Ellipse {
@@ -769,9 +731,6 @@ class Ellipse {
   }
   getBounds() {
     return new Rectangle(this.x - this.width, this.y - this.height, this.width, this.height);
-  }
-  toString() {
-    return `[@pixi/math:Ellipse x=${this.x} y=${this.y} width=${this.width} height=${this.height}]`;
   }
 }
 
@@ -809,9 +768,6 @@ class Polygon {
       }
     }
     return inside;
-  }
-  toString() {
-    return `[@pixi/math:PolygoncloseStroke=${this.closeStroke}points=${this.points.reduce((pointsDesc, currentPoint) => `${pointsDesc}, ${currentPoint}`, "")}]`;
   }
 }
 
@@ -859,9 +815,6 @@ class RoundedRectangle {
     }
     return false;
   }
-  toString() {
-    return `[@pixi/math:RoundedRectangle x=${this.x} y=${this.y}width=${this.width} height=${this.height} radius=${this.radius}]`;
-  }
 }
 
 class ObservablePoint {
@@ -896,9 +849,6 @@ class ObservablePoint {
   }
   equals(p) {
     return p.x === this._x && p.y === this._y;
-  }
-  toString() {
-    return `[@pixi/math:ObservablePoint x=${0} y=${0} scope=${this.scope}]`;
   }
   get x() {
     return this._x;
@@ -1131,9 +1081,6 @@ class Matrix {
     this.ty = matrix.ty;
     return this;
   }
-  toString() {
-    return `[@pixi/math:Matrix a=${this.a} b=${this.b} c=${this.c} d=${this.d} tx=${this.tx} ty=${this.ty}]`;
-  }
   static get IDENTITY() {
     return new Matrix();
   }
@@ -1257,9 +1204,6 @@ const _Transform = class {
     this._sy = Math.cos(this._rotation - this.skew.x);
     this._localID++;
   }
-  toString() {
-    return `[@pixi/math:Transform position=(${this.position.x}, ${this.position.y}) rotation=${this.rotation} scale=(${this.scale.x}, ${this.scale.y}) skew=(${this.skew.x}, ${this.skew.y}) ]`;
-  }
   updateLocalTransform() {
     const lt = this.localTransform;
     if (this._localID !== this._currentLocalID) {
@@ -1315,13 +1259,6 @@ const _Transform = class {
 let Transform = _Transform;
 Transform.IDENTITY = new _Transform();
 
-/*!
- * @pixi/runner - v7.0.0-beta.3
- * Compiled Thu, 13 Oct 2022 15:35:43 UTC
- *
- * @pixi/runner is licensed under the MIT License.
- * http://www.opensource.org/licenses/mit-license
- */
 class Runner {
   constructor(name) {
     this.items = [];
@@ -1388,14 +1325,6 @@ Object.defineProperties(Runner.prototype, {
   dispatch: { value: Runner.prototype.emit },
   run: { value: Runner.prototype.emit }
 });
-
-/*!
- * @pixi/ticker - v7.0.0-beta.3
- * Compiled Thu, 13 Oct 2022 15:35:43 UTC
- *
- * @pixi/ticker is licensed under the MIT License.
- * http://www.opensource.org/licenses/mit-license
- */
 
 settings.TARGET_FPMS = 0.06;
 
@@ -4206,14 +4135,6 @@ var url$1 = {
 	Url: Url_1
 };
 
-/*!
- * @pixi/utils - v7.0.0-beta.3
- * Compiled Thu, 13 Oct 2022 15:35:43 UTC
- *
- * @pixi/utils is licensed under the MIT License.
- * http://www.opensource.org/licenses/mit-license
- */
-
 const url = {
   parse: parse,
   format: format,
@@ -4250,7 +4171,8 @@ function normalizeStringPosix(path2, allowAboveRoot) {
       code = 47;
     }
     if (code === 47) {
-      if (lastSlash === i - 1 || dots === 1) ; else if (lastSlash !== i - 1 && dots === 2) {
+      if (lastSlash === i - 1 || dots === 1) {
+      } else if (lastSlash !== i - 1 && dots === 2) {
         if (res.length < 2 || lastSegmentLength !== 2 || res.charCodeAt(res.length - 1) !== 46 || res.charCodeAt(res.length - 2) !== 46) {
           if (res.length > 2) {
             const lastSlashIndex = res.lastIndexOf("/");
@@ -4544,6 +4466,7 @@ const path = {
     let code = path2.charCodeAt(0);
     const isAbsolute = this.isAbsolute(path2);
     let start;
+    const protocol = "";
     ret.root = this.rootname(path2);
     if (isAbsolute || this.hasProtocol(path2)) {
       start = 1;
@@ -4596,6 +4519,8 @@ const path = {
       ret.ext = path2.slice(startDot, end);
     }
     ret.dir = this.dirname(path2);
+    if (protocol)
+      ret.dir = protocol + ret.dir;
     return ret;
   },
   sep: "/",
@@ -4605,36 +4530,9 @@ const path = {
 settings.RETINA_PREFIX = /@([0-9\.]+)x/;
 settings.FAIL_IF_MAJOR_PERFORMANCE_CAVEAT = false;
 
-const warnings = {};
-function deprecation(version, message, ignoreDepth = 3) {
-  if (warnings[message]) {
-    return;
-  }
-  let stack = new Error().stack;
-  if (typeof stack === "undefined") {
-    console.warn("PixiJS Deprecation Warning: ", `${message}
-Deprecated since v${version}`);
-  } else {
-    stack = stack.split("\n").splice(ignoreDepth).join("\n");
-    if (console.groupCollapsed) {
-      console.groupCollapsed("%cPixiJS Deprecation Warning: %c%s", "color:#614108;background:#fffbe6", "font-weight:normal;color:#614108;background:#fffbe6", `${message}
-Deprecated since v${version}`);
-      console.warn(stack);
-      console.groupEnd();
-    } else {
-      console.warn("PixiJS Deprecation Warning: ", `${message}
-Deprecated since v${version}`);
-      console.warn(stack);
-    }
-  }
-  warnings[message] = true;
-}
-
 function skipHello() {
-  deprecation("7.0.0", "skipHello is deprecated, please use PIXI.settings.RENDER_OPTIONS.hello");
 }
 function sayHello() {
-  deprecation("7.0.0", `sayHello is deprecated, please use Renderer's "hello" option`);
 }
 
 let supported;
@@ -5180,6 +5078,31 @@ function uid() {
   return ++nextUid;
 }
 
+const warnings = {};
+function deprecation(version, message, ignoreDepth = 3) {
+  if (warnings[message]) {
+    return;
+  }
+  let stack = new Error().stack;
+  if (typeof stack === "undefined") {
+    console.warn("PixiJS Deprecation Warning: ", `${message}
+Deprecated since v${version}`);
+  } else {
+    stack = stack.split("\n").splice(ignoreDepth).join("\n");
+    if (console.groupCollapsed) {
+      console.groupCollapsed("%cPixiJS Deprecation Warning: %c%s", "color:#614108;background:#fffbe6", "font-weight:normal;color:#614108;background:#fffbe6", `${message}
+Deprecated since v${version}`);
+      console.warn(stack);
+      console.groupEnd();
+    } else {
+      console.warn("PixiJS Deprecation Warning: ", `${message}
+Deprecated since v${version}`);
+      console.warn(stack);
+    }
+  }
+  warnings[message] = true;
+}
+
 const ProgramCache = {};
 const TextureCache = /* @__PURE__ */ Object.create(null);
 const BaseTextureCache = /* @__PURE__ */ Object.create(null);
@@ -5238,7 +5161,9 @@ class CanvasRenderTarget {
 function trimCanvas(canvas) {
   let width = canvas.width;
   let height = canvas.height;
-  const context = canvas.getContext("2d");
+  const context = canvas.getContext("2d", {
+    willReadFrequently: true
+  });
   const imageData = context.getImageData(0, 0, width, height);
   const pixels = imageData.data;
   const len = pixels.length;
@@ -5330,58 +5255,47 @@ function getResolutionOfUrl(url, defaultValue = 1) {
   return defaultValue;
 }
 
-var utils = {
+var index = {
   __proto__: null,
-  BaseTextureCache: BaseTextureCache,
-  CanvasRenderTarget: CanvasRenderTarget,
-  DATA_URI: DATA_URI,
-  ProgramCache: ProgramCache,
-  TextureCache: TextureCache,
-  clearTextureCache: clearTextureCache,
-  correctBlendMode: correctBlendMode,
-  createIndicesForQuads: createIndicesForQuads,
-  decomposeDataUri: decomposeDataUri,
-  deprecation: deprecation,
-  destroyTextureCache: destroyTextureCache,
-  determineCrossOrigin: determineCrossOrigin,
-  getBufferType: getBufferType,
-  getResolutionOfUrl: getResolutionOfUrl,
+  isMobile: isMobile,
+  EventEmitter: eventemitter3,
+  earcut: earcut_1,
+  url: url,
+  path: path,
+  sayHello: sayHello,
+  skipHello: skipHello,
+  isWebGLSupported: isWebGLSupported,
   hex2rgb: hex2rgb,
   hex2string: hex2string,
-  interleaveTypedArrays: interleaveTypedArrays$1,
-  isPow2: isPow2,
-  isWebGLSupported: isWebGLSupported,
-  log2: log2,
-  nextPow2: nextPow2,
-  path: path,
+  rgb2hex: rgb2hex,
+  string2hex: string2hex,
+  correctBlendMode: correctBlendMode,
   premultiplyBlendMode: premultiplyBlendMode,
   premultiplyRgba: premultiplyRgba,
   premultiplyTint: premultiplyTint,
   premultiplyTintToRgba: premultiplyTintToRgba,
+  createIndicesForQuads: createIndicesForQuads,
+  getBufferType: getBufferType,
+  interleaveTypedArrays: interleaveTypedArrays$1,
+  isPow2: isPow2,
+  log2: log2,
+  nextPow2: nextPow2,
   removeItems: removeItems,
-  rgb2hex: rgb2hex,
-  sayHello: sayHello,
   sign: sign,
-  skipHello: skipHello,
-  string2hex: string2hex,
-  trimCanvas: trimCanvas,
   uid: uid,
-  url: url,
-  isMobile: isMobile,
-  EventEmitter: eventemitter3,
-  earcut: earcut_1
+  deprecation: deprecation,
+  BaseTextureCache: BaseTextureCache,
+  ProgramCache: ProgramCache,
+  TextureCache: TextureCache,
+  clearTextureCache: clearTextureCache,
+  destroyTextureCache: destroyTextureCache,
+  CanvasRenderTarget: CanvasRenderTarget,
+  trimCanvas: trimCanvas,
+  decomposeDataUri: decomposeDataUri,
+  determineCrossOrigin: determineCrossOrigin,
+  getResolutionOfUrl: getResolutionOfUrl,
+  DATA_URI: DATA_URI
 };
-
-/*!
- * @pixi/core - v7.0.0-beta.3
- * Compiled Thu, 13 Oct 2022 15:35:43 UTC
- *
- * @pixi/core is licensed under the MIT License.
- * http://www.opensource.org/licenses/mit-license
- */
-
-settings.PREFER_ENV = ENV.WEBGL2;
-settings.STRICT_TEXTURE_CACHE = false;
 
 const INSTALLED = [];
 function autoDetectResource(source, options) {
@@ -5903,7 +5817,7 @@ class BaseImageResource extends Resource {
         return false;
       }
     } else if (typeof HTMLVideoElement !== "undefined" && source instanceof HTMLVideoElement) {
-      if (source.readyState <= 1) {
+      if (source.readyState <= 1 && source.buffered.length === 0) {
         return false;
       }
     }
@@ -6328,11 +6242,11 @@ const _VideoResource = class extends BaseImageResource {
   }
   _isSourcePlaying() {
     const source = this.source;
-    return source.currentTime > 0 && source.paused === false && source.ended === false && source.readyState > 2;
+    return !source.paused && !source.ended && this._isSourceReady();
   }
   _isSourceReady() {
     const source = this.source;
-    return source.readyState === 3 || source.readyState === 4;
+    return source.readyState > 2;
   }
   _onPlayStart() {
     if (!this.valid) {
@@ -6688,9 +6602,6 @@ class TextureUvs {
     this.uvsFloat32[5] = this.y2;
     this.uvsFloat32[6] = this.x3;
     this.uvsFloat32[7] = this.y3;
-  }
-  toString() {
-    return `[@pixi/core:TextureUvs x0=${this.x0} y0=${this.y0} x1=${this.x1} y1=${this.y1} x2=${this.x2} y2=${this.y2} x3=${this.x3} y3=${this.y3}]`;
   }
 }
 
@@ -8177,10 +8088,6 @@ class FramebufferSystem {
   resizeFramebuffer(framebuffer) {
     const { gl } = this;
     const fbo = framebuffer.glFramebuffers[this.CONTEXT_UID];
-    if (fbo.msaaBuffer) {
-      gl.bindRenderbuffer(gl.RENDERBUFFER, fbo.msaaBuffer);
-      gl.renderbufferStorageMultisample(gl.RENDERBUFFER, fbo.multisample, gl.RGBA8, framebuffer.width, framebuffer.height);
-    }
     if (fbo.stencil) {
       gl.bindRenderbuffer(gl.RENDERBUFFER, fbo.stencil);
       if (fbo.msaaBuffer) {
@@ -8198,6 +8105,10 @@ class FramebufferSystem {
       const texture = colorTextures[i];
       const parentTexture = texture.parentTextureArray || texture;
       this.renderer.texture.bind(parentTexture, 0);
+      if (i === 0 && fbo.msaaBuffer) {
+        gl.bindRenderbuffer(gl.RENDERBUFFER, fbo.msaaBuffer);
+        gl.renderbufferStorageMultisample(gl.RENDERBUFFER, fbo.multisample, parentTexture._glTextures[this.CONTEXT_UID].internalFormat, framebuffer.width, framebuffer.height);
+      }
     }
     if (framebuffer.depthTexture && this.writeDepthTexture) {
       this.renderer.texture.bind(framebuffer.depthTexture, 0);
@@ -8213,9 +8124,6 @@ class FramebufferSystem {
     }
     if (fbo.multisample > 1 && this.canMultisampleFramebuffer(framebuffer)) {
       fbo.msaaBuffer = fbo.msaaBuffer || gl.createRenderbuffer();
-      gl.bindRenderbuffer(gl.RENDERBUFFER, fbo.msaaBuffer);
-      gl.renderbufferStorageMultisample(gl.RENDERBUFFER, fbo.multisample, gl.RGBA8, framebuffer.width, framebuffer.height);
-      gl.framebufferRenderbuffer(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.RENDERBUFFER, fbo.msaaBuffer);
     } else if (fbo.msaaBuffer) {
       gl.deleteRenderbuffer(fbo.msaaBuffer);
       fbo.msaaBuffer = null;
@@ -8230,10 +8138,13 @@ class FramebufferSystem {
       const parentTexture = texture.parentTextureArray || texture;
       this.renderer.texture.bind(parentTexture, 0);
       if (i === 0 && fbo.msaaBuffer) {
-        continue;
+        gl.bindRenderbuffer(gl.RENDERBUFFER, fbo.msaaBuffer);
+        gl.renderbufferStorageMultisample(gl.RENDERBUFFER, fbo.multisample, parentTexture._glTextures[this.CONTEXT_UID].internalFormat, framebuffer.width, framebuffer.height);
+        gl.framebufferRenderbuffer(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.RENDERBUFFER, fbo.msaaBuffer);
+      } else {
+        gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0 + i, texture.target, parentTexture._glTextures[this.CONTEXT_UID].texture, mipLevel);
+        activeTextures.push(gl.COLOR_ATTACHMENT0 + i);
       }
-      gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0 + i, texture.target, parentTexture._glTextures[this.CONTEXT_UID].texture, mipLevel);
-      activeTextures.push(gl.COLOR_ATTACHMENT0 + i);
     }
     if (activeTextures.length > 1) {
       gl.drawBuffers(activeTextures);
@@ -9440,6 +9351,7 @@ class Shader {
     } else {
       this.uniformGroup = new UniformGroup({});
     }
+    this.disposeRunner = new Runner("disposeShader");
   }
   checkUniformExists(name, group) {
     if (group.uniforms[name]) {
@@ -9457,6 +9369,8 @@ class Shader {
   }
   destroy() {
     this.uniformGroup = null;
+    this.disposeRunner.emit(this);
+    this.disposeRunner.destroy();
   }
   get uniforms() {
     return this.uniformGroup.uniforms;
@@ -9542,9 +9456,6 @@ class State {
   set polygonOffset(value) {
     this.offsets = !!value;
     this._polygonOffset = value;
-  }
-  toString() {
-    return `[@pixi/core:State blendMode=${this.blendMode} clockwiseFrontFace=${this.clockwiseFrontFace} culling=${this.culling} depthMask=${this.depthMask} polygonOffset=${this.polygonOffset}]`;
   }
   static for2d() {
     const state = new State();
@@ -9750,6 +9661,8 @@ class MaskSystem {
         case MASK_TYPES.COLOR:
           this.pushColorMask(maskData);
           break;
+        default:
+          break;
       }
     }
     if (maskData.type === MASK_TYPES.SPRITE) {
@@ -9774,6 +9687,8 @@ class MaskSystem {
           break;
         case MASK_TYPES.COLOR:
           this.popColorMask(maskData);
+          break;
+        default:
           break;
       }
     }
@@ -10481,7 +10396,6 @@ function generateProgram(gl, program) {
   const transformFeedbackVaryings = program.extra?.transformFeedbackVaryings;
   if (transformFeedbackVaryings) {
     if (typeof gl.transformFeedbackVaryings !== "function") {
-      console.warn(`TransformFeedback is not supported but TransformFeedbackVaryings are given.`);
     } else {
       gl.transformFeedbackVaryings(webGLProgram, transformFeedbackVaryings.names, transformFeedbackVaryings.bufferMode === "separate" ? gl.SEPARATE_ATTRIBS : gl.INTERLEAVED_ATTRIBS);
     }
@@ -10539,6 +10453,7 @@ class ShaderSystem {
     this.reset();
   }
   bind(shader, dontSync) {
+    shader.disposeRunner.add(this);
     shader.uniforms.globals = this.renderer.globalUniforms;
     const program = shader.program;
     const glProgram = program.glPrograms[this.renderer.CONTEXT_UID] || this.generateProgram(shader);
@@ -10634,6 +10549,11 @@ class ShaderSystem {
   reset() {
     this.program = null;
     this.shader = null;
+  }
+  disposeShader(shader) {
+    if (this.shader === shader) {
+      this.shader = null;
+    }
   }
   destroy() {
     this.renderer = null;
@@ -11193,7 +11113,8 @@ class TextureSystem {
     } else {
       glTexture.wrapMode = texture.wrapMode;
     }
-    if (texture.resource?.style(this.renderer, texture, glTexture)) ; else {
+    if (texture.resource?.style(this.renderer, texture, glTexture)) {
+    } else {
       this.setStyle(texture, glTexture);
     }
     glTexture.dirtyStyleId = texture.dirtyStyleId;
@@ -11364,29 +11285,6 @@ class PluginSystem {
   constructor(renderer) {
     this.renderer = renderer;
     this.plugins = {};
-    Object.defineProperties(this.plugins, {
-      extract: {
-        enumerable: false,
-        get() {
-          deprecation("7.0.0", "renderer.plugins.extract has moved to renderer.extract");
-          return renderer.extract;
-        }
-      },
-      prepare: {
-        enumerable: false,
-        get() {
-          deprecation("7.0.0", "renderer.plugins.prepare has moved to renderer.prepare");
-          return renderer.prepare;
-        }
-      },
-      interaction: {
-        enumerable: false,
-        get() {
-          deprecation("7.0.0", "renderer.plugins.interaction has been deprecated, use renderer.events");
-          return renderer.events;
-        }
-      }
-    });
   }
   init(staticMap) {
     for (const o in staticMap) {
@@ -11466,7 +11364,7 @@ class StartupSystem {
     const renderer = this.renderer;
     renderer.emitWithCustomOptions(renderer.runners.init, options);
     if (options.hello) {
-      console.log(`PixiJS ${"7.0.0-beta.3"} - ${renderer.rendererLogId} - https://pixijs.com`);
+      console.log(`PixiJS ${"7.0.3"} - ${renderer.rendererLogId} - https://pixijs.com`);
     }
     renderer.resize(this.renderer.screen.width, this.renderer.screen.height);
   }
@@ -11706,35 +11604,27 @@ const _Renderer = class extends SystemManager {
     return `WebGL ${this.context.webGLVersion}`;
   }
   get clearBeforeRender() {
-    deprecation("7.0.0", "renderer.useContextAlpha has been deprecated, please use renderer.background.clearBeforeRender instead.");
     return this.background.clearBeforeRender;
   }
   get useContextAlpha() {
-    deprecation("7.0.0", "Renderer#useContextAlpha has been deprecated, please use Renderer#context.premultipliedAlpha instead.");
     return this.context.useContextAlpha;
   }
   get preserveDrawingBuffer() {
-    deprecation("7.0.0", "renderer.preserveDrawingBuffer has been deprecated, we cannot truly know this unless pixi created the context");
     return this.context.preserveDrawingBuffer;
   }
   get backgroundColor() {
-    deprecation("7.0.0", "renderer.backgroundColor has been deprecated, use renderer.background.color instead.");
     return this.background.color;
   }
   set backgroundColor(value) {
-    deprecation("7.0.0", "renderer.backgroundColor has been deprecated, use renderer.background.color instead.");
     this.background.color = value;
   }
   get backgroundAlpha() {
-    deprecation("7.0.0", "renderer.backgroundAlpha has been deprecated, use renderer.background.alpha instead.");
     return this.background.color;
   }
   set backgroundAlpha(value) {
-    deprecation("7.0.0", "renderer.backgroundAlpha has been deprecated, use renderer.background.alpha instead.");
     this.background.alpha = value;
   }
   get powerPreference() {
-    deprecation("7.0.0", "renderer.powerPreference has been deprecated, we can only know this if pixi creates the context");
     return this.context.powerPreference;
   }
   generateTexture(displayObject, options) {
@@ -12443,15 +12333,7 @@ ObjectRendererSystem.extension = {
 };
 extensions$1.add(ObjectRendererSystem);
 
-const VERSION = "7.0.0-beta.3";
-
-/*!
- * @pixi/filter-alpha - v7.0.0-beta.3
- * Compiled Thu, 13 Oct 2022 15:35:43 UTC
- *
- * @pixi/filter-alpha is licensed under the MIT License.
- * http://www.opensource.org/licenses/mit-license
- */
+const VERSION = "7.0.3";
 
 var fragment$6 = "varying vec2 vTextureCoord;\n\nuniform sampler2D uSampler;\nuniform float uAlpha;\n\nvoid main(void)\n{\n   gl_FragColor = texture2D(uSampler, vTextureCoord) * uAlpha;\n}\n";
 
@@ -12467,14 +12349,6 @@ class AlphaFilter extends Filter {
     this.uniforms.uAlpha = value;
   }
 }
-
-/*!
- * @pixi/filter-blur - v7.0.0-beta.3
- * Compiled Thu, 13 Oct 2022 15:35:43 UTC
- *
- * @pixi/filter-blur is licensed under the MIT License.
- * http://www.opensource.org/licenses/mit-license
- */
 
 const vertTemplate = `
     attribute vec2 aVertexPosition;
@@ -12705,14 +12579,6 @@ class BlurFilter extends Filter {
     this.updatePadding();
   }
 }
-
-/*!
- * @pixi/filter-color-matrix - v7.0.0-beta.3
- * Compiled Thu, 13 Oct 2022 15:35:43 UTC
- *
- * @pixi/filter-color-matrix is licensed under the MIT License.
- * http://www.opensource.org/licenses/mit-license
- */
 
 var fragment$5 = "varying vec2 vTextureCoord;\nuniform sampler2D uSampler;\nuniform float m[20];\nuniform float uAlpha;\n\nvoid main(void)\n{\n    vec4 c = texture2D(uSampler, vTextureCoord);\n\n    if (uAlpha == 0.0) {\n        gl_FragColor = c;\n        return;\n    }\n\n    // Un-premultiply alpha before applying the color matrix. See issue #3539.\n    if (c.a > 0.0) {\n      c.rgb /= c.a;\n    }\n\n    vec4 result;\n\n    result.r = (m[0] * c.r);\n        result.r += (m[1] * c.g);\n        result.r += (m[2] * c.b);\n        result.r += (m[3] * c.a);\n        result.r += m[4];\n\n    result.g = (m[5] * c.r);\n        result.g += (m[6] * c.g);\n        result.g += (m[7] * c.b);\n        result.g += (m[8] * c.a);\n        result.g += m[9];\n\n    result.b = (m[10] * c.r);\n       result.b += (m[11] * c.g);\n       result.b += (m[12] * c.b);\n       result.b += (m[13] * c.a);\n       result.b += m[14];\n\n    result.a = (m[15] * c.r);\n       result.a += (m[16] * c.g);\n       result.a += (m[17] * c.b);\n       result.a += (m[18] * c.a);\n       result.a += m[19];\n\n    vec3 rgb = mix(c.rgb, result.rgb, uAlpha);\n\n    // Premultiply alpha again.\n    rgb *= result.a;\n\n    gl_FragColor = vec4(rgb, result.a);\n}\n";
 
@@ -13336,14 +13202,6 @@ class ColorMatrixFilter extends Filter {
 }
 ColorMatrixFilter.prototype.grayscale = ColorMatrixFilter.prototype.greyscale;
 
-/*!
- * @pixi/filter-displacement - v7.0.0-beta.3
- * Compiled Thu, 13 Oct 2022 15:35:43 UTC
- *
- * @pixi/filter-displacement is licensed under the MIT License.
- * http://www.opensource.org/licenses/mit-license
- */
-
 var fragment$4 = "varying vec2 vFilterCoord;\nvarying vec2 vTextureCoord;\n\nuniform vec2 scale;\nuniform mat2 rotation;\nuniform sampler2D uSampler;\nuniform sampler2D mapSampler;\n\nuniform highp vec4 inputSize;\nuniform vec4 inputClamp;\n\nvoid main(void)\n{\n  vec4 map =  texture2D(mapSampler, vFilterCoord);\n\n  map -= 0.5;\n  map.xy = scale * inputSize.zw * (rotation * map.xy);\n\n  gl_FragColor = texture2D(uSampler, clamp(vec2(vTextureCoord.x + map.x, vTextureCoord.y + map.y), inputClamp.xy, inputClamp.zw));\n}\n";
 
 var vertex$3 = "attribute vec2 aVertexPosition;\n\nuniform mat3 projectionMatrix;\nuniform mat3 filterMatrix;\n\nvarying vec2 vTextureCoord;\nvarying vec2 vFilterCoord;\n\nuniform vec4 inputSize;\nuniform vec4 outputFrame;\n\nvec4 filterVertexPosition( void )\n{\n    vec2 position = aVertexPosition * max(outputFrame.zw, vec2(0.)) + outputFrame.xy;\n\n    return vec4((projectionMatrix * vec3(position, 1.0)).xy, 0.0, 1.0);\n}\n\nvec2 filterTextureCoord( void )\n{\n    return aVertexPosition * (outputFrame.zw * inputSize.zw);\n}\n\nvoid main(void)\n{\n\tgl_Position = filterVertexPosition();\n\tvTextureCoord = filterTextureCoord();\n\tvFilterCoord = ( filterMatrix * vec3( vTextureCoord, 1.0)  ).xy;\n}\n";
@@ -13388,14 +13246,6 @@ class DisplacementFilter extends Filter {
   }
 }
 
-/*!
- * @pixi/filter-fxaa - v7.0.0-beta.3
- * Compiled Thu, 13 Oct 2022 15:35:43 UTC
- *
- * @pixi/filter-fxaa is licensed under the MIT License.
- * http://www.opensource.org/licenses/mit-license
- */
-
 var vertex$2 = "\nattribute vec2 aVertexPosition;\n\nuniform mat3 projectionMatrix;\n\nvarying vec2 v_rgbNW;\nvarying vec2 v_rgbNE;\nvarying vec2 v_rgbSW;\nvarying vec2 v_rgbSE;\nvarying vec2 v_rgbM;\n\nvarying vec2 vFragCoord;\n\nuniform vec4 inputSize;\nuniform vec4 outputFrame;\n\nvec4 filterVertexPosition( void )\n{\n    vec2 position = aVertexPosition * max(outputFrame.zw, vec2(0.)) + outputFrame.xy;\n\n    return vec4((projectionMatrix * vec3(position, 1.0)).xy, 0.0, 1.0);\n}\n\nvoid texcoords(vec2 fragCoord, vec2 inverseVP,\n               out vec2 v_rgbNW, out vec2 v_rgbNE,\n               out vec2 v_rgbSW, out vec2 v_rgbSE,\n               out vec2 v_rgbM) {\n    v_rgbNW = (fragCoord + vec2(-1.0, -1.0)) * inverseVP;\n    v_rgbNE = (fragCoord + vec2(1.0, -1.0)) * inverseVP;\n    v_rgbSW = (fragCoord + vec2(-1.0, 1.0)) * inverseVP;\n    v_rgbSE = (fragCoord + vec2(1.0, 1.0)) * inverseVP;\n    v_rgbM = vec2(fragCoord * inverseVP);\n}\n\nvoid main(void) {\n\n   gl_Position = filterVertexPosition();\n\n   vFragCoord = aVertexPosition * outputFrame.zw;\n\n   texcoords(vFragCoord, inputSize.zw, v_rgbNW, v_rgbNE, v_rgbSW, v_rgbSE, v_rgbM);\n}\n";
 
 var fragment$3 = "varying vec2 v_rgbNW;\nvarying vec2 v_rgbNE;\nvarying vec2 v_rgbSW;\nvarying vec2 v_rgbSE;\nvarying vec2 v_rgbM;\n\nvarying vec2 vFragCoord;\nuniform sampler2D uSampler;\nuniform highp vec4 inputSize;\n\n\n/**\n Basic FXAA implementation based on the code on geeks3d.com with the\n modification that the texture2DLod stuff was removed since it's\n unsupported by WebGL.\n\n --\n\n From:\n https://github.com/mitsuhiko/webgl-meincraft\n\n Copyright (c) 2011 by Armin Ronacher.\n\n Some rights reserved.\n\n Redistribution and use in source and binary forms, with or without\n modification, are permitted provided that the following conditions are\n met:\n\n * Redistributions of source code must retain the above copyright\n notice, this list of conditions and the following disclaimer.\n\n * Redistributions in binary form must reproduce the above\n copyright notice, this list of conditions and the following\n disclaimer in the documentation and/or other materials provided\n with the distribution.\n\n * The names of the contributors may not be used to endorse or\n promote products derived from this software without specific\n prior written permission.\n\n THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS\n \"AS IS\" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT\n LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR\n A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT\n OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,\n SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT\n LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,\n DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY\n THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT\n (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE\n OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.\n */\n\n#ifndef FXAA_REDUCE_MIN\n#define FXAA_REDUCE_MIN   (1.0/ 128.0)\n#endif\n#ifndef FXAA_REDUCE_MUL\n#define FXAA_REDUCE_MUL   (1.0 / 8.0)\n#endif\n#ifndef FXAA_SPAN_MAX\n#define FXAA_SPAN_MAX     8.0\n#endif\n\n//optimized version for mobile, where dependent\n//texture reads can be a bottleneck\nvec4 fxaa(sampler2D tex, vec2 fragCoord, vec2 inverseVP,\n          vec2 v_rgbNW, vec2 v_rgbNE,\n          vec2 v_rgbSW, vec2 v_rgbSE,\n          vec2 v_rgbM) {\n    vec4 color;\n    vec3 rgbNW = texture2D(tex, v_rgbNW).xyz;\n    vec3 rgbNE = texture2D(tex, v_rgbNE).xyz;\n    vec3 rgbSW = texture2D(tex, v_rgbSW).xyz;\n    vec3 rgbSE = texture2D(tex, v_rgbSE).xyz;\n    vec4 texColor = texture2D(tex, v_rgbM);\n    vec3 rgbM  = texColor.xyz;\n    vec3 luma = vec3(0.299, 0.587, 0.114);\n    float lumaNW = dot(rgbNW, luma);\n    float lumaNE = dot(rgbNE, luma);\n    float lumaSW = dot(rgbSW, luma);\n    float lumaSE = dot(rgbSE, luma);\n    float lumaM  = dot(rgbM,  luma);\n    float lumaMin = min(lumaM, min(min(lumaNW, lumaNE), min(lumaSW, lumaSE)));\n    float lumaMax = max(lumaM, max(max(lumaNW, lumaNE), max(lumaSW, lumaSE)));\n\n    mediump vec2 dir;\n    dir.x = -((lumaNW + lumaNE) - (lumaSW + lumaSE));\n    dir.y =  ((lumaNW + lumaSW) - (lumaNE + lumaSE));\n\n    float dirReduce = max((lumaNW + lumaNE + lumaSW + lumaSE) *\n                          (0.25 * FXAA_REDUCE_MUL), FXAA_REDUCE_MIN);\n\n    float rcpDirMin = 1.0 / (min(abs(dir.x), abs(dir.y)) + dirReduce);\n    dir = min(vec2(FXAA_SPAN_MAX, FXAA_SPAN_MAX),\n              max(vec2(-FXAA_SPAN_MAX, -FXAA_SPAN_MAX),\n                  dir * rcpDirMin)) * inverseVP;\n\n    vec3 rgbA = 0.5 * (\n                       texture2D(tex, fragCoord * inverseVP + dir * (1.0 / 3.0 - 0.5)).xyz +\n                       texture2D(tex, fragCoord * inverseVP + dir * (2.0 / 3.0 - 0.5)).xyz);\n    vec3 rgbB = rgbA * 0.5 + 0.25 * (\n                                     texture2D(tex, fragCoord * inverseVP + dir * -0.5).xyz +\n                                     texture2D(tex, fragCoord * inverseVP + dir * 0.5).xyz);\n\n    float lumaB = dot(rgbB, luma);\n    if ((lumaB < lumaMin) || (lumaB > lumaMax))\n        color = vec4(rgbA, texColor.a);\n    else\n        color = vec4(rgbB, texColor.a);\n    return color;\n}\n\nvoid main() {\n\n      vec4 color;\n\n      color = fxaa(uSampler, vFragCoord, inputSize.zw, v_rgbNW, v_rgbNE, v_rgbSW, v_rgbSE, v_rgbM);\n\n      gl_FragColor = color;\n}\n";
@@ -13405,14 +13255,6 @@ class FXAAFilter extends Filter {
     super(vertex$2, fragment$3);
   }
 }
-
-/*!
- * @pixi/filter-noise - v7.0.0-beta.3
- * Compiled Thu, 13 Oct 2022 15:35:43 UTC
- *
- * @pixi/filter-noise is licensed under the MIT License.
- * http://www.opensource.org/licenses/mit-license
- */
 
 var fragment$2 = "precision highp float;\n\nvarying vec2 vTextureCoord;\nvarying vec4 vColor;\n\nuniform float uNoise;\nuniform float uSeed;\nuniform sampler2D uSampler;\n\nfloat rand(vec2 co)\n{\n    return fract(sin(dot(co.xy, vec2(12.9898, 78.233))) * 43758.5453);\n}\n\nvoid main()\n{\n    vec4 color = texture2D(uSampler, vTextureCoord);\n    float randomValue = rand(gl_FragCoord.xy * uSeed);\n    float diff = (randomValue - 0.5) * uNoise;\n\n    // Un-premultiply alpha before applying the color matrix. See issue #3539.\n    if (color.a > 0.0) {\n        color.rgb /= color.a;\n    }\n\n    color.r += diff;\n    color.g += diff;\n    color.b += diff;\n\n    // Premultiply alpha again.\n    color.rgb *= color.a;\n\n    gl_FragColor = color;\n}\n";
 
@@ -13438,14 +13280,6 @@ class NoiseFilter extends Filter {
     this.uniforms.uSeed = value;
   }
 }
-
-/*!
- * @pixi/display - v7.0.0-beta.3
- * Compiled Thu, 13 Oct 2022 15:35:43 UTC
- *
- * @pixi/display is licensed under the MIT License.
- * http://www.opensource.org/licenses/mit-license
- */
 
 settings.SORTABLE_CHILDREN = false;
 
@@ -14042,14 +13876,14 @@ class Container extends DisplayObject {
     }
     return index;
   }
-  setChildIndex(child, index) {
-    if (index < 0 || index >= this.children.length) {
-      throw new Error(`The index ${index} supplied is out of bounds ${this.children.length}`);
+  setChildIndex(child, index$1) {
+    if (index$1 < 0 || index$1 >= this.children.length) {
+      throw new Error(`The index ${index$1} supplied is out of bounds ${this.children.length}`);
     }
     const currentIndex = this.getChildIndex(child);
     removeItems(this.children, currentIndex, 1);
-    this.children.splice(index, 0, child);
-    this.onChildrenChange(index);
+    this.children.splice(index$1, 0, child);
+    this.onChildrenChange(index$1);
   }
   getChildAt(index) {
     if (index < 0 || index >= this.children.length) {
@@ -14064,28 +13898,28 @@ class Container extends DisplayObject {
       }
     } else {
       const child = children[0];
-      const index = this.children.indexOf(child);
-      if (index === -1)
+      const index$1 = this.children.indexOf(child);
+      if (index$1 === -1)
         return null;
       child.parent = null;
       child.transform._parentID = -1;
-      removeItems(this.children, index, 1);
+      removeItems(this.children, index$1, 1);
       this._boundsID++;
-      this.onChildrenChange(index);
+      this.onChildrenChange(index$1);
       child.emit("removed", this);
-      this.emit("childRemoved", child, this, index);
+      this.emit("childRemoved", child, this, index$1);
     }
     return children[0];
   }
-  removeChildAt(index) {
-    const child = this.getChildAt(index);
+  removeChildAt(index$1) {
+    const child = this.getChildAt(index$1);
     child.parent = null;
     child.transform._parentID = -1;
-    removeItems(this.children, index, 1);
+    removeItems(this.children, index$1, 1);
     this._boundsID++;
-    this.onChildrenChange(index);
+    this.onChildrenChange(index$1);
     child.emit("removed", this);
-    this.emit("childRemoved", child, this, index);
+    this.emit("childRemoved", child, this, index$1);
     return child;
   }
   removeChildren(beginIndex = 0, endIndex = this.children.length) {
@@ -14303,14 +14137,6 @@ class Container extends DisplayObject {
 }
 Container.prototype.containerUpdateTransform = Container.prototype.updateTransform;
 
-/*!
- * @pixi/sprite - v7.0.0-beta.3
- * Compiled Thu, 13 Oct 2022 15:35:43 UTC
- *
- * @pixi/sprite is licensed under the MIT License.
- * http://www.opensource.org/licenses/mit-license
- */
-
 const tempPoint$2 = new Point();
 const indices = new Uint16Array([0, 1, 2, 0, 2, 3]);
 class Sprite extends Container {
@@ -14400,7 +14226,7 @@ class Sprite extends Container {
     if (this._roundPixels) {
       const resolution = settings.RESOLUTION;
       for (let i = 0; i < vertexData.length; ++i) {
-        vertexData[i] = Math.round((vertexData[i] * resolution | 0) / resolution);
+        vertexData[i] = Math.round(vertexData[i] * resolution) / resolution;
       }
     }
   }
@@ -14562,19 +14388,11 @@ class Sprite extends Container {
   }
 }
 
-/*!
- * @pixi/mixin-cache-as-bitmap - v7.0.0-beta.3
- * Compiled Thu, 13 Oct 2022 15:35:43 UTC
- *
- * @pixi/mixin-cache-as-bitmap is licensed under the MIT License.
- * http://www.opensource.org/licenses/mit-license
- */
-
 const _tempMatrix = new Matrix();
 DisplayObject.prototype._cacheAsBitmap = false;
 DisplayObject.prototype._cacheData = null;
 DisplayObject.prototype._cacheAsBitmapResolution = null;
-DisplayObject.prototype._cacheAsBitmapMultisample = MSAA_QUALITY.NONE;
+DisplayObject.prototype._cacheAsBitmapMultisample = null;
 class CacheData {
   constructor() {
     this.textureCacheId = null;
@@ -14809,14 +14627,6 @@ DisplayObject.prototype._cacheAsBitmapDestroy = function _cacheAsBitmapDestroy(o
   this.destroy(options);
 };
 
-/*!
- * @pixi/mixin-get-child-by-name - v7.0.0-beta.3
- * Compiled Thu, 13 Oct 2022 15:35:43 UTC
- *
- * @pixi/mixin-get-child-by-name is licensed under the MIT License.
- * http://www.opensource.org/licenses/mit-license
- */
-
 DisplayObject.prototype.name = null;
 Container.prototype.getChildByName = function getChildByName(name, deep) {
   for (let i = 0, j = this.children.length; i < j; i++) {
@@ -14839,14 +14649,6 @@ Container.prototype.getChildByName = function getChildByName(name, deep) {
   return null;
 };
 
-/*!
- * @pixi/mixin-get-global-position - v7.0.0-beta.3
- * Compiled Thu, 13 Oct 2022 15:35:43 UTC
- *
- * @pixi/mixin-get-global-position is licensed under the MIT License.
- * http://www.opensource.org/licenses/mit-license
- */
-
 DisplayObject.prototype.getGlobalPosition = function getGlobalPosition(point = new Point(), skipUpdate = false) {
   if (this.parent) {
     this.parent.toGlobal(this.position, point, skipUpdate);
@@ -14857,13 +14659,18 @@ DisplayObject.prototype.getGlobalPosition = function getGlobalPosition(point = n
   return point;
 };
 
-/*!
- * @pixi/events - v7.0.0-beta.3
- * Compiled Thu, 13 Oct 2022 15:35:43 UTC
- *
- * @pixi/events is licensed under the MIT License.
- * http://www.opensource.org/licenses/mit-license
- */
+const accessibleTarget = {
+  accessible: false,
+  accessibleTitle: null,
+  accessibleHint: null,
+  tabIndex: 0,
+  _accessibleActive: false,
+  _accessibleDiv: null,
+  accessibleType: "button",
+  accessiblePointerEvents: "auto",
+  accessibleChildren: true,
+  renderId: -1
+};
 
 class FederatedEvent {
   constructor(manager) {
@@ -15942,27 +15749,6 @@ const FederatedDisplayObject = {
 };
 DisplayObject.mixin(FederatedDisplayObject);
 
-/*!
- * @pixi/accessibility - v7.0.0-beta.3
- * Compiled Thu, 13 Oct 2022 15:35:43 UTC
- *
- * @pixi/accessibility is licensed under the MIT License.
- * http://www.opensource.org/licenses/mit-license
- */
-
-const accessibleTarget = {
-  accessible: false,
-  accessibleTitle: null,
-  accessibleHint: null,
-  tabIndex: 0,
-  _accessibleActive: false,
-  _accessibleDiv: null,
-  accessibleType: "button",
-  accessiblePointerEvents: "auto",
-  accessibleChildren: true,
-  renderId: -1
-};
-
 DisplayObject.mixin(accessibleTarget);
 const KEY_CODE_TAB = 9;
 const DIV_TOUCH_SIZE = 100;
@@ -16247,14 +16033,6 @@ AccessibilityManager.extension = {
 };
 extensions$1.add(AccessibilityManager);
 
-/*!
- * @pixi/app - v7.0.0-beta.3
- * Compiled Thu, 13 Oct 2022 15:35:43 UTC
- *
- * @pixi/app is licensed under the MIT License.
- * http://www.opensource.org/licenses/mit-license
- */
-
 const _Application = class {
   constructor(options) {
     this.stage = new Container();
@@ -16335,6 +16113,7 @@ class ResizePlugin {
         height = clientHeight;
       }
       this.renderer.resize(width, height);
+      this.render();
     };
     this._resizeId = null;
     this._resizeTo = null;
@@ -16351,14 +16130,6 @@ class ResizePlugin {
 }
 ResizePlugin.extension = ExtensionType.Application;
 extensions$1.add(ResizePlugin);
-
-/*!
- * @pixi/assets - v7.0.0-beta.3
- * Compiled Thu, 13 Oct 2022 15:35:43 UTC
- *
- * @pixi/assets is licensed under the MIT License.
- * http://www.opensource.org/licenses/mit-license
- */
 
 class BackgroundLoader {
   constructor(loader, verbose = false) {
@@ -16465,7 +16236,6 @@ class CacheClass {
   get(key) {
     const result = this._cache.get(key);
     if (!result) {
-      console.warn(`[Assets] Asset id ${key} was not found in the Cache`);
     }
     return result;
   }
@@ -16495,7 +16265,6 @@ class CacheClass {
     });
     cacheKeys.forEach((key2) => {
       if (this._cache.has(key2) && this._cache.get(key2) !== value) {
-        console.warn("[Cache] already has key:", key2);
       }
       this._cache.set(key2, cacheableAssets[key2]);
     });
@@ -16512,7 +16281,6 @@ class CacheClass {
   remove(key) {
     this._cacheMap.get(key);
     if (!this._cacheMap.has(key)) {
-      console.warn(`[Assets] Asset id ${key} was not found in the Cache`);
       return;
     }
     const cacheMap = this._cacheMap.get(key);
@@ -16554,7 +16322,6 @@ class Loader {
         }
       }
       if (!result.parser) {
-        console.warn(`[Assets] ${url} could not be loaded as we don't know how to parse it, ensure the correct parser has being added`);
         return null;
       }
       for (let i = 0; i < this.parsers.length; i++) {
@@ -16661,7 +16428,6 @@ class Resolver {
   }
   addManifest(manifest) {
     if (this._manifest) {
-      console.warn("[Resolver] Manifest already exists, this will be overwritten");
     }
     this._manifest = manifest;
     manifest.bundles.forEach((bundle) => {
@@ -16691,7 +16457,6 @@ class Resolver {
     const keys = convertToList(keysIn);
     keys.forEach((key) => {
       if (this._assetMap[key]) {
-        console.warn(`[Resolver] already has key: ${key} overwriting`);
       }
     });
     if (!Array.isArray(assetsIn)) {
@@ -16821,7 +16586,6 @@ class AssetsClass {
   }
   async init(options = {}) {
     if (this._initialized) {
-      console.warn("[Assets]AssetManager already initialized, did you load before calling this Asset.init()?");
       return;
     }
     this._initialized = true;
@@ -17117,7 +16881,6 @@ const loadWebFont = {
       }
       return fontFaces.length === 1 ? fontFaces[0] : fontFaces;
     }
-    console.warn("[loadWebFont] FontFace API is not supported. Skipping loading font");
     return null;
   },
   unload(font) {
@@ -17128,33 +16891,69 @@ extensions$1.add(loadWebFont);
 
 let UUID = 0;
 let MAX_WORKERS;
+const WHITE_PNG = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+ip1sAAAAASUVORK5CYII=";
+const checkImageBitmapCode = {
+  id: "checkImageBitmap",
+  code: `
+    async function checkImageBitmap()
+    {
+        try
+        {
+            if (typeof createImageBitmap !== 'function') return false;
+
+            const response = await fetch('${WHITE_PNG}');
+            const imageBlob =  await response.blob();
+            const imageBitmap = await createImageBitmap(imageBlob);
+
+            return imageBitmap.width === 1 && imageBitmap.height === 1;
+        }
+        catch (e)
+        {
+            return false;
+        }
+    }
+    checkImageBitmap().then((result) => { self.postMessage(result); });
+    `
+};
 const workerCode = {
   id: "loadImageBitmap",
   code: `
-    self.onmessage = function(event) {
+    async function loadImageBitmap(url)
+    {
+        const response = await fetch(url);
 
-        async function loadImageBitmap(url)
+        if (!response.ok)
         {
-            const response = await fetch(url);
-            const imageBlob =  await response.blob();
-            const imageBitmap = await createImageBitmap(imageBlob);
-            return imageBitmap;
+            throw new Error(\`[WorkerManager.loadImageBitmap] Failed to fetch \${url}: \`
+                + \`\${response.status} \${response.statusText}\`);
         }
 
-        loadImageBitmap(event.data.data[0]).then(imageBitmap => {
+        const imageBlob =  await response.blob();
+        const imageBitmap = await createImageBitmap(imageBlob);
+
+        return imageBitmap;
+    }
+    self.onmessage = async (event) =>
+    {
+        try
+        {
+            const imageBitmap = await loadImageBitmap(event.data.data[0]);
+
             self.postMessage({
                 data: imageBitmap,
                 uuid: event.data.uuid,
                 id: event.data.id,
             }, [imageBitmap]);
-        }).catch(error => {
+        }
+        catch(e)
+        {
             self.postMessage({
-                data: null,
+                error: e,
                 uuid: event.data.uuid,
                 id: event.data.id,
             });
-        });
-    }`
+        }
+    };`
 };
 let workerURL;
 class WorkerManagerClass {
@@ -17164,6 +16963,20 @@ class WorkerManagerClass {
     this.workerPool = [];
     this.queue = [];
     this.resolveHash = {};
+  }
+  isImageBitmapSupported() {
+    if (this._isImageBitmapSupported !== void 0)
+      return this._isImageBitmapSupported;
+    this._isImageBitmapSupported = new Promise((resolve) => {
+      const workerURL2 = URL.createObjectURL(new Blob([checkImageBitmapCode.code], { type: "application/javascript" }));
+      const worker = new Worker(workerURL2);
+      worker.addEventListener("message", (event) => {
+        worker.terminate();
+        URL.revokeObjectURL(workerURL2);
+        resolve(event.data);
+      });
+    });
+    return this._isImageBitmapSupported;
   }
   loadImageBitmap(src) {
     return this._run("loadImageBitmap", [src]);
@@ -17196,14 +17009,17 @@ class WorkerManagerClass {
     this.workerPool.push(worker);
   }
   complete(data) {
-    const result = data.data;
-    this.resolveHash[data.uuid](result);
+    if (data.error !== void 0) {
+      this.resolveHash[data.uuid].reject(data.error);
+    } else {
+      this.resolveHash[data.uuid].resolve(data.data);
+    }
     this.resolveHash[data.uuid] = null;
   }
-  _run(id, args) {
-    this._initWorkers();
-    const promise = new Promise((resolve) => {
-      this.queue.push({ id, arguments: args, resolve });
+  async _run(id, args) {
+    await this._initWorkers();
+    const promise = new Promise((resolve, reject) => {
+      this.queue.push({ id, arguments: args, resolve, reject });
     });
     this.next();
     return promise;
@@ -17217,7 +17033,7 @@ class WorkerManagerClass {
     }
     const toDo = this.queue.pop();
     const id = toDo.id;
-    this.resolveHash[UUID] = toDo.resolve;
+    this.resolveHash[UUID] = { resolve: toDo.resolve, reject: toDo.reject };
     worker.postMessage({
       data: toDo.arguments,
       uuid: UUID++,
@@ -17247,6 +17063,9 @@ function createTexture(base, loader, url) {
 const validImages$1 = [".jpg", ".png", ".jpeg", ".avif", ".webp"];
 async function loadImageBitmap(url) {
   const response = await settings.ADAPTER.fetch(url);
+  if (!response.ok) {
+    throw new Error(`[loadImageBitmap] Failed to fetch ${url}: ${response.status} ${response.statusText}`);
+  }
   const imageBlob = await response.blob();
   const imageBitmap = await createImageBitmap(imageBlob);
   return imageBitmap;
@@ -17262,7 +17081,7 @@ const loadTextures = {
   test(url) {
     let isValidBase64Suffix = false;
     for (let i = 0; i < validImages$1.length; i++) {
-      if (url.indexOf(`data:image/${validImages$1[i].slice(1)}`) === 0) {
+      if (url.startsWith(`data:image/${validImages$1[i].slice(1)}`)) {
         isValidBase64Suffix = true;
         break;
       }
@@ -17272,7 +17091,11 @@ const loadTextures = {
   async load(url, asset, loader) {
     let src = null;
     if (globalThis.createImageBitmap) {
-      src = this.config.preferWorkers ? await WorkerManager.loadImageBitmap(url) : await loadImageBitmap(url);
+      if (this.config.preferWorkers && await WorkerManager.isImageBitmapSupported()) {
+        src = await WorkerManager.loadImageBitmap(url);
+      } else {
+        src = await loadImageBitmap(url);
+      }
     } else {
       src = await new Promise((resolve) => {
         src = new Image();
@@ -17387,14 +17210,6 @@ const detectDefaults = {
   remove: async (formats) => formats.filter((f) => !imageFormats.includes(f))
 };
 extensions$1.add(detectDefaults);
-
-/*!
- * @pixi/compressed-textures - v7.0.0-beta.3
- * Compiled Thu, 13 Oct 2022 15:35:43 UTC
- *
- * @pixi/compressed-textures is licensed under the MIT License.
- * http://www.opensource.org/licenses/mit-license
- */
 
 var INTERNAL_FORMATS = /* @__PURE__ */ ((INTERNAL_FORMATS2) => {
   INTERNAL_FORMATS2[INTERNAL_FORMATS2["COMPRESSED_RGB_S3TC_DXT1_EXT"] = 33776] = "COMPRESSED_RGB_S3TC_DXT1_EXT";
@@ -17585,7 +17400,6 @@ const detectCompressedTextures = {
     const canvas = settings.ADAPTER.createCanvas();
     const gl = canvas.getContext("webgl");
     if (!gl) {
-      console.warn("WebGL not available for compressed textures.");
       return false;
     }
     storedGl = gl;
@@ -17642,6 +17456,137 @@ const DDS_DX10_FIELDS = {
   ARRAY_SIZE: 3,
   MISC_FLAGS2: 4
 };
+var DXGI_FORMAT = /* @__PURE__ */ ((DXGI_FORMAT2) => {
+  DXGI_FORMAT2[DXGI_FORMAT2["DXGI_FORMAT_UNKNOWN"] = 0] = "DXGI_FORMAT_UNKNOWN";
+  DXGI_FORMAT2[DXGI_FORMAT2["DXGI_FORMAT_R32G32B32A32_TYPELESS"] = 1] = "DXGI_FORMAT_R32G32B32A32_TYPELESS";
+  DXGI_FORMAT2[DXGI_FORMAT2["DXGI_FORMAT_R32G32B32A32_FLOAT"] = 2] = "DXGI_FORMAT_R32G32B32A32_FLOAT";
+  DXGI_FORMAT2[DXGI_FORMAT2["DXGI_FORMAT_R32G32B32A32_UINT"] = 3] = "DXGI_FORMAT_R32G32B32A32_UINT";
+  DXGI_FORMAT2[DXGI_FORMAT2["DXGI_FORMAT_R32G32B32A32_SINT"] = 4] = "DXGI_FORMAT_R32G32B32A32_SINT";
+  DXGI_FORMAT2[DXGI_FORMAT2["DXGI_FORMAT_R32G32B32_TYPELESS"] = 5] = "DXGI_FORMAT_R32G32B32_TYPELESS";
+  DXGI_FORMAT2[DXGI_FORMAT2["DXGI_FORMAT_R32G32B32_FLOAT"] = 6] = "DXGI_FORMAT_R32G32B32_FLOAT";
+  DXGI_FORMAT2[DXGI_FORMAT2["DXGI_FORMAT_R32G32B32_UINT"] = 7] = "DXGI_FORMAT_R32G32B32_UINT";
+  DXGI_FORMAT2[DXGI_FORMAT2["DXGI_FORMAT_R32G32B32_SINT"] = 8] = "DXGI_FORMAT_R32G32B32_SINT";
+  DXGI_FORMAT2[DXGI_FORMAT2["DXGI_FORMAT_R16G16B16A16_TYPELESS"] = 9] = "DXGI_FORMAT_R16G16B16A16_TYPELESS";
+  DXGI_FORMAT2[DXGI_FORMAT2["DXGI_FORMAT_R16G16B16A16_FLOAT"] = 10] = "DXGI_FORMAT_R16G16B16A16_FLOAT";
+  DXGI_FORMAT2[DXGI_FORMAT2["DXGI_FORMAT_R16G16B16A16_UNORM"] = 11] = "DXGI_FORMAT_R16G16B16A16_UNORM";
+  DXGI_FORMAT2[DXGI_FORMAT2["DXGI_FORMAT_R16G16B16A16_UINT"] = 12] = "DXGI_FORMAT_R16G16B16A16_UINT";
+  DXGI_FORMAT2[DXGI_FORMAT2["DXGI_FORMAT_R16G16B16A16_SNORM"] = 13] = "DXGI_FORMAT_R16G16B16A16_SNORM";
+  DXGI_FORMAT2[DXGI_FORMAT2["DXGI_FORMAT_R16G16B16A16_SINT"] = 14] = "DXGI_FORMAT_R16G16B16A16_SINT";
+  DXGI_FORMAT2[DXGI_FORMAT2["DXGI_FORMAT_R32G32_TYPELESS"] = 15] = "DXGI_FORMAT_R32G32_TYPELESS";
+  DXGI_FORMAT2[DXGI_FORMAT2["DXGI_FORMAT_R32G32_FLOAT"] = 16] = "DXGI_FORMAT_R32G32_FLOAT";
+  DXGI_FORMAT2[DXGI_FORMAT2["DXGI_FORMAT_R32G32_UINT"] = 17] = "DXGI_FORMAT_R32G32_UINT";
+  DXGI_FORMAT2[DXGI_FORMAT2["DXGI_FORMAT_R32G32_SINT"] = 18] = "DXGI_FORMAT_R32G32_SINT";
+  DXGI_FORMAT2[DXGI_FORMAT2["DXGI_FORMAT_R32G8X24_TYPELESS"] = 19] = "DXGI_FORMAT_R32G8X24_TYPELESS";
+  DXGI_FORMAT2[DXGI_FORMAT2["DXGI_FORMAT_D32_FLOAT_S8X24_UINT"] = 20] = "DXGI_FORMAT_D32_FLOAT_S8X24_UINT";
+  DXGI_FORMAT2[DXGI_FORMAT2["DXGI_FORMAT_R32_FLOAT_X8X24_TYPELESS"] = 21] = "DXGI_FORMAT_R32_FLOAT_X8X24_TYPELESS";
+  DXGI_FORMAT2[DXGI_FORMAT2["DXGI_FORMAT_X32_TYPELESS_G8X24_UINT"] = 22] = "DXGI_FORMAT_X32_TYPELESS_G8X24_UINT";
+  DXGI_FORMAT2[DXGI_FORMAT2["DXGI_FORMAT_R10G10B10A2_TYPELESS"] = 23] = "DXGI_FORMAT_R10G10B10A2_TYPELESS";
+  DXGI_FORMAT2[DXGI_FORMAT2["DXGI_FORMAT_R10G10B10A2_UNORM"] = 24] = "DXGI_FORMAT_R10G10B10A2_UNORM";
+  DXGI_FORMAT2[DXGI_FORMAT2["DXGI_FORMAT_R10G10B10A2_UINT"] = 25] = "DXGI_FORMAT_R10G10B10A2_UINT";
+  DXGI_FORMAT2[DXGI_FORMAT2["DXGI_FORMAT_R11G11B10_FLOAT"] = 26] = "DXGI_FORMAT_R11G11B10_FLOAT";
+  DXGI_FORMAT2[DXGI_FORMAT2["DXGI_FORMAT_R8G8B8A8_TYPELESS"] = 27] = "DXGI_FORMAT_R8G8B8A8_TYPELESS";
+  DXGI_FORMAT2[DXGI_FORMAT2["DXGI_FORMAT_R8G8B8A8_UNORM"] = 28] = "DXGI_FORMAT_R8G8B8A8_UNORM";
+  DXGI_FORMAT2[DXGI_FORMAT2["DXGI_FORMAT_R8G8B8A8_UNORM_SRGB"] = 29] = "DXGI_FORMAT_R8G8B8A8_UNORM_SRGB";
+  DXGI_FORMAT2[DXGI_FORMAT2["DXGI_FORMAT_R8G8B8A8_UINT"] = 30] = "DXGI_FORMAT_R8G8B8A8_UINT";
+  DXGI_FORMAT2[DXGI_FORMAT2["DXGI_FORMAT_R8G8B8A8_SNORM"] = 31] = "DXGI_FORMAT_R8G8B8A8_SNORM";
+  DXGI_FORMAT2[DXGI_FORMAT2["DXGI_FORMAT_R8G8B8A8_SINT"] = 32] = "DXGI_FORMAT_R8G8B8A8_SINT";
+  DXGI_FORMAT2[DXGI_FORMAT2["DXGI_FORMAT_R16G16_TYPELESS"] = 33] = "DXGI_FORMAT_R16G16_TYPELESS";
+  DXGI_FORMAT2[DXGI_FORMAT2["DXGI_FORMAT_R16G16_FLOAT"] = 34] = "DXGI_FORMAT_R16G16_FLOAT";
+  DXGI_FORMAT2[DXGI_FORMAT2["DXGI_FORMAT_R16G16_UNORM"] = 35] = "DXGI_FORMAT_R16G16_UNORM";
+  DXGI_FORMAT2[DXGI_FORMAT2["DXGI_FORMAT_R16G16_UINT"] = 36] = "DXGI_FORMAT_R16G16_UINT";
+  DXGI_FORMAT2[DXGI_FORMAT2["DXGI_FORMAT_R16G16_SNORM"] = 37] = "DXGI_FORMAT_R16G16_SNORM";
+  DXGI_FORMAT2[DXGI_FORMAT2["DXGI_FORMAT_R16G16_SINT"] = 38] = "DXGI_FORMAT_R16G16_SINT";
+  DXGI_FORMAT2[DXGI_FORMAT2["DXGI_FORMAT_R32_TYPELESS"] = 39] = "DXGI_FORMAT_R32_TYPELESS";
+  DXGI_FORMAT2[DXGI_FORMAT2["DXGI_FORMAT_D32_FLOAT"] = 40] = "DXGI_FORMAT_D32_FLOAT";
+  DXGI_FORMAT2[DXGI_FORMAT2["DXGI_FORMAT_R32_FLOAT"] = 41] = "DXGI_FORMAT_R32_FLOAT";
+  DXGI_FORMAT2[DXGI_FORMAT2["DXGI_FORMAT_R32_UINT"] = 42] = "DXGI_FORMAT_R32_UINT";
+  DXGI_FORMAT2[DXGI_FORMAT2["DXGI_FORMAT_R32_SINT"] = 43] = "DXGI_FORMAT_R32_SINT";
+  DXGI_FORMAT2[DXGI_FORMAT2["DXGI_FORMAT_R24G8_TYPELESS"] = 44] = "DXGI_FORMAT_R24G8_TYPELESS";
+  DXGI_FORMAT2[DXGI_FORMAT2["DXGI_FORMAT_D24_UNORM_S8_UINT"] = 45] = "DXGI_FORMAT_D24_UNORM_S8_UINT";
+  DXGI_FORMAT2[DXGI_FORMAT2["DXGI_FORMAT_R24_UNORM_X8_TYPELESS"] = 46] = "DXGI_FORMAT_R24_UNORM_X8_TYPELESS";
+  DXGI_FORMAT2[DXGI_FORMAT2["DXGI_FORMAT_X24_TYPELESS_G8_UINT"] = 47] = "DXGI_FORMAT_X24_TYPELESS_G8_UINT";
+  DXGI_FORMAT2[DXGI_FORMAT2["DXGI_FORMAT_R8G8_TYPELESS"] = 48] = "DXGI_FORMAT_R8G8_TYPELESS";
+  DXGI_FORMAT2[DXGI_FORMAT2["DXGI_FORMAT_R8G8_UNORM"] = 49] = "DXGI_FORMAT_R8G8_UNORM";
+  DXGI_FORMAT2[DXGI_FORMAT2["DXGI_FORMAT_R8G8_UINT"] = 50] = "DXGI_FORMAT_R8G8_UINT";
+  DXGI_FORMAT2[DXGI_FORMAT2["DXGI_FORMAT_R8G8_SNORM"] = 51] = "DXGI_FORMAT_R8G8_SNORM";
+  DXGI_FORMAT2[DXGI_FORMAT2["DXGI_FORMAT_R8G8_SINT"] = 52] = "DXGI_FORMAT_R8G8_SINT";
+  DXGI_FORMAT2[DXGI_FORMAT2["DXGI_FORMAT_R16_TYPELESS"] = 53] = "DXGI_FORMAT_R16_TYPELESS";
+  DXGI_FORMAT2[DXGI_FORMAT2["DXGI_FORMAT_R16_FLOAT"] = 54] = "DXGI_FORMAT_R16_FLOAT";
+  DXGI_FORMAT2[DXGI_FORMAT2["DXGI_FORMAT_D16_UNORM"] = 55] = "DXGI_FORMAT_D16_UNORM";
+  DXGI_FORMAT2[DXGI_FORMAT2["DXGI_FORMAT_R16_UNORM"] = 56] = "DXGI_FORMAT_R16_UNORM";
+  DXGI_FORMAT2[DXGI_FORMAT2["DXGI_FORMAT_R16_UINT"] = 57] = "DXGI_FORMAT_R16_UINT";
+  DXGI_FORMAT2[DXGI_FORMAT2["DXGI_FORMAT_R16_SNORM"] = 58] = "DXGI_FORMAT_R16_SNORM";
+  DXGI_FORMAT2[DXGI_FORMAT2["DXGI_FORMAT_R16_SINT"] = 59] = "DXGI_FORMAT_R16_SINT";
+  DXGI_FORMAT2[DXGI_FORMAT2["DXGI_FORMAT_R8_TYPELESS"] = 60] = "DXGI_FORMAT_R8_TYPELESS";
+  DXGI_FORMAT2[DXGI_FORMAT2["DXGI_FORMAT_R8_UNORM"] = 61] = "DXGI_FORMAT_R8_UNORM";
+  DXGI_FORMAT2[DXGI_FORMAT2["DXGI_FORMAT_R8_UINT"] = 62] = "DXGI_FORMAT_R8_UINT";
+  DXGI_FORMAT2[DXGI_FORMAT2["DXGI_FORMAT_R8_SNORM"] = 63] = "DXGI_FORMAT_R8_SNORM";
+  DXGI_FORMAT2[DXGI_FORMAT2["DXGI_FORMAT_R8_SINT"] = 64] = "DXGI_FORMAT_R8_SINT";
+  DXGI_FORMAT2[DXGI_FORMAT2["DXGI_FORMAT_A8_UNORM"] = 65] = "DXGI_FORMAT_A8_UNORM";
+  DXGI_FORMAT2[DXGI_FORMAT2["DXGI_FORMAT_R1_UNORM"] = 66] = "DXGI_FORMAT_R1_UNORM";
+  DXGI_FORMAT2[DXGI_FORMAT2["DXGI_FORMAT_R9G9B9E5_SHAREDEXP"] = 67] = "DXGI_FORMAT_R9G9B9E5_SHAREDEXP";
+  DXGI_FORMAT2[DXGI_FORMAT2["DXGI_FORMAT_R8G8_B8G8_UNORM"] = 68] = "DXGI_FORMAT_R8G8_B8G8_UNORM";
+  DXGI_FORMAT2[DXGI_FORMAT2["DXGI_FORMAT_G8R8_G8B8_UNORM"] = 69] = "DXGI_FORMAT_G8R8_G8B8_UNORM";
+  DXGI_FORMAT2[DXGI_FORMAT2["DXGI_FORMAT_BC1_TYPELESS"] = 70] = "DXGI_FORMAT_BC1_TYPELESS";
+  DXGI_FORMAT2[DXGI_FORMAT2["DXGI_FORMAT_BC1_UNORM"] = 71] = "DXGI_FORMAT_BC1_UNORM";
+  DXGI_FORMAT2[DXGI_FORMAT2["DXGI_FORMAT_BC1_UNORM_SRGB"] = 72] = "DXGI_FORMAT_BC1_UNORM_SRGB";
+  DXGI_FORMAT2[DXGI_FORMAT2["DXGI_FORMAT_BC2_TYPELESS"] = 73] = "DXGI_FORMAT_BC2_TYPELESS";
+  DXGI_FORMAT2[DXGI_FORMAT2["DXGI_FORMAT_BC2_UNORM"] = 74] = "DXGI_FORMAT_BC2_UNORM";
+  DXGI_FORMAT2[DXGI_FORMAT2["DXGI_FORMAT_BC2_UNORM_SRGB"] = 75] = "DXGI_FORMAT_BC2_UNORM_SRGB";
+  DXGI_FORMAT2[DXGI_FORMAT2["DXGI_FORMAT_BC3_TYPELESS"] = 76] = "DXGI_FORMAT_BC3_TYPELESS";
+  DXGI_FORMAT2[DXGI_FORMAT2["DXGI_FORMAT_BC3_UNORM"] = 77] = "DXGI_FORMAT_BC3_UNORM";
+  DXGI_FORMAT2[DXGI_FORMAT2["DXGI_FORMAT_BC3_UNORM_SRGB"] = 78] = "DXGI_FORMAT_BC3_UNORM_SRGB";
+  DXGI_FORMAT2[DXGI_FORMAT2["DXGI_FORMAT_BC4_TYPELESS"] = 79] = "DXGI_FORMAT_BC4_TYPELESS";
+  DXGI_FORMAT2[DXGI_FORMAT2["DXGI_FORMAT_BC4_UNORM"] = 80] = "DXGI_FORMAT_BC4_UNORM";
+  DXGI_FORMAT2[DXGI_FORMAT2["DXGI_FORMAT_BC4_SNORM"] = 81] = "DXGI_FORMAT_BC4_SNORM";
+  DXGI_FORMAT2[DXGI_FORMAT2["DXGI_FORMAT_BC5_TYPELESS"] = 82] = "DXGI_FORMAT_BC5_TYPELESS";
+  DXGI_FORMAT2[DXGI_FORMAT2["DXGI_FORMAT_BC5_UNORM"] = 83] = "DXGI_FORMAT_BC5_UNORM";
+  DXGI_FORMAT2[DXGI_FORMAT2["DXGI_FORMAT_BC5_SNORM"] = 84] = "DXGI_FORMAT_BC5_SNORM";
+  DXGI_FORMAT2[DXGI_FORMAT2["DXGI_FORMAT_B5G6R5_UNORM"] = 85] = "DXGI_FORMAT_B5G6R5_UNORM";
+  DXGI_FORMAT2[DXGI_FORMAT2["DXGI_FORMAT_B5G5R5A1_UNORM"] = 86] = "DXGI_FORMAT_B5G5R5A1_UNORM";
+  DXGI_FORMAT2[DXGI_FORMAT2["DXGI_FORMAT_B8G8R8A8_UNORM"] = 87] = "DXGI_FORMAT_B8G8R8A8_UNORM";
+  DXGI_FORMAT2[DXGI_FORMAT2["DXGI_FORMAT_B8G8R8X8_UNORM"] = 88] = "DXGI_FORMAT_B8G8R8X8_UNORM";
+  DXGI_FORMAT2[DXGI_FORMAT2["DXGI_FORMAT_R10G10B10_XR_BIAS_A2_UNORM"] = 89] = "DXGI_FORMAT_R10G10B10_XR_BIAS_A2_UNORM";
+  DXGI_FORMAT2[DXGI_FORMAT2["DXGI_FORMAT_B8G8R8A8_TYPELESS"] = 90] = "DXGI_FORMAT_B8G8R8A8_TYPELESS";
+  DXGI_FORMAT2[DXGI_FORMAT2["DXGI_FORMAT_B8G8R8A8_UNORM_SRGB"] = 91] = "DXGI_FORMAT_B8G8R8A8_UNORM_SRGB";
+  DXGI_FORMAT2[DXGI_FORMAT2["DXGI_FORMAT_B8G8R8X8_TYPELESS"] = 92] = "DXGI_FORMAT_B8G8R8X8_TYPELESS";
+  DXGI_FORMAT2[DXGI_FORMAT2["DXGI_FORMAT_B8G8R8X8_UNORM_SRGB"] = 93] = "DXGI_FORMAT_B8G8R8X8_UNORM_SRGB";
+  DXGI_FORMAT2[DXGI_FORMAT2["DXGI_FORMAT_BC6H_TYPELESS"] = 94] = "DXGI_FORMAT_BC6H_TYPELESS";
+  DXGI_FORMAT2[DXGI_FORMAT2["DXGI_FORMAT_BC6H_UF16"] = 95] = "DXGI_FORMAT_BC6H_UF16";
+  DXGI_FORMAT2[DXGI_FORMAT2["DXGI_FORMAT_BC6H_SF16"] = 96] = "DXGI_FORMAT_BC6H_SF16";
+  DXGI_FORMAT2[DXGI_FORMAT2["DXGI_FORMAT_BC7_TYPELESS"] = 97] = "DXGI_FORMAT_BC7_TYPELESS";
+  DXGI_FORMAT2[DXGI_FORMAT2["DXGI_FORMAT_BC7_UNORM"] = 98] = "DXGI_FORMAT_BC7_UNORM";
+  DXGI_FORMAT2[DXGI_FORMAT2["DXGI_FORMAT_BC7_UNORM_SRGB"] = 99] = "DXGI_FORMAT_BC7_UNORM_SRGB";
+  DXGI_FORMAT2[DXGI_FORMAT2["DXGI_FORMAT_AYUV"] = 100] = "DXGI_FORMAT_AYUV";
+  DXGI_FORMAT2[DXGI_FORMAT2["DXGI_FORMAT_Y410"] = 101] = "DXGI_FORMAT_Y410";
+  DXGI_FORMAT2[DXGI_FORMAT2["DXGI_FORMAT_Y416"] = 102] = "DXGI_FORMAT_Y416";
+  DXGI_FORMAT2[DXGI_FORMAT2["DXGI_FORMAT_NV12"] = 103] = "DXGI_FORMAT_NV12";
+  DXGI_FORMAT2[DXGI_FORMAT2["DXGI_FORMAT_P010"] = 104] = "DXGI_FORMAT_P010";
+  DXGI_FORMAT2[DXGI_FORMAT2["DXGI_FORMAT_P016"] = 105] = "DXGI_FORMAT_P016";
+  DXGI_FORMAT2[DXGI_FORMAT2["DXGI_FORMAT_420_OPAQUE"] = 106] = "DXGI_FORMAT_420_OPAQUE";
+  DXGI_FORMAT2[DXGI_FORMAT2["DXGI_FORMAT_YUY2"] = 107] = "DXGI_FORMAT_YUY2";
+  DXGI_FORMAT2[DXGI_FORMAT2["DXGI_FORMAT_Y210"] = 108] = "DXGI_FORMAT_Y210";
+  DXGI_FORMAT2[DXGI_FORMAT2["DXGI_FORMAT_Y216"] = 109] = "DXGI_FORMAT_Y216";
+  DXGI_FORMAT2[DXGI_FORMAT2["DXGI_FORMAT_NV11"] = 110] = "DXGI_FORMAT_NV11";
+  DXGI_FORMAT2[DXGI_FORMAT2["DXGI_FORMAT_AI44"] = 111] = "DXGI_FORMAT_AI44";
+  DXGI_FORMAT2[DXGI_FORMAT2["DXGI_FORMAT_IA44"] = 112] = "DXGI_FORMAT_IA44";
+  DXGI_FORMAT2[DXGI_FORMAT2["DXGI_FORMAT_P8"] = 113] = "DXGI_FORMAT_P8";
+  DXGI_FORMAT2[DXGI_FORMAT2["DXGI_FORMAT_A8P8"] = 114] = "DXGI_FORMAT_A8P8";
+  DXGI_FORMAT2[DXGI_FORMAT2["DXGI_FORMAT_B4G4R4A4_UNORM"] = 115] = "DXGI_FORMAT_B4G4R4A4_UNORM";
+  DXGI_FORMAT2[DXGI_FORMAT2["DXGI_FORMAT_P208"] = 116] = "DXGI_FORMAT_P208";
+  DXGI_FORMAT2[DXGI_FORMAT2["DXGI_FORMAT_V208"] = 117] = "DXGI_FORMAT_V208";
+  DXGI_FORMAT2[DXGI_FORMAT2["DXGI_FORMAT_V408"] = 118] = "DXGI_FORMAT_V408";
+  DXGI_FORMAT2[DXGI_FORMAT2["DXGI_FORMAT_SAMPLER_FEEDBACK_MIN_MIP_OPAQUE"] = 119] = "DXGI_FORMAT_SAMPLER_FEEDBACK_MIN_MIP_OPAQUE";
+  DXGI_FORMAT2[DXGI_FORMAT2["DXGI_FORMAT_SAMPLER_FEEDBACK_MIP_REGION_USED_OPAQUE"] = 120] = "DXGI_FORMAT_SAMPLER_FEEDBACK_MIP_REGION_USED_OPAQUE";
+  DXGI_FORMAT2[DXGI_FORMAT2["DXGI_FORMAT_FORCE_UINT"] = 121] = "DXGI_FORMAT_FORCE_UINT";
+  return DXGI_FORMAT2;
+})(DXGI_FORMAT || {});
+var D3D10_RESOURCE_DIMENSION = /* @__PURE__ */ ((D3D10_RESOURCE_DIMENSION2) => {
+  D3D10_RESOURCE_DIMENSION2[D3D10_RESOURCE_DIMENSION2["DDS_DIMENSION_TEXTURE1D"] = 2] = "DDS_DIMENSION_TEXTURE1D";
+  D3D10_RESOURCE_DIMENSION2[D3D10_RESOURCE_DIMENSION2["DDS_DIMENSION_TEXTURE2D"] = 3] = "DDS_DIMENSION_TEXTURE2D";
+  D3D10_RESOURCE_DIMENSION2[D3D10_RESOURCE_DIMENSION2["DDS_DIMENSION_TEXTURE3D"] = 6] = "DDS_DIMENSION_TEXTURE3D";
+  return D3D10_RESOURCE_DIMENSION2;
+})(D3D10_RESOURCE_DIMENSION || {});
 const PF_FLAGS = 1;
 const DDPF_ALPHA = 2;
 const DDPF_FOURCC = 4;
@@ -17916,7 +17861,6 @@ function parseKTX(url, arrayBuffer, loadKeyValueData = false) {
 function validate(url, dataView) {
   for (let i = 0; i < FILE_IDENTIFIER.length; i++) {
     if (dataView.getUint8(i) !== FILE_IDENTIFIER[i]) {
-      console.error(`${url} is not a valid *.ktx file!`);
       return false;
     }
   }
@@ -18077,14 +18021,6 @@ const resolveCompressedTextureUrl = {
 };
 extensions$1.add(resolveCompressedTextureUrl);
 
-/*!
- * @pixi/extract - v7.0.0-beta.3
- * Compiled Thu, 13 Oct 2022 15:35:43 UTC
- *
- * @pixi/extract is licensed under the MIT License.
- * http://www.opensource.org/licenses/mit-license
- */
-
 const TEMP_RECT = new Rectangle();
 const BYTES_PER_PIXEL = 4;
 const _Extract = class {
@@ -18222,14 +18158,6 @@ Extract.extension = {
   type: ExtensionType.RendererSystem
 };
 extensions$1.add(Extract);
-
-/*!
- * @pixi/graphics - v7.0.0-beta.3
- * Compiled Thu, 13 Oct 2022 15:35:43 UTC
- *
- * @pixi/graphics is licensed under the MIT License.
- * http://www.opensource.org/licenses/mit-license
- */
 
 var LINE_JOIN = /* @__PURE__ */ ((LINE_JOIN2) => {
   LINE_JOIN2["MITER"] = "miter";
@@ -18503,11 +18431,17 @@ const buildRectangle = {
     const height = rectData.height;
     const points = graphicsData.points;
     points.length = 0;
+    if (!(width >= 0 && height >= 0)) {
+      return;
+    }
     points.push(x, y, x + width, y, x + width, y + height, x, y + height);
   },
   triangulate(graphicsData, graphicsGeometry) {
     const points = graphicsData.points;
     const verts = graphicsGeometry.points;
+    if (points.length === 0) {
+      return;
+    }
     const vertPos = verts.length / 2;
     verts.push(points[0], points[1], points[2], points[3], points[6], points[7], points[4], points[5]);
     graphicsGeometry.indices.push(vertPos, vertPos + 1, vertPos + 2, vertPos + 1, vertPos + 2, vertPos + 3);
@@ -18666,11 +18600,21 @@ function buildNonNativeLine(graphicsData, graphicsGeometry) {
     const dy0 = y0 - y1;
     const dx1 = x1 - x2;
     const dy1 = y2 - y1;
+    const dot = dx0 * dx1 + dy0 * dy1;
     const cross = dy0 * dx1 - dy1 * dx0;
     const clockwise = cross < 0;
-    if (Math.abs(cross) < 0.1) {
+    if (Math.abs(cross) < 1e-3 * Math.abs(dot)) {
       verts.push(x1 - perpx * innerWeight, y1 - perpy * innerWeight);
       verts.push(x1 + perpx * outerWeight, y1 + perpy * outerWeight);
+      if (dot >= 0) {
+        if (style.join === LINE_JOIN.ROUND) {
+          indexCount += round(x1, y1, x1 - perpx * innerWeight, y1 - perpy * innerWeight, x1 - perp1x * innerWeight, y1 - perp1y * innerWeight, verts, false) + 4;
+        } else {
+          indexCount += 2;
+        }
+        verts.push(x1 - perp1x * outerWeight, y1 - perp1y * outerWeight);
+        verts.push(x1 + perp1x * innerWeight, y1 + perp1y * innerWeight);
+      }
       continue;
     }
     const c1 = (-perpx + x0) * (-perpy + y1) - (-perpx + x1) * (-perpy + y0);
@@ -19682,7 +19626,8 @@ const _Graphics = class extends Container {
     if (points) {
       const xDiff = Math.abs(points[points.length - 2] - startX);
       const yDiff = Math.abs(points[points.length - 1] - startY);
-      if (xDiff < eps && yDiff < eps) ; else {
+      if (xDiff < eps && yDiff < eps) {
+      } else {
         points.push(startX, startY);
       }
     } else {
@@ -19988,14 +19933,6 @@ const graphicsUtils = {
   DRAW_CALL_POOL
 };
 
-/*!
- * @pixi/mesh - v7.0.0-beta.3
- * Compiled Thu, 13 Oct 2022 15:35:43 UTC
- *
- * @pixi/mesh is licensed under the MIT License.
- * http://www.opensource.org/licenses/mit-license
- */
-
 class MeshBatchUvs {
   constructor(uvBuffer, uvMatrix) {
     this.uvBuffer = uvBuffer;
@@ -20163,7 +20100,7 @@ const _Mesh = class extends Container {
     if (this._roundPixels) {
       const resolution = settings.RESOLUTION;
       for (let i = 0; i < vertexData.length; ++i) {
-        vertexData[i] = Math.round((vertexData[i] * resolution | 0) / resolution);
+        vertexData[i] = Math.round(vertexData[i] * resolution) / resolution;
       }
     }
     this.vertexDirty = vertexDirtyId;
@@ -20313,14 +20250,6 @@ class MeshGeometry extends Geometry {
   }
 }
 
-/*!
- * @pixi/mesh-extras - v7.0.0-beta.3
- * Compiled Thu, 13 Oct 2022 15:35:43 UTC
- *
- * @pixi/mesh-extras is licensed under the MIT License.
- * http://www.opensource.org/licenses/mit-license
- */
-
 class PlaneGeometry extends MeshGeometry {
   constructor(width = 100, height = 100, segWidth = 10, segHeight = 10) {
     super();
@@ -20451,6 +20380,10 @@ class RopeGeometry extends MeshGeometry {
       }
       perpY = -(nextPoint.x - lastPoint.x);
       perpX = nextPoint.y - lastPoint.y;
+      let ratio = (1 - i / (total - 1)) * 10;
+      if (ratio > 1) {
+        ratio = 1;
+      }
       const perpLength = Math.sqrt(perpX * perpX + perpY * perpY);
       const num = this.textureScale > 0 ? this.textureScale * this._width / 2 : this._width / 2;
       perpX /= perpLength;
@@ -20670,14 +20603,6 @@ class NineSlicePlane extends SimplePlane {
     this.geometry.buffers[1].update();
   }
 }
-
-/*!
- * @pixi/particle-container - v7.0.0-beta.3
- * Compiled Thu, 13 Oct 2022 15:35:43 UTC
- *
- * @pixi/particle-container is licensed under the MIT License.
- * http://www.opensource.org/licenses/mit-license
- */
 
 class ParticleContainer extends Container {
   constructor(maxSize = 1500, properties, batchSize = 16384, autoResize = false) {
@@ -21076,13 +21001,7 @@ ParticleRenderer.extension = {
 };
 extensions$1.add(ParticleRenderer);
 
-/*!
- * @pixi/text - v7.0.0-beta.3
- * Compiled Thu, 13 Oct 2022 15:35:43 UTC
- *
- * @pixi/text is licensed under the MIT License.
- * http://www.opensource.org/licenses/mit-license
- */
+settings.UPLOADS_PER_FRAME = 4;
 
 var TEXT_GRADIENT = /* @__PURE__ */ ((TEXT_GRADIENT2) => {
   TEXT_GRADIENT2[TEXT_GRADIENT2["LINEAR_VERTICAL"] = 0] = "LINEAR_VERTICAL";
@@ -21467,6 +21386,9 @@ function deepCopyProperties(target, source, propertyObj) {
   }
 }
 
+const contextSettings = {
+  willReadFrequently: true
+};
 class TextMetrics {
   constructor(text, style, width, height, lines, lineWidths, lineHeight, maxLineWidth, fontProperties) {
     this.text = text;
@@ -21487,7 +21409,7 @@ class TextMetrics {
       fontProperties.fontSize = style.fontSize;
       fontProperties.ascent = style.fontSize;
     }
-    const context = canvas.getContext("2d");
+    const context = canvas.getContext("2d", contextSettings);
     context.font = font;
     const outputText = wordWrap ? TextMetrics.wordWrap(text, style, canvas) : text;
     const lines = outputText.split(/(?:\r\n|\r|\n)/);
@@ -21510,7 +21432,7 @@ class TextMetrics {
     return new TextMetrics(text, style, width, height, lines, lineWidths, lineHeight + style.leading, maxLineWidth, fontProperties);
   }
   static wordWrap(text, style, canvas = TextMetrics._canvas) {
-    const context = canvas.getContext("2d");
+    const context = canvas.getContext("2d", contextSettings);
     let width = 0;
     let line = "";
     let lines = "";
@@ -21757,7 +21679,7 @@ class TextMetrics {
       let canvas;
       try {
         const c = new OffscreenCanvas(0, 0);
-        const context = c.getContext("2d");
+        const context = c.getContext("2d", contextSettings);
         if (context?.measureText) {
           TextMetrics.__canvas = c;
           return c;
@@ -21773,7 +21695,7 @@ class TextMetrics {
   }
   static get _context() {
     if (!TextMetrics.__context) {
-      TextMetrics.__context = TextMetrics._canvas.getContext("2d");
+      TextMetrics.__context = TextMetrics._canvas.getContext("2d", contextSettings);
     }
     return TextMetrics.__context;
   }
@@ -21824,7 +21746,9 @@ const _Text = class extends Sprite {
     super(texture);
     this._ownCanvas = ownCanvas;
     this.canvas = canvas;
-    this.context = canvas.getContext("2d");
+    this.context = canvas.getContext("2d", {
+      willReadFrequently: true
+    });
     this._resolution = settings.RESOLUTION;
     this._autoResolution = true;
     this._text = null;
@@ -22141,16 +22065,6 @@ const _Text = class extends Sprite {
 let Text = _Text;
 Text.experimentalLetterSpacing = false;
 
-/*!
- * @pixi/prepare - v7.0.0-beta.3
- * Compiled Thu, 13 Oct 2022 15:35:43 UTC
- *
- * @pixi/prepare is licensed under the MIT License.
- * http://www.opensource.org/licenses/mit-license
- */
-
-settings.UPLOADS_PER_FRAME = 4;
-
 class CountLimiter {
   constructor(maxItemsPerFrame) {
     this.maxItemsPerFrame = maxItemsPerFrame;
@@ -22414,14 +22328,6 @@ class TimeLimiter {
   }
 }
 
-/*!
- * @pixi/spritesheet - v7.0.0-beta.3
- * Compiled Thu, 13 Oct 2022 15:35:43 UTC
- *
- * @pixi/spritesheet is licensed under the MIT License.
- * http://www.opensource.org/licenses/mit-license
- */
-
 const _Spritesheet = class {
   constructor(texture, data, resolutionFilename = null) {
     this.linkedSheets = [];
@@ -22627,14 +22533,6 @@ const spritesheetAsset = {
 };
 extensions$1.add(spritesheetAsset);
 
-/*!
- * @pixi/sprite-animated - v7.0.0-beta.3
- * Compiled Thu, 13 Oct 2022 15:35:43 UTC
- *
- * @pixi/sprite-animated is licensed under the MIT License.
- * http://www.opensource.org/licenses/mit-license
- */
-
 class AnimatedSprite extends Sprite {
   constructor(textures, autoUpdate = true) {
     super(textures[0] instanceof Texture ? textures[0] : textures[0].texture);
@@ -22822,14 +22720,6 @@ class AnimatedSprite extends Sprite {
     }
   }
 }
-
-/*!
- * @pixi/sprite-tiling - v7.0.0-beta.3
- * Compiled Thu, 13 Oct 2022 15:35:43 UTC
- *
- * @pixi/sprite-tiling is licensed under the MIT License.
- * http://www.opensource.org/licenses/mit-license
- */
 
 const tempPoint = new Point();
 class TilingSprite extends Sprite {
@@ -23021,14 +22911,6 @@ TilingSpriteRenderer.extension = {
   type: ExtensionType.RendererPlugin
 };
 extensions$1.add(TilingSpriteRenderer);
-
-/*!
- * @pixi/text-bitmap - v7.0.0-beta.3
- * Compiled Thu, 13 Oct 2022 15:35:43 UTC
- *
- * @pixi/text-bitmap is licensed under the MIT License.
- * http://www.opensource.org/licenses/mit-license
- */
 
 class BitmapFontData {
   constructor() {
@@ -23437,7 +23319,8 @@ const _BitmapFont = class {
       padding,
       resolution,
       textureWidth,
-      textureHeight
+      textureHeight,
+      ...baseOptions
     } = Object.assign({}, _BitmapFont.defaultOptions, options);
     const charsList = resolveCharacters(chars);
     const style = textStyle instanceof TextStyle ? textStyle : new TextStyle(textStyle);
@@ -23456,6 +23339,7 @@ const _BitmapFont = class {
     let context;
     let baseTexture;
     let maxCharHeight = 0;
+    const baseTextures = [];
     const textures = [];
     for (let i = 0; i < charsList.length; i++) {
       if (!canvas) {
@@ -23463,20 +23347,22 @@ const _BitmapFont = class {
         canvas.width = textureWidth;
         canvas.height = textureHeight;
         context = canvas.getContext("2d");
-        baseTexture = new BaseTexture(canvas, { resolution });
+        baseTexture = new BaseTexture(canvas, { resolution, ...baseOptions });
+        baseTextures.push(baseTexture);
         textures.push(new Texture(baseTexture));
         fontData.page.push({
           id: textures.length - 1,
           file: ""
         });
       }
-      const metrics = TextMetrics.measureText(charsList[i], style, false, canvas);
+      const character = charsList[i];
+      const metrics = TextMetrics.measureText(character, style, false, canvas);
       const width = metrics.width;
       const height = Math.ceil(metrics.height);
       const textureGlyphWidth = Math.ceil((style.fontStyle === "italic" ? 2 : 1) * width);
       if (positionY >= textureHeight - height * resolution) {
         if (positionY === 0) {
-          throw new Error(`[BitmapFont] textureHeight ${textureHeight}px is too small for ${style.fontSize}px fonts`);
+          throw new Error(`[BitmapFont] textureHeight ${textureHeight}px is too small (fontFamily: '${style.fontFamily}', fontSize: ${style.fontSize}px, char: '${character}')`);
         }
         --i;
         canvas = null;
@@ -23489,6 +23375,9 @@ const _BitmapFont = class {
       }
       maxCharHeight = Math.max(height + metrics.fontProperties.descent, maxCharHeight);
       if (textureGlyphWidth * resolution + positionX >= lineWidth) {
+        if (positionX === 0) {
+          throw new Error(`[BitmapFont] textureWidth ${textureWidth}px is too small (fontFamily: '${style.fontFamily}', fontSize: ${style.fontSize}px, char: '${character}')`);
+        }
         --i;
         positionY += maxCharHeight * resolution;
         positionY = Math.ceil(positionY);
@@ -23571,8 +23460,9 @@ const _BitmapText = class extends Container {
     this._textHeight = 0;
     this._align = align;
     this._tint = tint;
+    this._font = void 0;
     this._fontName = fontName;
-    this._fontSize = fontSize || BitmapFont.available[fontName].size;
+    this._fontSize = fontSize;
     this.text = text;
     this._maxWidth = maxWidth;
     this._maxLineHeight = 0;
@@ -23588,14 +23478,15 @@ const _BitmapText = class extends Container {
   }
   updateText() {
     const data = BitmapFont.available[this._fontName];
-    const scale = this._fontSize / data.size;
+    const fontSize = this.fontSize;
+    const scale = fontSize / data.size;
     const pos = new Point();
     const chars = [];
     const lineWidths = [];
     const lineSpaces = [];
     const text = this._text.replace(/(?:\r\n|\r)/g, "\n") || " ";
     const charsInput = splitTextToCharacters(text);
-    const maxWidth = this._maxWidth * data.size / this._fontSize;
+    const maxWidth = this._maxWidth * data.size / fontSize;
     const pageMeshDataPool = data.distanceFieldType === "none" ? pageMeshDataDefaultPageMeshData : pageMeshDataMSDFPageMeshData;
     let prevCharCode = null;
     let lastLineWidth = 0;
@@ -23832,6 +23723,8 @@ const _BitmapText = class extends Container {
     for (let i = 0; i < chars.length; i++) {
       charRenderDataPool.push(chars[i]);
     }
+    this._font = data;
+    this.dirty = false;
   }
   updateTransform() {
     this.validate();
@@ -23848,7 +23741,7 @@ const _BitmapText = class extends Container {
       const dx = Math.sqrt(a * a + b * b);
       const dy = Math.sqrt(c * c + d * d);
       const worldScale = (Math.abs(dx) + Math.abs(dy)) / 2;
-      const fontScale = this._fontSize / size;
+      const fontScale = this.fontSize / size;
       const resolution = renderer._view.resolution;
       for (const mesh of this._activePagesMeshData) {
         mesh.mesh.shader.uniforms.uFWidth = worldScale * distanceFieldRange * fontScale * resolution;
@@ -23861,9 +23754,15 @@ const _BitmapText = class extends Container {
     return super.getLocalBounds();
   }
   validate() {
+    const font = BitmapFont.available[this._fontName];
+    if (!font) {
+      throw new Error(`Missing BitmapFont "${this._fontName}"`);
+    }
+    if (this._font !== font) {
+      this.dirty = true;
+    }
     if (this.dirty) {
       this.updateText();
-      this.dirty = false;
     }
   }
   get tint() {
@@ -23899,7 +23798,7 @@ const _BitmapText = class extends Container {
     }
   }
   get fontSize() {
-    return this._fontSize;
+    return this._fontSize ?? BitmapFont.available[this._fontName].size;
   }
   set fontSize(value) {
     if (this._fontSize !== value) {
@@ -23984,6 +23883,9 @@ const _BitmapText = class extends Container {
     const data = BitmapFont.available[this._fontName];
     const pageMeshDataPool = data.distanceFieldType === "none" ? pageMeshDataDefaultPageMeshData : pageMeshDataMSDFPageMeshData;
     pageMeshDataPool.push(...this._activePagesMeshData);
+    for (const pageMeshData of this._activePagesMeshData) {
+      this.removeChild(pageMeshData.mesh);
+    }
     this._activePagesMeshData = [];
     pageMeshDataPool.filter((page) => _textureCache[page.mesh.texture.baseTexture.uid]).forEach((page) => {
       page.mesh.texture = Texture.EMPTY;
@@ -23993,6 +23895,7 @@ const _BitmapText = class extends Container {
       texture.destroy();
       delete _textureCache[id];
     }
+    this._font = null;
     this._textureCache = null;
     super.destroy(options);
   }
@@ -24051,5 +23954,5 @@ const filters = {
   NoiseFilter
 };
 
-export { ALPHA_MODES, AbstractMultiResource, AccessibilityManager, AnimatedSprite, Application, ArrayResource, Assets, AssetsClass, Attribute, BLEND_MODES, BUFFER_BITS, BUFFER_TYPE, BackgroundSystem, BaseImageResource, BasePrepare, BaseRenderTexture, BaseTexture, BatchDrawCall, BatchGeometry, BatchRenderer, BatchShaderGenerator, BatchSystem, BatchTextureArray, BitmapFont, BitmapFontData, BitmapText, BlobResource, Bounds, BrowserAdapter, Buffer, BufferResource, BufferSystem, CLEAR_MODES, COLOR_MASK_BITS, Cache, CanvasResource, Circle, CompressedTextureResource, Container, ContextSystem, CountLimiter, CubeResource, DEG_TO_RAD, DRAW_MODES, DisplayObject, ENV, Ellipse, EventBoundary, EventSystem, ExtensionType, Extract, FORMATS, FORMATS_TO_COMPONENTS, FederatedDisplayObject, FederatedEvent, FederatedMouseEvent, FederatedPointerEvent, FederatedWheelEvent, FillStyle, Filter, FilterState, FilterSystem, Framebuffer, FramebufferSystem, GC_MODES, GLFramebuffer, GLProgram, GLTexture, GRAPHICS_CURVES, GenerateTextureSystem, Geometry, GeometrySystem, Graphics, GraphicsData, GraphicsGeometry, IGLUniformData, INSTALLED, INTERNAL_FORMATS, INTERNAL_FORMAT_TO_BYTES_PER_PIXEL, ImageBitmapResource, ImageResource, LINE_CAP, LINE_JOIN, LineStyle, LoaderParserPriority, MASK_TYPES, MIPMAP_MODES, MSAA_QUALITY, MaskData, MaskSystem, Matrix, Mesh, MeshBatchUvs, MeshGeometry, MeshMaterial, MultisampleSystem, NineSlicePlane, ObjectRenderer, ObjectRendererSystem, ObservablePoint, PI_2, PRECISION, ParticleContainer, ParticleRenderer, PlaneGeometry, PluginSystem, Point, Polygon, Prepare, Program, ProjectionSystem, Quad, QuadUv, RAD_TO_DEG, RENDERER_TYPE, Rectangle, RenderTexture, RenderTexturePool, RenderTextureSystem, Renderer, ResizePlugin, Resource, RopeGeometry, RoundedRectangle, Runner, SAMPLER_TYPES, SCALE_MODES, SHAPES, SVGResource, ScissorSystem, Shader, ShaderSystem, SimpleMesh, SimplePlane, SimpleRope, Sprite, SpriteMaskFilter, Spritesheet, StartupSystem, State, StateSystem, StencilSystem, SystemManager, TARGETS, TEXT_GRADIENT, TYPES, TYPES_TO_BYTES_PER_COMPONENT, TYPES_TO_BYTES_PER_PIXEL, TemporaryDisplayObject, Text, TextFormat, TextMetrics, TextStyle, Texture, TextureGCSystem, TextureMatrix, TextureSystem, TextureUvs, Ticker, TickerPlugin, TilingSprite, TilingSpriteRenderer, TimeLimiter, Transform, TransformFeedback, TransformFeedbackSystem, UPDATE_PRIORITY, UniformGroup, VERSION, VideoResource, ViewSystem, ViewableBuffer, WRAP_MODES, XMLFormat, XMLStringFormat, accessibleTarget, autoDetectFormat, autoDetectRenderer, autoDetectResource, cacheTextureArray, checkExtension, checkMaxIfStatementsInShader, convertToList, createStringVariations, createTexture, createUBOElements, defaultFilterVertex, defaultVertex$1 as defaultVertex, detectAvif, detectCompressedTextures, detectDefaults, detectWebp, extensions$1 as extensions, filters, generateProgram, generateUniformBufferSync, getFontFamilyName, getTestContext, getUBOData, graphicsUtils, groupD8, isMobile, isSingleItem, loadBitmapFont, loadDDS, loadImageBitmap, loadJson, loadKTX, loadSVG, loadTextures, loadTxt, loadWebFont, parseDDS, parseKTX, resolveCompressedTextureUrl, resolveTextureUrl, settings, spritesheetAsset, uniformParsers, utils };
+export { ALPHA_MODES, AbstractMultiResource, AccessibilityManager, AnimatedSprite, Application, ArrayResource, Assets, AssetsClass, Attribute, BLEND_MODES, BUFFER_BITS, BUFFER_TYPE, BackgroundSystem, BaseImageResource, BasePrepare, BaseRenderTexture, BaseTexture, BatchDrawCall, BatchGeometry, BatchRenderer, BatchShaderGenerator, BatchSystem, BatchTextureArray, BitmapFont, BitmapFontData, BitmapText, BlobResource, Bounds, BrowserAdapter, Buffer, BufferResource, BufferSystem, CLEAR_MODES, COLOR_MASK_BITS, Cache, CanvasResource, Circle, CompressedTextureResource, Container, ContextSystem, CountLimiter, CubeResource, DEG_TO_RAD, DRAW_MODES, DisplayObject, ENV, Ellipse, EventBoundary, EventSystem, ExtensionType, Extract, FORMATS, FORMATS_TO_COMPONENTS, FederatedDisplayObject, FederatedEvent, FederatedMouseEvent, FederatedPointerEvent, FederatedWheelEvent, FillStyle, Filter, FilterState, FilterSystem, Framebuffer, FramebufferSystem, GC_MODES, GLFramebuffer, GLProgram, GLTexture, GRAPHICS_CURVES, GenerateTextureSystem, Geometry, GeometrySystem, Graphics, GraphicsData, GraphicsGeometry, IGLUniformData, INSTALLED, INTERNAL_FORMATS, INTERNAL_FORMAT_TO_BYTES_PER_PIXEL, ImageBitmapResource, ImageResource, LINE_CAP, LINE_JOIN, LineStyle, LoaderParserPriority, MASK_TYPES, MIPMAP_MODES, MSAA_QUALITY, MaskData, MaskSystem, Matrix, Mesh, MeshBatchUvs, MeshGeometry, MeshMaterial, MultisampleSystem, NineSlicePlane, ObjectRenderer, ObjectRendererSystem, ObservablePoint, PI_2, PRECISION, ParticleContainer, ParticleRenderer, PlaneGeometry, PluginSystem, Point, Polygon, Prepare, Program, ProjectionSystem, Quad, QuadUv, RAD_TO_DEG, RENDERER_TYPE, Rectangle, RenderTexture, RenderTexturePool, RenderTextureSystem, Renderer, ResizePlugin, Resource, RopeGeometry, RoundedRectangle, Runner, SAMPLER_TYPES, SCALE_MODES, SHAPES, SVGResource, ScissorSystem, Shader, ShaderSystem, SimpleMesh, SimplePlane, SimpleRope, Sprite, SpriteMaskFilter, Spritesheet, StartupSystem, State, StateSystem, StencilSystem, SystemManager, TARGETS, TEXT_GRADIENT, TYPES, TYPES_TO_BYTES_PER_COMPONENT, TYPES_TO_BYTES_PER_PIXEL, TemporaryDisplayObject, Text, TextFormat, TextMetrics, TextStyle, Texture, TextureGCSystem, TextureMatrix, TextureSystem, TextureUvs, Ticker, TickerPlugin, TilingSprite, TilingSpriteRenderer, TimeLimiter, Transform, TransformFeedback, TransformFeedbackSystem, UPDATE_PRIORITY, UniformGroup, VERSION, VideoResource, ViewSystem, ViewableBuffer, WRAP_MODES, XMLFormat, XMLStringFormat, accessibleTarget, autoDetectFormat, autoDetectRenderer, autoDetectResource, cacheTextureArray, checkExtension, checkMaxIfStatementsInShader, convertToList, createStringVariations, createTexture, createUBOElements, defaultFilterVertex, defaultVertex$1 as defaultVertex, detectAvif, detectCompressedTextures, detectDefaults, detectWebp, extensions$1 as extensions, filters, generateProgram, generateUniformBufferSync, getFontFamilyName, getTestContext, getUBOData, graphicsUtils, groupD8, isMobile, isSingleItem, loadBitmapFont, loadDDS, loadImageBitmap, loadJson, loadKTX, loadSVG, loadTextures, loadTxt, loadWebFont, parseDDS, parseKTX, resolveCompressedTextureUrl, resolveTextureUrl, settings, spritesheetAsset, uniformParsers, index as utils };
 //# sourceMappingURL=pixi.mjs.map
