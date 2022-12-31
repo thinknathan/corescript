@@ -7,7 +7,7 @@ npm-debug.log*
 # RPG Maker Project
 www/audio/*
 www/data/*
-www/fonts/*.tff
+www/fonts/*.ttf
 www/icon/*
 www/img/*
 www/movies/*
