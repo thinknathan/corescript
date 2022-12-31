@@ -5,17 +5,14 @@ logs
 npm-debug.log*
 
 # RPG Maker Project
-Game.rpgproject
-index.html
-audio/*
-data/*
-fonts/*
-icon/*
-img/*
-movies/*
-save/*
-js/plugins/*
-js/plugins.js
+www/audio/*
+www/data/*
+www/fonts/*.tff
+www/icon/*
+www/img/*
+www/movies/*
+www/save/*
+www/js/libs/*
 
 # Runtime data
 pids
