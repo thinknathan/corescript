@@ -1,5 +1,5 @@
-import Scene_MenuBase from "./Scene_MenuBase.js";
-import Window_Status from "../rpg_windows/Window_Status.js";
+import Scene_MenuBase from './Scene_MenuBase.js';
+import Window_Status from '../rpg_windows/Window_Status.js';
 
 //-----------------------------------------------------------------------------
 // Scene_Status
@@ -7,39 +7,39 @@ import Window_Status from "../rpg_windows/Window_Status.js";
 // The scene class of the status screen.
 
 class Scene_Status extends Scene_MenuBase {
-  constructor(...args) {
-    super(...args);
-    this.initialize(...args);
-  }
+	constructor(...args) {
+		super(...args);
+		this.initialize(...args);
+	}
 
-  initialize() {
-    super.initialize();
-  }
+	initialize() {
+		super.initialize();
+	}
 
-  create() {
-    super.create();
-    this._statusWindow = new Window_Status();
-    this._statusWindow.setHandler("cancel", this.popScene.bind(this));
-    this._statusWindow.setHandler("pagedown", this.nextActor.bind(this));
-    this._statusWindow.setHandler("pageup", this.previousActor.bind(this));
-    this._statusWindow.reserveFaceImages();
-    this.addWindow(this._statusWindow);
-  }
+	create() {
+		super.create();
+		this._statusWindow = new Window_Status();
+		this._statusWindow.setHandler('cancel', this.popScene.bind(this));
+		this._statusWindow.setHandler('pagedown', this.nextActor.bind(this));
+		this._statusWindow.setHandler('pageup', this.previousActor.bind(this));
+		this._statusWindow.reserveFaceImages();
+		this.addWindow(this._statusWindow);
+	}
 
-  start() {
-    super.start();
-    this.refreshActor();
-  }
+	start() {
+		super.start();
+		this.refreshActor();
+	}
 
-  refreshActor() {
-    const actor = this.actor();
-    this._statusWindow.setActor(actor);
-  }
+	refreshActor() {
+		const actor = this.actor();
+		this._statusWindow.setActor(actor);
+	}
 
-  onActorChange() {
-    this.refreshActor();
-    this._statusWindow.activate();
-  }
+	onActorChange() {
+		this.refreshActor();
+		this._statusWindow.activate();
+	}
 }
 
 export default Scene_Status;

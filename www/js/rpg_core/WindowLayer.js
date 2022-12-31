@@ -6,80 +6,80 @@
  * @constructor
  */
 class WindowLayer extends PIXI.Container {
-  constructor(...args) {
-    super(...args);
-    this.initialize(...args);
-  }
+	constructor(...args) {
+		super(...args);
+		this.initialize(...args);
+	}
 
-  initialize() {
-    PIXI.Container.call(this);
-    this._width = 0;
-    this._height = 0;
+	initialize() {
+		PIXI.Container.call(this);
+		this._width = 0;
+		this._height = 0;
 
-    //temporary fix for memory leak bug
-    this.on("removed", this.onRemoveAsAChild);
-  }
+		//temporary fix for memory leak bug
+		this.on('removed', this.onRemoveAsAChild);
+	}
 
-  onRemoveAsAChild() {
-    this.removeChildren();
-  }
+	onRemoveAsAChild() {
+		this.removeChildren();
+	}
 
-  /**
-   * The width of the window layer in pixels.
-   *
-   * @property width
-   * @type Number
-   */
-  get width() {
-    return this._width;
-  }
+	/**
+	 * The width of the window layer in pixels.
+	 *
+	 * @property width
+	 * @type Number
+	 */
+	get width() {
+		return this._width;
+	}
 
-  set width(value) {
-    this._width = value;
-  }
+	set width(value) {
+		this._width = value;
+	}
 
-  /**
-   * The height of the window layer in pixels.
-   *
-   * @property height
-   * @type Number
-   */
-  get height() {
-    return this._height;
-  }
+	/**
+	 * The height of the window layer in pixels.
+	 *
+	 * @property height
+	 * @type Number
+	 */
+	get height() {
+		return this._height;
+	}
 
-  set height(value) {
-    this._height = value;
-  }
+	set height(value) {
+		this._height = value;
+	}
 
-  /**
-   * Sets the x, y, width, and height all at once.
-   *
-   * @method move
-   * @param {Number} x The x coordinate of the window layer
-   * @param {Number} y The y coordinate of the window layer
-   * @param {Number} width The width of the window layer
-   * @param {Number} height The height of the window layer
-   */
-  move(x, y, width, height) {
-    this.x = x;
-    this.y = y;
-    this.width = width;
-    this.height = height;
-  }
+	/**
+	 * Sets the x, y, width, and height all at once.
+	 *
+	 * @method move
+	 * @param {Number} x The x coordinate of the window layer
+	 * @param {Number} y The y coordinate of the window layer
+	 * @param {Number} width The width of the window layer
+	 * @param {Number} height The height of the window layer
+	 */
+	move(x, y, width, height) {
+		this.x = x;
+		this.y = y;
+		this.width = width;
+		this.height = height;
+	}
 
-  /**
-   * Updates the window layer for each frame.
-   *
-   * @method update
-   */
-  update() {
-    this.children.forEach((child) => {
-      if (child.update) {
-        child.update();
-      }
-    });
-  }
+	/**
+	 * Updates the window layer for each frame.
+	 *
+	 * @method update
+	 */
+	update() {
+		this.children.forEach((child) => {
+			if (child.update) {
+				child.update();
+			}
+		});
+	}
 }
 
 WindowLayer.voidFilter = new PIXI.filters.AlphaFilter();
