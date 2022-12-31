@@ -1,0 +1,16 @@
+{
+  "editor.formatOnSave": true,
+  "editor.insertSpaces": false,
+  "editor.formatOnPaste": true,
+  "editor.tabSize": 2,
+  "editor.detectIndentation": false,
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[json]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[css]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  }
+}
