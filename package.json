@@ -1,20 +1,81 @@
 {
   "name": "corescript",
-  "window": {
-    "title": "",
-    "toolbar": false,
-    "width": 960,
-    "height": 540,
-    "position": "center",
-    "icon": "icon/icon.png"
-  },
-  "main": "index.html",
   "scripts": {
-    "build": "rollup -c"
+    "build": "rollup -c && copy-files-from-to"
+  },
+  "dependencies": {
+    "@pixi/app": "~6.4",
+    "@pixi/basis": "~6.4",
+    "@pixi/canvas-display": "~6.4",
+    "@pixi/canvas-extract": "~6.4",
+    "@pixi/canvas-graphics": "~6.4",
+    "@pixi/canvas-mesh": "~6.4",
+    "@pixi/canvas-particle-container": "~6.4",
+    "@pixi/canvas-prepare": "~6.4",
+    "@pixi/canvas-renderer": "~6.4",
+    "@pixi/canvas-sprite": "~6.4",
+    "@pixi/canvas-sprite-tiling": "~6.4",
+    "@pixi/canvas-text": "~6.4",
+    "@pixi/constants": "~6.4",
+    "@pixi/core": "~6.4",
+    "@pixi/display": "~6.4",
+    "@pixi/events": "~6.4",
+    "@pixi/extract": "~6.4",
+    "@pixi/filter-advanced-bloom": "^4",
+    "@pixi/filter-alpha": "~6.4",
+    "@pixi/filter-blur": "~6.4",
+    "@pixi/filter-color-matrix": "~6.4",
+    "@pixi/filter-crt": "^4",
+    "@pixi/filter-glitch": "^4",
+    "@pixi/filter-kawase-blur": "^4",
+    "@pixi/filter-motion-blur": "^4",
+    "@pixi/filter-noise": "~6.4",
+    "@pixi/filter-pixelate": "^4",
+    "@pixi/filter-rgb-split": "^4",
+    "@pixi/filter-shockwave": "^4",
+    "@pixi/graphics": "~6.4",
+    "@pixi/interaction": "~6.4",
+    "@pixi/loaders": "~6.4",
+    "@pixi/math": "~6.4",
+    "@pixi/mesh": "~6.4",
+    "@pixi/mesh-extras": "~6.4",
+    "@pixi/mixin-cache-as-bitmap": "~6.4",
+    "@pixi/polyfill": "~6.4",
+    "@pixi/runner": "~6.4",
+    "@pixi/settings": "~6.4",
+    "@pixi/sprite": "~6.4",
+    "@pixi/sprite-animated": "~6.4",
+    "@pixi/sprite-tiling": "~6.4",
+    "@pixi/text": "~6.4",
+    "@pixi/text-bitmap": "~6.4",
+    "@pixi/ticker": "~6.4",
+    "@pixi/utils": "~6.4",
+    "fflate": "^0.7.3",
+    "gamestats.js": "^1.0.4",
+    "idb-keyval": "^6.2.0",
+    "pixi-tilemap": "https://github.com/pixijs/tilemap/#a8b89ef3da7cb1a71f2e18514041a3e1afb27cd1"
   },
   "devDependencies": {
-    "rollup": "^2.59.0",
-    "rollup-plugin-terser": "^7.0.2"
+    "@rollup/plugin-node-resolve": "^13.2.1",
+    "copy-files-from-to": "^3.6.0",
+    "rollup": "^2.75.7",
+    "rollup-plugin-commonjs": "^10.1.0",
+    "rollup-plugin-node-polyfills2": "^0.1.0",
+    "rollup-plugin-terser": "^7.0.2",
+    "rollup-plugin-url-resolve": "^0.2.0"
   },
-  "chromium-args": "--disable-raf-throttling --enable-gpu-async-worker-context --enable-hardware-overlays=single-fullscreen --enable-zero-copy --force-color-profile=srgb --ignore-gpu-blocklist"
+  "copyFiles": [
+    {
+      "from": "node_modules/pixi-tilemap/dist/pixi-tilemap.umd.js",
+      "to": "dist/libs/pixi-tilemap.js"
+    },
+    {
+      "from": "node_modules/gamestats.js/build/gamestats.min.js",
+      "to": "dist/libs/gamestats.min.js"
+    },
+    {
+      "from": "node_modules/gamestats.js/build/gamestats-pixi.module.js",
+      "to": "dist/libs/gamestats-pixi.module.js"
+    }
+  ]
 }

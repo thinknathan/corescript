@@ -49,7 +49,7 @@ Download main.js from _/dist/main.js_
 
 Replace _js/main.js_ in your project with the one you downloaded.
 
-Replace your _js/libs_ folder with the _js/libs_ folder from this repo.
+Replace your _js/libs_ folder with the _dist/libs_ folder from this repo.
 
 Open your _index.html_ and delete script tags that load rpg_core.js rpg_managers.js rpg_objects.js rpg_scenes.js rpg_sprites.js rpg_windows.js. They are no longer necessary.
 
@@ -132,3 +132,14 @@ Life cycle: `new Scene_Xxx() -> create() -> start() -> update()* -> stop() -> te
 ## License
 
 This content is released under the (http://opensource.org/licenses/MIT) MIT License.
+
+## Bundled Dependencies
+
+This project tree-shakes and exports its dependencies.
+
+- fflate | MIT | Copyright (c) 2020 Arjun Barrett https://github.com/101arrowz/fflate
+- idb-keyval | Apache | Copyright 2016, Jake Archibald https://github.com/jakearchibald/idb-keyval
+- pixijs | MIT | Copyright (c) 2013-2017 Mathew Groves, Chad Engler https://github.com/pixijs/pixijs
+- pixijs filters | MIT | Copyright (c) 2013-2017 Mathew Groves, Chad Engler https://github.com/pixijs/filters
+- pixijs tilemap | MIT | Copyright (c) 2015 Ivan Popelyshev https://github.com/pixijs/tilemap
+- gamestats | MIT | Copyright (c) 2019 Erik Sombroek https://github.com/eriksom/gamestats/
