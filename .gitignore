@@ -13,6 +13,9 @@ www/img/*
 www/movies/*
 www/save/*
 www/js/libs/*
+www/js/dist/*
+www/index.html
+www/js/plugins.js
 
 # Runtime data
 pids
