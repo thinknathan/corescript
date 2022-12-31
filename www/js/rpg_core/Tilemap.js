@@ -12,14 +12,12 @@ import Graphics from '../rpg_core/Graphics.js';
  * @constructor
  */
 class Tilemap extends PIXI.Container {
-	constructor(...args) {
-		super(...args);
-		this.initialize(...args);
+	constructor() {
+		super();
+		this.initialize();
 	}
 
 	initialize() {
-		// PIXI.Container.call(this);
-
 		this._margin = 20;
 		this._width = Graphics.width + this._margin * 2;
 		this._height = Graphics.height + this._margin * 2;
