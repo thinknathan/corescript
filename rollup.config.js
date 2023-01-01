@@ -93,7 +93,7 @@ const pixiPlugins = [
 ];
 
 const workerBanner = `/*!!
- * worker.js - corescript v1.6.1 (community-1.4)
+ * save-storage-worker.js - corescript v1.6.1 (community-1.4)
  * (c) 2015 KADOKAWA CORPORATION./YOJI OJIMA
  * Contributions by the RPG Maker MV CoreScript team
  * https://github.com/thinknathan/corescript/blob/master/CONTRIBUTORS.md
@@ -133,7 +133,7 @@ export default [
 		output: [
 			{
 				format: formatType,
-				file: 'dist/main.js',
+				file: 'www/js/main.min.js',
 				banner: coreBanner,
 			},
 		],
@@ -144,7 +144,7 @@ export default [
 		output: [
 			{
 				format: formatType,
-				file: 'dist/libs/comlink.js',
+				file: 'www/js/libs/comlink.min.js',
 				banner: comlinkBanner,
 				name: 'Comlink',
 			},
@@ -156,7 +156,7 @@ export default [
 		output: [
 			{
 				format: formatType,
-				file: 'dist/libs/pixi.js',
+				file: 'www/js/libs/pixi.min.js',
 				name: 'PIXI',
 				banner: pixiBanner,
 			},
@@ -164,11 +164,11 @@ export default [
 		plugins: pixiPlugins,
 	},
 	{
-		input: 'www/js/libs/worker.js',
+		input: 'www/js/save-storage-worker.js',
 		output: [
 			{
 				format: formatType,
-				file: 'dist/libs/worker.js',
+				file: 'www/js/save-storage-worker.min.js',
 				banner: workerBanner,
 			},
 		],

@@ -71,28 +71,40 @@
       "to": "dist/libs/pixi-tilemap.js"
     },
     {
+      "from": "node_modules/pixi-tilemap/dist/pixi-tilemap.umd.js",
+      "to": "www/js/libs/pixi-tilemap.min.js"
+    },
+    {
       "from": "node_modules/gamestats.js/build/gamestats.min.js",
       "to": "dist/libs/gamestats.min.js"
+    },
+    {
+      "from": "node_modules/gamestats.js/build/gamestats.min.js",
+      "to": "www/js/libs/gamestats.min.js"
     },
     {
       "from": "node_modules/gamestats.js/build/gamestats-pixi.module.js",
       "to": "dist/libs/gamestats-pixi.module.js"
     },
     {
-      "from": "dist/main.js",
-      "to": "www/js/dist/main.js"
+      "from": "node_modules/gamestats.js/build/gamestats-pixi.module.js",
+      "to": "www/js/libs/gamestats-pixi.module.js"
     },
     {
-      "from": "dist/libs/pixi.js",
-      "to": "www/js/dist/libs/pixi.js"
+      "from": "www/js/main.min.js",
+      "to": "dist/main.js"
     },
     {
-      "from": "dist/libs/worker.js",
-      "to": "www/js/dist/libs/worker.js"
+      "from": "www/js/libs/pixi.min.js",
+      "to": "dist/libs/pixi.js"
     },
     {
-      "from": "dist/libs/comlink.js",
-      "to": "www/js/dist/libs/comlink.js"
+      "from": "www/js/save-storage-worker.min.js",
+      "to": "dist/save-storage-worker.min.js"
+    },
+    {
+      "from": "www/js/libs/comlink.min.js",
+      "to": "dist/libs/comlink.js"
     }
   ],
   "copyFilesSettings": {

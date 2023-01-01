@@ -12,8 +12,7 @@ www/icon/*
 www/img/*
 www/movies/*
 www/save/*
-www/js/libs/*
-www/js/dist/*
+www/js/libs/gamestats-pixi.module.js
 www/index.html
 www/js/plugins.js
 
@@ -69,3 +68,4 @@ corescript/**/*
 corescript.zip
 package-lock.json
 .pre-commit-config.yaml
+www/**/*.min.js
