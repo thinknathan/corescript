@@ -50,6 +50,7 @@
     "@pixi/text-bitmap": "~6.4",
     "@pixi/ticker": "~6.4",
     "@pixi/utils": "~6.4",
+    "comlink": "^4.3.1",
     "fflate": "^0.7.3",
     "gamestats.js": "^1.0.4",
     "idb-keyval": "^6.2.0",
@@ -76,6 +77,25 @@
     {
       "from": "node_modules/gamestats.js/build/gamestats-pixi.module.js",
       "to": "dist/libs/gamestats-pixi.module.js"
+    },
+    {
+      "from": "dist/main.js",
+      "to": "www/js/dist/main.js"
+    },
+    {
+      "from": "dist/libs/pixi.js",
+      "to": "www/js/dist/libs/pixi.js"
+    },
+    {
+      "from": "dist/libs/worker.js",
+      "to": "www/js/dist/libs/worker.js"
+    },
+    {
+      "from": "dist/libs/comlink.js",
+      "to": "www/js/dist/libs/comlink.js"
     }
-  ]
+  ],
+  "copyFilesSettings": {
+    "whenFileExists": "overwrite"
+  }
 }

@@ -137,9 +137,10 @@ This content is released under the (http://opensource.org/licenses/MIT) MIT Lice
 
 This project tree-shakes and exports its dependencies.
 
-- fflate | MIT | Copyright (c) 2020 Arjun Barrett https://github.com/101arrowz/fflate
-- idb-keyval | Apache | Copyright 2016, Jake Archibald https://github.com/jakearchibald/idb-keyval
 - pixijs | MIT | Copyright (c) 2013-2017 Mathew Groves, Chad Engler https://github.com/pixijs/pixijs
 - pixijs filters | MIT | Copyright (c) 2013-2017 Mathew Groves, Chad Engler https://github.com/pixijs/filters
 - pixijs tilemap | MIT | Copyright (c) 2015 Ivan Popelyshev https://github.com/pixijs/tilemap
 - gamestats | MIT | Copyright (c) 2019 Erik Sombroek https://github.com/eriksom/gamestats/
+- fflate | MIT | Copyright (c) 2020 Arjun Barrett https://github.com/101arrowz/fflate
+- idb-keyval | Apache | Copyright 2016, Jake Archibald https://github.com/jakearchibald/idb-keyval
+- Comlink | Apache | Copyright 2017 Google Inc.

@@ -14,7 +14,42 @@ const coreBanner = `/*!!
   * https://github.com/thinknathan/corescript/blob/master/LICENSE
   */`;
 const corePlugins = [
+	nodeResolve({
+		browser: true,
+		preferBuiltins: true,
+	}),
 	urlResolve(),
+	terser({
+		ecma: 2018,
+		compress: {
+			drop_console: true,
+			keep_infinity: true,
+			passes: 2,
+		},
+		output: {
+			wrap_iife: true,
+			comments: /^!!/,
+		},
+	}),
+];
+
+const comlinkBanner = `/*!!
+   * Copyright 2019 Google Inc. All Rights Reserved.
+   * Licensed under the Apache License, Version 2.0 (the "License");
+   * you may not use this file except in compliance with the License.
+   * You may obtain a copy of the License at
+   *     http://www.apache.org/licenses/LICENSE-2.0
+   * Unless required by applicable law or agreed to in writing, software
+   * distributed under the License is distributed on an "AS IS" BASIS,
+   * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   * See the License for the specific language governing permissions and
+   * limitations under the License.
+   */`;
+const comlinkPlugins = [
+	nodeResolve({
+		browser: true,
+		preferBuiltins: true,
+	}),
 	terser({
 		ecma: 2018,
 		compress: {
@@ -58,9 +93,18 @@ const pixiPlugins = [
 ];
 
 const workerBanner = `/*!!
+ * worker.js - corescript v1.6.1 (community-1.4)
+ * (c) 2015 KADOKAWA CORPORATION./YOJI OJIMA
+ * Contributions by the RPG Maker MV CoreScript team
+ * https://github.com/thinknathan/corescript/blob/master/CONTRIBUTORS.md
+ *
  * idb-keyval 6.2.0 | Copyright 2016, Jake Archibald
  * https://github.com/jakearchibald/idb-keyval/blob/main/LICENCE
+ *
  * fflate@0.7.3 | https://github.com/101arrowz/fflate/blob/master/LICENSE
+ *
+ * Comlink | Copyright 2019 Google Inc.
+ * https://github.com/GoogleChromeLabs/comlink/blob/main/LICENSE
  */`;
 const workerPlugins = [
 	nodeResolve({
@@ -96,6 +140,18 @@ export default [
 		plugins: corePlugins,
 	},
 	{
+		input: 'www/js/libs/comlink.js',
+		output: [
+			{
+				format: formatType,
+				file: 'dist/libs/comlink.js',
+				banner: comlinkBanner,
+				name: 'Comlink',
+			},
+		],
+		plugins: comlinkPlugins,
+	},
+	{
 		input: 'www/js/libs/pixi.js',
 		output: [
 			{
@@ -112,7 +168,6 @@ export default [
 		output: [
 			{
 				format: formatType,
-				name: 'worker',
 				file: 'dist/libs/worker.js',
 				banner: workerBanner,
 			},
