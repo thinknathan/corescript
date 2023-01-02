@@ -10,6 +10,38 @@ class StorageManager {
 		throw new Error('This is a static class');
 	}
 
+	static setupWorker() {
+		const worker = new Worker('js/save-storage-worker.min.js');
+		this._worker = new Comlink.wrap(worker);
+	}
+
+	static worker() {
+		return this._worker;
+	}
+
+	static _createWorkerData(savefileId, data) {
+		const requestObject = {
+			webKey: !this.isLocalMode() ? this.webStorageKey() : null,
+			id: savefileId,
+			data: data,
+		};
+		return requestObject;
+	}
+
+	static async compress(data) {
+		const compressed = await this.worker().compress(
+			this._createWorkerData(null, data)
+		);
+		return compressed.result;
+	}
+
+	static async decompress(data) {
+		const decompressed = await this.worker().decompress(
+			Comlink.transfer(this._createWorkerData(null, data), [data.buffer])
+		);
+		return decompressed.result;
+	}
+
 	static save(savefileId, json) {
 		if (this.isLocalMode()) {
 			this.saveToLocalFile(savefileId, json);
@@ -18,35 +50,33 @@ class StorageManager {
 		}
 	}
 
-	static load(savefileId) {
+	static async load(savefileId) {
 		if (this.isLocalMode()) {
-			return this.loadFromLocalFile(savefileId);
+			return await this.loadFromLocalFile(savefileId);
 		} else {
-			return this.loadFromWebStorage(savefileId);
+			return await this.loadFromWebStorage(savefileId);
 		}
 	}
 
-	static exists(savefileId) {
+	static async exists(savefileId) {
 		if (this.isLocalMode()) {
 			return this.localFileExists(savefileId);
 		} else {
-			return this.webStorageExists(savefileId);
+			return await this.webStorageExists(savefileId);
 		}
 	}
 
 	static remove(savefileId) {
 		if (this.isLocalMode()) {
 			this.removeLocalFile(savefileId);
-		} else {
-			this.removeWebStorage(savefileId);
 		}
 	}
 
-	static backup(savefileId) {
-		if (this.exists(savefileId)) {
-			if (this.isLocalMode()) {
-				const data = this.loadFromLocalFile(savefileId);
-				const compressed = LZString.compressToBase64(data);
+	static async backup(savefileId) {
+		if (this.isLocalMode()) {
+			if (await this.exists(savefileId)) {
+				const data = await this.loadFromLocalFile(savefileId);
+				const compressed = await this.compress(data);
 				const fs = require('fs');
 				const dirPath = this.localFileDirectoryPath();
 				const filePath = `${this.localFilePath(savefileId)}.bak`;
@@ -54,41 +84,33 @@ class StorageManager {
 					fs.mkdirSync(dirPath);
 				}
 				fs.writeFileSync(filePath, compressed);
-			} else {
-				const data = this.loadFromWebStorage(savefileId);
-				const compressed = LZString.compressToBase64(data);
-				const key = `${this.webStorageKey(savefileId)}bak`;
-				localStorage.setItem(key, compressed);
 			}
+		} else {
+			this.worker().backupSave(this._createWorkerData(savefileId));
 		}
 	}
 
 	static backupExists(savefileId) {
 		if (this.isLocalMode()) {
 			return this.localFileBackupExists(savefileId);
-		} else {
-			return this.webStorageBackupExists(savefileId);
 		}
 	}
 
 	static cleanBackup(savefileId) {
-		if (this.backupExists(savefileId)) {
-			if (this.isLocalMode()) {
+		if (this.isLocalMode()) {
+			if (this.backupExists(savefileId)) {
 				const fs = require('fs');
 				const filePath = this.localFilePath(savefileId);
 				fs.unlinkSync(`${filePath}.bak`);
-			} else {
-				const key = this.webStorageKey(savefileId);
-				localStorage.removeItem(`${key}bak`);
 			}
 		}
 	}
 
-	static restoreBackup(savefileId) {
-		if (this.backupExists(savefileId)) {
-			if (this.isLocalMode()) {
-				const data = this.loadFromLocalBackupFile(savefileId);
-				const compressed = LZString.compressToBase64(data);
+	static async restoreBackup(savefileId) {
+		if (this.isLocalMode()) {
+			if (this.backupExists(savefileId)) {
+				const data = await this.loadFromLocalBackupFile(savefileId);
+				const compressed = await this.compress(data);
 				const fs = require('fs');
 				const dirPath = this.localFileDirectoryPath();
 				const filePath = this.localFilePath(savefileId);
@@ -97,18 +119,12 @@ class StorageManager {
 				}
 				fs.writeFileSync(filePath, compressed);
 				fs.unlinkSync(`${filePath}.bak`);
-			} else {
-				const data = this.loadFromWebStorageBackup(savefileId);
-				const compressed = LZString.compressToBase64(data);
-				const key = this.webStorageKey(savefileId);
-				localStorage.setItem(key, compressed);
-				localStorage.removeItem(`${key}bak`);
 			}
 		}
 	}
 
-	static saveToLocalFile(savefileId, json) {
-		const data = LZString.compressToBase64(json);
+	static async saveToLocalFile(savefileId, json) {
+		const data = await this.compress(json);
 		const fs = require('fs');
 		const dirPath = this.localFileDirectoryPath();
 		const filePath = this.localFilePath(savefileId);
@@ -118,28 +134,19 @@ class StorageManager {
 		fs.writeFileSync(filePath, data);
 	}
 
-	static loadFromLocalFile(savefileId) {
-		let data = null;
+	static async loadFromLocalFile(savefileId) {
 		const fs = require('fs');
 		const filePath = this.localFilePath(savefileId);
-		if (fs.existsSync(filePath)) {
-			data = fs.readFileSync(filePath, {
-				encoding: 'utf8',
-			});
-		}
-		return LZString.decompressFromBase64(data);
+		if (!fs.existsSync(filePath)) return null;
+		const data = await fs.promises.readFile(filePath, { encoding: null });
+		return await this.decompress(data);
 	}
 
-	static loadFromLocalBackupFile(savefileId) {
-		let data = null;
+	static async loadFromLocalBackupFile(savefileId) {
 		const fs = require('fs');
 		const filePath = `${this.localFilePath(savefileId)}.bak`;
-		if (fs.existsSync(filePath)) {
-			data = fs.readFileSync(filePath, {
-				encoding: 'utf8',
-			});
-		}
-		return LZString.decompressFromBase64(data);
+		if (!fs.existsSync(filePath)) return null;
+		return await this.decompress(fs.readFileSync(filePath));
 	}
 
 	static localFileBackupExists(savefileId) {
@@ -161,36 +168,17 @@ class StorageManager {
 	}
 
 	static saveToWebStorage(savefileId, json) {
-		const key = this.webStorageKey(savefileId);
-		const data = LZString.compressToBase64(json);
-		localStorage.setItem(key, data);
+		this.worker().makeSave(this._createWorkerData(savefileId, json));
 	}
 
-	static loadFromWebStorage(savefileId) {
-		const key = this.webStorageKey(savefileId);
-		const data = localStorage.getItem(key);
-		return LZString.decompressFromBase64(data);
+	static async loadFromWebStorage(savefileId) {
+		return await this.worker().loadSave(this._createWorkerData(savefileId));
 	}
 
-	static loadFromWebStorageBackup(savefileId) {
-		const key = `${this.webStorageKey(savefileId)}bak`;
-		const data = localStorage.getItem(key);
-		return LZString.decompressFromBase64(data);
-	}
-
-	static webStorageBackupExists(savefileId) {
-		const key = `${this.webStorageKey(savefileId)}bak`;
-		return !!localStorage.getItem(key);
-	}
-
-	static webStorageExists(savefileId) {
-		const key = this.webStorageKey(savefileId);
-		return !!localStorage.getItem(key);
-	}
-
-	static removeWebStorage(savefileId) {
-		const key = this.webStorageKey(savefileId);
-		localStorage.removeItem(key);
+	static async webStorageExists(savefileId) {
+		return await this.worker().checkSaveExists(
+			this._createWorkerData(savefileId)
+		);
 	}
 
 	static localFileDirectoryPath() {
@@ -248,5 +236,7 @@ class StorageManager {
 		}
 	}
 }
+
+StorageManager.setupWorker();
 
 export default StorageManager;

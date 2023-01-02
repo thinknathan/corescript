@@ -27,8 +27,8 @@ class Scene_Save extends Scene_File {
 		return TextManager.saveMessage;
 	}
 
-	firstSavefileIndex() {
-		return DataManager.lastAccessedSavefileId() - 1;
+	async firstSavefileIndex() {
+		return (await DataManager.lastAccessedSavefileId()) - 1;
 	}
 
 	onSavefileOk() {
@@ -38,11 +38,13 @@ class Scene_Save extends Scene_File {
 		}
 		super.onSavefileOk();
 		self.$gameSystem.onBeforeSave();
-		if (DataManager.saveGame(this.savefileId())) {
-			this.onSaveSuccess();
-		} else {
-			this.onSaveFailure();
-		}
+		DataManager.saveGame(this.savefileId()).then((success) => {
+			if (success) {
+				this.onSaveSuccess();
+			} else {
+				this.onSaveFailure();
+			}
+		});
 	}
 
 	onSaveSuccess() {

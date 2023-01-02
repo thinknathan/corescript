@@ -15,12 +15,22 @@ class Window_SavefileList extends Window_Selectable {
 
 	initialize(x, y, width, height) {
 		super.initialize(x, y, width, height);
+		this._validItems = [];
+		for (let i = 0; i < this.maxItems() + 1; i++) {
+			DataManager.isThisGameFile(i).then((result) => {
+				this._validItems[i] = result;
+			});
+		}
 		this.activate();
 		this._mode = null;
 	}
 
 	setMode(mode) {
 		this._mode = mode;
+	}
+
+	isReady() {
+		return this._validItems.length >= this.maxItems();
 	}
 
 	maxItems() {
@@ -38,19 +48,20 @@ class Window_SavefileList extends Window_Selectable {
 
 	drawItem(index) {
 		const id = index + 1;
-		const valid = DataManager.isThisGameFile(id);
-		const info = DataManager.loadSavefileInfo(id);
-		const rect = this.itemRectForText(index);
-		this.resetTextColor();
-		if (this._mode === 'load') {
-			this.changePaintOpacity(valid);
-		}
-		this.drawFileId(id, rect.x, rect.y);
-		if (info) {
-			this.changePaintOpacity(valid);
-			this.drawContents(info, rect, valid);
-			this.changePaintOpacity(true);
-		}
+		const valid = this._validItems[id];
+		DataManager.loadSavefileInfo(id).then((info) => {
+			const rect = this.itemRectForText(index);
+			this.resetTextColor();
+			if (this._mode === 'load') {
+				this.changePaintOpacity(valid);
+			}
+			this.drawFileId(id, rect.x, rect.y);
+			if (info) {
+				this.changePaintOpacity(valid);
+				this.drawContents(info, rect, valid);
+				this.changePaintOpacity(true);
+			}
+		});
 	}
 
 	drawFileId(id, x, y) {

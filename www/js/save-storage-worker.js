@@ -6,7 +6,14 @@ import { expose, transfer } from 'comlink';
 const DEBUG_LOGGING = true;
 
 class WebStorageManager {
-	// constructor() {}
+	static successCallback() {
+		return true;
+	}
+
+	static failureCallback(e) {
+		console.error(e);
+		return false;
+	}
 
 	static compress(data) {
 		if (data === null) return null;
@@ -119,27 +126,14 @@ class WebStorageManager {
 	}
 }
 
-// function copy(src) {
-// 	var dst = new ArrayBuffer(src.byteLength);
-// 	new Uint8Array(dst).set(new Uint8Array(src));
-// 	return dst;
-// }
-
 class SaveStorageWorker {
-	// constructor() {}
-
 	static compress({ data }) {
 		const compressed = WebStorageManager.compress(data);
-		// const copied = copy(compressed.buffer);
-		// const stringed = strFromU8(compressed);
 		if (DEBUG_LOGGING)
 			console.log('[SaveStorageWorker.compress]', {
 				data,
 				compressed,
 			});
-		// return {
-		// 	result: compressed,
-		// };
 		return transfer(
 			{
 				result: compressed,
@@ -149,7 +143,6 @@ class SaveStorageWorker {
 	}
 
 	static decompress({ data }) {
-		// const array = strToU8(data);
 		const decompressed = WebStorageManager.decompress(data);
 		if (DEBUG_LOGGING)
 			console.log('[SaveStorageWorker.decompress]', { data, decompressed });

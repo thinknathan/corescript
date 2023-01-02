@@ -36,17 +36,19 @@ class Scene_Load extends Scene_File {
 		return TextManager.loadMessage;
 	}
 
-	firstSavefileIndex() {
-		return DataManager.latestSavefileId() - 1;
+	async firstSavefileIndex() {
+		return (await DataManager.latestSavefileId()) - 1;
 	}
 
 	onSavefileOk() {
 		super.onSavefileOk();
-		if (DataManager.loadGame(this.savefileId())) {
-			this.onLoadSuccess();
-		} else {
-			this.onLoadFailure();
-		}
+		DataManager.loadGame(this.savefileId()).then((success) => {
+			if (success) {
+				this.onLoadSuccess();
+			} else {
+				this.onLoadFailure();
+			}
+		});
 	}
 
 	onLoadSuccess() {

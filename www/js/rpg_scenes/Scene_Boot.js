@@ -29,6 +29,7 @@ class Scene_Boot extends Scene_Base {
 	create() {
 		super.create();
 		DataManager.loadDatabase();
+		DataManager.loadGlobalInfo();
 		ConfigManager.load();
 		this.loadSystemWindowImage();
 	}
@@ -39,7 +40,12 @@ class Scene_Boot extends Scene_Base {
 
 	isReady() {
 		if (Scene_Base.prototype.isReady.call(this)) {
-			return DataManager.isDatabaseLoaded() && this.isGameFontLoaded();
+			return (
+				ConfigManager.isConfigLoaded() &&
+				DataManager.isGlobalInfoLoaded() &&
+				DataManager.isDatabaseLoaded() &&
+				this.isGameFontLoaded()
+			);
 		} else {
 			return false;
 		}

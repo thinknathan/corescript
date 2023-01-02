@@ -17,13 +17,15 @@ class Scene_File extends Scene_MenuBase {
 
 	initialize() {
 		super.initialize();
+		this._hasfirstSavefileIndex = false;
 	}
 
 	create() {
 		super.create();
-		DataManager.loadAllSavefileImages();
-		this.createHelpWindow();
-		this.createListWindow();
+		DataManager.loadAllSavefileImages().then(() => {
+			this.createHelpWindow();
+			this.createListWindow();
+		});
 	}
 
 	start() {
@@ -49,11 +51,14 @@ class Scene_File extends Scene_MenuBase {
 		this._listWindow = new Window_SavefileList(x, y, width, height);
 		this._listWindow.setHandler('ok', this.onSavefileOk.bind(this));
 		this._listWindow.setHandler('cancel', this.popScene.bind(this));
-		this._listWindow.select(this.firstSavefileIndex());
-		this._listWindow.setTopRow(this.firstSavefileIndex() - 2);
 		this._listWindow.setMode(this.mode());
 		this._listWindow.refresh();
 		this.addWindow(this._listWindow);
+		this.firstSavefileIndex().then((firstSavefileIndex) => {
+			this._listWindow.select(firstSavefileIndex);
+			this._listWindow.setTopRow(firstSavefileIndex - 2);
+			this._hasfirstSavefileIndex = true;
+		});
 	}
 
 	mode() {
@@ -68,8 +73,17 @@ class Scene_File extends Scene_MenuBase {
 		return '';
 	}
 
-	firstSavefileIndex() {
+	async firstSavefileIndex() {
 		return 0;
+	}
+
+	isReady() {
+		return (
+			super.isReady() &&
+			this._hasfirstSavefileIndex &&
+			this._listWindow &&
+			this._listWindow.isReady()
+		);
 	}
 
 	onSavefileOk() {}

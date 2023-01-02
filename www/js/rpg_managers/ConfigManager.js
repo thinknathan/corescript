@@ -11,11 +11,11 @@ class ConfigManager {
 		throw new Error('This is a static class');
 	}
 
-	static load() {
+	static async load() {
 		let json;
 		let config = {};
 		try {
-			json = StorageManager.load(-1);
+			json = await StorageManager.load(-1);
 		} catch (e) {
 			console.error(e);
 		}
@@ -23,10 +23,15 @@ class ConfigManager {
 			config = JSON.parse(json);
 		}
 		this.applyData(config);
+		this._isConfigLoaded = true;
 	}
 
-	static save() {
-		StorageManager.save(-1, JSON.stringify(this.makeData()));
+	static isConfigLoaded() {
+		return this._isConfigLoaded;
+	}
+
+	static async save() {
+		await StorageManager.save(-1, JSON.stringify(this.makeData()));
 	}
 
 	static makeData() {
@@ -63,6 +68,7 @@ class ConfigManager {
 	}
 }
 
+ConfigManager._isConfigLoaded = false;
 ConfigManager.alwaysDash = false;
 ConfigManager.commandRemember = false;
 
