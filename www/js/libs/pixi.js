@@ -53,10 +53,8 @@ Application.registerPlugin(TickerPlugin);
 // Filters
 import { AlphaFilter } from '@pixi/filter-alpha';
 import { ColorMatrixFilter } from '@pixi/filter-color-matrix';
-// Needed for every game
 import { PixelateFilter } from '@pixi/filter-pixelate';
 import { CRTFilter } from '@pixi/filter-crt';
-
 export const filters = {
 	AlphaFilter,
 	ColorMatrixFilter,
