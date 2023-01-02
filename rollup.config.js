@@ -22,7 +22,7 @@ const corePlugins = [
 	terser({
 		ecma: 2018,
 		compress: {
-			drop_console: true,
+			drop_console: false,
 			keep_infinity: true,
 			passes: 2,
 		},
@@ -53,7 +53,7 @@ const comlinkPlugins = [
 	terser({
 		ecma: 2018,
 		compress: {
-			drop_console: true,
+			drop_console: false,
 			keep_infinity: true,
 			passes: 2,
 		},
@@ -81,7 +81,7 @@ const pixiPlugins = [
 	terser({
 		ecma: 2018,
 		compress: {
-			drop_console: true,
+			drop_console: false,
 			keep_infinity: true,
 			passes: 2,
 		},
@@ -114,7 +114,7 @@ const workerPlugins = [
 	terser({
 		ecma: 2018,
 		compress: {
-			drop_console: true,
+			drop_console: false,
 			keep_infinity: true,
 			passes: 2,
 		},
