@@ -108,6 +108,7 @@
     }
   ],
   "copyFilesSettings": {
-    "whenFileExists": "overwrite"
+    "whenFileExists": "overwrite",
+    "removeSourceMappingURL": true
   }
 }
