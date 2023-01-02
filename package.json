@@ -99,8 +99,8 @@
       "to": "dist/libs/pixi.js"
     },
     {
-      "from": "www/js/save-storage-worker.min.js",
-      "to": "dist/save-storage-worker.min.js"
+      "from": "www/js/game_storage_worker.min.js",
+      "to": "dist/game_storage_worker.min.js"
     },
     {
       "from": "www/js/libs/comlink.min.js",
