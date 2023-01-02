@@ -1,14 +1,15 @@
 'use strict';
 import { strToU8, inflateSync, deflateSync, strFromU8 } from 'fflate';
 import { set, get, del, keys } from 'idb-keyval';
-import { expose } from 'comlink';
+import { expose, transfer } from 'comlink';
 
 const DEBUG_LOGGING = true;
 
 class WebStorageManager {
 	// constructor() {}
 
-	static async compress(data) {
+	static compress(data) {
+		if (data === null) return null;
 		try {
 			const u8array = strToU8(data);
 			return deflateSync(u8array, {
@@ -20,7 +21,8 @@ class WebStorageManager {
 		}
 	}
 
-	static async decompress(data) {
+	static decompress(data) {
+		if (data === null) return null;
 		try {
 			const inflated = inflateSync(data);
 			return strFromU8(inflated);
@@ -42,7 +44,7 @@ class WebStorageManager {
 
 	static async save(savefileId, incoming, gameTitle) {
 		const key = this.storageKey(savefileId, gameTitle);
-		const data = await this.compress(incoming);
+		const data = this.compress(incoming);
 		return await set(key, data)
 			.then(this.successCallback)
 			.catch(this.failureCallback);
@@ -51,7 +53,7 @@ class WebStorageManager {
 	static async load(savefileId, gameTitle) {
 		const key = this.storageKey(savefileId, gameTitle);
 		const data = await get(key).catch(this.failureCallback);
-		const result = await this.decompress(data);
+		const result = this.decompress(data);
 		if (result) {
 			return result;
 		} else {
@@ -113,71 +115,88 @@ class WebStorageManager {
 		const key = this.storageKey(savefileId, gameTitle);
 		const backupKey = key + 'bak';
 		const compressed = await get(backupKey);
-		return await this.decompress(compressed);
+		return this.decompress(compressed);
 	}
 }
+
+// function copy(src) {
+// 	var dst = new ArrayBuffer(src.byteLength);
+// 	new Uint8Array(dst).set(new Uint8Array(src));
+// 	return dst;
+// }
 
 class SaveStorageWorker {
 	// constructor() {}
 
-	static async compress(data) {
-		const result = await WebStorageManager.compress(data);
-		if (DEBUG_LOGGING) console.log('SaveStorageWorker.compress', data, result);
-		return {
-			result: result,
-		};
-	}
-
-	static async decompress(data) {
-		const result = await WebStorageManager.decompress(data);
+	static compress({ data }) {
+		const compressed = WebStorageManager.compress(data);
+		// const copied = copy(compressed.buffer);
+		// const stringed = strFromU8(compressed);
 		if (DEBUG_LOGGING)
-			console.log('SaveStorageWorker.decompress', data, result);
-		return {
-			result: result,
-		};
-	}
-
-	static async makeSave(payload) {
-		const success = await WebStorageManager.save(
-			payload.id,
-			payload.data,
-			payload.webKey
+			console.log('[SaveStorageWorker.compress]', {
+				data,
+				compressed,
+			});
+		// return {
+		// 	result: compressed,
+		// };
+		return transfer(
+			{
+				result: compressed,
+			},
+			[compressed.buffer]
 		);
+	}
+
+	static decompress({ data }) {
+		// const array = strToU8(data);
+		const decompressed = WebStorageManager.decompress(data);
 		if (DEBUG_LOGGING)
-			console.log('[SaveStorageWorker.makeSave]', payload, success);
+			console.log('[SaveStorageWorker.decompress]', { data, decompressed });
+		return {
+			result: decompressed,
+		};
+	}
+
+	static async makeSave({ id, data, webKey }) {
+		const success = await WebStorageManager.save(id, data, webKey);
+		if (DEBUG_LOGGING)
+			console.log(
+				'[SaveStorageWorker.makeSave]',
+				{ id, data, webKey },
+				success
+			);
 		return {
 			success: success,
 		};
 	}
 
-	static async loadSave(payload) {
-		const data = await WebStorageManager.load(payload.id, payload.webKey);
+	static async loadSave({ id, webKey }) {
+		const data = await WebStorageManager.load(id, webKey);
 		if (DEBUG_LOGGING)
-			console.log('[SaveStorageWorker.loadSave]', payload, data);
+			console.log('[SaveStorageWorker.loadSave]', { id, webKey }, data);
 		return {
 			result: data,
 		};
 	}
 
-	static async backupSave(payload) {
-		const success = await WebStorageManager.backupSave(
-			payload.id,
-			payload.webKey
-		);
+	static async backupSave({ id, webKey }) {
+		const success = await WebStorageManager.backupSave(id, webKey);
 		if (DEBUG_LOGGING)
-			console.log('[SaveStorageWorker.backupSave]', payload, success);
+			console.log('[SaveStorageWorker.backupSave]', { id, webKey }, success);
 		return {
 			success: success,
 		};
 	}
 
-	static async checkSaveExists(payload) {
-		const result = await WebStorageManager.saveExists(
-			payload.id,
-			payload.webKey
-		);
+	static async checkSaveExists({ id, webKey }) {
+		const result = await WebStorageManager.saveExists(id, webKey);
 		if (DEBUG_LOGGING)
-			console.log('[SaveStorageWorker.checkSaveExists]', payload, result);
+			console.log(
+				'[SaveStorageWorker.checkSaveExists]',
+				{ id, webKey },
+				result
+			);
 		return {
 			result: result,
 		};
