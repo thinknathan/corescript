@@ -101,9 +101,9 @@ const workerBanner = `/*!!
  * idb-keyval 6.2.0 | Copyright 2016, Jake Archibald
  * https://github.com/jakearchibald/idb-keyval/blob/main/LICENCE
  *
- * fflate@0.7.3 | https://github.com/101arrowz/fflate/blob/master/LICENSE
+ * fflate@0.7.4 | https://github.com/101arrowz/fflate/blob/master/LICENSE
  *
- * Comlink | Copyright 2019 Google Inc.
+ * Comlink v4.3.1 | Copyright 2019 Google Inc.
  * https://github.com/GoogleChromeLabs/comlink/blob/main/LICENSE
  */`;
 const workerPlugins = [
