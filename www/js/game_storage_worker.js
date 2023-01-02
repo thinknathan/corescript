@@ -39,74 +39,55 @@ class WebStorageManager {
 		}
 	}
 
-	static storageKey(savefileId, gameTitle) {
-		if (savefileId < 0) {
-			return gameTitle + ' Config';
-		} else if (savefileId === 0) {
-			return gameTitle + ' Global';
-		} else {
-			return gameTitle + ' File' + savefileId;
-		}
-	}
-
-	static async save(savefileId, incoming, gameTitle) {
-		const key = this.storageKey(savefileId, gameTitle);
+	static async save(incoming, key) {
 		const data = this.compress(incoming);
 		return await set(key, data)
 			.then(this.successCallback)
 			.catch(this.failureCallback);
 	}
 
-	static async load(savefileId, gameTitle) {
-		const key = this.storageKey(savefileId, gameTitle);
+	static async load(savefileId, key) {
 		const data = await get(key).catch(this.failureCallback);
-		const result = this.decompress(data);
-		if (result) {
-			return result;
-		} else {
-			if (savefileId > 0) {
+		if (data) {
+			const result = this.decompress(data);
+			if (result) {
+				return result;
+			} else {
+				if (savefileId > 0) {
+					if (DEBUG_LOGGING)
+						console.warn(
+							'[WebStorageManager.load] Loading failed. Restoring backup.'
+						);
+					const backup = await this.loadBackup(key);
+					await this.restoreBackup(key);
+					return backup;
+				}
 				if (DEBUG_LOGGING)
 					console.warn(
-						'[WebStorageManager.load] Loading failed. Restoring backup.'
+						'[WebStorageManager.load] Loading failed. File broken or missing.'
 					);
-				const backup = await this.loadBackup(savefileId, gameTitle);
-				await this.restoreBackup(savefileId, gameTitle);
-				return backup;
+				return false;
 			}
-			if (DEBUG_LOGGING)
-				console.warn(
-					'[WebStorageManager.load] Loading failed. File broken or missing.'
-				);
-			return false;
 		}
+		return false;
 	}
 
-	static async deleteSave(savefileId, gameTitle) {
-		const key = this.storageKey(savefileId, gameTitle);
-		return await del(key)
-			.then(this.successCallback)
-			.catch(this.failureCallback);
-	}
-
-	static async saveExists(savefileId, gameTitle) {
-		const key = this.storageKey(savefileId, gameTitle);
+	static async saveExists(key) {
 		return await keys().then(function (keys) {
 			return keys.includes(key);
 		});
 	}
 
-	static async restoreBackup(savefileId, gameTitle) {
-		const key = this.storageKey(savefileId, gameTitle);
+	static async restoreBackup(key) {
 		const backupKey = key + 'bak';
-		const data = await this.loadBackup(savefileId, gameTitle);
-		await this.save(savefileId, data, gameTitle);
+		const data = await this.loadBackup(key);
+		await this.save(data, key);
 		return await del(backupKey)
 			.then(this.successCallback)
 			.catch(this.failureCallback);
 	}
 
-	static async backupSave(savefileId, gameTitle) {
-		const key = this.storageKey(savefileId, gameTitle);
+	static async backupSave(key) {
 		const backupKey = key + 'bak';
 		const data = await get(key).catch(this.failureCallback);
 		if (data) {
@@ -118,8 +99,7 @@ class WebStorageManager {
 		}
 	}
 
-	static async loadBackup(savefileId, gameTitle) {
-		const key = this.storageKey(savefileId, gameTitle);
+	static async loadBackup(key) {
 		const backupKey = key + 'bak';
 		const compressed = await get(backupKey);
 		return this.decompress(compressed);
@@ -151,14 +131,10 @@ class GameStorageWorker {
 		};
 	}
 
-	static async makeSave({ id, data, webKey }) {
-		const success = await WebStorageManager.save(id, data, webKey);
+	static async makeSave({ data, webKey }) {
+		const success = await WebStorageManager.save(data, webKey);
 		if (DEBUG_LOGGING)
-			console.log(
-				'[GameStorageWorker.makeSave]',
-				{ id, data, webKey },
-				success
-			);
+			console.log('[GameStorageWorker.makeSave]', { data, webKey }, success);
 		return {
 			success: success,
 		};
@@ -173,23 +149,19 @@ class GameStorageWorker {
 		};
 	}
 
-	static async backupSave({ id, webKey }) {
-		const success = await WebStorageManager.backupSave(id, webKey);
+	static async backupSave({ webKey }) {
+		const success = await WebStorageManager.backupSave(webKey);
 		if (DEBUG_LOGGING)
-			console.log('[GameStorageWorker.backupSave]', { id, webKey }, success);
+			console.log('[GameStorageWorker.backupSave]', { webKey }, success);
 		return {
 			success: success,
 		};
 	}
 
-	static async checkSaveExists({ id, webKey }) {
-		const result = await WebStorageManager.saveExists(id, webKey);
+	static async checkSaveExists({ webKey }) {
+		const result = await WebStorageManager.saveExists(webKey);
 		if (DEBUG_LOGGING)
-			console.log(
-				'[GameStorageWorker.checkSaveExists]',
-				{ id, webKey },
-				result
-			);
+			console.log('[GameStorageWorker.checkSaveExists]', { webKey }, result);
 		return {
 			result: result,
 		};

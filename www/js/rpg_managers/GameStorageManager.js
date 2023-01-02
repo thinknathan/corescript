@@ -21,7 +21,7 @@ class GameStorageManager {
 
 	static _createWorkerData(savefileId, data) {
 		const requestObject = {
-			webKey: !this.isLocalMode() ? this.webStorageKey() : null,
+			webKey: !this.isLocalMode() ? this.webStorageKey(savefileId) : null,
 			id: savefileId,
 			data: data,
 		};
@@ -173,13 +173,17 @@ class GameStorageManager {
 	}
 
 	static async loadFromWebStorage(savefileId) {
-		return await this.worker().loadSave(this._createWorkerData(savefileId));
+		const request = await this.worker().loadSave(
+			this._createWorkerData(savefileId)
+		);
+		return request.result;
 	}
 
 	static async webStorageExists(savefileId) {
-		return await this.worker().checkSaveExists(
+		const request = await this.worker().checkSaveExists(
 			this._createWorkerData(savefileId)
 		);
+		return request.result;
 	}
 
 	static localFileDirectoryPath() {
@@ -227,13 +231,18 @@ class GameStorageManager {
 		return Utils.isNwjs();
 	}
 
+	// Can be customized by plugins to create a unique web key
+	static uniqueKey() {
+		return 'RPGMV';
+	}
+
 	static webStorageKey(savefileId) {
 		if (savefileId < 0) {
-			return 'RPG Config';
+			return this.uniqueKey() + ' Config';
 		} else if (savefileId === 0) {
-			return 'RPG Global';
+			return this.uniqueKey() + ' Global';
 		} else {
-			return 'RPG File%1'.format(savefileId);
+			return this.uniqueKey() + ' File%1'.format(savefileId);
 		}
 	}
 }

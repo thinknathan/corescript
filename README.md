@@ -50,6 +50,7 @@ This fork introduces opinionated changes and is not necessarily a drop-in replac
 - Added Game_Action.processGuardDamage(item, value, target, critical)
 - Added Game_Action.processDamageEnd(item, value, target, critical)
 - Added BattleManager.processEscapeFormula (Function)
+- Added GameStorageManager.uniqueKey to customize the webkey used for finding matching saved files
 
 ### Upgrading your project to this fork
 
