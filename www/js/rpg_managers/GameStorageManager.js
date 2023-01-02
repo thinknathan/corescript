@@ -138,7 +138,7 @@ class GameStorageManager {
 		const fs = require('fs');
 		const filePath = this.localFilePath(savefileId);
 		if (!fs.existsSync(filePath)) return null;
-		const data = await fs.promises.readFile(filePath, { encoding: null });
+		const data = await fs.promises.readFile(filePath);
 		return await this.decompress(data);
 	}
 
@@ -146,7 +146,8 @@ class GameStorageManager {
 		const fs = require('fs');
 		const filePath = `${this.localFilePath(savefileId)}.bak`;
 		if (!fs.existsSync(filePath)) return null;
-		return await this.decompress(fs.readFileSync(filePath));
+		const data = await fs.promises.readFile(filePath);
+		return await this.decompress(data);
 	}
 
 	static localFileBackupExists(savefileId) {
