@@ -1,23 +1,31 @@
 # RPG Maker MV CoreScript
 
+## Project Introduction
+
+"RPG Maker MV CoreScript" is a game engine for 2D games that runs on the browser. "RPG Maker MV CoreScript" is designed as a game engine dedicated to "RPG Maker MV", the latest work of "RPG Maker" series of 2DRPG world number one software with more than 20 years history, and more than 1000 games are running. (February 2017)
+
 ## This Fork
 
 This fork introduces opinionated changes and is not necessarily a drop-in replacement for the default RPG Maker MV scripts.
 
-- Updated to use PIXI v6.x and PIXI-Tilemap v2.1.4
+- Updated to use PIXI v6.4.x and PIXI-Tilemap v2.1.4
 - Uses PIXI equivalents whenever possible instead of the Bitmap object
 - Uses PIXI.BitmapText for fast, memory-efficient text
 - Allows windows to overlap each other
 - Added FPS check to switch on/off fluid timestep
 - Switched to the PIXI.App model
 - Gamestats (performance monitoring plugin) integration
+
+### Compatibility Breaks
+
 - REMOVED: Picture blend modes
 - REMOVED: Picture smooth scaling
 - REMOVED: HTML5Audio
 - REMOVED: Gradients in gauges
+- StorageManager has been renamed and is no longer compatible with plugins that alter saving/loading.
 - NOTE: "Window Color" in the System menu of the editor is now applied differently than the default scripts. The default value of (0, 0, 0) is black. Using pure white (255, 255, 255) will disable it.
 
-## Added hooks
+### Added hooks
 
 - Added Game_Battler.onApplyDamage(action, target, value)
 - Added Game_Battler.onReceiveDamage(action, source, value)
@@ -28,7 +36,7 @@ This fork introduces opinionated changes and is not necessarily a drop-in replac
 - Added Game_Battler.onApplyCritical(action, target, value)
 - Added Game_Battler.onReceiveCritical(action, source, value)
 
-## Split functions into smaller parts
+### Split functions into smaller parts
 
 - Added Game_Action.processItemHitFormula(result, target)
 - Added Game_Action.processItemEvaFormula(result, target)
@@ -43,26 +51,29 @@ This fork introduces opinionated changes and is not necessarily a drop-in replac
 - Added Game_Action.processDamageEnd(item, value, target, critical)
 - Added BattleManager.processEscapeFormula (Function)
 
-## Upgrading your project to this fork
+### Upgrading your project to this fork
 
-Download main.js from _/dist/main.js_
+1. Download the /dist folder from this repo.
 
-Replace _js/main.js_ in your project with the one you downloaded.
+1. Move the files into your project's /js folder. Overwrite if prompted.
 
-Replace your _js/libs_ folder with the _dist/libs_ folder from this repo.
+1. Open your _index.html_ and delete these script tags:
 
-Open your _index.html_ and delete script tags that load rpg_core.js rpg_managers.js rpg_objects.js rpg_scenes.js rpg_sprites.js rpg_windows.js. They are no longer necessary.
+- libs/pixi-picture.js
+- libs/fpsmeter.js
+- libs/lz-string.js
+- libs/iphone-inline-video.browser.js
+- rpg_core.js
+- rpg_managers.js
+- rpg_objects.js
+- rpg_scenes.js
+- rpg_sprites.js
+- rpg_windows.js
 
-## Introduction
+4. After pixi.js and before plugins.js, add script tags for these files:
 
-"RPG Maker MV CoreScript" is a game engine for 2D games that runs on the browser. "RPG Maker MV CoreScript" is designed as a game engine dedicated to "RPG Maker MV", the latest work of "RPG Maker" series of 2DRPG world number one software with more than 20 years history, and more than 1000 games are running. (February 2017)
-
-## What is this project?
-
-This project is a project aimed at improving "RPG Maker MV CoreScript" better by the community and supporting many game creators.
-
-The core script developed by this project is widely distributed to RPG Maker users through KADOKAWA.
-The RPGMaker MV community is centered around plugins. Therefore, Ver1 series is developed while minimizing destructive change.
+- libs/comlink.js
+- libs/gamestats.min.js
 
 ## Constitution
 
@@ -129,18 +140,21 @@ Life cycle: `new Scene_Xxx() -> create() -> start() -> update()* -> stop() -> te
 1. Render the scene (including its children) onto the screen.
 1. Register `SceneManager.update` in `requestAnimationFrame`.
 
-## License
+## Licenses
 
-This content is released under the (http://opensource.org/licenses/MIT) MIT License.
+### Main files
 
-## Bundled Dependencies
+- main.js (http://opensource.org/licenses/MIT) MIT License.
+- game_storage_worker.js (https://www.apache.org/licenses/LICENSE-2.0) Apache 2.0 License.
+
+### Bundled Dependencies
 
 This project tree-shakes and exports its dependencies.
 
-- pixijs | MIT | Copyright (c) 2013-2017 Mathew Groves, Chad Engler https://github.com/pixijs/pixijs
-- pixijs filters | MIT | Copyright (c) 2013-2017 Mathew Groves, Chad Engler https://github.com/pixijs/filters
-- pixijs tilemap | MIT | Copyright (c) 2015 Ivan Popelyshev https://github.com/pixijs/tilemap
-- gamestats | MIT | Copyright (c) 2019 Erik Sombroek https://github.com/eriksom/gamestats/
-- fflate | MIT | Copyright (c) 2020 Arjun Barrett https://github.com/101arrowz/fflate
-- idb-keyval | Apache | Copyright 2016, Jake Archibald https://github.com/jakearchibald/idb-keyval
-- Comlink | Apache | Copyright 2017 Google Inc.
+- pixijs (https://github.com/pixijs/pixijs) MIT | Copyright (c) 2013-2017 Mathew Groves, Chad Engler
+- pixijs filters (https://github.com/pixijs/filters) MIT | Copyright (c) 2013-2017 Mathew Groves, Chad Engler
+- pixijs tilemap (https://github.com/pixijs/tilemap) MIT | Copyright (c) 2015 Ivan Popelyshev
+- gamestats (https://github.com/eriksom/gamestats/) MIT | Copyright (c) 2019 Erik Sombroek
+- fflate (https://github.com/101arrowz/fflate) MIT Copyright (c) 2020 Arjun Barrett
+- idb-keyval (https://github.com/jakearchibald/idb-keyval) Apache 2.0 | Copyright 2016, Jake Archibald
+- Comlink (https://github.com/GoogleChromeLabs/comlink) Apache 2.0 | Copyright 2017 Google Inc.
