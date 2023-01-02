@@ -1,4 +1,4 @@
-import StorageManager from '../rpg_managers/StorageManager.js';
+import GameStorageManager from '../rpg_managers/GameStorageManager.js';
 import AudioManager from '../rpg_managers/AudioManager.js';
 
 //-----------------------------------------------------------------------------
@@ -15,7 +15,7 @@ class ConfigManager {
 		let json;
 		let config = {};
 		try {
-			json = await StorageManager.load(-1);
+			json = await GameStorageManager.load(-1);
 		} catch (e) {
 			console.error(e);
 		}
@@ -31,7 +31,7 @@ class ConfigManager {
 	}
 
 	static async save() {
-		await StorageManager.save(-1, JSON.stringify(this.makeData()));
+		await GameStorageManager.save(-1, JSON.stringify(this.makeData()));
 	}
 
 	static makeData() {

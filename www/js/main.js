@@ -63,7 +63,7 @@ import {
 	DataManager,
 } from './rpg_managers/DataManager.js';
 import ConfigManager from './rpg_managers/ConfigManager.js';
-import StorageManager from './rpg_managers/StorageManager.js';
+import GameStorageManager from './rpg_managers/GameStorageManager.js';
 import ImageManager from './rpg_managers/ImageManager.js';
 import AudioManager from './rpg_managers/AudioManager.js';
 import SoundManager from './rpg_managers/SoundManager.js';
@@ -373,7 +373,7 @@ import Window_DebugEdit from './rpg_windows/Window_DebugEdit.js';
 
 	top.DataManager = DataManager;
 	top.ConfigManager = ConfigManager;
-	top.StorageManager = StorageManager;
+	top.GameStorageManager = GameStorageManager;
 	top.ImageManager = ImageManager;
 	top.AudioManager = AudioManager;
 	top.SoundManager = SoundManager;

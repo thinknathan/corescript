@@ -93,7 +93,7 @@ const pixiPlugins = [
 ];
 
 const workerBanner = `/*!!
- * save-storage-worker.js - corescript v1.6.1 (community-1.4)
+ * game_storage_worker.js - corescript v1.6.1 (community-1.4)
  * (c) 2015 KADOKAWA CORPORATION./YOJI OJIMA
  * Contributions by the RPG Maker MV CoreScript team
  * https://github.com/thinknathan/corescript/blob/master/CONTRIBUTORS.md
@@ -164,11 +164,11 @@ export default [
 		plugins: pixiPlugins,
 	},
 	{
-		input: 'www/js/save-storage-worker.js',
+		input: 'www/js/game_storage_worker.js',
 		output: [
 			{
 				format: formatType,
-				file: 'www/js/save-storage-worker.min.js',
+				file: 'www/js/game_storage_worker.min.js',
 				banner: workerBanner,
 			},
 		],

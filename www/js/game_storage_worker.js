@@ -126,11 +126,11 @@ class WebStorageManager {
 	}
 }
 
-class SaveStorageWorker {
+class GameStorageWorker {
 	static compress({ data }) {
 		const compressed = WebStorageManager.compress(data);
 		if (DEBUG_LOGGING)
-			console.log('[SaveStorageWorker.compress]', {
+			console.log('[GameStorageWorker.compress]', {
 				data,
 				compressed,
 			});
@@ -145,7 +145,7 @@ class SaveStorageWorker {
 	static decompress({ data }) {
 		const decompressed = WebStorageManager.decompress(data);
 		if (DEBUG_LOGGING)
-			console.log('[SaveStorageWorker.decompress]', { data, decompressed });
+			console.log('[GameStorageWorker.decompress]', { data, decompressed });
 		return {
 			result: decompressed,
 		};
@@ -155,7 +155,7 @@ class SaveStorageWorker {
 		const success = await WebStorageManager.save(id, data, webKey);
 		if (DEBUG_LOGGING)
 			console.log(
-				'[SaveStorageWorker.makeSave]',
+				'[GameStorageWorker.makeSave]',
 				{ id, data, webKey },
 				success
 			);
@@ -167,7 +167,7 @@ class SaveStorageWorker {
 	static async loadSave({ id, webKey }) {
 		const data = await WebStorageManager.load(id, webKey);
 		if (DEBUG_LOGGING)
-			console.log('[SaveStorageWorker.loadSave]', { id, webKey }, data);
+			console.log('[GameStorageWorker.loadSave]', { id, webKey }, data);
 		return {
 			result: data,
 		};
@@ -176,7 +176,7 @@ class SaveStorageWorker {
 	static async backupSave({ id, webKey }) {
 		const success = await WebStorageManager.backupSave(id, webKey);
 		if (DEBUG_LOGGING)
-			console.log('[SaveStorageWorker.backupSave]', { id, webKey }, success);
+			console.log('[GameStorageWorker.backupSave]', { id, webKey }, success);
 		return {
 			success: success,
 		};
@@ -186,7 +186,7 @@ class SaveStorageWorker {
 		const result = await WebStorageManager.saveExists(id, webKey);
 		if (DEBUG_LOGGING)
 			console.log(
-				'[SaveStorageWorker.checkSaveExists]',
+				'[GameStorageWorker.checkSaveExists]',
 				{ id, webKey },
 				result
 			);
@@ -196,4 +196,4 @@ class SaveStorageWorker {
 	}
 }
 
-expose(SaveStorageWorker);
+expose(GameStorageWorker);

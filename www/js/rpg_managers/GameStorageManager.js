@@ -1,17 +1,17 @@
 import Utils from '../rpg_core/Utils.js';
 
 //-----------------------------------------------------------------------------
-// StorageManager
+// GameStorageManager
 //
 // The static class that manages storage for saving game data.
 
-class StorageManager {
+class GameStorageManager {
 	constructor() {
 		throw new Error('This is a static class');
 	}
 
 	static setupWorker() {
-		const worker = new Worker('js/save-storage-worker.min.js');
+		const worker = new Worker('js/game_storage_worker.min.js');
 		this._worker = new Comlink.wrap(worker);
 	}
 
@@ -237,6 +237,6 @@ class StorageManager {
 	}
 }
 
-StorageManager.setupWorker();
+GameStorageManager.setupWorker();
 
-export default StorageManager;
+export default GameStorageManager;

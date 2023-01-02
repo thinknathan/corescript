@@ -1,7 +1,7 @@
 import Graphics from '../rpg_core/Graphics.js';
 import Decrypter from '../rpg_core/Decrypter.js';
 import ResourceHandler from '../rpg_core/ResourceHandler.js';
-import StorageManager from '../rpg_managers/StorageManager.js';
+import GameStorageManager from '../rpg_managers/GameStorageManager.js';
 import SceneManager from '../rpg_managers/SceneManager.js';
 import BattleManager from '../rpg_managers/BattleManager.js';
 import ImageManager from '../rpg_managers/ImageManager.js';
@@ -156,7 +156,7 @@ class DataManager {
 		}
 		let json;
 		try {
-			json = await StorageManager.load(0);
+			json = await GameStorageManager.load(0);
 		} catch (e) {
 			console.error(e);
 			this._isGlobalInfoLoaded = true;
@@ -165,7 +165,7 @@ class DataManager {
 		if (json) {
 			this._globalInfo = JSON.parse(json);
 			for (let i = 1; i <= this.maxSavefiles(); i++) {
-				if (!(await StorageManager.exists(i))) {
+				if (!(await GameStorageManager.exists(i))) {
 					delete this._globalInfo[i];
 				} else {
 					this._saveFileExists = true;
@@ -182,13 +182,13 @@ class DataManager {
 
 	static saveGlobalInfo(info) {
 		this._globalInfo = null;
-		StorageManager.save(0, JSON.stringify(info));
+		GameStorageManager.save(0, JSON.stringify(info));
 	}
 
 	static async isThisGameFile(savefileId) {
 		const globalInfo = await this.loadGlobalInfo();
 		if (globalInfo && globalInfo[savefileId]) {
-			if (StorageManager.isLocalMode()) {
+			if (GameStorageManager.isLocalMode()) {
 				return true;
 			} else {
 				const savefile = globalInfo[savefileId];
@@ -242,15 +242,15 @@ class DataManager {
 	static async saveGame(savefileId) {
 		try {
 			this.onBeforeSave();
-			await StorageManager.backup(savefileId);
+			await GameStorageManager.backup(savefileId);
 			const result = await this.saveGameWithoutRescue(savefileId);
 			this.onAfterSave();
 			return result;
 		} catch (e) {
 			console.error(e);
 			try {
-				await StorageManager.remove(savefileId);
-				await StorageManager.restoreBackup(savefileId);
+				await GameStorageManager.remove(savefileId);
+				await GameStorageManager.restoreBackup(savefileId);
 			} catch (e2) {
 				console.error(e2);
 			}
@@ -290,7 +290,7 @@ class DataManager {
 				json.length
 			);
 		}
-		await StorageManager.save(savefileId, json);
+		await GameStorageManager.save(savefileId, json);
 		this._lastAccessedId = savefileId;
 		const globalInfo = (await this.loadGlobalInfo()) || [];
 		globalInfo[savefileId] = this.makeSavefileInfo();
@@ -300,7 +300,7 @@ class DataManager {
 
 	static async loadGameWithoutRescue(savefileId) {
 		if (await this.isThisGameFile(savefileId)) {
-			const json = await StorageManager.load(savefileId);
+			const json = await GameStorageManager.load(savefileId);
 			this.createGameObjects();
 			this.extractSaveContents(JsonEx.parse(json));
 			this._lastAccessedId = savefileId;
@@ -361,7 +361,7 @@ class DataManager {
 			self.$gameSystem.onBeforeSave();
 			this.saveGame(this._autoSaveFileId).then((success) => {
 				if (success) {
-					StorageManager.cleanBackup(this._autoSaveFileId);
+					GameStorageManager.cleanBackup(this._autoSaveFileId);
 				}
 			});
 		}

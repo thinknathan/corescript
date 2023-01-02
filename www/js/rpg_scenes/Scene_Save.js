@@ -1,7 +1,7 @@
 import Scene_File from './Scene_File.js';
 import SoundManager from '../rpg_managers/SoundManager.js';
 import TextManager from '../rpg_managers/TextManager.js';
-import StorageManager from '../rpg_managers/StorageManager.js';
+import GameStorageManager from '../rpg_managers/GameStorageManager.js';
 import { DataManager } from '../rpg_managers/DataManager.js';
 
 //-----------------------------------------------------------------------------
@@ -49,7 +49,7 @@ class Scene_Save extends Scene_File {
 
 	onSaveSuccess() {
 		SoundManager.playSave();
-		StorageManager.cleanBackup(this.savefileId());
+		GameStorageManager.cleanBackup(this.savefileId());
 		this.popScene();
 	}
 
