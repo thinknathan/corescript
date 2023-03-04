@@ -10,7 +10,7 @@
     "@pixi/canvas-extract": "~6.4",
     "@pixi/canvas-graphics": "~6.4",
     "@pixi/canvas-mesh": "~6.4",
-    "@pixi/canvas-particle-container": "~6.4",
+    "@pixi/canvas-particle-container": "~6.5",
     "@pixi/canvas-prepare": "~6.4",
     "@pixi/canvas-renderer": "~6.4",
     "@pixi/canvas-sprite": "~6.4",

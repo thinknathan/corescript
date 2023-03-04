@@ -346,10 +346,10 @@
   resolved "https://registry.yarnpkg.com/@pixi/canvas-mesh/-/canvas-mesh-6.4.2.tgz#7615fb8d0df9b265f8fbca6b47f89e9d47eb392e"
   integrity sha512-7In1N4/8T2xYYG1FvDpfR19GFqltezyZhWwz0FDzglBikDlDmE/vWRzfttf6ya6SOReK2fbfzfgIHdr+xHUZmw==
 
-"@pixi/canvas-particle-container@~6.4":
-  version "6.4.2"
-  resolved "https://registry.yarnpkg.com/@pixi/canvas-particle-container/-/canvas-particle-container-6.4.2.tgz#9f1198201b785a072f913f2b0ce650b47574c945"
-  integrity sha512-Q/OW1Cjl556kPeqHDngBOHYorbyxNe7xAYDeEdPqaa6YnIc5Ab0DnbSSJurElacmbs3RR8n6a6pURipnYBdxnQ==
+"@pixi/canvas-particle-container@~6.5":
+  version "6.5.9"
+  resolved "https://registry.yarnpkg.com/@pixi/canvas-particle-container/-/canvas-particle-container-6.5.9.tgz#2db8b27fe875bc4bede85ce282447dc2b93fc5a5"
+  integrity sha512-bXhfeI7BG5s4SdvfIQcW4T/riGN9YsG2kkFWboVfrMEDv/fnJTpUgwfFfY1JCAALMLMfezctSqAACqdZTyWhmg==
 
 "@pixi/canvas-prepare@~6.4":
   version "6.4.2"
