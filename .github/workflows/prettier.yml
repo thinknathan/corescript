@@ -1,5 +1,9 @@
 name: Continuous Integration
 
+permissions:
+  pull-requests: read
+  contents: write
+
 # This action works with pull requests
 on:
   pull_request:
