@@ -58,7 +58,7 @@
   },
   "devDependencies": {
     "@rollup/plugin-node-resolve": "^13.2.1",
-    "copy-files-from-to": "^3.6.0",
+    "copy-files-from-to": "^3.8.0",
     "rollup": "^2.75.7",
     "rollup-plugin-commonjs": "^10.1.0",
     "rollup-plugin-node-polyfills2": "^0.1.0",
