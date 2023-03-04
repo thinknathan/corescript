@@ -40,7 +40,7 @@
     "@pixi/mesh": "~6.4",
     "@pixi/mesh-extras": "~6.4",
     "@pixi/mixin-cache-as-bitmap": "~6.4",
-    "@pixi/polyfill": "~6.4",
+    "@pixi/polyfill": "~6.5",
     "@pixi/runner": "~6.4",
     "@pixi/settings": "~6.4",
     "@pixi/sprite": "~6.4",

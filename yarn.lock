@@ -500,10 +500,10 @@
   resolved "https://registry.yarnpkg.com/@pixi/mixin-cache-as-bitmap/-/mixin-cache-as-bitmap-6.4.2.tgz#10f37259ddc65aafb0a492adb17135d040db7874"
   integrity sha512-TyMoSDoxd8o1J6/S/8xjJlCO4ThVOC2aJdHMP3hNX8GqjszOWZ2JONwVrPauToCPLyM76JXoDylwINB0bMh3YQ==
 
-"@pixi/polyfill@~6.4":
-  version "6.4.2"
-  resolved "https://registry.yarnpkg.com/@pixi/polyfill/-/polyfill-6.4.2.tgz#c1a0b44ae60bff6749e00df069803546afe86a9b"
-  integrity sha512-526FVALec5Hf6KVuguRLmLjnAAodpcBeZdQvMVEyMqgxZLch3f6QSwq+SITqR2lr7toqRYEWMyH7ISXdqbcRAg==
+"@pixi/polyfill@~6.5":
+  version "6.5.9"
+  resolved "https://registry.yarnpkg.com/@pixi/polyfill/-/polyfill-6.5.9.tgz#bb7511ce09429c46d6f4428edc6bb854bbe0de09"
+  integrity sha512-S8ETjbGlW+YtJcC3Ysg9pSAHUsuyU3AvJfCL9PaQFG4/C39J36TqRLufB/9+WzUZ4TBI/CcsEWCh7InHpogT4Q==
   dependencies:
     object-assign "^4.1.1"
     promise-polyfill "^8.2.0"
