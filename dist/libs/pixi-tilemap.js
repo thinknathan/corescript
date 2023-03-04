@@ -1,12 +1,12 @@
 /* eslint-disable */
-
+ 
 /*!
  * pixi-tilemap - v2.1.4
  * Compiled Sun, 28 Feb 2021 22:45:15 UTC
  *
  * pixi-tilemap is licensed under the MIT License.
  * http://www.opensource.org/licenses/mit-license
- *
+ * 
  * Copyright 2019-2020, Ivan Popelyshev, All Rights Reserved
  */
 this.PIXI = this.PIXI || {};
@@ -20,7 +20,7 @@ this.PIXI.tilemap = this.PIXI.tilemap || {};
     // TODO: Move to @pixi/tilemap-canvas
     class CanvasTileRenderer
     {
-
+        
         __init() {this.tileAnim = [0, 0];}
         __init2() {this.dontUseTransform = false;}
 
@@ -57,7 +57,7 @@ this.PIXI.tilemap = this.PIXI.tilemap || {};
 
         __init5() {this.pointsBuf = [];}
         __init6() {this.hasAnim = false;}
-
+        
 
         __init7() {this.offsetX = 0;}
         __init8() {this.offsetY = 0;}
@@ -433,13 +433,13 @@ this.PIXI.tilemap = this.PIXI.tilemap || {};
             this.initialize.apply(this, arguments);
         }
 
-
+        
         __init() {this.modificationMarker = 0;}
         __init2() {this.shadowColor = new Float32Array([0.0, 0.0, 0.0, 0.5]);}
         __init3() {this._globalMat = null;}
         __init4() {this._lastLayer = null;}
 
-
+        
         __init5() {this.tileAnim = null;}
 
         initialize(zIndex, bitmaps, texPerChild) {
@@ -713,7 +713,7 @@ this.PIXI.tilemap = this.PIXI.tilemap || {};
 
     class MultiTextureResource extends core.Resource
     {
-    	constructor(options)
+    	constructor(options) 
     	{
     		super(options.bufferSize, options.bufferSize);MultiTextureResource.prototype.__init.call(this);MultiTextureResource.prototype.__init2.call(this);MultiTextureResource.prototype.__init3.call(this);MultiTextureResource.prototype.__init4.call(this);MultiTextureResource.prototype.__init5.call(this);MultiTextureResource.prototype.__init6.call(this);;
 
@@ -734,7 +734,7 @@ this.PIXI.tilemap = this.PIXI.tilemap || {};
     	__init2() {this.boundSize = 0;}
     	__init3() {this._clearBuffer = null;}
 
-    	bind(baseTexture)
+    	bind(baseTexture) 
     	{
     		if (this.baseTex) {
     			throw new Error('Only one baseTexture is allowed for this resource!')
@@ -747,7 +747,7 @@ this.PIXI.tilemap = this.PIXI.tilemap || {};
     	__init5() {this.boundSprites = [];}
     	__init6() {this.dirties = [];}
 
-    	setTexture(ind, texture)
+    	setTexture(ind, texture) 
     	{
     		const spr = this.boundSprites[ind];
     		if (spr.texture.baseTexture === texture.baseTexture) {
@@ -758,7 +758,7 @@ this.PIXI.tilemap = this.PIXI.tilemap || {};
     		this.dirties[ind] = (this.baseTex ).dirtyId;
     	}
 
-    	upload(renderer, texture, glTexture)
+    	upload(renderer, texture, glTexture) 
     	{
     		const { gl } = renderer ;
 
@@ -963,7 +963,7 @@ void main(void){
     			.addAttribute('aTextureId', buf, 0, false, 0, this.stride, 10 * 4);
     	}
 
-
+    	
     }
 
     /**
@@ -971,15 +971,15 @@ void main(void){
      */
     class TileRenderer extends core.ObjectRenderer
     {
-
-
+    	
+    	
     	__init() {this.sn = -1;}
     	__init2() {this.indexBuffer = null;}
     	__init3() {this.ibLen = 0;}
     	__init4() {this.tileAnim = [0, 0];}
     	__init5() {this.texLoc = [];}
 
-
+    	
     	__init6() {this.texResources = [];}
 
     	constructor(renderer) {
@@ -1114,13 +1114,13 @@ void main(void){
             this.z = zIndex;
         }
 
-
-
-
-
-
+        
+        
+        
+        
+        
         __init() {this._lastAnimationFrame = -1;}
-
+        
 
         clear() {
             let layers = this.children ;
