@@ -7,6 +7,7 @@ import * as esbuild from 'esbuild';
 if (process.env.NODE_ENV === undefined)
 	console.log('[build-www] Warning: NODE_ENV is undefined.');
 
+const DIST_FOLDER = process.env.DIST_FOLDER ?? './www/js';
 const NODE_ENV = process.env.NODE_ENV ?? 'production';
 const isDev = NODE_ENV === 'development';
 
@@ -30,7 +31,7 @@ const settings = {
 		'./src-www/js/Render_Thread.js',
 	],
 	minify: !isDev,
-	outdir: './www/js',
+	outdir: DIST_FOLDER,
 	platform: 'browser',
 	sourcemap: isDev,
 	target: ['es2020'],
