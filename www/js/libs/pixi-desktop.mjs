@@ -1,6 +1,6 @@
 /*!
- * pixi.js - v7.0.3
- * Compiled Mon, 07 Nov 2022 00:40:25 UTC
+ * pixi.js - v7.0.5
+ * Compiled Mon, 12 Dec 2022 15:56:40 UTC
  *
  * pixi.js is licensed under the MIT License.
  * http://www.opensource.org/licenses/mit-license
@@ -208,7 +208,11 @@ const BrowserAdapter = {
   getNavigator: () => navigator,
   getBaseUrl: () => document.baseURI ?? window.location.href,
   getFontFaceSet: () => document.fonts,
-  fetch: (url, options) => fetch(url, options)
+  fetch: (url, options) => fetch(url, options),
+  parseXML: (xml) => {
+    const parser = new DOMParser();
+    return parser.parseFromString(xml, "text/xml");
+  }
 };
 
 var appleIphone = /iPhone/i;
@@ -382,7 +386,7 @@ const settings = {
     autoDensity: false,
     backgroundColor: 0,
     backgroundAlpha: 1,
-    useContextAlpha: true,
+    premultipliedAlpha: true,
     clearBeforeRender: true,
     preserveDrawingBuffer: false,
     width: 800,
@@ -421,6 +425,9 @@ var ExtensionType = /* @__PURE__ */ ((ExtensionType2) => {
 })(ExtensionType || {});
 const normalizeExtension = (ext) => {
   if (typeof ext === "function" || typeof ext === "object" && ext.extension) {
+    if (!ext.extension) {
+      throw new Error("Extension class must have an extension object");
+    }
     const metadata = typeof ext.extension !== "object" ? { type: ext.extension } : ext.extension;
     ext = { ...metadata, ref: ext };
   }
@@ -434,6 +441,7 @@ const normalizeExtension = (ext) => {
   }
   return ext;
 };
+const normalizePriority = (ext, defaultPriority) => normalizeExtension(ext).priority ?? defaultPriority;
 const extensions$1 = {
   _addHandlers: {},
   _removeHandlers: {},
@@ -462,6 +470,9 @@ const extensions$1 = {
   handle(type, onAdd, onRemove) {
     const addHandlers = this._addHandlers;
     const removeHandlers = this._removeHandlers;
+    if (addHandlers[type] || removeHandlers[type]) {
+      throw new Error(`Extension type ${type} already has a handler`);
+    }
     addHandlers[type] = onAdd;
     removeHandlers[type] = onRemove;
     const queue = this._queue;
@@ -478,13 +489,13 @@ const extensions$1 = {
       delete map[extension.name];
     });
   },
-  handleByList(type, list) {
+  handleByList(type, list, defaultPriority = -1) {
     return this.handle(type, (extension) => {
       if (list.includes(extension.ref)) {
         return;
       }
       list.push(extension.ref);
-      list.sort((a, b) => (b.priority ?? -1) - (a.priority ?? -1));
+      list.sort((a, b) => normalizePriority(b, defaultPriority) - normalizePriority(a, defaultPriority));
     }, (extension) => {
       const index = list.indexOf(extension.ref);
       if (index !== -1) {
@@ -531,6 +542,9 @@ class Point {
     this.x = x;
     this.y = y;
     return this;
+  }
+  toString() {
+    return `[@pixi/math:Point x=${this.x} y=${this.y}]`;
   }
 }
 
@@ -680,6 +694,9 @@ class Rectangle {
     this.height = y2 - y1;
     return this;
   }
+  toString() {
+    return `[@pixi/math:Rectangle x=${this.x} y=${this.y} width=${this.width} height=${this.height}]`;
+  }
 }
 
 class Circle {
@@ -706,6 +723,9 @@ class Circle {
   getBounds() {
     return new Rectangle(this.x - this.radius, this.y - this.radius, this.radius * 2, this.radius * 2);
   }
+  toString() {
+    return `[@pixi/math:Circle x=${this.x} y=${this.y} radius=${this.radius}]`;
+  }
 }
 
 class Ellipse {
@@ -731,6 +751,9 @@ class Ellipse {
   }
   getBounds() {
     return new Rectangle(this.x - this.width, this.y - this.height, this.width, this.height);
+  }
+  toString() {
+    return `[@pixi/math:Ellipse x=${this.x} y=${this.y} width=${this.width} height=${this.height}]`;
   }
 }
 
@@ -768,6 +791,9 @@ class Polygon {
       }
     }
     return inside;
+  }
+  toString() {
+    return `[@pixi/math:PolygoncloseStroke=${this.closeStroke}points=${this.points.reduce((pointsDesc, currentPoint) => `${pointsDesc}, ${currentPoint}`, "")}]`;
   }
 }
 
@@ -815,6 +841,9 @@ class RoundedRectangle {
     }
     return false;
   }
+  toString() {
+    return `[@pixi/math:RoundedRectangle x=${this.x} y=${this.y}width=${this.width} height=${this.height} radius=${this.radius}]`;
+  }
 }
 
 class ObservablePoint {
@@ -849,6 +878,9 @@ class ObservablePoint {
   }
   equals(p) {
     return p.x === this._x && p.y === this._y;
+  }
+  toString() {
+    return `[@pixi/math:ObservablePoint x=${0} y=${0} scope=${this.scope}]`;
   }
   get x() {
     return this._x;
@@ -1081,6 +1113,9 @@ class Matrix {
     this.ty = matrix.ty;
     return this;
   }
+  toString() {
+    return `[@pixi/math:Matrix a=${this.a} b=${this.b} c=${this.c} d=${this.d} tx=${this.tx} ty=${this.ty}]`;
+  }
   static get IDENTITY() {
     return new Matrix();
   }
@@ -1203,6 +1238,9 @@ const _Transform = class {
     this._cy = -Math.sin(this._rotation - this.skew.x);
     this._sy = Math.cos(this._rotation - this.skew.x);
     this._localID++;
+  }
+  toString() {
+    return `[@pixi/math:Transform position=(${this.position.x}, ${this.position.y}) rotation=${this.rotation} scale=(${this.scale.x}, ${this.scale.y}) skew=(${this.skew.x}, ${this.skew.y}) ]`;
   }
   updateLocalTransform() {
     const lt = this.localTransform;
@@ -4530,9 +4568,36 @@ const path = {
 settings.RETINA_PREFIX = /@([0-9\.]+)x/;
 settings.FAIL_IF_MAJOR_PERFORMANCE_CAVEAT = false;
 
+const warnings = {};
+function deprecation(version, message, ignoreDepth = 3) {
+  if (warnings[message]) {
+    return;
+  }
+  let stack = new Error().stack;
+  if (typeof stack === "undefined") {
+    console.warn("PixiJS Deprecation Warning: ", `${message}
+Deprecated since v${version}`);
+  } else {
+    stack = stack.split("\n").splice(ignoreDepth).join("\n");
+    if (console.groupCollapsed) {
+      console.groupCollapsed("%cPixiJS Deprecation Warning: %c%s", "color:#614108;background:#fffbe6", "font-weight:normal;color:#614108;background:#fffbe6", `${message}
+Deprecated since v${version}`);
+      console.warn(stack);
+      console.groupEnd();
+    } else {
+      console.warn("PixiJS Deprecation Warning: ", `${message}
+Deprecated since v${version}`);
+      console.warn(stack);
+    }
+  }
+  warnings[message] = true;
+}
+
 function skipHello() {
+  deprecation("7.0.0", "skipHello is deprecated, please use PIXI.settings.RENDER_OPTIONS.hello");
 }
 function sayHello() {
+  deprecation("7.0.0", `sayHello is deprecated, please use Renderer's "hello" option`);
 }
 
 let supported;
@@ -5078,31 +5143,6 @@ function uid() {
   return ++nextUid;
 }
 
-const warnings = {};
-function deprecation(version, message, ignoreDepth = 3) {
-  if (warnings[message]) {
-    return;
-  }
-  let stack = new Error().stack;
-  if (typeof stack === "undefined") {
-    console.warn("PixiJS Deprecation Warning: ", `${message}
-Deprecated since v${version}`);
-  } else {
-    stack = stack.split("\n").splice(ignoreDepth).join("\n");
-    if (console.groupCollapsed) {
-      console.groupCollapsed("%cPixiJS Deprecation Warning: %c%s", "color:#614108;background:#fffbe6", "font-weight:normal;color:#614108;background:#fffbe6", `${message}
-Deprecated since v${version}`);
-      console.warn(stack);
-      console.groupEnd();
-    } else {
-      console.warn("PixiJS Deprecation Warning: ", `${message}
-Deprecated since v${version}`);
-      console.warn(stack);
-    }
-  }
-  warnings[message] = true;
-}
-
 const ProgramCache = {};
 const TextureCache = /* @__PURE__ */ Object.create(null);
 const BaseTextureCache = /* @__PURE__ */ Object.create(null);
@@ -5158,58 +5198,49 @@ class CanvasRenderTarget {
   }
 }
 
+function checkRow(data, width, y) {
+  for (let x = 0, index = 4 * y * width; x < width; ++x, index += 4) {
+    if (data[index + 3] !== 0)
+      return false;
+  }
+  return true;
+}
+function checkColumn(data, width, x, top, bottom) {
+  const stride = 4 * width;
+  for (let y = top, index = top * stride + 4 * x; y <= bottom; ++y, index += stride) {
+    if (data[index + 3] !== 0)
+      return false;
+  }
+  return true;
+}
 function trimCanvas(canvas) {
-  let width = canvas.width;
-  let height = canvas.height;
+  let { width, height } = canvas;
   const context = canvas.getContext("2d", {
     willReadFrequently: true
   });
   const imageData = context.getImageData(0, 0, width, height);
-  const pixels = imageData.data;
-  const len = pixels.length;
-  const bound = {
-    top: null,
-    left: null,
-    right: null,
-    bottom: null
-  };
-  let data = null;
-  let i;
-  let x;
-  let y;
-  for (i = 0; i < len; i += 4) {
-    if (pixels[i + 3] !== 0) {
-      x = i / 4 % width;
-      y = ~~(i / 4 / width);
-      if (bound.top === null) {
-        bound.top = y;
-      }
-      if (bound.left === null) {
-        bound.left = x;
-      } else if (x < bound.left) {
-        bound.left = x;
-      }
-      if (bound.right === null) {
-        bound.right = x + 1;
-      } else if (bound.right < x) {
-        bound.right = x + 1;
-      }
-      if (bound.bottom === null) {
-        bound.bottom = y;
-      } else if (bound.bottom < y) {
-        bound.bottom = y;
-      }
-    }
+  const data = imageData.data;
+  let top = 0;
+  let bottom = height - 1;
+  let left = 0;
+  let right = width - 1;
+  while (top < height && checkRow(data, width, top))
+    ++top;
+  if (top === height) {
+    return { width: 0, height: 0, data: null };
   }
-  if (bound.top !== null) {
-    width = bound.right - bound.left;
-    height = bound.bottom - bound.top + 1;
-    data = context.getImageData(bound.left, bound.top, width, height);
-  }
+  while (checkRow(data, width, bottom))
+    --bottom;
+  while (checkColumn(data, width, left, top, bottom))
+    ++left;
+  while (checkColumn(data, width, right, top, bottom))
+    --right;
+  width = right - left + 1;
+  height = bottom - top + 1;
   return {
-    height,
     width,
-    data
+    height,
+    data: context.getImageData(left, top, width, height)
   };
 }
 
@@ -5635,7 +5666,7 @@ const _BaseTexture = class extends eventemitter3 {
       if (!baseTexture.textureCacheIds.includes(id)) {
         baseTexture.textureCacheIds.push(id);
       }
-      if (BaseTextureCache[id]) {
+      if (BaseTextureCache[id] && BaseTextureCache[id] !== baseTexture) {
         console.warn(`BaseTexture added to the cache with an id [${id}] that already had an entry`);
       }
       BaseTextureCache[id] = baseTexture;
@@ -6603,6 +6634,9 @@ class TextureUvs {
     this.uvsFloat32[6] = this.x3;
     this.uvsFloat32[7] = this.y3;
   }
+  toString() {
+    return `[@pixi/core:TextureUvs x0=${this.x0} y0=${this.y0} x1=${this.x1} y1=${this.y1} x2=${this.x2} y2=${this.y2} x3=${this.x3} y3=${this.y3}]`;
+  }
 }
 
 const DEFAULT_UVS = new TextureUvs();
@@ -6792,7 +6826,7 @@ class Texture extends eventemitter3 {
       if (!texture.textureCacheIds.includes(id)) {
         texture.textureCacheIds.push(id);
       }
-      if (TextureCache[id]) {
+      if (TextureCache[id] && TextureCache[id] !== texture) {
         console.warn(`Texture added to the cache with an id [${id}] that already had an entry`);
       }
       TextureCache[id] = texture;
@@ -7440,7 +7474,7 @@ class FilterState {
 }
 
 const tempPoints = [new Point(), new Point(), new Point(), new Point()];
-const tempMatrix$1 = new Matrix();
+const tempMatrix$2 = new Matrix();
 class FilterSystem {
   constructor(renderer) {
     this.renderer = renderer;
@@ -7496,7 +7530,7 @@ class FilterSystem {
     state.sourceFrame.pad(padding);
     const sourceFrameProjected = this.tempRect.copyFrom(renderTextureSystem.sourceFrame);
     if (renderer.projection.transform) {
-      this.transformAABB(tempMatrix$1.copyFrom(renderer.projection.transform).invert(), sourceFrameProjected);
+      this.transformAABB(tempMatrix$2.copyFrom(renderer.projection.transform).invert(), sourceFrameProjected);
     }
     if (autoFit) {
       state.sourceFrame.fit(sourceFrameProjected);
@@ -7702,7 +7736,7 @@ class FilterSystem {
         return;
       }
     }
-    transform = transform ? tempMatrix$1.copyFrom(transform) : tempMatrix$1.identity();
+    transform = transform ? tempMatrix$2.copyFrom(transform) : tempMatrix$2.identity();
     transform.translate(-bindingSourceFrame.x, -bindingSourceFrame.y).scale(bindingDestinationFrame.width / bindingSourceFrame.width, bindingDestinationFrame.height / bindingSourceFrame.height).translate(bindingDestinationFrame.x, bindingDestinationFrame.y);
     this.transformAABB(transform, frame);
     frame.ceil(resolution);
@@ -7814,16 +7848,13 @@ class ContextSystem {
     this.gl = gl;
     this.renderer.gl = gl;
     this.renderer.CONTEXT_UID = CONTEXT_UID_COUNTER++;
-    if (gl.isContextLost() && gl.getExtension("WEBGL_lose_context")) {
-      gl.getExtension("WEBGL_lose_context").restoreContext();
-    }
   }
   init(options) {
     if (options.context) {
       this.initFromContext(options.context);
     } else {
       const alpha = this.renderer.background.alpha < 1;
-      const premultipliedAlpha = options.premultipliedAlpha ?? true;
+      const premultipliedAlpha = options.premultipliedAlpha;
       this.preserveDrawingBuffer = options.preserveDrawingBuffer;
       this.useContextAlpha = options.useContextAlpha;
       this.powerPreference = options.powerPreference;
@@ -7874,6 +7905,7 @@ class ContextSystem {
   getExtensions() {
     const { gl } = this;
     const common = {
+      loseContext: gl.getExtension("WEBGL_lose_context"),
       anisotropicFiltering: gl.getExtension("EXT_texture_filter_anisotropic"),
       floatTextureLinear: gl.getExtension("OES_texture_float_linear"),
       s3tc: gl.getExtension("WEBGL_compressed_texture_s3tc"),
@@ -7888,7 +7920,6 @@ class ContextSystem {
       Object.assign(this.extensions, common, {
         drawBuffers: gl.getExtension("WEBGL_draw_buffers"),
         depthTexture: gl.getExtension("WEBGL_depth_texture"),
-        loseContext: gl.getExtension("WEBGL_lose_context"),
         vertexArrayObject: gl.getExtension("OES_vertex_array_object") || gl.getExtension("MOZ_OES_vertex_array_object") || gl.getExtension("WEBKIT_OES_vertex_array_object"),
         uint32ElementIndex: gl.getExtension("OES_element_index_uint"),
         floatTexture: gl.getExtension("OES_texture_float"),
@@ -7904,6 +7935,11 @@ class ContextSystem {
   }
   handleContextLost(event) {
     event.preventDefault();
+    setTimeout(() => {
+      if (this.gl.isContextLost() && this.extensions.loseContext) {
+        this.extensions.loseContext.restoreContext();
+      }
+    }, 0);
   }
   handleContextRestored() {
     this.renderer.runners.contextChange.emit(this.gl);
@@ -7970,13 +8006,13 @@ class FramebufferSystem {
     this.msaaSamples = null;
   }
   contextChange() {
+    this.disposeAll(true);
     const gl = this.gl = this.renderer.gl;
     this.CONTEXT_UID = this.renderer.CONTEXT_UID;
     this.current = this.unknownFramebuffer;
     this.viewport = new Rectangle();
     this.hasMRT = true;
     this.writeDepthTexture = true;
-    this.disposeAll(true);
     if (this.renderer.context.webGLVersion === 1) {
       let nativeDrawBuffersExtension = this.renderer.context.extensions.drawBuffers;
       let nativeDepthTextureExtension = this.renderer.context.extensions.depthTexture;
@@ -9457,6 +9493,9 @@ class State {
     this.offsets = !!value;
     this._polygonOffset = value;
   }
+  toString() {
+    return `[@pixi/core:State blendMode=${this.blendMode} clockwiseFrontFace=${this.clockwiseFrontFace} culling=${this.culling} depthMask=${this.depthMask} polygonOffset=${this.polygonOffset}]`;
+  }
   static for2d() {
     const state = new State();
     state.depthTest = false;
@@ -9812,7 +9851,7 @@ class AbstractMaskSystem {
   }
 }
 
-const tempMatrix = new Matrix();
+const tempMatrix$1 = new Matrix();
 const rectPool = [];
 const _ScissorSystem = class extends AbstractMaskSystem {
   constructor(renderer) {
@@ -9867,7 +9906,7 @@ const _ScissorSystem = class extends AbstractMaskSystem {
     if (_ScissorSystem.isMatrixRotated(transform)) {
       return;
     }
-    transform = transform ? tempMatrix.copyFrom(transform) : tempMatrix.identity();
+    transform = transform ? tempMatrix$1.copyFrom(transform) : tempMatrix$1.identity();
     transform.translate(-bindingSourceFrame.x, -bindingSourceFrame.y).scale(bindingDestinationFrame.width / bindingSourceFrame.width, bindingDestinationFrame.height / bindingSourceFrame.height).translate(bindingDestinationFrame.x, bindingDestinationFrame.y);
     this.renderer.filter.transformAABB(transform, frame);
     frame.fit(bindingDestinationFrame);
@@ -10396,6 +10435,7 @@ function generateProgram(gl, program) {
   const transformFeedbackVaryings = program.extra?.transformFeedbackVaryings;
   if (transformFeedbackVaryings) {
     if (typeof gl.transformFeedbackVaryings !== "function") {
+      console.warn(`TransformFeedback is not supported but TransformFeedbackVaryings are given.`);
     } else {
       gl.transformFeedbackVaryings(webGLProgram, transformFeedbackVaryings.names, transformFeedbackVaryings.bufferMode === "separate" ? gl.SEPARATE_ATTRIBS : gl.INTERLEAVED_ATTRIBS);
     }
@@ -11285,6 +11325,29 @@ class PluginSystem {
   constructor(renderer) {
     this.renderer = renderer;
     this.plugins = {};
+    Object.defineProperties(this.plugins, {
+      extract: {
+        enumerable: false,
+        get() {
+          deprecation("7.0.0", "renderer.plugins.extract has moved to renderer.extract");
+          return renderer.extract;
+        }
+      },
+      prepare: {
+        enumerable: false,
+        get() {
+          deprecation("7.0.0", "renderer.plugins.prepare has moved to renderer.prepare");
+          return renderer.prepare;
+        }
+      },
+      interaction: {
+        enumerable: false,
+        get() {
+          deprecation("7.0.0", "renderer.plugins.interaction has been deprecated, use renderer.events");
+          return renderer.events;
+        }
+      }
+    });
   }
   init(staticMap) {
     for (const o in staticMap) {
@@ -11364,7 +11427,7 @@ class StartupSystem {
     const renderer = this.renderer;
     renderer.emitWithCustomOptions(renderer.runners.init, options);
     if (options.hello) {
-      console.log(`PixiJS ${"7.0.3"} - ${renderer.rendererLogId} - https://pixijs.com`);
+      console.log(`PixiJS ${"7.0.5"} - ${renderer.rendererLogId} - https://pixijs.com`);
     }
     renderer.resize(this.renderer.screen.width, this.renderer.screen.height);
   }
@@ -11490,7 +11553,17 @@ const _Renderer = class extends SystemManager {
       projectionMatrix: new Matrix()
     }, true);
     const systemConfig = {
-      runners: ["init", "destroy", "contextChange", "reset", "update", "postrender", "prerender", "resize"],
+      runners: [
+        "init",
+        "destroy",
+        "contextChange",
+        "resolutionChange",
+        "reset",
+        "update",
+        "postrender",
+        "prerender",
+        "resize"
+      ],
       systems: _Renderer.__systems,
       priority: [
         "_view",
@@ -11518,6 +11591,11 @@ const _Renderer = class extends SystemManager {
       ]
     };
     this.setup(systemConfig);
+    if ("useContextAlpha" in options) {
+      deprecation("7.0.0", "options.useContextAlpha is deprecated, use options.premultipliedAlpha and options.backgroundAlpha instead");
+      options.premultipliedAlpha = options.useContextAlpha && options.useContextAlpha !== "notMultiplied";
+      options.backgroundAlpha = options.useContextAlpha === false ? 1 : options.backgroundAlpha;
+    }
     const startupOptions = {
       hello: options.hello,
       _plugin: _Renderer.__plugins,
@@ -11537,7 +11615,7 @@ const _Renderer = class extends SystemManager {
         antialias: options.antialias,
         context: options.context,
         powerPreference: options.powerPreference,
-        premultipliedAlpha: options.premultipliedAlpha ?? (options.useContextAlpha && options.useContextAlpha !== "notMultiplied"),
+        premultipliedAlpha: options.premultipliedAlpha,
         preserveDrawingBuffer: options.preserveDrawingBuffer
       }
     };
@@ -11585,6 +11663,10 @@ const _Renderer = class extends SystemManager {
   get resolution() {
     return this._view.resolution;
   }
+  set resolution(value) {
+    this._view.resolution = value;
+    this.runners.resolutionChange.emit(value);
+  }
   get autoDensity() {
     return this._view.autoDensity;
   }
@@ -11604,27 +11686,35 @@ const _Renderer = class extends SystemManager {
     return `WebGL ${this.context.webGLVersion}`;
   }
   get clearBeforeRender() {
+    deprecation("7.0.0", "renderer.clearBeforeRender has been deprecated, please use renderer.background.clearBeforeRender instead.");
     return this.background.clearBeforeRender;
   }
   get useContextAlpha() {
+    deprecation("7.0.0", "renderer.useContextAlpha has been deprecated, please use renderer.context.premultipliedAlpha instead.");
     return this.context.useContextAlpha;
   }
   get preserveDrawingBuffer() {
+    deprecation("7.0.0", "renderer.preserveDrawingBuffer has been deprecated, we cannot truly know this unless pixi created the context");
     return this.context.preserveDrawingBuffer;
   }
   get backgroundColor() {
+    deprecation("7.0.0", "renderer.backgroundColor has been deprecated, use renderer.background.color instead.");
     return this.background.color;
   }
   set backgroundColor(value) {
+    deprecation("7.0.0", "renderer.backgroundColor has been deprecated, use renderer.background.color instead.");
     this.background.color = value;
   }
   get backgroundAlpha() {
+    deprecation("7.0.0", "renderer.backgroundAlpha has been deprecated, use renderer.background.alpha instead.");
     return this.background.color;
   }
   set backgroundAlpha(value) {
+    deprecation("7.0.0", "renderer.backgroundAlpha has been deprecated, use renderer.background.alpha instead.");
     this.background.alpha = value;
   }
   get powerPreference() {
+    deprecation("7.0.0", "renderer.powerPreference has been deprecated, we can only know this if pixi creates the context");
     return this.context.powerPreference;
   }
   generateTexture(displayObject, options) {
@@ -12333,7 +12423,7 @@ ObjectRendererSystem.extension = {
 };
 extensions$1.add(ObjectRendererSystem);
 
-const VERSION = "7.0.3";
+const VERSION = "7.0.5";
 
 var fragment$6 = "varying vec2 vTextureCoord;\n\nuniform sampler2D uSampler;\nuniform float uAlpha;\n\nvoid main(void)\n{\n   gl_FragColor = texture2D(uSampler, vTextureCoord) * uAlpha;\n}\n";
 
@@ -13806,6 +13896,7 @@ class TemporaryDisplayObject extends DisplayObject {
 }
 DisplayObject.prototype.displayObjectUpdateTransform = DisplayObject.prototype.updateTransform;
 
+const tempMatrix = new Matrix();
 function sortChildren(a, b) {
   if (a.zIndex === b.zIndex) {
     return a._lastSortedIndex - b._lastSortedIndex;
@@ -14026,6 +14117,15 @@ class Container extends DisplayObject {
       transform = this.worldTransform;
     } else if (this._render !== Container.prototype._render) {
       bounds = this.getBounds(true);
+    }
+    const projectionTransform = renderer.projection.transform;
+    if (projectionTransform) {
+      if (transform) {
+        transform = tempMatrix.copyFrom(transform);
+        transform.prepend(projectionTransform);
+      } else {
+        transform = projectionTransform;
+      }
     }
     if (bounds && sourceFrame.intersects(bounds, transform)) {
       this._render(renderer);
@@ -15389,6 +15489,9 @@ class EventSystem {
     this.setTargetElement(view);
     this.resolution = resolution;
   }
+  resolutionChange(resolution) {
+    this.resolution = resolution;
+  }
   destroy() {
     this.setTargetElement(null);
     this.renderer = null;
@@ -16175,6 +16278,26 @@ class BackgroundLoader {
   }
 }
 
+function checkDataUrl(url, mimes) {
+  if (Array.isArray(mimes)) {
+    for (const mime of mimes) {
+      if (url.startsWith(`data:${mime}`))
+        return true;
+    }
+    return false;
+  }
+  return url.startsWith(`data:${mimes}`);
+}
+
+function checkExtension(url, extension) {
+  const tempURL = url.split("?")[0];
+  const ext = path.extname(tempURL).toLowerCase();
+  if (Array.isArray(extension)) {
+    return extension.includes(ext.toLowerCase());
+  }
+  return ext.toLowerCase() === extension;
+}
+
 const convertToList = (input, transform) => {
   if (!Array.isArray(input)) {
     input = [input];
@@ -16236,6 +16359,7 @@ class CacheClass {
   get(key) {
     const result = this._cache.get(key);
     if (!result) {
+      console.warn(`[Assets] Asset id ${key} was not found in the Cache`);
     }
     return result;
   }
@@ -16265,6 +16389,7 @@ class CacheClass {
     });
     cacheKeys.forEach((key2) => {
       if (this._cache.has(key2) && this._cache.get(key2) !== value) {
+        console.warn("[Cache] already has key:", key2);
       }
       this._cache.set(key2, cacheableAssets[key2]);
     });
@@ -16281,6 +16406,7 @@ class CacheClass {
   remove(key) {
     this._cacheMap.get(key);
     if (!this._cacheMap.has(key)) {
+      console.warn(`[Assets] Asset id ${key} was not found in the Cache`);
       return;
     }
     const cacheMap = this._cacheMap.get(key);
@@ -16322,6 +16448,7 @@ class Loader {
         }
       }
       if (!result.parser) {
+        console.warn(`[Assets] ${url} could not be loaded as we don't know how to parse it, ensure the correct parser has being added`);
         return null;
       }
       for (let i = 0; i < this.parsers.length; i++) {
@@ -16428,6 +16555,7 @@ class Resolver {
   }
   addManifest(manifest) {
     if (this._manifest) {
+      console.warn("[Resolver] Manifest already exists, this will be overwritten");
     }
     this._manifest = manifest;
     manifest.bundles.forEach((bundle) => {
@@ -16457,6 +16585,7 @@ class Resolver {
     const keys = convertToList(keysIn);
     keys.forEach((key) => {
       if (this._assetMap[key]) {
+        console.warn(`[Resolver] already has key: ${key} overwriting`);
       }
     });
     if (!Array.isArray(assetsIn)) {
@@ -16586,6 +16715,7 @@ class AssetsClass {
   }
   async init(options = {}) {
     if (this._initialized) {
+      console.warn("[Assets]AssetManager already initialized, did you load before calling this Asset.init()?");
       return;
     }
     this._initialized = true;
@@ -16841,7 +16971,13 @@ const validWeights = [
   "800",
   "900"
 ];
-const validFonts = ["woff", "woff2", "ttf", "otf"];
+const validFontExtensions = [".ttf", ".otf", ".woff", ".woff2"];
+const validFontMIMEs = [
+  "font/ttf",
+  "font/otf",
+  "font/woff",
+  "font/woff2"
+];
 function getFontFamilyName(url) {
   const ext = path.extname(url);
   const name = path.basename(url, ext);
@@ -16855,9 +16991,7 @@ const loadWebFont = {
     priority: LoaderParserPriority.Low
   },
   test(url) {
-    const tempURL = url.split("?")[0];
-    const extension = tempURL.split(".").pop();
-    return validFonts.includes(extension);
+    return checkDataUrl(url, validFontMIMEs) || checkExtension(url, validFontExtensions);
   },
   async load(url, options) {
     if (!globalThis.navigator.onLine) {
@@ -16871,7 +17005,7 @@ const loadWebFont = {
       const data = options.data ?? {};
       for (let i = 0; i < weights.length; i++) {
         const weight = weights[i];
-        const font = new FontFace(name, `url(${url})`, {
+        const font = new FontFace(name, `url(${encodeURI(url)})`, {
           ...data,
           weight
         });
@@ -16881,6 +17015,7 @@ const loadWebFont = {
       }
       return fontFaces.length === 1 ? fontFaces[0] : fontFaces;
     }
+    console.warn("[loadWebFont] FontFace API is not supported. Skipping loading font");
     return null;
   },
   unload(font) {
@@ -17043,15 +17178,6 @@ class WorkerManagerClass {
 }
 const WorkerManager = new WorkerManagerClass();
 
-function checkExtension(url, extension) {
-  const tempURL = url.split("?")[0];
-  const ext = path.extname(tempURL).toLowerCase();
-  if (Array.isArray(extension)) {
-    return extension.includes(ext.toLowerCase());
-  }
-  return ext.toLowerCase() === extension;
-}
-
 function createTexture(base, loader, url) {
   const texture = new Texture(base);
   texture.baseTexture.on("dispose", () => {
@@ -17060,7 +17186,13 @@ function createTexture(base, loader, url) {
   return texture;
 }
 
-const validImages$1 = [".jpg", ".png", ".jpeg", ".avif", ".webp"];
+const validImageExtensions = [".jpeg", ".jpg", ".png", ".webp", ".avif"];
+const validImageMIMEs = [
+  "image/jpeg",
+  "image/png",
+  "image/webp",
+  "image/avif"
+];
 async function loadImageBitmap(url) {
   const response = await settings.ADAPTER.fetch(url);
   if (!response.ok) {
@@ -17079,14 +17211,7 @@ const loadTextures = {
     preferWorkers: true
   },
   test(url) {
-    let isValidBase64Suffix = false;
-    for (let i = 0; i < validImages$1.length; i++) {
-      if (url.startsWith(`data:image/${validImages$1[i].slice(1)}`)) {
-        isValidBase64Suffix = true;
-        break;
-      }
-    }
-    return isValidBase64Suffix || checkExtension(url, validImages$1);
+    return checkDataUrl(url, validImageMIMEs) || checkExtension(url, validImageExtensions);
   },
   async load(url, asset, loader) {
     let src = null;
@@ -17400,6 +17525,7 @@ const detectCompressedTextures = {
     const canvas = settings.ADAPTER.createCanvas();
     const gl = canvas.getContext("webgl");
     if (!gl) {
+      console.warn("WebGL not available for compressed textures.");
       return false;
     }
     storedGl = gl;
@@ -17861,6 +17987,7 @@ function parseKTX(url, arrayBuffer, loadKeyValueData = false) {
 function validate(url, dataView) {
   for (let i = 0; i < FILE_IDENTIFIER.length; i++) {
     if (dataView.getUint8(i) !== FILE_IDENTIFIER[i]) {
+      console.error(`${url} is not a valid *.ktx file!`);
       return false;
     }
   }
@@ -21425,7 +21552,7 @@ class TextMetrics {
       width += style.dropShadowDistance;
     }
     const lineHeight = style.lineHeight || fontProperties.fontSize + style.strokeThickness;
-    let height = Math.max(lineHeight, fontProperties.fontSize + style.strokeThickness) + (lines.length - 1) * (lineHeight + style.leading);
+    let height = Math.max(lineHeight, fontProperties.fontSize + style.strokeThickness * 2) + (lines.length - 1) * (lineHeight + style.leading);
     if (style.dropShadow) {
       height += style.dropShadowDistance;
     }
@@ -22991,7 +23118,8 @@ class TextFormat {
 
 class XMLFormat {
   static test(data) {
-    return data instanceof XMLDocument && data.getElementsByTagName("page").length && data.getElementsByTagName("info")[0].getAttribute("face") !== null;
+    const xml = data;
+    return "getElementsByTagName" in xml && xml.getElementsByTagName("page").length && xml.getElementsByTagName("info")[0].getAttribute("face") !== null;
   }
   static parse(xml) {
     const data = new BitmapFontData();
@@ -23052,14 +23180,12 @@ class XMLFormat {
 class XMLStringFormat {
   static test(data) {
     if (typeof data === "string" && data.includes("<font>")) {
-      const xml = new globalThis.DOMParser().parseFromString(data, "text/xml");
-      return XMLFormat.test(xml);
+      return XMLFormat.test(settings.ADAPTER.parseXML(data));
     }
     return false;
   }
   static parse(xmlTxt) {
-    const xml = new globalThis.DOMParser().parseFromString(xmlTxt, "text/xml");
-    return XMLFormat.parse(xml);
+    return XMLFormat.parse(settings.ADAPTER.parseXML(xmlTxt));
   }
 }
 
@@ -23954,5 +24080,5 @@ const filters = {
   NoiseFilter
 };
 
-export { ALPHA_MODES, AbstractMultiResource, AccessibilityManager, AnimatedSprite, Application, ArrayResource, Assets, AssetsClass, Attribute, BLEND_MODES, BUFFER_BITS, BUFFER_TYPE, BackgroundSystem, BaseImageResource, BasePrepare, BaseRenderTexture, BaseTexture, BatchDrawCall, BatchGeometry, BatchRenderer, BatchShaderGenerator, BatchSystem, BatchTextureArray, BitmapFont, BitmapFontData, BitmapText, BlobResource, Bounds, BrowserAdapter, Buffer, BufferResource, BufferSystem, CLEAR_MODES, COLOR_MASK_BITS, Cache, CanvasResource, Circle, CompressedTextureResource, Container, ContextSystem, CountLimiter, CubeResource, DEG_TO_RAD, DRAW_MODES, DisplayObject, ENV, Ellipse, EventBoundary, EventSystem, ExtensionType, Extract, FORMATS, FORMATS_TO_COMPONENTS, FederatedDisplayObject, FederatedEvent, FederatedMouseEvent, FederatedPointerEvent, FederatedWheelEvent, FillStyle, Filter, FilterState, FilterSystem, Framebuffer, FramebufferSystem, GC_MODES, GLFramebuffer, GLProgram, GLTexture, GRAPHICS_CURVES, GenerateTextureSystem, Geometry, GeometrySystem, Graphics, GraphicsData, GraphicsGeometry, IGLUniformData, INSTALLED, INTERNAL_FORMATS, INTERNAL_FORMAT_TO_BYTES_PER_PIXEL, ImageBitmapResource, ImageResource, LINE_CAP, LINE_JOIN, LineStyle, LoaderParserPriority, MASK_TYPES, MIPMAP_MODES, MSAA_QUALITY, MaskData, MaskSystem, Matrix, Mesh, MeshBatchUvs, MeshGeometry, MeshMaterial, MultisampleSystem, NineSlicePlane, ObjectRenderer, ObjectRendererSystem, ObservablePoint, PI_2, PRECISION, ParticleContainer, ParticleRenderer, PlaneGeometry, PluginSystem, Point, Polygon, Prepare, Program, ProjectionSystem, Quad, QuadUv, RAD_TO_DEG, RENDERER_TYPE, Rectangle, RenderTexture, RenderTexturePool, RenderTextureSystem, Renderer, ResizePlugin, Resource, RopeGeometry, RoundedRectangle, Runner, SAMPLER_TYPES, SCALE_MODES, SHAPES, SVGResource, ScissorSystem, Shader, ShaderSystem, SimpleMesh, SimplePlane, SimpleRope, Sprite, SpriteMaskFilter, Spritesheet, StartupSystem, State, StateSystem, StencilSystem, SystemManager, TARGETS, TEXT_GRADIENT, TYPES, TYPES_TO_BYTES_PER_COMPONENT, TYPES_TO_BYTES_PER_PIXEL, TemporaryDisplayObject, Text, TextFormat, TextMetrics, TextStyle, Texture, TextureGCSystem, TextureMatrix, TextureSystem, TextureUvs, Ticker, TickerPlugin, TilingSprite, TilingSpriteRenderer, TimeLimiter, Transform, TransformFeedback, TransformFeedbackSystem, UPDATE_PRIORITY, UniformGroup, VERSION, VideoResource, ViewSystem, ViewableBuffer, WRAP_MODES, XMLFormat, XMLStringFormat, accessibleTarget, autoDetectFormat, autoDetectRenderer, autoDetectResource, cacheTextureArray, checkExtension, checkMaxIfStatementsInShader, convertToList, createStringVariations, createTexture, createUBOElements, defaultFilterVertex, defaultVertex$1 as defaultVertex, detectAvif, detectCompressedTextures, detectDefaults, detectWebp, extensions$1 as extensions, filters, generateProgram, generateUniformBufferSync, getFontFamilyName, getTestContext, getUBOData, graphicsUtils, groupD8, isMobile, isSingleItem, loadBitmapFont, loadDDS, loadImageBitmap, loadJson, loadKTX, loadSVG, loadTextures, loadTxt, loadWebFont, parseDDS, parseKTX, resolveCompressedTextureUrl, resolveTextureUrl, settings, spritesheetAsset, uniformParsers, index as utils };
+export { ALPHA_MODES, AbstractMultiResource, AccessibilityManager, AnimatedSprite, Application, ArrayResource, Assets, AssetsClass, Attribute, BLEND_MODES, BUFFER_BITS, BUFFER_TYPE, BackgroundSystem, BaseImageResource, BasePrepare, BaseRenderTexture, BaseTexture, BatchDrawCall, BatchGeometry, BatchRenderer, BatchShaderGenerator, BatchSystem, BatchTextureArray, BitmapFont, BitmapFontData, BitmapText, BlobResource, Bounds, BrowserAdapter, Buffer, BufferResource, BufferSystem, CLEAR_MODES, COLOR_MASK_BITS, Cache, CanvasResource, Circle, CompressedTextureResource, Container, ContextSystem, CountLimiter, CubeResource, DEG_TO_RAD, DRAW_MODES, DisplayObject, ENV, Ellipse, EventBoundary, EventSystem, ExtensionType, Extract, FORMATS, FORMATS_TO_COMPONENTS, FederatedDisplayObject, FederatedEvent, FederatedMouseEvent, FederatedPointerEvent, FederatedWheelEvent, FillStyle, Filter, FilterState, FilterSystem, Framebuffer, FramebufferSystem, GC_MODES, GLFramebuffer, GLProgram, GLTexture, GRAPHICS_CURVES, GenerateTextureSystem, Geometry, GeometrySystem, Graphics, GraphicsData, GraphicsGeometry, IGLUniformData, INSTALLED, INTERNAL_FORMATS, INTERNAL_FORMAT_TO_BYTES_PER_PIXEL, ImageBitmapResource, ImageResource, LINE_CAP, LINE_JOIN, LineStyle, LoaderParserPriority, MASK_TYPES, MIPMAP_MODES, MSAA_QUALITY, MaskData, MaskSystem, Matrix, Mesh, MeshBatchUvs, MeshGeometry, MeshMaterial, MultisampleSystem, NineSlicePlane, ObjectRenderer, ObjectRendererSystem, ObservablePoint, PI_2, PRECISION, ParticleContainer, ParticleRenderer, PlaneGeometry, PluginSystem, Point, Polygon, Prepare, Program, ProjectionSystem, Quad, QuadUv, RAD_TO_DEG, RENDERER_TYPE, Rectangle, RenderTexture, RenderTexturePool, RenderTextureSystem, Renderer, ResizePlugin, Resource, RopeGeometry, RoundedRectangle, Runner, SAMPLER_TYPES, SCALE_MODES, SHAPES, SVGResource, ScissorSystem, Shader, ShaderSystem, SimpleMesh, SimplePlane, SimpleRope, Sprite, SpriteMaskFilter, Spritesheet, StartupSystem, State, StateSystem, StencilSystem, SystemManager, TARGETS, TEXT_GRADIENT, TYPES, TYPES_TO_BYTES_PER_COMPONENT, TYPES_TO_BYTES_PER_PIXEL, TemporaryDisplayObject, Text, TextFormat, TextMetrics, TextStyle, Texture, TextureGCSystem, TextureMatrix, TextureSystem, TextureUvs, Ticker, TickerPlugin, TilingSprite, TilingSpriteRenderer, TimeLimiter, Transform, TransformFeedback, TransformFeedbackSystem, UPDATE_PRIORITY, UniformGroup, VERSION, VideoResource, ViewSystem, ViewableBuffer, WRAP_MODES, XMLFormat, XMLStringFormat, accessibleTarget, autoDetectFormat, autoDetectRenderer, autoDetectResource, cacheTextureArray, checkDataUrl, checkExtension, checkMaxIfStatementsInShader, convertToList, createStringVariations, createTexture, createUBOElements, defaultFilterVertex, defaultVertex$1 as defaultVertex, detectAvif, detectCompressedTextures, detectDefaults, detectWebp, extensions$1 as extensions, filters, generateProgram, generateUniformBufferSync, getFontFamilyName, getTestContext, getUBOData, graphicsUtils, groupD8, isMobile, isSingleItem, loadBitmapFont, loadDDS, loadImageBitmap, loadJson, loadKTX, loadSVG, loadTextures, loadTxt, loadWebFont, parseDDS, parseKTX, resolveCompressedTextureUrl, resolveTextureUrl, settings, spritesheetAsset, uniformParsers, index as utils };
 //# sourceMappingURL=pixi.mjs.map
