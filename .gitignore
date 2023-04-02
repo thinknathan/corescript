@@ -9,14 +9,12 @@ www/Game.rpgproject
 www/index.html
 www/audio/*
 www/data/*
-www/fonts/*
+www/fonts/*.ttf
 www/icon/*
 www/img/*
+www/js/*
 www/movies/*
 www/save/*
-www/js/plugins/*
-www/js/plugins.js
-www/js/**/*.min.js
 
 # Runtime data
 pids

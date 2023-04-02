@@ -1,15 +1,5 @@
-import {
-	strToU8,
-	inflateSync,
-	deflateSync,
-	strFromU8,
-} from 'https://cdn.skypack.dev/fflate@v0.7.4';
-import {
-	set,
-	get,
-	del,
-	keys,
-} from 'https://cdn.skypack.dev/pin/idb-keyval@v6.2.0-JnrT8KDKaQ7ZsLcm1DXx/mode=imports/optimized/idb-keyval.js';
+import { strToU8, inflateSync, deflateSync, strFromU8 } from 'fflate';
+import { set, get, del, keys } from 'idb-keyval';
 
 //-----------------------------------------------------------------------------
 // StorageManager

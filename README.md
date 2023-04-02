@@ -6,7 +6,7 @@ This fork introduces opinionated changes and is not necessarily a drop-in replac
 
 - Runs the engine in its own worker thread if OffscreenCanvas is supported.
 - Passes savefile data to its own worker thread to compress and store or retrieve and decompress.
-- Updated to use PIXI v6.x and PIXI-Tilemap v3.x.
+- Updated to use PIXI v7.x
 - Uses PIXI equivalents whenever possible instead of the Bitmap object.
 - Uses PIXI.BitmapText for fast, memory-efficient text.
 - Allows windows to overlap each other.

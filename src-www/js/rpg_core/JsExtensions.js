@@ -1,7 +1,7 @@
 import {
 	requestAnimationFrame,
 	cancelAnimationFrame,
-} from 'https://cdn.skypack.dev/pin/request-animation-frame-polyfill@v1.1.2-OZhq9z8GPqihwGiXM2I4/mode=imports/optimized/request-animation-frame-polyfill.js';
+} from 'request-animation-frame-polyfill';
 
 //-----------------------------------------------------------------------------
 /**

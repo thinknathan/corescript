@@ -1,11 +1,24 @@
 {
-	"name": "corescript",
-	"scripts": {
-		"build": "rollup -c"
-	},
-	"devDependencies": {
-		"rollup": "^2.75.7",
-		"rollup-plugin-terser": "^7.0.2",
-		"rollup-plugin-url-resolve": "^0.2.0"
-	}
+  "$schema": "https://json.schemastore.org/package.json",
+  "name": "corescript",
+  "scripts": {
+    "build": "cross-env NODE_ENV=production node build-www.mjs",
+    "dev": "cross-env NODE_ENV=development node build-www.mjs"
+  },
+  "devDependencies": {
+    "cross-env": "^7.0.3",
+    "esbuild": "^0.17.11",
+    "eslint": "^8.37.0",
+    "eslint-config-prettier": "^8.7.0",
+    "eslint-plugin-import": "^2.26",
+    "eslint-plugin-prettier": "^4.2.1",
+    "prettier": "^2.8.7"
+  },
+  "dependencies": {
+    "fflate": "^0.7.4",
+    "gamestats.js": "^1.0.4",
+    "idb-keyval": "^6.2.0",
+    "post-me": "^0.4.5",
+    "request-animation-frame-polyfill": "^1.1.2"
+  }
 }

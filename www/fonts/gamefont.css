@@ -1,0 +1,55 @@
+@font-face {
+	font-family: GameFont;
+	src: url('mplus-1m-regular.ttf');
+}
+
+.IIV::-webkit-media-controls-play-button,
+video::-webkit-media-controls-start-playback-button {
+	opacity: 0;
+	pointer-events: none;
+	width: 5px;
+}
+
+html,
+body,
+canvas {
+	padding: 0;
+	margin: 0;
+}
+
+body {
+	-moz-user-select: none;
+	-ms-user-select: none;
+	-webkit-user-select: none;
+	-webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+	-webkit-touch-callout: none;
+	user-select: none;
+}
+
+canvas,
+img {
+	-ms-interpolation-mode: nearest-neighbor;
+	image-rendering: -webkit-optimize-contrast;
+	image-rendering: -moz-crisp-edges;
+	image-rendering: crisp-edges;
+	image-rendering: pixelated;
+	vertical-align: middle;
+}
+
+canvas {
+	position: absolute;
+	margin: auto;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	max-width: 100%;
+	max-height: 100%;
+	aspect-ratio: 816/624;
+}
+
+@media screen and (min-width: 816px) {
+	canvas {
+		max-width: 816px;
+	}
+}
