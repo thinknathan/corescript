@@ -16,6 +16,7 @@ www/movies/*
 www/save/*
 www/js/plugins/*
 www/js/plugins.js
+www/js/**/*.min.js
 
 # Runtime data
 pids
