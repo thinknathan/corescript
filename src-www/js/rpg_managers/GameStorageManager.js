@@ -11,7 +11,7 @@ class GameStorageManager {
 	}
 
 	static setupWorker() {
-		const worker = new Worker('js/game_storage_worker.min.js');
+		const worker = new Worker('js/game_storage_worker.js');
 		this._worker = new Comlink.wrap(worker);
 	}
 

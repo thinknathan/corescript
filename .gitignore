@@ -5,16 +5,16 @@ logs
 npm-debug.log*
 
 # RPG Maker Project
+www/Game.rpgproject
+www/index.html
 www/audio/*
 www/data/*
 www/fonts/*.ttf
 www/icon/*
 www/img/*
+www/js/*
 www/movies/*
 www/save/*
-www/js/libs/gamestats-pixi.module.js
-www/index.html
-www/js/plugins.js
 
 # Runtime data
 pids
@@ -68,4 +68,3 @@ corescript/**/*
 corescript.zip
 package-lock.json
 .pre-commit-config.yaml
-www/**/*.min.js

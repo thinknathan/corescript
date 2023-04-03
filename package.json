@@ -1,7 +1,11 @@
 {
+  "$schema": "https://json.schemastore.org/package.json",
   "name": "corescript",
   "scripts": {
-    "build": "rollup -c && copy-files-from-to"
+    "build": "copy-files-from-to --mode production && cross-env NODE_ENV=production node build-www.mjs",
+    "build:dist": "copy-files-from-to --mode production && cross-env NODE_ENV=production DIST_FOLDER=dist node build-www.mjs",
+    "dev": "copy-files-from-to --mode development && cross-env NODE_ENV=development node build-www.mjs",
+    "prettier:scripts": "prettier --write src-www/js"
   },
   "dependencies": {
     "@pixi/app": "6.4.2",
@@ -51,19 +55,20 @@
     "@pixi/ticker": "6.4.2",
     "@pixi/utils": "6.4.2",
     "comlink": "^4.4.1",
-    "fflate": "^0.7.3",
+    "fflate": "^0.7.4",
     "gamestats.js": "^1.0.4",
     "idb-keyval": "^6.2.0",
     "pixi-tilemap": "https://github.com/pixijs/tilemap/#a8b89ef3da7cb1a71f2e18514041a3e1afb27cd1"
   },
   "devDependencies": {
-    "@rollup/plugin-node-resolve": "^13.2.1",
     "copy-files-from-to": "^3.8.0",
-    "rollup": "^2.75.7",
-    "rollup-plugin-commonjs": "^10.1.0",
-    "rollup-plugin-node-polyfills2": "^0.1.0",
-    "rollup-plugin-terser": "^7.0.2",
-    "rollup-plugin-url-resolve": "^0.2.0"
+    "cross-env": "^7.0.3",
+    "esbuild": "^0.17.11",
+    "eslint": "^8.37.0",
+    "eslint-config-prettier": "^8.7.0",
+    "eslint-plugin-import": "^2.26",
+    "eslint-plugin-prettier": "^4.2.1",
+    "prettier": "^2.8.7"
   },
   "copyFiles": [
     {
@@ -72,7 +77,7 @@
     },
     {
       "from": "node_modules/pixi-tilemap/dist/pixi-tilemap.umd.js",
-      "to": "www/js/libs/pixi-tilemap.min.js"
+      "to": "www/js/libs/pixi-tilemap.js"
     },
     {
       "from": "node_modules/gamestats.js/build/gamestats.min.js",
@@ -89,22 +94,6 @@
     {
       "from": "node_modules/gamestats.js/build/gamestats-pixi.module.js",
       "to": "www/js/libs/gamestats-pixi.module.js"
-    },
-    {
-      "from": "www/js/main.min.js",
-      "to": "dist/main.js"
-    },
-    {
-      "from": "www/js/libs/pixi.min.js",
-      "to": "dist/libs/pixi.js"
-    },
-    {
-      "from": "www/js/game_storage_worker.min.js",
-      "to": "dist/game_storage_worker.min.js"
-    },
-    {
-      "from": "www/js/libs/comlink.min.js",
-      "to": "dist/libs/comlink.js"
     }
   ],
   "copyFilesSettings": {
