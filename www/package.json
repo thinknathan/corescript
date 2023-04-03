@@ -1,13 +1,13 @@
 {
-  "name": "corescript",
-  "window": {
-    "title": "",
-    "toolbar": false,
-    "width": 960,
-    "height": 540,
-    "position": "center",
-    "icon": "icon/icon.png"
-  },
-  "main": "index.html",
-  "chromium-args": "--force-color-profile=srgb --ignore-gpu-blocklist"
+	"name": "corescript",
+	"window": {
+		"title": "",
+		"toolbar": false,
+		"width": 960,
+		"height": 540,
+		"position": "center",
+		"icon": "icon/icon.png"
+	},
+	"main": "index.html",
+	"chromium-args": "--force-color-profile=srgb --ignore-gpu-blocklist"
 }

@@ -176,111 +176,111 @@
  */
 
 (() => {
-  "use strict";
+	'use strict';
 
-  function isNumber(str) {
-    return !!str && !isNaN(str);
-  }
+	function isNumber(str) {
+		return !!str && !isNaN(str);
+	}
 
-  function toNumber(str, def) {
-    return isNumber(str) ? +str : def;
-  }
+	function toNumber(str, def) {
+		return isNumber(str) ? +str : def;
+	}
 
-  const parameters = PluginManager.parameters("Community_Basic");
-  const cacheLimit = toNumber(parameters["cacheLimit"], 10);
-  const screenWidth = toNumber(parameters["screenWidth"], 816);
-  const screenHeight = toNumber(parameters["screenHeight"], 624);
-  const renderingMode = parameters["renderingMode"].toLowerCase();
-  const alwaysDash =
-    parameters["alwaysDash"] === "true" || parameters["alwaysDash"] === "on";
-  const textSpeed = toNumber(parameters["textSpeed"], 1);
-  const windowWidthTo = toNumber(parameters["changeWindowWidthTo"], 0);
-  const windowHeightTo = toNumber(parameters["changeWindowHeightTo"], 0);
-  const maxRenderingFps = toNumber(parameters["maxRenderingFps"], 0);
-  const autoSaveFileId = toNumber(parameters["autoSaveFileId"], 0);
-  const errorMessage = parameters["errorMessage"];
-  const showErrorDetail = parameters["showErrorDetail"] === "true";
-  const enableProgressBar = parameters["enableProgressBar"] === "true";
+	const parameters = PluginManager.parameters('Community_Basic');
+	const cacheLimit = toNumber(parameters['cacheLimit'], 10);
+	const screenWidth = toNumber(parameters['screenWidth'], 816);
+	const screenHeight = toNumber(parameters['screenHeight'], 624);
+	const renderingMode = parameters['renderingMode'].toLowerCase();
+	const alwaysDash =
+		parameters['alwaysDash'] === 'true' || parameters['alwaysDash'] === 'on';
+	const textSpeed = toNumber(parameters['textSpeed'], 1);
+	const windowWidthTo = toNumber(parameters['changeWindowWidthTo'], 0);
+	const windowHeightTo = toNumber(parameters['changeWindowHeightTo'], 0);
+	const maxRenderingFps = toNumber(parameters['maxRenderingFps'], 0);
+	const autoSaveFileId = toNumber(parameters['autoSaveFileId'], 0);
+	const errorMessage = parameters['errorMessage'];
+	const showErrorDetail = parameters['showErrorDetail'] === 'true';
+	const enableProgressBar = parameters['enableProgressBar'] === 'true';
 
-  let windowWidth;
-  let windowHeight;
+	let windowWidth;
+	let windowHeight;
 
-  if (windowWidthTo) {
-    windowWidth = windowWidthTo;
-  } else if (screenWidth !== SceneManager._screenWidth) {
-    windowWidth = screenWidth;
-  }
+	if (windowWidthTo) {
+		windowWidth = windowWidthTo;
+	} else if (screenWidth !== SceneManager._screenWidth) {
+		windowWidth = screenWidth;
+	}
 
-  if (windowHeightTo) {
-    windowHeight = windowHeightTo;
-  } else if (screenHeight !== SceneManager._screenHeight) {
-    windowHeight = screenHeight;
-  }
+	if (windowHeightTo) {
+		windowHeight = windowHeightTo;
+	} else if (screenHeight !== SceneManager._screenHeight) {
+		windowHeight = screenHeight;
+	}
 
-  ImageCache.limit = cacheLimit * 1000 * 1000;
-  SceneManager._screenWidth = screenWidth;
-  SceneManager._screenHeight = screenHeight;
-  SceneManager._boxWidth = screenWidth;
-  SceneManager._boxHeight = screenHeight;
+	ImageCache.limit = cacheLimit * 1000 * 1000;
+	SceneManager._screenWidth = screenWidth;
+	SceneManager._screenHeight = screenHeight;
+	SceneManager._boxWidth = screenWidth;
+	SceneManager._boxHeight = screenHeight;
 
-  SceneManager.preferableRendererType = () => {
-    if (Utils.isOptionValid("canvas")) {
-      return "canvas";
-    } else if (Utils.isOptionValid("webgl")) {
-      return "webgl";
-    } else if (renderingMode === "canvas") {
-      return "canvas";
-    } else if (renderingMode === "webgl") {
-      return "webgl";
-    } else {
-      return "auto";
-    }
-  };
+	SceneManager.preferableRendererType = () => {
+		if (Utils.isOptionValid('canvas')) {
+			return 'canvas';
+		} else if (Utils.isOptionValid('webgl')) {
+			return 'webgl';
+		} else if (renderingMode === 'canvas') {
+			return 'canvas';
+		} else if (renderingMode === 'webgl') {
+			return 'webgl';
+		} else {
+			return 'auto';
+		}
+	};
 
-  const _ConfigManager_applyData = ConfigManager.applyData;
-  ConfigManager.applyData = function (config) {
-    _ConfigManager_applyData.apply(this, arguments);
-    if (config["alwaysDash"] === undefined) {
-      this.alwaysDash = alwaysDash;
-    }
-  };
+	const _ConfigManager_applyData = ConfigManager.applyData;
+	ConfigManager.applyData = function (config) {
+		_ConfigManager_applyData.apply(this, arguments);
+		if (config['alwaysDash'] === undefined) {
+			this.alwaysDash = alwaysDash;
+		}
+	};
 
-  const _Window_Message_clearFlags = Window_Message.prototype.clearFlags;
-  Window_Message.prototype.clearFlags = function (textState) {
-    _Window_Message_clearFlags.apply(this, arguments);
-    this._textSpeed = textSpeed - 1;
-  };
+	const _Window_Message_clearFlags = Window_Message.prototype.clearFlags;
+	Window_Message.prototype.clearFlags = function (textState) {
+		_Window_Message_clearFlags.apply(this, arguments);
+		this._textSpeed = textSpeed - 1;
+	};
 
-  const _SceneManager_initNwjs = SceneManager.initNwjs;
-  SceneManager.initNwjs = function (...args) {
-    _SceneManager_initNwjs.apply(this, args);
+	const _SceneManager_initNwjs = SceneManager.initNwjs;
+	SceneManager.initNwjs = function (...args) {
+		_SceneManager_initNwjs.apply(this, args);
 
-    if (Utils.isNwjs() && windowWidth && windowHeight) {
-      const dw = windowWidth - window.innerWidth;
-      const dh = windowHeight - window.innerHeight;
-      window.moveBy(-dw / 2, -dh / 2);
-      window.resizeBy(dw, dh);
-    }
-  };
+		if (Utils.isNwjs() && windowWidth && windowHeight) {
+			const dw = windowWidth - window.innerWidth;
+			const dh = windowHeight - window.innerHeight;
+			window.moveBy(-dw / 2, -dh / 2);
+			window.resizeBy(dw, dh);
+		}
+	};
 
-  if (maxRenderingFps) {
-    let currentTime = Date.now();
-    const deltaTime = 1000 / maxRenderingFps;
-    let accumulator = 0;
-    const _SceneManager_renderScene = SceneManager.renderScene;
-    SceneManager.renderScene = function (...args) {
-      const newTime = Date.now();
-      accumulator += newTime - currentTime;
-      currentTime = newTime;
-      if (accumulator >= deltaTime) {
-        accumulator -= deltaTime;
-        _SceneManager_renderScene.apply(this, args);
-      }
-    };
-  }
+	if (maxRenderingFps) {
+		let currentTime = Date.now();
+		const deltaTime = 1000 / maxRenderingFps;
+		let accumulator = 0;
+		const _SceneManager_renderScene = SceneManager.renderScene;
+		SceneManager.renderScene = function (...args) {
+			const newTime = Date.now();
+			accumulator += newTime - currentTime;
+			currentTime = newTime;
+			if (accumulator >= deltaTime) {
+				accumulator -= deltaTime;
+				_SceneManager_renderScene.apply(this, args);
+			}
+		};
+	}
 
-  DataManager.setAutoSaveFileId(autoSaveFileId);
-  Graphics.setErrorMessage(errorMessage);
-  Graphics.setShowErrorDetail(showErrorDetail);
-  Graphics.setProgressEnabled(enableProgressBar);
+	DataManager.setAutoSaveFileId(autoSaveFileId);
+	Graphics.setErrorMessage(errorMessage);
+	Graphics.setShowErrorDetail(showErrorDetail);
+	Graphics.setProgressEnabled(enableProgressBar);
 })();
