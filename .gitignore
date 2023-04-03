@@ -5,14 +5,13 @@ logs
 npm-debug.log*
 
 # RPG Maker Project
-www/Game.rpgproject
-www/index.html
 www/audio/*
 www/data/*
 www/fonts/*.ttf
 www/icon/*
 www/img/*
-www/js/*
+www/js/*.js
+www/js/libs/*.js
 www/movies/*
 www/save/*
 
@@ -59,7 +58,7 @@ jspm_packages
 # Yarn Integrity file
 .yarn-integrity
 
-
+**/*.map
 .idea
 *.iml
 game/**/*
