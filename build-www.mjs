@@ -21,6 +21,13 @@ const define = {
 
 // Configure settings for esbuild.
 const settings = {
+	banner: {
+		js: `/*!
+ * Part of RPG Maker MV CoreScript
+ * @link https://github.com/thinknathan/corescript/blob/master/CONTRIBUTORS.md
+ * @license https://github.com/thinknathan/corescript/blob/master/LICENSE 
+ */`,
+	},
 	bundle: true,
 	define: define,
 	drop: drop,
