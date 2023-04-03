@@ -1,4 +1,4 @@
-name: Continuous Integration
+name: Prettier after pull request
 
 permissions:
   pull-requests: read
@@ -26,4 +26,4 @@ jobs:
         uses: creyD/prettier_action@v4.2
         with:
           # This part is also where you can pass other options, for example:
-          prettier_options: --write **/*.{js,json,md}
+          prettier_options: --write **/*.{css,html,js,json,md}

@@ -1,103 +1,103 @@
 {
-  "$schema": "https://json.schemastore.org/package.json",
-  "name": "corescript",
-  "scripts": {
-    "build": "copy-files-from-to --mode production && cross-env NODE_ENV=production node build-www.mjs",
-    "build:dist": "copy-files-from-to --mode production && cross-env NODE_ENV=production DIST_FOLDER=dist node build-www.mjs",
-    "dev": "copy-files-from-to --mode development && cross-env NODE_ENV=development node build-www.mjs",
-    "prettier:scripts": "prettier --write src-www/js"
-  },
-  "dependencies": {
-    "@pixi/app": "6.4.2",
-    "@pixi/basis": "6.4.2",
-    "@pixi/canvas-display": "6.4.2",
-    "@pixi/canvas-extract": "6.4.2",
-    "@pixi/canvas-graphics": "6.4.2",
-    "@pixi/canvas-mesh": "6.4.2",
-    "@pixi/canvas-particle-container": "6.4.2",
-    "@pixi/canvas-prepare": "6.4.2",
-    "@pixi/canvas-renderer": "6.4.2",
-    "@pixi/canvas-sprite": "6.4.2",
-    "@pixi/canvas-sprite-tiling": "6.4.2",
-    "@pixi/canvas-text": "6.4.2",
-    "@pixi/constants": "6.4.2",
-    "@pixi/core": "6.4.2",
-    "@pixi/display": "6.4.2",
-    "@pixi/events": "6.4.2",
-    "@pixi/extract": "6.4.2",
-    "@pixi/filter-advanced-bloom": "^4",
-    "@pixi/filter-alpha": "6.4.2",
-    "@pixi/filter-blur": "6.4.2",
-    "@pixi/filter-color-matrix": "6.4.2",
-    "@pixi/filter-crt": "^4",
-    "@pixi/filter-glitch": "^4",
-    "@pixi/filter-kawase-blur": "^4",
-    "@pixi/filter-motion-blur": "^4",
-    "@pixi/filter-noise": "6.4.2",
-    "@pixi/filter-pixelate": "^4",
-    "@pixi/filter-rgb-split": "^4",
-    "@pixi/filter-shockwave": "^4",
-    "@pixi/graphics": "6.4.2",
-    "@pixi/interaction": "6.4.2",
-    "@pixi/loaders": "6.4.2",
-    "@pixi/math": "6.4.2",
-    "@pixi/mesh": "6.4.2",
-    "@pixi/mesh-extras": "6.4.2",
-    "@pixi/mixin-cache-as-bitmap": "6.4.2",
-    "@pixi/polyfill": "6.4.2",
-    "@pixi/runner": "6.4.2",
-    "@pixi/settings": "6.4.2",
-    "@pixi/sprite": "6.4.2",
-    "@pixi/sprite-animated": "6.4.2",
-    "@pixi/sprite-tiling": "6.4.2",
-    "@pixi/text": "6.4.2",
-    "@pixi/text-bitmap": "6.4.2",
-    "@pixi/ticker": "6.4.2",
-    "@pixi/utils": "6.4.2",
-    "comlink": "^4.4.1",
-    "fflate": "^0.7.4",
-    "gamestats.js": "^1.0.4",
-    "idb-keyval": "^6.2.0",
-    "pixi-tilemap": "https://github.com/pixijs/tilemap/#a8b89ef3da7cb1a71f2e18514041a3e1afb27cd1"
-  },
-  "devDependencies": {
-    "copy-files-from-to": "^3.8.0",
-    "cross-env": "^7.0.3",
-    "esbuild": "^0.17.11",
-    "eslint": "^8.37.0",
-    "eslint-config-prettier": "^8.7.0",
-    "eslint-plugin-import": "^2.26",
-    "eslint-plugin-prettier": "^4.2.1",
-    "prettier": "^2.8.7"
-  },
-  "copyFiles": [
-    {
-      "from": "node_modules/pixi-tilemap/dist/pixi-tilemap.umd.js",
-      "to": "dist/libs/pixi-tilemap.js"
-    },
-    {
-      "from": "node_modules/pixi-tilemap/dist/pixi-tilemap.umd.js",
-      "to": "www/js/libs/pixi-tilemap.js"
-    },
-    {
-      "from": "node_modules/gamestats.js/build/gamestats.min.js",
-      "to": "dist/libs/gamestats.min.js"
-    },
-    {
-      "from": "node_modules/gamestats.js/build/gamestats.min.js",
-      "to": "www/js/libs/gamestats.min.js"
-    },
-    {
-      "from": "node_modules/gamestats.js/build/gamestats-pixi.module.js",
-      "to": "dist/libs/gamestats-pixi.module.js"
-    },
-    {
-      "from": "node_modules/gamestats.js/build/gamestats-pixi.module.js",
-      "to": "www/js/libs/gamestats-pixi.module.js"
-    }
-  ],
-  "copyFilesSettings": {
-    "whenFileExists": "overwrite",
-    "removeSourceMappingURL": true
-  }
+	"$schema": "https://json.schemastore.org/package.json",
+	"name": "corescript",
+	"scripts": {
+		"build": "copy-files-from-to --mode production && cross-env NODE_ENV=production node build-www.mjs",
+		"build:dist": "copy-files-from-to --mode production && cross-env NODE_ENV=production DIST_FOLDER=dist node build-www.mjs",
+		"dev": "copy-files-from-to --mode development && cross-env NODE_ENV=development node build-www.mjs",
+		"prettier": "prettier --write src-www/js"
+	},
+	"dependencies": {
+		"@pixi/app": "6.4.2",
+		"@pixi/basis": "6.4.2",
+		"@pixi/canvas-display": "6.4.2",
+		"@pixi/canvas-extract": "6.4.2",
+		"@pixi/canvas-graphics": "6.4.2",
+		"@pixi/canvas-mesh": "6.4.2",
+		"@pixi/canvas-particle-container": "6.4.2",
+		"@pixi/canvas-prepare": "6.4.2",
+		"@pixi/canvas-renderer": "6.4.2",
+		"@pixi/canvas-sprite": "6.4.2",
+		"@pixi/canvas-sprite-tiling": "6.4.2",
+		"@pixi/canvas-text": "6.4.2",
+		"@pixi/constants": "6.4.2",
+		"@pixi/core": "6.4.2",
+		"@pixi/display": "6.4.2",
+		"@pixi/events": "6.4.2",
+		"@pixi/extract": "6.4.2",
+		"@pixi/filter-advanced-bloom": "^4",
+		"@pixi/filter-alpha": "6.4.2",
+		"@pixi/filter-blur": "6.4.2",
+		"@pixi/filter-color-matrix": "6.4.2",
+		"@pixi/filter-crt": "^4",
+		"@pixi/filter-glitch": "^4",
+		"@pixi/filter-kawase-blur": "^4",
+		"@pixi/filter-motion-blur": "^4",
+		"@pixi/filter-noise": "6.4.2",
+		"@pixi/filter-pixelate": "^4",
+		"@pixi/filter-rgb-split": "^4",
+		"@pixi/filter-shockwave": "^4",
+		"@pixi/graphics": "6.4.2",
+		"@pixi/interaction": "6.4.2",
+		"@pixi/loaders": "6.4.2",
+		"@pixi/math": "6.4.2",
+		"@pixi/mesh": "6.4.2",
+		"@pixi/mesh-extras": "6.4.2",
+		"@pixi/mixin-cache-as-bitmap": "6.4.2",
+		"@pixi/polyfill": "6.4.2",
+		"@pixi/runner": "6.4.2",
+		"@pixi/settings": "6.4.2",
+		"@pixi/sprite": "6.4.2",
+		"@pixi/sprite-animated": "6.4.2",
+		"@pixi/sprite-tiling": "6.4.2",
+		"@pixi/text": "6.4.2",
+		"@pixi/text-bitmap": "6.4.2",
+		"@pixi/ticker": "6.4.2",
+		"@pixi/utils": "6.4.2",
+		"comlink": "^4.4.1",
+		"fflate": "^0.7.4",
+		"gamestats.js": "^1.0.4",
+		"idb-keyval": "^6.2.0",
+		"pixi-tilemap": "https://github.com/pixijs/tilemap/#a8b89ef3da7cb1a71f2e18514041a3e1afb27cd1"
+	},
+	"devDependencies": {
+		"copy-files-from-to": "^3.8.0",
+		"cross-env": "^7.0.3",
+		"esbuild": "^0.17.11",
+		"eslint": "^8.37.0",
+		"eslint-config-prettier": "^8.7.0",
+		"eslint-plugin-import": "^2.26",
+		"eslint-plugin-prettier": "^4.2.1",
+		"prettier": "^2.8.7"
+	},
+	"copyFiles": [
+		{
+			"from": "node_modules/pixi-tilemap/dist/pixi-tilemap.umd.js",
+			"to": "dist/libs/pixi-tilemap.js"
+		},
+		{
+			"from": "node_modules/pixi-tilemap/dist/pixi-tilemap.umd.js",
+			"to": "www/js/libs/pixi-tilemap.js"
+		},
+		{
+			"from": "node_modules/gamestats.js/build/gamestats.min.js",
+			"to": "dist/libs/gamestats.min.js"
+		},
+		{
+			"from": "node_modules/gamestats.js/build/gamestats.min.js",
+			"to": "www/js/libs/gamestats.min.js"
+		},
+		{
+			"from": "node_modules/gamestats.js/build/gamestats-pixi.module.js",
+			"to": "dist/libs/gamestats-pixi.module.js"
+		},
+		{
+			"from": "node_modules/gamestats.js/build/gamestats-pixi.module.js",
+			"to": "www/js/libs/gamestats-pixi.module.js"
+		}
+	],
+	"copyFilesSettings": {
+		"whenFileExists": "overwrite",
+		"removeSourceMappingURL": true
+	}
 }
