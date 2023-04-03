@@ -401,10 +401,38 @@ import Window_DebugEdit from './rpg_windows/Window_DebugEdit.js';
 		? init()
 		: window.addEventListener('load', init);
 
-	// Live reload with esbuild
 	if (NODE_ENV === 'development') {
+		// Live reload with esbuild.
 		new EventSource('/esbuild').addEventListener('change', () =>
 			location.reload()
 		);
+
+		/**
+		 * Measure the time of execution in milliseconds of a synchronous task.
+		 *
+		 * @param {function} toMeasure
+		 * @param {number} repeatTimes
+		 * @param {any} context
+		 * @param {any[]} args
+		 * @return { totalMilliseconds: number, averageMillisecondsPerTask:number }
+		 */
+		const Benchmark = function (toMeasure, repeatTimes, context, args) {
+			repeatTimes = typeof repeatTimes === 'number' ? repeatTimes : 1;
+
+			if (typeof toMeasure === 'function') {
+				let start = performance.now(),
+					total = 0;
+				for (let i = 0; i < repeatTimes; i++) {
+					let startSub = performance.now();
+					toMeasure.call(context, ...args);
+					total += performance.now() - startSub;
+				}
+				return {
+					totalMilliseconds: performance.now() - start,
+					averageMillisecondsPerTask: total / repeatTimes,
+				};
+			}
+		};
+		window['Benchmark'] = Benchmark;
 	}
 })(self, document, PIXI);
