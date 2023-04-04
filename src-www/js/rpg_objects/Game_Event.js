@@ -1,5 +1,5 @@
 import Game_Character from './Game_Character.js';
-import Game_Interpreter from './Game_Interpreter.js';
+import { Game_Interpreter } from './Game_Interpreter.js';
 
 //-----------------------------------------------------------------------------
 // Game_Event

@@ -101,7 +101,7 @@ import Game_Follower from './rpg_objects/Game_Follower.js';
 import Game_Followers from './rpg_objects/Game_Followers.js';
 import Game_Vehicle from './rpg_objects/Game_Vehicle.js';
 import Game_Event from './rpg_objects/Game_Event.js';
-import Game_Interpreter from './rpg_objects/Game_Interpreter.js';
+import { Game_Interpreter } from './rpg_objects/Game_Interpreter.js';
 
 import Scene_Base from './rpg_scenes/Scene_Base.js';
 import Scene_Boot from './rpg_scenes/Scene_Boot.js';

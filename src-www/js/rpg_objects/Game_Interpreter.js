@@ -2130,4 +2130,4 @@ class Game_Interpreter {
 	}
 }
 
-export default Game_Interpreter;
+export { Game_Interpreter };
