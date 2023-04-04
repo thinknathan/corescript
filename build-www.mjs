@@ -38,6 +38,7 @@ const settings = {
 		'./src-www/js/libs/pixi.js',
 		'./src-www/js/libs/comlink.js',
 	],
+	keepNames: true,
 	minify: !isDev,
 	outdir: DIST_FOLDER,
 	platform: 'browser',
