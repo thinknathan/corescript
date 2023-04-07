@@ -221,6 +221,7 @@ class GameStorageManager {
 				fs.rmdirSync(testPath);
 				this._canMakeWwwSaveDirectory = true;
 			} catch (e) {
+				console.error(e);
 				this._canMakeWwwSaveDirectory = false;
 			}
 		}

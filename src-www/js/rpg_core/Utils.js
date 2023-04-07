@@ -191,6 +191,7 @@ class Utils {
 			xhr.send();
 			return true;
 		} catch (e) {
+			console.error(e);
 			return false;
 		}
 	}

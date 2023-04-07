@@ -591,7 +591,10 @@ class Game_Interpreter {
 				break;
 			case 12: // Script
 				try {
-					result = !!eval(this._params[1]);
+					const context = this;
+					result = new Function('{ context }', 'return !!' + this._params[1])({
+						context,
+					});
 				} catch (error) {
 					error.eventCommand = 'conditional_branch_script';
 					error.content = this._params[1];
@@ -746,7 +749,10 @@ class Game_Interpreter {
 				break;
 			case 4: // Script
 				try {
-					value = eval(this._params[4]);
+					const context = this;
+					value = new Function('{ context }', 'return ' + this._params[4])({
+						context,
+					});
 				} catch (error) {
 					error.eventCommand = 'control_variables';
 					error.content = this._params[4];
@@ -874,6 +880,7 @@ class Game_Interpreter {
 					break;
 			}
 		} catch (e) {
+			console.error(e);
 			self.$gameVariables.setValue(variableId, 0);
 		}
 	}
@@ -1953,7 +1960,10 @@ class Game_Interpreter {
 		}
 		const endLine = this._index + 1;
 		try {
-			eval(script);
+			const context = this;
+			new Function('{ context }', 'return ' + script)({
+				context,
+			});
 		} catch (error) {
 			error.line = `${startLine}-${endLine}`;
 			error.eventCommand = 'script';

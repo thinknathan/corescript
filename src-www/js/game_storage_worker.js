@@ -3,7 +3,7 @@ import { strToU8, inflateSync, deflateSync, strFromU8 } from 'fflate';
 import { set, get, del, keys } from 'idb-keyval';
 import { expose, transfer } from 'comlink';
 
-const DEBUG_LOGGING = true;
+const DEBUG_LOGGING = NODE_ENV === 'production';
 
 class WebStorageManager {
 	static successCallback() {
