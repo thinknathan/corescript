@@ -591,7 +591,7 @@ class Game_Interpreter {
 				break;
 			case 12: // Script
 				try {
-					result = !!eval(this._params[1]); // jshint ignore:line
+					result = !!eval(this._params[1]);
 				} catch (error) {
 					error.eventCommand = 'conditional_branch_script';
 					error.content = this._params[1];
@@ -746,7 +746,7 @@ class Game_Interpreter {
 				break;
 			case 4: // Script
 				try {
-					value = eval(this._params[4]); // jshint ignore:line
+					value = eval(this._params[4]);
 				} catch (error) {
 					error.eventCommand = 'control_variables';
 					error.content = this._params[4];
@@ -1953,7 +1953,7 @@ class Game_Interpreter {
 		}
 		const endLine = this._index + 1;
 		try {
-			eval(script); // jshint ignore:line
+			eval(script);
 		} catch (error) {
 			error.line = `${startLine}-${endLine}`;
 			error.eventCommand = 'script';

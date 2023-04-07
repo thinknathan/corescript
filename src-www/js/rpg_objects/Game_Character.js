@@ -225,7 +225,7 @@ class Game_Character extends Game_CharacterBase {
 				break;
 			case gc.ROUTE_SCRIPT:
 				try {
-					eval(params[0]); // jshint ignore:line
+					eval(params[0]);
 				} catch (error) {
 					if (this._callerEventInfo) {
 						for (let key in this._callerEventInfo) {
