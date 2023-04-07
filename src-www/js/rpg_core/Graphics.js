@@ -1229,6 +1229,7 @@ class Graphics {
 			Graphics._canWebGL = result;
 			return result;
 		} catch (e) {
+			console.error(e);
 			Graphics._canWebGL = false;
 			return false;
 		}

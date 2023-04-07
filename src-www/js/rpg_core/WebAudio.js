@@ -116,6 +116,7 @@ class WebAudio {
 				this._context = new webkitAudioContext();
 			}
 		} catch (e) {
+			console.error(e);
 			this._context = null;
 		}
 	}

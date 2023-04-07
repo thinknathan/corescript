@@ -225,7 +225,8 @@ class Game_Character extends Game_CharacterBase {
 				break;
 			case gc.ROUTE_SCRIPT:
 				try {
-					eval(params[0]);
+					const context = this;
+					new Function('{ context }', 'return ' + params[0])({ context });
 				} catch (error) {
 					if (this._callerEventInfo) {
 						for (let key in this._callerEventInfo) {

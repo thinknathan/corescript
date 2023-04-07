@@ -553,11 +553,18 @@ class Game_Action {
 			const a = this.subject();
 			const b = target;
 			const v = self.$gameVariables._data;
+			const s = self.$gameSwitches._data;
 			const sign = [3, 4].contains(item.damage.type) ? -1 : 1;
-			let value = Math.max(eval(item.damage.formula), 0) * sign;
+			const context = this;
+			const evaledNum = new Function(
+				'{ context, item, a, b, v, s }',
+				'return ' + item.damage.formula
+			)({ context, item, a, b, v, s });
+			let value = Math.max(evaledNum, 0) * sign;
 			if (isNaN(value)) value = 0;
 			return value;
 		} catch (e) {
+			console.error(e);
 			return 0;
 		}
 	}
