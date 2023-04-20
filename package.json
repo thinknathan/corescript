@@ -5,6 +5,7 @@
 		"build": "copy-files-from-to --mode production && cross-env NODE_ENV=production node build-www.mjs",
 		"build:dist": "copy-files-from-to --mode production && cross-env NODE_ENV=production DIST_FOLDER=dist node build-www.mjs",
 		"dev": "copy-files-from-to --mode development && cross-env NODE_ENV=development node build-www.mjs",
+		"lint": "eslint src-www/js",
 		"prettier": "prettier --write src-www/js"
 	},
 	"dependencies": {
@@ -53,8 +54,8 @@
 		"@pixi/sprite-tiling": "6.5.9",
 		"@pixi/text": "6.5.9",
 		"@pixi/text-bitmap": "6.5.9",
-		"@pixi/tilemap": "3.2.1",
 		"@pixi/ticker": "6.5.9",
+		"@pixi/tilemap": "3.2.1",
 		"@pixi/utils": "6.5.9",
 		"comlink": "^4.4.1",
 		"fflate": "^0.7.4",
@@ -66,8 +67,8 @@
 		"cross-env": "^7.0.3",
 		"esbuild": "^0.17.17",
 		"eslint": "^8.38.0",
-		"eslint-config-prettier": "^8.7.0",
-		"eslint-plugin-import": "^2.26",
+		"eslint-config-prettier": "^8.8.0",
+		"eslint-plugin-import": "^2.27.5",
 		"eslint-plugin-prettier": "^4.2.1",
 		"prettier": "^2.8.7"
 	},
