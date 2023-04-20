@@ -544,6 +544,11 @@
   resolved "https://registry.yarnpkg.com/@pixi/ticker/-/ticker-6.5.9.tgz#e98bd3f1377e0328f1b45b672efe96a384dbdbb6"
   integrity sha512-y7bpdSXc+UkfH2HPvOCV7XBk1eFsmoexsvVGqlRNd9r0sb/OXqcYLvnW4+BEyt5xKp7TpQibNBEKJCNih4dcMQ==
 
+"@pixi/tilemap@3.2.1":
+  version "3.2.1"
+  resolved "https://registry.yarnpkg.com/@pixi/tilemap/-/tilemap-3.2.1.tgz#a70fe44f9210f26d75993bd53f1ee6f6607e91fb"
+  integrity sha512-uDYojurwMI0kEnyCKYprUnVi2bd5J2puI3pkH9WySlLzVlocgO/d9Ywtfm9RbtpbzGs/tnxq52TErVlDfQZDAg==
+
 "@pixi/utils@6.5.9":
   version "6.5.9"
   resolved "https://registry.yarnpkg.com/@pixi/utils/-/utils-6.5.9.tgz#1798cfb581353df31664e694cdededf9d582a4b6"
@@ -1958,10 +1963,6 @@ picomatch@^2.3.1:
   version "2.3.1"
   resolved "https://registry.yarnpkg.com/picomatch/-/picomatch-2.3.1.tgz#3ba3833733646d9d3e4995946c1365a67fb07a42"
   integrity sha512-JU3teHTNjmE2VCGFzuY8EXzCDVwEqB2a8fsIvwaStHhAWJEeVd1o1QD80CU6+ZdEXXSLbSsuLwJjkCBWqRQUVA==
-
-"pixi-tilemap@https://github.com/pixijs/tilemap/#a8b89ef3da7cb1a71f2e18514041a3e1afb27cd1":
-  version "2.1.4"
-  resolved "https://github.com/pixijs/tilemap/#a8b89ef3da7cb1a71f2e18514041a3e1afb27cd1"
 
 prelude-ls@^1.2.1:
   version "1.2.1"

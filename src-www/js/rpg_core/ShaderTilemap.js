@@ -1,4 +1,5 @@
 import Tilemap from './Tilemap.js';
+import './ZLayer.js';
 
 //-----------------------------------------------------------------------------
 /**
@@ -113,11 +114,19 @@ class ShaderTilemap extends Tilemap {
 			this.addChild((this.upperZLayer = new PIXI.tilemap.ZLayer(this, 4)));
 
 			this.lowerZLayer.addChild(
-				(this.lowerLayer = new PIXI.tilemap.CompositeRectTileLayer(0, []))
+				(this.lowerLayer = new PIXI.tilemap.CompositeRectTileLayer(
+					0,
+					[],
+					false
+				))
 			);
 			this.lowerLayer.shadowColor = new Float32Array([0.0, 0.0, 0.0, 0.5]);
 			this.upperZLayer.addChild(
-				(this.upperLayer = new PIXI.tilemap.CompositeRectTileLayer(4, []))
+				(this.upperLayer = new PIXI.tilemap.CompositeRectTileLayer(
+					4,
+					[],
+					false
+				))
 			);
 		}
 	}
@@ -188,7 +197,7 @@ class ShaderTilemap extends Tilemap {
 			this._drawTile(lowerLayer, tileId1, dx, dy);
 		}
 
-		this._drawShadow(lowerLayer, shadowBits, dx, dy);
+		// this._drawShadow(lowerLayer, shadowBits, dx, dy);
 		if (this._isTableTile(upperTileId1) && !this._isTableTile(tileId1)) {
 			if (!Tilemap.isShadowingTile(tileId0)) {
 				this._drawTableEdge(lowerLayer, upperTileId1, dx, dy);
@@ -392,24 +401,29 @@ class ShaderTilemap extends Tilemap {
 
 	/**
 	 * @method _drawShadow
-	 * @param {Number} shadowBits
-	 * @param {Number} dx
-	 * @param {Number} dy
+	 * @deprecated
 	 * @private
 	 */
 	_drawShadow(layer, shadowBits, dx, dy) {
-		if (shadowBits & 0x0f) {
-			const w1 = this._tileWidth / 2;
-			const h1 = this._tileHeight / 2;
-			for (let i = 0; i < 4; i++) {
-				if (shadowBits & (1 << i)) {
-					const dx1 = dx + (i % 2) * w1;
-					const dy1 = dy + Math.floor(i / 2) * h1;
-					layer.addRect(-1, 0, 0, dx1, dy1, w1, h1);
-				}
-			}
-		}
+		// if (shadowBits & 0x0f) {
+		// 	const w1 = this._tileWidth / 2;
+		// 	const h1 = this._tileHeight / 2;
+		// 	for (let i = 0; i < 4; i++) {
+		// 		if (shadowBits & (1 << i)) {
+		// 			const dx1 = dx + (i % 2) * w1;
+		// 			const dy1 = dy + Math.floor(i / 2) * h1;
+		// 			layer.addRect(-1, 0, 0, dx1, dy1, w1, h1);
+		// 		}
+		// 	}
+		// }
 	}
+}
+
+if (PIXI.CanvasRenderer) {
+	PIXI.CanvasRenderer.registerPlugin(
+		'tilemap',
+		PIXI.tilemap.CanvasTileRenderer
+	);
 }
 
 PIXI.tilemap.Constant.SCALE_MODE = PIXI.SCALE_MODES.NEAREST;

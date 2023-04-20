@@ -53,13 +53,13 @@
 		"@pixi/sprite-tiling": "6.5.9",
 		"@pixi/text": "6.5.9",
 		"@pixi/text-bitmap": "6.5.9",
+		"@pixi/tilemap": "3.2.1",
 		"@pixi/ticker": "6.5.9",
 		"@pixi/utils": "6.5.9",
 		"comlink": "^4.4.1",
 		"fflate": "^0.7.4",
 		"gamestats.js": "^1.0.4",
-		"idb-keyval": "^6.2.0",
-		"pixi-tilemap": "https://github.com/pixijs/tilemap/#a8b89ef3da7cb1a71f2e18514041a3e1afb27cd1"
+		"idb-keyval": "^6.2.0"
 	},
 	"devDependencies": {
 		"copy-files-from-to": "^3.8.0",
@@ -73,11 +73,19 @@
 	},
 	"copyFiles": [
 		{
-			"from": "node_modules/pixi-tilemap/dist/pixi-tilemap.umd.js",
+			"from": "node_modules/@pixi/tilemap/dist/pixi-tilemap.umd.js",
 			"to": "dist/libs/pixi-tilemap.js"
 		},
 		{
-			"from": "node_modules/pixi-tilemap/dist/pixi-tilemap.umd.js",
+			"from": "node_modules/@pixi/tilemap/dist/pixi-tilemap.umd.js.map",
+			"to": "dist/libs/pixi-tilemap.umd.js.map"
+		},
+		{
+			"from": "node_modules/@pixi/tilemap/dist/pixi-tilemap.umd.js.map",
+			"to": "www/js/libs/pixi-tilemap.umd.js.map"
+		},
+		{
+			"from": "node_modules/@pixi/tilemap/dist/pixi-tilemap.umd.js",
 			"to": "www/js/libs/pixi-tilemap.js"
 		},
 		{
