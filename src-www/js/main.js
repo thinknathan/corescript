@@ -386,6 +386,7 @@ import Window_DebugEdit from './rpg_windows/Window_DebugEdit.js';
 
 	const init = () => {
 		document.body.classList.remove('is-loading');
+		PIXI.settings.PREFER_ENV = 2;
 		PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.NEAREST;
 		PIXI.settings.ROUND_PIXELS = true;
 		PIXI.settings.GC_MAX_IDLE = 600;

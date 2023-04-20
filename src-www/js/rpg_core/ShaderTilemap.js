@@ -426,9 +426,8 @@ if (PIXI.CanvasRenderer) {
 	);
 }
 
-PIXI.tilemap.Constant.SCALE_MODE = PIXI.SCALE_MODES.NEAREST;
-PIXI.tilemap.Constant.DO_CLEAR = true;
-PIXI.tilemap.Constant.boundCountPerBuffer = 4;
-PIXI.tilemap.Constant.maxTextures = 4;
+PIXI.tilemap.settings.TEXTILE_SCALE_MODE = PIXI.SCALE_MODES.NEAREST;
+PIXI.tilemap.settings.TEXTILE_UNITS = 4;
+PIXI.tilemap.settings.MAX_TEXTURES = 4;
 
 export default ShaderTilemap;
