@@ -55,7 +55,7 @@
 		"@pixi/text": "6.5.9",
 		"@pixi/text-bitmap": "6.5.9",
 		"@pixi/ticker": "6.5.9",
-		"@pixi/tilemap": "3.2.1",
+		"@pixi/tilemap": "3.2.2",
 		"@pixi/utils": "6.5.9",
 		"comlink": "^4.4.1",
 		"fflate": "^0.7.4",
