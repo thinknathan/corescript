@@ -544,10 +544,10 @@
   resolved "https://registry.yarnpkg.com/@pixi/ticker/-/ticker-6.5.9.tgz#e98bd3f1377e0328f1b45b672efe96a384dbdbb6"
   integrity sha512-y7bpdSXc+UkfH2HPvOCV7XBk1eFsmoexsvVGqlRNd9r0sb/OXqcYLvnW4+BEyt5xKp7TpQibNBEKJCNih4dcMQ==
 
-"@pixi/tilemap@3.2.1":
-  version "3.2.1"
-  resolved "https://registry.yarnpkg.com/@pixi/tilemap/-/tilemap-3.2.1.tgz#a70fe44f9210f26d75993bd53f1ee6f6607e91fb"
-  integrity sha512-uDYojurwMI0kEnyCKYprUnVi2bd5J2puI3pkH9WySlLzVlocgO/d9Ywtfm9RbtpbzGs/tnxq52TErVlDfQZDAg==
+"@pixi/tilemap@3.2.2":
+  version "3.2.2"
+  resolved "https://registry.yarnpkg.com/@pixi/tilemap/-/tilemap-3.2.2.tgz#8327e5d7007a90be640a0b1eb9943a1e405b57e4"
+  integrity sha512-svdmMyJP63vdae3t66tCmE8IWeO/6lD1xXU+5gzfxqxJS5seTp2bm8mQok2c8PF0O6l/NYlLz6BRklOuEuHboQ==
 
 "@pixi/utils@6.5.9":
   version "6.5.9"
