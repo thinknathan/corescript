@@ -39,12 +39,7 @@ class Utils {
 	 * @return {Boolean} True if the platform is NW.js
 	 */
 	static isNwjs() {
-		if (typeof Utils._nwjs === 'boolean') {
-			return Utils._nwjs;
-		}
-		const result = typeof require === 'function' && typeof process === 'object';
-		Utils._nwjs = result;
-		return result;
+		return typeof require === 'function' && typeof process === 'object';
 	}
 
 	/**
@@ -127,13 +122,7 @@ class Utils {
 	 * @return {Boolean} True if the platform is a mobile device
 	 */
 	static isMobileDevice() {
-		if (typeof Utils._mobileDevice === 'boolean') {
-			return Utils._mobileDevice;
-		}
-		const r = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i;
-		const result = !!navigator.userAgent.match(r);
-		Utils._mobileDevice = result;
-		return result;
+		return PIXI.isMobile.any;
 	}
 
 	/**
@@ -144,17 +133,7 @@ class Utils {
 	 * @return {Boolean} True if the browser is Mobile Safari
 	 */
 	static isMobileSafari() {
-		if (typeof Utils._mobileSafari === 'boolean') {
-			return Utils._mobileSafari;
-		}
-		const agent = navigator.userAgent;
-		const result = !!(
-			agent.match(/iPhone|iPad|iPod/) &&
-			agent.match(/AppleWebKit/) &&
-			!agent.match('CriOS')
-		);
-		Utils._mobileSafari = result;
-		return result;
+		return PIXI.isMobile.apple.device;
 	}
 
 	/**
@@ -165,13 +144,7 @@ class Utils {
 	 * @return {Boolean} True if the browser is Android Chrome
 	 */
 	static isAndroidChrome() {
-		if (typeof Utils._androidChrome === 'boolean') {
-			return Utils._androidChrome;
-		}
-		const agent = navigator.userAgent;
-		const result = !!(agent.match(/Android/) && agent.match(/Chrome/));
-		Utils._androidChrome = result;
-		return result;
+		return PIXI.isMobile.android.device;
 	}
 
 	/**
@@ -263,14 +236,10 @@ Utils.RPGMAKER_NAME = 'MV';
 Utils.RPGMAKER_VERSION = '1.6.1';
 
 Utils.RPGMAKER_ENGINE = 'community-1.4';
-Utils._nwjs = null;
 Utils._highFps = false;
 Utils._fps = 60;
 Utils._fpsIsBusyCounting = false;
 Utils._fpsChecked = false;
-Utils._mobileDevice = null;
-Utils._mobileSafari = null;
-Utils._androidChrome = null;
 Utils._id = 1;
 Utils._supportPassiveEvent = null;
 

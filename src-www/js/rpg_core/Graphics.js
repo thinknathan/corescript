@@ -1140,18 +1140,9 @@ class Graphics {
 		if (typeof Graphics._canWebGL === 'boolean') {
 			return Graphics._canWebGL;
 		}
-		try {
-			const canvas = document.createElement('canvas');
-			const result = !!(
-				canvas.getContext('webgl') || canvas.getContext('experimental-webgl')
-			);
-			Graphics._canWebGL = result;
-			return result;
-		} catch (e) {
-			console.error(e);
-			Graphics._canWebGL = false;
-			return false;
-		}
+		const result = PIXI.utils.isWebGLSupported();
+		Graphics._canWebGL = result;
+		return result;
 	}
 
 	/**
