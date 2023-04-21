@@ -112,7 +112,6 @@ class Bitmap {
 		this._image = null;
 		this._url = '';
 		this._paintOpacity = 255;
-		this._smooth = false;
 		this._loadListeners = [];
 		this._loadingState = 'none';
 		this._decodeAfterRequest = false;
@@ -287,14 +286,10 @@ class Bitmap {
 	 * @type Boolean
 	 */
 	get smooth() {
-		return this._smooth;
+		return false;
 	}
 
-	set smooth(value) {
-		if (this._smooth !== false) {
-			this._smooth = false;
-		}
-	}
+	set smooth(value) {}
 
 	/**
 	 * The opacity of the drawing object in the range (0, 255).
