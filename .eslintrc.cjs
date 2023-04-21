@@ -3,6 +3,10 @@ module.exports = {
 	extends: ['eslint:recommended', 'plugin:import/warnings', 'prettier'],
 	globals: {
 		PIXI: true,
+		NODE_ENV: true,
+		$plugins: true,
+		GameStats: true,
+		nw: true,
 	},
 	env: {
 		node: true,
@@ -25,6 +29,7 @@ module.exports = {
 	rules: {
 		'prettier/prettier': 'error',
 		'no-console': 0,
+		'no-empty': 0,
 		'comma-dangle': [
 			'error',
 			{
