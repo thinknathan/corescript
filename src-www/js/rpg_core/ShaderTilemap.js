@@ -177,47 +177,55 @@ class ShaderTilemap extends Tilemap {
 		const my = startY + y;
 		const dx = x * this._tileWidth;
 		const dy = y * this._tileHeight;
-		const tileId0 = this._readMapData(mx, my, 0);
-		const tileId1 = this._readMapData(mx, my, 1);
-		const tileId2 = this._readMapData(mx, my, 2);
-		const tileId3 = this._readMapData(mx, my, 3);
-		// const shadowBits = this._readMapData(mx, my, 4);
+		const tileId = [
+			this._readMapData(mx, my, 0),
+			this._readMapData(mx, my, 1),
+			this._readMapData(mx, my, 2),
+			this._readMapData(mx, my, 3),
+		];
 		const upperTileId1 = this._readMapData(mx, my - 1, 1);
 		const lowerLayer = this.lowerLayer.children[0];
 		const upperLayer = this.upperLayer.children[0];
+		const tableTile = this._isTableTile(upperTileId1);
+		const isOverpass = this._isOverpassPosition(mx, my);
 
-		if (this._isHigherTile(tileId0)) {
-			this._drawTile(upperLayer, tileId0, dx, dy);
-		} else {
-			this._drawTile(lowerLayer, tileId0, dx, dy);
-		}
-		if (this._isHigherTile(tileId1)) {
-			this._drawTile(upperLayer, tileId1, dx, dy);
-		} else {
-			this._drawTile(lowerLayer, tileId1, dx, dy);
+		this._drawTile(
+			tableTile || isOverpass ? upperLayer : lowerLayer,
+			tileId[0],
+			dx,
+			dy
+		);
+		this._drawTile(
+			this._isHigherTile(tileId[1]) ? upperLayer : lowerLayer,
+			tileId[1],
+			dx,
+			dy
+		);
+
+		if (
+			tableTile &&
+			!this._isTableTile(tileId[1]) &&
+			!Tilemap.isShadowingTile(tileId[0])
+		) {
+			this._drawTableEdge(lowerLayer, upperTileId1, dx, dy);
 		}
 
-		// this._drawShadow(lowerLayer, shadowBits, dx, dy);
-		if (this._isTableTile(upperTileId1) && !this._isTableTile(tileId1)) {
-			if (!Tilemap.isShadowingTile(tileId0)) {
-				this._drawTableEdge(lowerLayer, upperTileId1, dx, dy);
-			}
-		}
-
-		if (this._isOverpassPosition(mx, my)) {
-			this._drawTile(upperLayer, tileId2, dx, dy);
-			this._drawTile(upperLayer, tileId3, dx, dy);
+		if (isOverpass) {
+			this._drawTile(upperLayer, tileId[2], dx, dy);
+			this._drawTile(upperLayer, tileId[3], dx, dy);
 		} else {
-			if (this._isHigherTile(tileId2)) {
-				this._drawTile(upperLayer, tileId2, dx, dy);
-			} else {
-				this._drawTile(lowerLayer, tileId2, dx, dy);
-			}
-			if (this._isHigherTile(tileId3)) {
-				this._drawTile(upperLayer, tileId3, dx, dy);
-			} else {
-				this._drawTile(lowerLayer, tileId3, dx, dy);
-			}
+			this._drawTile(
+				this._isHigherTile(tileId[2]) ? upperLayer : lowerLayer,
+				tileId[2],
+				dx,
+				dy
+			);
+			this._drawTile(
+				this._isHigherTile(tileId[3]) ? upperLayer : lowerLayer,
+				tileId[3],
+				dx,
+				dy
+			);
 		}
 	}
 
@@ -287,28 +295,33 @@ class ShaderTilemap extends Tilemap {
 
 		if (Tilemap.isTileA1(tileId)) {
 			setNumber = 0;
-			if (kind === 0) {
-				animX = 2;
-				by = 0;
-			} else if (kind === 1) {
-				animX = 2;
-				by = 3;
-			} else if (kind === 2) {
-				bx = 6;
-				by = 0;
-			} else if (kind === 3) {
-				bx = 6;
-				by = 3;
-			} else {
-				bx = Math.floor(tx / 4) * 8;
-				by = ty * 6 + (Math.floor(tx / 2) % 2) * 3;
-				if (kind % 2 === 0) {
+			switch (kind) {
+				case 0:
 					animX = 2;
-				} else {
-					bx += 6;
-					autotileTable = Tilemap.WATERFALL_AUTOTILE_TABLE;
-					animY = 1;
-				}
+					by = 0;
+					break;
+				case 1:
+					animX = 2;
+					by = 3;
+					break;
+				case 2:
+					bx = 6;
+					by = 0;
+					break;
+				case 3:
+					bx = 6;
+					by = 3;
+					break;
+				default:
+					bx = Math.floor(tx / 4) * 8;
+					by = ty * 6 + (Math.floor(tx / 2) % 2) * 3;
+					if (kind % 2 === 0) {
+						animX = 2;
+					} else {
+						bx += 6;
+						autotileTable = Tilemap.WATERFALL_AUTOTILE_TABLE;
+						animY = 1;
+					}
 			}
 		} else if (Tilemap.isTileA2(tileId)) {
 			setNumber = 1;
@@ -333,8 +346,7 @@ class ShaderTilemap extends Tilemap {
 		const w1 = this._tileWidth / 2;
 		const h1 = this._tileHeight / 2;
 		for (let i = 0; i < 4; i++) {
-			const qsx = table[i][0];
-			const qsy = table[i][1];
+			const [qsx, qsy] = table[i];
 			const sx1 = (bx * 2 + qsx) * w1;
 			const sy1 = (by * 2 + qsy) * h1;
 			const dx1 = dx + (i % 2) * w1;
@@ -343,7 +355,6 @@ class ShaderTilemap extends Tilemap {
 				let qsx2 = qsx;
 				const qsy2 = 3;
 				if (qsy === 1) {
-					//qsx2 = [0, 3, 2, 1][qsx];
 					qsx2 = (4 - qsx) % 4;
 				}
 				const sx2 = (bx * 2 + qsx2) * w1;
@@ -381,20 +392,18 @@ class ShaderTilemap extends Tilemap {
 			const shape = Tilemap.getAutotileShape(tileId);
 			const tx = kind % 8;
 			const ty = Math.floor(kind / 8);
-			const setNumber = 1;
 			const bx = tx * 2;
 			const by = (ty - 2) * 3;
 			const table = autotileTable[shape];
 			const w1 = this._tileWidth / 2;
 			const h1 = this._tileHeight / 2;
 			for (let i = 0; i < 2; i++) {
-				const qsx = table[2 + i][0];
-				const qsy = table[2 + i][1];
+				const [qsx, qsy] = table[2 + i];
 				const sx1 = (bx * 2 + qsx) * w1;
 				const sy1 = (by * 2 + qsy) * h1 + h1 / 2;
 				const dx1 = dx + (i % 2) * w1;
 				const dy1 = dy + Math.floor(i / 2) * h1;
-				layer.addRect(setNumber, sx1, sy1, dx1, dy1, w1, h1 / 2);
+				layer.addRect(1, sx1, sy1, dx1, dy1, w1, h1 / 2);
 			}
 		}
 	}
@@ -404,19 +413,7 @@ class ShaderTilemap extends Tilemap {
 	 * @deprecated
 	 * @private
 	 */
-	_drawShadow(layer, shadowBits, dx, dy) {
-		// if (shadowBits & 0x0f) {
-		// 	const w1 = this._tileWidth / 2;
-		// 	const h1 = this._tileHeight / 2;
-		// 	for (let i = 0; i < 4; i++) {
-		// 		if (shadowBits & (1 << i)) {
-		// 			const dx1 = dx + (i % 2) * w1;
-		// 			const dy1 = dy + Math.floor(i / 2) * h1;
-		// 			layer.addRect(-1, 0, 0, dx1, dy1, w1, h1);
-		// 		}
-		// 	}
-		// }
-	}
+	_drawShadow(layer, shadowBits, dx, dy) {}
 }
 
 if (PIXI.CanvasRenderer) {
