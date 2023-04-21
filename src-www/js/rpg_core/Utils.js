@@ -205,6 +205,7 @@ class Utils {
 		// https://github.com/WICG/EventListenerOptions/blob/gh-pages/explainer.md#feature-detection
 		let passive = false;
 		const options = Object.defineProperty({}, 'passive', {
+			// eslint-disable-next-line getter-return
 			get() {
 				passive = true;
 			},

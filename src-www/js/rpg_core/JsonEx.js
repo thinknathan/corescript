@@ -80,7 +80,8 @@ class JsonEx {
 			}
 			for (let key in value) {
 				if (
-					(!value.hasOwnProperty || value.hasOwnProperty(key)) &&
+					(!value.hasOwnProperty ||
+						Object.prototype.hasOwnProperty.call(value, key)) &&
 					!key.match(/^@./)
 				) {
 					if (value[key] && typeof value[key] === 'object') {
@@ -135,7 +136,10 @@ class JsonEx {
 				}
 			}
 			for (let key in value) {
-				if (!value.hasOwnProperty || value.hasOwnProperty(key)) {
+				if (
+					!value.hasOwnProperty ||
+					Object.prototype.hasOwnProperty.call(value, key)
+				) {
 					if (value[key] && value[key]['@a']) {
 						//object is array wrapper
 						const body = value[key]['@a'];
@@ -228,7 +232,7 @@ class JsonEx {
 		} else {
 			const newValue = Object.create(prototype);
 			for (let key in value) {
-				if (value.hasOwnProperty(key)) {
+				if (Object.prototype.hasOwnProperty.call(value, key)) {
 					newValue[key] = value[key];
 				}
 			}

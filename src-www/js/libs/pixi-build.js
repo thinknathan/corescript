@@ -1,3 +1,4 @@
+/* eslint-disable */
 export * from '@pixi/constants';
 export * from '@pixi/math';
 export * from '@pixi/runner';
@@ -61,3 +62,4 @@ export const filters = {
 	PixelateFilter,
 	CRTFilter,
 };
+/* eslint-enable */

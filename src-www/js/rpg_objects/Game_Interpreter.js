@@ -465,7 +465,8 @@ class Game_Interpreter {
 				result =
 					self.$gameSwitches.value(this._params[1]) === (this._params[2] === 0);
 				break;
-			case 1: // Variable
+			case 1: {
+				// Variable
 				const value1 = self.$gameVariables.value(this._params[1]);
 				let value2;
 				if (this._params[2] === 0) {
@@ -494,6 +495,7 @@ class Game_Interpreter {
 						break;
 				}
 				break;
+			}
 			case 2: // Self Switch
 				if (this._eventId > 0) {
 					const key = [this._mapId, this._eventId, this._params[1]];
@@ -510,7 +512,8 @@ class Game_Interpreter {
 					}
 				}
 				break;
-			case 4: // Actor
+			case 4: {
+				// Actor
 				const actor = self.$gameActors.actor(this._params[1]);
 				if (actor) {
 					const n = this._params[3];
@@ -539,7 +542,9 @@ class Game_Interpreter {
 					}
 				}
 				break;
-			case 5: // Enemy
+			}
+			case 5: {
+				// Enemy
 				const enemy = self.$gameTroop.members()[this._params[1]];
 				if (enemy) {
 					switch (this._params[2]) {
@@ -552,12 +557,15 @@ class Game_Interpreter {
 					}
 				}
 				break;
-			case 6: // Character
+			}
+			case 6: {
+				// Character
 				const character = this.character(this._params[1]);
 				if (character) {
 					result = character.direction() === this._params[2];
 				}
 				break;
+			}
 			case 7: // Gold
 				switch (this._params[2]) {
 					case 0: // Greater than or equal to
@@ -739,7 +747,7 @@ class Game_Interpreter {
 					);
 				}
 				return true;
-				break;
+			// break;
 			case 3: // Game Data
 				value = this.gameDataOperand(
 					this._params[4],
@@ -774,7 +782,8 @@ class Game_Interpreter {
 				return self.$gameParty.numItems(self.$dataWeapons[param1]);
 			case 2: // Armor
 				return self.$gameParty.numItems(self.$dataArmors[param1]);
-			case 3: // Actor
+			case 3: {
+				// Actor
 				const actor = self.$gameActors.actor(param1);
 				if (actor) {
 					switch (param2) {
@@ -793,7 +802,9 @@ class Game_Interpreter {
 					}
 				}
 				break;
-			case 4: // Enemy
+			}
+			case 4: {
+				// Enemy
 				const enemy = self.$gameTroop.members()[param1];
 				if (enemy) {
 					switch (param2) {
@@ -808,7 +819,9 @@ class Game_Interpreter {
 					}
 				}
 				break;
-			case 5: // Character
+			}
+			case 5: {
+				// Character
 				const character = this.character(param1);
 				if (character) {
 					switch (param2) {
@@ -825,9 +838,12 @@ class Game_Interpreter {
 					}
 				}
 				break;
-			case 6: // Party
+			}
+			case 6: {
+				// Party
 				const actor_party = self.$gameParty.members()[param1];
 				return actor_party ? actor_party.actorId() : 0;
+			}
 			case 7: // Other
 				switch (param1) {
 					case 0: // Map ID
@@ -1994,29 +2010,27 @@ class Game_Interpreter {
 	static requestImagesByPluginCommand(command, args) {}
 
 	static requestImagesForCommand({ parameters, code }) {
-		const params = parameters;
 		switch (code) {
 			// Show Text
 			case 101:
-				ImageManager.requestFace(params[0]);
+				ImageManager.requestFace(parameters[0]);
 				break;
 
 			// Change Party Member
-			case 129:
-				const actor = self.$gameActors.actor(params[0]);
-				if (actor && params[1] === 0) {
-					const name = actor.characterName();
-					ImageManager.requestCharacter(name);
+			case 129: {
+				const actor = self.$gameActors.actor(parameters[0]);
+				if (actor && parameters[1] === 0) {
+					ImageManager.requestCharacter(actor.characterName());
 				}
 				break;
+			}
 
 			// Set Movement Route
 			case 205:
-				if (params[1]) {
-					params[1].list.forEach(({ parameters, code }) => {
-						const params = parameters;
+				if (parameters[1]) {
+					parameters[1].list.forEach(({ parameters, code }) => {
 						if (code === Game_Character.ROUTE_CHANGE_IMAGE) {
-							ImageManager.requestCharacter(params[0]);
+							ImageManager.requestCharacter(parameters[0]);
 						}
 					});
 				}
@@ -2025,8 +2039,8 @@ class Game_Interpreter {
 			// Show Animation, Show Battle Animation
 			case 212:
 			case 337:
-				if (params[1]) {
-					const animation = self.$dataAnimations[params[1]];
+				if (parameters[1]) {
+					const animation = self.$dataAnimations[parameters[1]];
 					const name1 = animation.animation1Name;
 					const name2 = animation.animation2Name;
 					const hue1 = animation.animation1Hue;
@@ -2038,7 +2052,7 @@ class Game_Interpreter {
 
 			// Change Player Followers
 			case 216:
-				if (params[0] === 0) {
+				if (parameters[0] === 0) {
 					self.$gamePlayer.followers().forEach((follower) => {
 						const name = follower.characterName();
 						ImageManager.requestCharacter(name);
@@ -2048,50 +2062,52 @@ class Game_Interpreter {
 
 			// Show Picture
 			case 231:
-				ImageManager.requestPicture(params[1]);
+				ImageManager.requestPicture(parameters[1]);
 				break;
 
 			// Change Tileset
-			case 282:
-				const tileset = self.$dataTilesets[params[0]];
+			case 282: {
+				const tileset = self.$dataTilesets[parameters[0]];
 				tileset.tilesetNames.forEach((tilesetName) => {
 					ImageManager.requestTileset(tilesetName);
 				});
 				break;
+			}
 
 			// Change Battle Back
 			case 283:
 				if (self.$gameParty.inBattle()) {
-					ImageManager.requestBattleback1(params[0]);
-					ImageManager.requestBattleback2(params[1]);
+					ImageManager.requestBattleback1(parameters[0]);
+					ImageManager.requestBattleback2(parameters[1]);
 				}
 				break;
 
 			// Change Parallax
 			case 284:
 				if (!self.$gameParty.inBattle()) {
-					ImageManager.requestParallax(params[0]);
+					ImageManager.requestParallax(parameters[0]);
 				}
 				break;
 
 			// Change Actor Images
 			case 322:
-				ImageManager.requestCharacter(params[1]);
-				ImageManager.requestFace(params[3]);
-				ImageManager.requestSvActor(params[5]);
+				ImageManager.requestCharacter(parameters[1]);
+				ImageManager.requestFace(parameters[3]);
+				ImageManager.requestSvActor(parameters[5]);
 				break;
 
 			// Change Vehicle Image
-			case 323:
-				const vehicle = self.$gameMap.vehicle(params[0]);
+			case 323: {
+				const vehicle = self.$gameMap.vehicle(parameters[0]);
 				if (vehicle) {
-					ImageManager.requestCharacter(params[1]);
+					ImageManager.requestCharacter(parameters[1]);
 				}
 				break;
+			}
 
 			// Enemy Transform
-			case 336:
-				const enemy = self.$dataEnemies[params[1]];
+			case 336: {
+				const enemy = self.$dataEnemies[parameters[1]];
 				const name = enemy.battlerName;
 				const hue = enemy.battlerHue;
 				if (self.$gameSystem.isSideView()) {
@@ -2100,24 +2116,25 @@ class Game_Interpreter {
 					ImageManager.requestEnemy(name, hue);
 				}
 				break;
+			}
 			// Plugin Command
-			case 356:
-				const args = params[0].split(' ');
+			case 356: {
+				const args = parameters[0].split(' ');
 				const commandName = args.shift();
 				Game_Interpreter.requestImagesByPluginCommand(commandName, args);
 				break;
+			}
 		}
 	}
 
 	static requestImagesByChildEvent({ parameters }, commonList) {
-		const params = parameters;
-		const commonEvent = self.$dataCommonEvents[params[0]];
+		const commonEvent = self.$dataCommonEvents[parameters[0]];
 		if (commonEvent) {
 			if (!commonList) {
 				commonList = [];
 			}
-			if (!commonList.contains(params[0])) {
-				commonList.push(params[0]);
+			if (!commonList.contains(parameters[0])) {
+				commonList.push(parameters[0]);
 				Game_Interpreter.requestImages(commonEvent.list, commonList);
 			}
 		}

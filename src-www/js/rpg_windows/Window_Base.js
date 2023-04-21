@@ -375,7 +375,7 @@ class Window_Base extends Window {
 
 	obtainEscapeCode(textState) {
 		textState.index++;
-		const regExp = /^[\$\.\|\^!><\{\}\\]|^[A-Z]+/i;
+		const regExp = /^[$.|^!><{}\\]|^[A-Z]+/i;
 		const arr = regExp.exec(textState.text.slice(textState.index));
 		if (arr) {
 			textState.index += arr[0].length;
@@ -437,7 +437,7 @@ class Window_Base extends Window {
 
 		for (let i = 0; i < maxLines; i++) {
 			let maxFontSize = this.contents.fontSize;
-			const regExp = /\x1b[\{\}]/g;
+			const regExp = /\x1b[{}]/g;
 			for (;;) {
 				const array = regExp.exec(lines[i]);
 				if (array) {

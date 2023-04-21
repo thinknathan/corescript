@@ -386,12 +386,12 @@ class ImageManager {
 	}
 
 	static isObjectCharacter(filename) {
-		const sign = filename.match(/^[\!\$]+/);
+		const sign = filename.match(/^[!$]+/);
 		return sign && sign[0].contains('!');
 	}
 
 	static isBigCharacter(filename) {
-		const sign = filename.match(/^[\!\$]+/);
+		const sign = filename.match(/^[!$]+/);
 		return sign && sign[0].contains('$');
 	}
 
