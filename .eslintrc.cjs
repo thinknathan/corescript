@@ -30,6 +30,8 @@ module.exports = {
 		'prettier/prettier': 'error',
 		'no-console': 0,
 		'no-empty': 0,
+		'no-control-regex': 0,
+		'no-unused-vars': 0,
 		'comma-dangle': [
 			'error',
 			{
