@@ -181,7 +181,7 @@ class ShaderTilemap extends Tilemap {
 		const tileId1 = this._readMapData(mx, my, 1);
 		const tileId2 = this._readMapData(mx, my, 2);
 		const tileId3 = this._readMapData(mx, my, 3);
-		const shadowBits = this._readMapData(mx, my, 4);
+		// const shadowBits = this._readMapData(mx, my, 4);
 		const upperTileId1 = this._readMapData(mx, my - 1, 1);
 		const lowerLayer = this.lowerLayer.children[0];
 		const upperLayer = this.upperLayer.children[0];
