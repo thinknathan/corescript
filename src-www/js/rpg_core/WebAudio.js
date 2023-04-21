@@ -109,8 +109,6 @@ class WebAudio {
 		try {
 			if (typeof AudioContext !== 'undefined') {
 				this._context = new AudioContext();
-			} else if (typeof webkitAudioContext !== 'undefined') {
-				this._context = new webkitAudioContext();
 			}
 		} catch (e) {
 			console.error(e);
