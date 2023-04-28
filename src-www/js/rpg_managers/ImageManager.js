@@ -72,7 +72,9 @@ class ImageManager {
 
 	static loadBitmap(folder, filename, hue, smooth) {
 		if (filename) {
-			const path = `${folder + encodeURIComponent(filename)}.png`;
+			const path = `${
+				folder + encodeURIComponent(filename) + this._imageExtension
+			}`;
 			const bitmap = this.loadNormalBitmap(path, hue || 0);
 			return bitmap;
 		} else {
@@ -253,7 +255,9 @@ class ImageManager {
 
 	static reserveBitmap(folder, filename, hue, smooth, reservationId) {
 		if (filename) {
-			const path = `${folder + encodeURIComponent(filename)}.png`;
+			const path = `${
+				folder + encodeURIComponent(filename) + this._imageExtension
+			}`;
 			const bitmap = this.reserveNormalBitmap(
 				path,
 				hue || 0,
@@ -342,7 +346,9 @@ class ImageManager {
 
 	static requestBitmap(folder, filename, hue, smooth) {
 		if (filename) {
-			const path = `${folder + encodeURIComponent(filename)}.png`;
+			const path = `${
+				folder + encodeURIComponent(filename) + this._imageExtension
+			}`;
 			const bitmap = this.requestNormalBitmap(path, hue || 0);
 			return bitmap;
 		} else {
@@ -409,5 +415,6 @@ ImageManager.cache = new CacheMap(ImageManager);
 ImageManager._imageCache = new ImageCache();
 ImageManager._requestQueue = new RequestQueue();
 ImageManager._systemReservationId = Utils.generateRuntimeId();
+ImageManager._imageExtension = '.png';
 
 export default ImageManager;

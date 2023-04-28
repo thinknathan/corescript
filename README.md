@@ -51,6 +51,7 @@ This fork introduces opinionated changes and is not necessarily a drop-in replac
 - Added Game_Action.processDamageEnd(item, value, target, critical)
 - Added BattleManager.processEscapeFormula (Function)
 - Added GameStorageManager.uniqueKey to customize the webkey used for finding matching saved files
+- Added ImageManager.\_imageExtension to easily customize image extension
 
 ### Upgrading your project to this fork
 
