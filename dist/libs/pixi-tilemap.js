@@ -1,8 +1,8 @@
 /* eslint-disable */
  
 /*!
- * @pixi/tilemap - v3.2.0
- * Compiled Tue, 15 Jun 2021 02:09:21 UTC
+ * @pixi/tilemap - v3.2.2
+ * Compiled Fri, 22 Oct 2021 12:27:49 UTC
  *
  * @pixi/tilemap is licensed under the MIT License.
  * http://www.opensource.org/licenses/mit-license
@@ -46,6 +46,17 @@ this.PIXI.tilemap = this.PIXI.tilemap || {};
         {;CanvasTileRenderer.prototype.__init.call(this);CanvasTileRenderer.prototype.__init2.call(this);
             this.renderer = renderer;
             this.tileAnim = [0, 0];
+        }
+
+        // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+        static getInstance(renderer)
+        {
+            if (!renderer.plugins.tilemap)
+            {
+                renderer.plugins.tilemap = new CanvasTileRenderer(renderer);
+            }
+
+            return renderer.plugins.tilemap;
         }
     }
 
@@ -102,7 +113,6 @@ this.PIXI.tilemap = this.PIXI.tilemap || {};
     const Constant = settings;
 
     function _nullishCoalesce(lhs, rhsFn) { if (lhs != null) { return lhs; } else { return rhsFn(); } }
-
 
 
 
@@ -430,7 +440,7 @@ this.PIXI.tilemap = this.PIXI.tilemap || {};
 
         __init11() {this.renderCanvas = (renderer) =>
         {
-            const plugin = renderer.plugins.tilemap;
+            const plugin = CanvasTileRenderer.getInstance(renderer);
 
             if (plugin && !plugin.dontUseTransform)
             {
@@ -937,7 +947,7 @@ this.PIXI.tilemap = this.PIXI.tilemap || {};
          */
         constructor(tileset)
         {
-            super();CompositeTilemap.prototype.__init.call(this);CompositeTilemap.prototype.__init2.call(this);CompositeTilemap.prototype.__init3.call(this);CompositeTilemap.prototype.__init4.call(this);CompositeTilemap.prototype.__init5.call(this);CompositeTilemap.prototype.__init6.call(this);CompositeTilemap.prototype.__init7.call(this);;
+            super();CompositeTilemap.prototype.__init.call(this);CompositeTilemap.prototype.__init2.call(this);CompositeTilemap.prototype.__init3.call(this);CompositeTilemap.prototype.__init4.call(this);CompositeTilemap.prototype.__init5.call(this);CompositeTilemap.prototype.__init6.call(this);;
 
             this.tileset(tileset);
             this.texturesPerTilemap = settings.TEXTURES_PER_TILEMAP;
@@ -1185,14 +1195,14 @@ this.PIXI.tilemap = this.PIXI.tilemap || {};
             return this;
         }
 
-        __init6() {this.renderCanvas = (renderer) =>
+        renderCanvas(renderer)
         {
             if (!this.visible || this.worldAlpha <= 0 || !this.renderable)
             {
                 return;
             }
 
-            const tilemapPlugin = renderer.plugins.tilemap;
+            const tilemapPlugin = CanvasTileRenderer.getInstance(renderer);
 
             if (tilemapPlugin && !tilemapPlugin.dontUseTransform)
             {
@@ -1217,7 +1227,7 @@ this.PIXI.tilemap = this.PIXI.tilemap || {};
                 layer.tileAnim = this.tileAnim;
                 layer.renderCanvasCore(renderer);
             }
-        };}
+        }
 
         render(renderer)
         {
@@ -1358,7 +1368,7 @@ this.PIXI.tilemap = this.PIXI.tilemap || {};
          *
          * @deprecated Since @pixi/tilemap 3.
          */
-        __init7() {this.setBitmaps = this.tileset;}
+        __init6() {this.setBitmaps = this.tileset;}
 
         /**
          * @deprecated Since @pixi/tilemap 3.
@@ -1607,11 +1617,65 @@ this.PIXI.tilemap = this.PIXI.tilemap || {};
             .replace(/%forloop%/gi, generateSampleSrc(maxTextures));
     }
 
-    var tilemapVertexTemplateSrc = "attribute vec2 aVertexPosition;\nattribute vec2 aTextureCoord;\nattribute vec4 aFrame;\nattribute vec2 aAnim;\nattribute float aAnimDivisor;\nattribute float aTextureId;\nattribute float aAlpha;\n\nuniform mat3 projTransMatrix;\nuniform vec2 animationFrame;\n\nvarying vec2 vTextureCoord;\nvarying float vTextureId;\nvarying vec4 vFrame;\nvarying float vAlpha;\n\nvoid main(void)\n{\n   gl_Position = vec4((projTransMatrix * vec3(aVertexPosition, 1.0)).xy, 0.0, 1.0);\n   vec2 animCount = floor((aAnim + 0.5) / 2048.0);\n   vec2 animFrameOffset = aAnim - animCount * 2048.0;\n   vec2 currentFrame = floor(animationFrame / aAnimDivisor);\n   vec2 animOffset = animFrameOffset * floor(mod(currentFrame + 0.5, animCount));\n\n   vTextureCoord = aTextureCoord + animOffset;\n   vFrame = aFrame + vec4(animOffset, animOffset);\n   vTextureId = aTextureId;\n   vAlpha = aAlpha;\n}\n";
-
-    var tilemapFragmentTemplateSrc = "varying vec2 vTextureCoord;\nvarying vec4 vFrame;\nvarying float vTextureId;\nvarying float vAlpha;\nuniform vec4 shadowColor;\nuniform sampler2D uSamplers[%count%];\nuniform vec2 uSamplerSize[%count%];\n\nvoid main(void)\n{\n   vec2 textureCoord = clamp(vTextureCoord, vFrame.xy, vFrame.zw);\n   float textureId = floor(vTextureId + 0.5);\n\n   vec4 color;\n   %forloop%\n   gl_FragColor = color * vAlpha;\n}\n";
-
     // eslint-disable-next-line @typescript-eslint/triple-slash-reference, spaced-comment
+
+    const tilemapVertexTemplateSrc = `#version 100
+precision highp float;
+attribute vec2 aVertexPosition;
+attribute vec2 aTextureCoord;
+attribute vec4 aFrame;
+attribute vec2 aAnim;
+attribute float aAnimDivisor;
+attribute float aTextureId;
+attribute float aAlpha;
+
+uniform mat3 projTransMatrix;
+uniform vec2 animationFrame;
+
+varying vec2 vTextureCoord;
+varying float vTextureId;
+varying vec4 vFrame;
+varying float vAlpha;
+
+void main(void)
+{
+   gl_Position = vec4((projTransMatrix * vec3(aVertexPosition, 1.0)).xy, 0.0, 1.0);
+   vec2 animCount = floor((aAnim + 0.5) / 2048.0);
+   vec2 animFrameOffset = aAnim - animCount * 2048.0;
+   vec2 currentFrame = floor(animationFrame / aAnimDivisor);
+   vec2 animOffset = animFrameOffset * floor(mod(currentFrame + 0.5, animCount));
+
+   vTextureCoord = aTextureCoord + animOffset;
+   vFrame = aFrame + vec4(animOffset, animOffset);
+   vTextureId = aTextureId;
+   vAlpha = aAlpha;
+}
+`;
+
+    const tilemapFragmentTemplateSrc = `#version 100
+#ifdef GL_FRAGMENT_PRECISION_HIGH
+precision highp float;
+#else
+precision mediump float;
+#endif
+varying vec2 vTextureCoord;
+varying vec4 vFrame;
+varying float vTextureId;
+varying float vAlpha;
+uniform vec4 shadowColor;
+uniform sampler2D uSamplers[%count%];
+uniform vec2 uSamplerSize[%count%];
+
+void main(void)
+{
+   vec2 textureCoord = clamp(vTextureCoord, vFrame.xy, vFrame.zw);
+   float textureId = floor(vTextureId + 0.5);
+
+   vec4 color;
+   %forloop%
+   gl_FragColor = color * vAlpha;
+}
+`;
 
     // For some reason ESLint goes mad with indendation in this file ^&^
     /* eslint-disable no-mixed-spaces-and-tabs, indent */
@@ -1858,8 +1922,6 @@ this.PIXI.tilemap = this.PIXI.tilemap || {};
     	}
     }
 
-    core.Renderer.registerPlugin('tilemap', TileRenderer );
-
     // eslint-disable-next-line camelcase
     const pixi_tilemap = {
         CanvasTileRenderer,
@@ -1876,6 +1938,8 @@ this.PIXI.tilemap = this.PIXI.tilemap || {};
         RectTileGeom: TilemapGeometry,
         TileRenderer,
     };
+
+    core.Renderer.registerPlugin('tilemap', TileRenderer );
 
     exports.CanvasTileRenderer = CanvasTileRenderer;
     exports.CompositeRectTileLayer = CompositeTilemap;
