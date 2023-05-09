@@ -60,7 +60,7 @@
 		"comlink": "^4.4.1",
 		"fflate": "^0.7.4",
 		"gamestats.js": "^1.0.4",
-		"idb-keyval": "^6.2.0"
+		"idb-keyval": "^6.2.1"
 	},
 	"devDependencies": {
 		"copy-files-from-to": "^3.8.0",
