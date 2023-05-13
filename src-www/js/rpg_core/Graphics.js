@@ -1093,6 +1093,7 @@ class Graphics {
 		};
 		try {
 			this._app = new PIXI.Application(options);
+			this._app.ticker.maxFPS = 60;
 			this._app.ticker.remove(this._app.render, this._app);
 			this._app.ticker.add(this._onTick, this);
 		} catch (e) {

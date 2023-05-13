@@ -23,7 +23,7 @@ class SceneManager {
 		try {
 			this.initialize();
 			this.goto(sceneClass);
-			this.requestUpdate();
+			// this.requestUpdate();
 		} catch (e) {
 			this.catchException(e);
 		}
@@ -38,6 +38,7 @@ class SceneManager {
 		this.initNwjs();
 		this.checkPluginErrors();
 		this.setupErrorHandlers();
+		Graphics._app.ticker.add(this.update, this);
 	}
 
 	static initGraphics() {
@@ -73,18 +74,12 @@ class SceneManager {
 		this._frameCount = 0;
 	}
 
-	static requestUpdate() {
-		if (!this._stopped) {
-			requestAnimationFrame(this.update.bind(this));
-		}
-	}
+	static requestUpdate() {}
 
 	static update() {
+		if (this._stopped) return;
 		try {
 			this.tickStart();
-			if (Utils.isMobileSafari()) {
-				this.updateInputData();
-			}
 			this.updateManagers();
 			this.updateMain();
 			this.tickEnd();
@@ -118,37 +113,11 @@ class SceneManager {
 	}
 
 	static updateMain() {
-		if (Utils.isHighFps()) {
-			if (Utils.isMobileSafari()) {
-				this.changeScene();
-				this.updateScene();
-			} else {
-				const newTime = this._getTimeInMsWithoutMobileSafari();
-				if (this._currentTime === undefined) {
-					this._currentTime = newTime;
-				}
-				let fTime = (newTime - this._currentTime) / 1000;
-				if (fTime > 0.25) {
-					fTime = 0.25;
-				}
-				this._currentTime = newTime;
-				this._accumulator += fTime;
-				while (this._accumulator >= this._deltaTime) {
-					this.updateInputData();
-					this.changeScene();
-					this.updateScene();
-					this._accumulator -= this._deltaTime;
-				}
-			}
-			this.renderScene();
-			this.requestUpdate();
-		} else {
-			this.updateInputData();
-			this.changeScene();
-			this.updateScene();
-			this.renderScene();
-			this.requestUpdate();
-		}
+		this.updateInputData();
+		this.changeScene();
+		this.updateScene();
+		this.renderScene();
+		// this.requestUpdate();
 	}
 
 	static changeScene() {
@@ -272,11 +241,7 @@ class SceneManager {
 
 	static resume() {
 		this._stopped = false;
-		this.requestUpdate();
-		if (!Utils.isMobileSafari()) {
-			this._currentTime = this._getTimeInMsWithoutMobileSafari();
-			this._accumulator = 0;
-		}
+		// this.requestUpdate();
 	}
 
 	/*
@@ -302,7 +267,7 @@ class SceneManager {
 	}
 
 	static shouldUseCanvasRenderer() {
-		return Utils.isMobileDevice();
+		return false;
 	}
 
 	static checkWebGL() {
@@ -416,9 +381,6 @@ SceneManager._screenHeight = 624;
 SceneManager._boxWidth = 816;
 SceneManager._boxHeight = 624;
 SceneManager._deltaTime = 1.0 / 60.0;
-if (!Utils.isMobileSafari())
-	SceneManager._currentTime = SceneManager._getTimeInMsWithoutMobileSafari();
-SceneManager._accumulator = 0.0;
 SceneManager._frameCount = 0;
 
 export default SceneManager;
