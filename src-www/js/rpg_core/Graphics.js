@@ -371,6 +371,8 @@ class Graphics {
 				this._fpsMeter.enableExtension('pixi', [PIXI, this._app]);
 			}
 			document.body.appendChild(this._fpsMeter.dom);
+			this._fpsMeter.dom.style.minWidth = '100px';
+			this._fpsMeter.dom.style.minHeight = '152px';
 			this._fpsMeter.show(true);
 		}
 	}
