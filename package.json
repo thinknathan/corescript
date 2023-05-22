@@ -58,7 +58,7 @@
 		"@pixi/tilemap": "3.2.2",
 		"@pixi/utils": "6.5.9",
 		"comlink": "^4.4.1",
-		"fflate": "^0.7.4",
+		"fflate": "^0.8.0",
 		"gamestats.js": "^1.0.4",
 		"idb-keyval": "^6.2.1"
 	},
