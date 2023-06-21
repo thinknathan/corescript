@@ -1,0 +1,12 @@
+# Auto detect text files and perform LF normalization
+* text=auto
+
+# Exclude files from archive
+.github export-ignore
+.vscode export-ignore
+.editorconfig export-ignore
+.eslintrc.cjs export-ignore
+.prettierignore export-ignore
+.prettierrc.json export-ignore
+.gitattributes export-ignore
+quick-lint-js.config export-ignore
