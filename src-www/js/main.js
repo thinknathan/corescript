@@ -415,7 +415,7 @@ import Window_DebugEdit from './rpg_windows/Window_DebugEdit.js';
 		 * @param {number} repeatTimes
 		 * @param {any} context
 		 * @param {any[]} args
-		 * @return { totalMilliseconds: number, averageMillisecondsPerTask:number }
+		 * @return { totalMilliseconds: number, averageMillisecondsPerTask: number }
 		 */
 		const Benchmark = function (toMeasure, repeatTimes, context, args) {
 			repeatTimes = typeof repeatTimes === 'number' ? repeatTimes : 1;
