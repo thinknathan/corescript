@@ -9,14 +9,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       # Checks-out your repository
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           ref: ${{ github.ref }}
 
       - name: setup node
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
-          node-version: 18
+          node-version: 'lts/*'
 
       - name: install dependencies
         run: yarn
@@ -25,7 +25,7 @@ jobs:
         run: yarn build:dist
 
       # Auto-commit to repository
-      - uses: stefanzweifel/git-auto-commit-action@v4
+      - uses: stefanzweifel/git-auto-commit-action@5
         with:
           commit_message: Build distribution files
           branch: ${{ github.ref }}
