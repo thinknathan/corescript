@@ -6,6 +6,7 @@ module.exports = {
 		NODE_ENV: true,
 		$plugins: true,
 		GameStats: true,
+		Comlink: true,
 		nw: true,
 	},
 	env: {
