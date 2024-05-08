@@ -63,6 +63,8 @@
 		"idb-keyval": "^6.2.1"
 	},
 	"devDependencies": {
+		"@commitlint/cli": "^19.3.0",
+		"@commitlint/config-conventional": "^19.2.2",
 		"copy-files-from-to": "^3.9.0",
 		"cross-env": "^7.0.3",
 		"esbuild": "~0.18.3",
@@ -70,6 +72,7 @@
 		"eslint-config-prettier": "^8.8.0",
 		"eslint-plugin-import": "^2.27.5",
 		"eslint-plugin-prettier": "^4.2.1",
+		"husky": "^9.0.11",
 		"prettier": "^2.8.8"
 	},
 	"copyFiles": [
